@@ -1,0 +1,40 @@
+为爽而虐/暗影世界 淬炼之季
+
+固定工坊条目：https://steamcommunity.com/sharedfiles/filedetails/?id=3832182265
+游戏：Don't Starve Together（322330）
+维护者：Yucca
+当前已发布版本：2.8.14.96.1，玩法沿用 2.8.14.96，基于原版 2.8.14.95。
+最近发布：2026-11-02，更名为“淬炼之季”；已通过 Steam 官方接口核对标题、完整简介和版本号。更名日志见 workshop\update-notes-2.8.14.96.1.txt；玩法更新日志见 workshop\update-notes-2.8.14.96.txt。
+
+日常维护位置
+源码：D:\Users\Yucca\Documents\ChatGPT\ShadowWorld\content
+封面、工坊标题和介绍：D:\Users\Yucca\Documents\ChatGPT\ShadowWorld\workshop
+原始版本压缩包、清单和首次发布记录：backups（历史档案，不是待发布源码）
+本次迁移校验与上传器原配置备份：work（不纳入 Git）
+Git 远程仓库：https://github.com/yucca-a/ShadowWorld（私有），维护分支 codex/maintenance。
+发布标签：upstream-v2.8.14.95、v2.8.14.96、v2.8.14.96.1。回退方法见 development/版本回退说明.md。
+Git 备份包含完整源码、资源、测试和维护资料；不包含玩家世界存档及本机临时工具。
+
+修改入口
+content\modinfo.lua：版本号、游戏内名称、作者、配置选项。
+content\modmain.lua：入口及功能加载。
+content\role、easy_role：角色逻辑。
+content\monster、food、tech、weather：怪物、食物、科技、天气。
+content\shadowworld.lua、shadow_nerf.lua：暗影世界相关逻辑。
+content\scripts：实体与组件等。
+保留 LICENSE 和已有的版权声明。
+
+更新到现有工坊条目
+1. 修改并在测试世界验证代码，再把 modinfo.lua 第一行改为新版本号，本轮更名发布为 2.8.14.96.1。
+2. 打开 D:\SteamLibrary\steamapps\common\Don't Starve Mod Tools\ModUploader.exe。
+3. Target Game 选择 Don't Starve Together，选中本模组后点 Edit。确认页面链接 ID 为 3832182265，不要点 Add。
+4. 勾选 Update Data，目录必须为本项目的 content 文件夹。不要选择整个 ShadowWorld 项目根目录。
+5. 勾选 Upload redundant files，确保 LICENSE 等文件随模组发布。
+6. 只有需要更换封面时才勾 Update Preview Image，路径为 workshop\preview.png。
+7. 只有需要修改工坊名称或介绍时才勾 Update Details，使用 workshop 中的标题和介绍文本。上传器可能显示中文乱码或空介绍，提交前核对填写内容。
+8. 可见性保持 Public；Patch Notes 填入已确认的更新日志。点击 Publish!，等待 Update completed 后核对工坊版本和日志。
+
+保存本地文件不会自动上传。更换本地源码目录不改变工坊 ID，也不需要发布新版本。
+上传器已保存本项目的源码和封面路径；本次迁移没有更改模组文件内容或递增版本号。
+不要将 Steam 自动下载的 workshop\content 目录作为长期维护源码。
+修改工坊标题或介绍文本文件也不会自动同步网页，需要在上传器更新详情时填写。

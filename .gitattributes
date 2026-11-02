@@ -1,0 +1,7 @@
+# Keep release snapshots byte-for-byte identical on Windows and other platforms.
+* -text
+*.png binary
+*.tex binary
+*.zip binary
+*.fsb binary
+*.fev binary

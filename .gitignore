@@ -1,0 +1,13 @@
+/work/
+/backups/
+*.log
+*.tmp
+Thumbs.db
+Desktop.ini
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.env.*
+!.env.example
+cluster_token.txt

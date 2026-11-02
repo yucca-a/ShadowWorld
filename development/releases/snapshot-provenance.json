@@ -1,0 +1,31 @@
+{
+  "workshop_id": "3832182265",
+  "source_workshop_id": "2886753796",
+  "original_steam_manifest": "182559942036552063",
+  "snapshots": [
+    {
+      "tag": "upstream-v2.8.14.95",
+      "files": 432,
+      "bytes": 22259648
+    },
+    {
+      "tag": "v2.8.14.96",
+      "files": 439,
+      "bytes": 22295548
+    },
+    {
+      "tag": "v2.8.14.96.1",
+      "files": 439,
+      "bytes": 22295801
+    }
+  ],
+  "archive_sha256": {
+    "backups/HappyPatch-2.8.14.95-original.zip": "0a9b6ae5ef4b23e8d8033383ab573f276d8eeed08592ab73ac323141fd468478",
+    "work/release-2.8.14.96/ShadowWorld-2.8.14.96-source.zip": "9af3d06fa0bc232becb39935cbdd0585b812217c7ceb148ef316058e6a37ebaa"
+  },
+  "current_matches_published_manifest": true,
+  "current_changes_from_v2_8_14_96": [
+    "modinfo.lua"
+  ],
+  "history_kind": "Imported version snapshots; not original development commit history"
+}

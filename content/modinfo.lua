@@ -1,4 +1,4 @@
-version = "2.8.14.96"
+version = "2.8.14.96.1"
 -- Original authors: 繁花丶海棠 | 胜天一猫 | 小蓝鲸 | leo468
 author = "Yucca（维护）"
 forumthread = ""
@@ -1488,4 +1488,5 @@ configuration_options = {
 
 -- Maintained branch based on the original 2.8.14.95 release.
 -- Original copyright notices and LICENSE are retained in this package.
-name = i18n({"为爽而虐/暗影世界 永恒之季 回退女王改动", "DST Patch For Happy/Shadow World - Queen Changes Reverted"})
+name = i18n({"为爽而虐/暗影世界 淬炼之季", "DST Patch For Happy/Shadow World - Season of Tempering"})
+description = i18n({"基于《为爽而虐/暗影世界 永恒之季》的独立维护分支，由 Yucca 持续维护与调整。", "An independently maintained branch of 为爽而虐/暗影世界 永恒之季, maintained and refined by Yucca."}) .. "\n\n" .. description
