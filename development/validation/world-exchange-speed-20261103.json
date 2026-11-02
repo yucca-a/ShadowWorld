@@ -1,0 +1,30 @@
+{
+  "date": "2026-11-03",
+  "game_build": "761239",
+  "baseline_commit": "ba24bfb",
+  "clock": "GetStaticTime, request to coordinator Finish(done); frame time, not a wall-clock SLA",
+  "rounds_per_version": 3,
+  "payload": "17 gold, spear 42%, 31 rocks, berries, sparse slots and ~32 KiB persistent data",
+  "baseline": {
+    "seconds": [
+      5.1,
+      4.833334,
+      4.9
+    ],
+    "median_seconds": 4.9
+  },
+  "optimized": {
+    "seconds": [
+      2.766667,
+      2.833333,
+      2.866667
+    ],
+    "median_seconds": 2.833333
+  },
+  "median_wait_reduction_percent": 42.18,
+  "native_fault_validation": "Passed: force-stop both shards after intent checkpoint; restart with 2s message delay and one dropped final CLOSED.",
+  "optimized_source_sha256": {
+    "scripts/components/worldexchange2hm.lua": "3a55898d606c061b0436a80eb6f7165b9adbd70e927fefd3ad0f34531a6f26a3",
+    "scripts/worldexchangeprotocol2hm.lua": "c1fe6bb07c1cbf78cd409eef2cfd10906b06429b43e2b968410355fcb2f9e34b"
+  }
+}

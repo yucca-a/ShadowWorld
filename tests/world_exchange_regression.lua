@@ -286,4 +286,24 @@ check(sim:finished(), "lost initiator preparation cancels automatically")
 check(not sim.worlds["2"].locked, "participant is not stranded by pre-commit initiator crash")
 check(equal(sim.worlds["1"].goods, initial["1"]) and equal(sim.worlds["2"].goods, initial["2"]), "pre-commit initiator crash preserves both originals")
 
+-- Identical confirmations should not continually wake the coordinator while a
+-- save is pending. Only new phase/durability evidence can bypass its retry timer.
+sim = simulation()
+sim:start("1")
+check(sim:run(10, function(s)
+    local p = s.worlds["1"].protocol
+    return p.active and p.active.phase == "intent" and p.peer_phase == "intent" and not p.peer_durable
+end), "reached waiting-for-save acknowledgement")
+local confirmation
+for _, packet in ipairs(sim.sent) do
+    if packet.from == "2" and packet.message.kind == "STATE" then confirmation = copy(packet.message) end
+end
+local coordinator = sim.worlds["1"].protocol
+coordinator.retry = sim.time + 3
+coordinator:Receive("2", confirmation)
+check(coordinator.retry == sim.time + 3, "unchanged STATE preserves retry deadline")
+confirmation.durable = true
+coordinator:Receive("2", confirmation)
+check(coordinator.retry == 0 and coordinator.peer_durable, "new durable evidence advances immediately")
+
 print("World exchange protocol: " .. assertions .. " assertions passed")

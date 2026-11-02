@@ -10,6 +10,13 @@ SendModRPCToShard = function(_, peer, ...) table.insert(wire, {peer = peer, args
 local function world()
     return {meta = {session_identifier = "session-1"}, components = {}, saves = 0,
         DoStaticPeriodicTask = function() return {Cancel = function() end} end,
+        DoStaticTaskInTime = function(self, delay, fn)
+            check(delay == 0, "wake uses the next static frame")
+            self.wakes = (self.wakes or 0) + 1
+            local task = {fn = fn, Cancel = function(self) self.cancelled = true end}
+            self.queuedwake = task
+            return task
+        end,
         PushEvent = function(self, event) check(event == "ms_save", "native coordinated save event"); self.saves = self.saves + 1 end,
         GetPocketDimensionContainer = function(self) return self.box end,
         IsValid = function() return true end}
@@ -58,10 +65,13 @@ check(next(service.inbox["2"]) == nil, "incomplete buffers expire")
 
 wire = {}
 service:Send("2", {id = "large", kind = "PREPARE", content = string.rep("x", 50000)})
-service:Send("2", {id = "large", kind = "PREPARE", content = "retry"})
+service:Send("2", {id = "large", kind = "PREPARE", content = string.rep("x", 50000)})
 check(#service.outbox == 1, "queued retransmits coalesce")
 service:Update()
 check(#wire == 4 and #service.outbox == 1, "outgoing chunks rate limited to four per tick")
+service:Update()
+check(#wire == 4, "multiple callbacks cannot bypass the shared burst budget")
+now = now + .1
 service:Update()
 check(#wire == 7 and #service.outbox == 0, "remaining fragments drain on next tick")
 for _, packet in ipairs(wire) do check(#packet.args[7] <= 8192, "RPC body respects chunk size") end
@@ -210,4 +220,36 @@ SaveGame(false, function() caller_completed = true end)
 check(not protocol.durable and service.savecapture == nil, "SaveGame waits for native callback and clears temporary capture")
 saved_callback()
 check(protocol.durable and caller_completed, "native completion marks captured phase durable and forwards callback")
+
+-- Advancing is event driven, coalesced, and never recursively re-enters the
+-- protocol when it queues another outgoing message during a wakeup.
+local fastworld = world()
+local fast = WorldExchange(fastworld)
+fast:Initialize()
+local advances = 0
+fast.protocol.Tick = function()
+    advances = advances + 1
+    fast:Wake()
+end
+fast:Wake(); fast:Wake(); fast:Wake()
+check(fastworld.wakes == 1 and advances == 0, "events coalesce without inline re-entry")
+fastworld.queuedwake.fn()
+check(advances == 1 and fast.waketask == nil and fastworld.wakes == 1, "one next-frame advance with no self-trigger loop")
+fast:OnSaved({})
+check(fastworld.wakes == 2, "save completion immediately schedules progress")
+fast:OnRemoveFromEntity()
+check(fastworld.queuedwake.cancelled, "removal cancels a pending wake")
+
+local sender = WorldExchange(world())
+sender:Initialize(); sender.peers["2"] = {boot = "boot-B", session = "session-2"}
+sender:Send("2", {id = "t", kind = "PREPARE", content = string.rep("x", 50000)})
+sender:Send("2", {id = "t", kind = "STATE", durable = false})
+sender:Send("2", {id = "t", kind = "STATE", durable = true})
+check(#sender.outbox == 2, "queued state updates coalesce")
+wire = {}; sender:Flush()
+local decoded, state = RunInSandboxSafe(wire[1].args[7])
+check(decoded and state.kind == "STATE" and state.durable == true, "latest confirmation is sent before a large payload retry")
+check(#wire == 4 and sender.sendbudget == 0, "control priority still shares the same four-chunk budget")
+sender.nexthello = now + 5; sender:Disconnected("2")
+check(sender.nexthello == 0, "world availability change avoids the old five-second handshake wait")
 print("World exchange adapter: " .. assertions .. " assertions passed")

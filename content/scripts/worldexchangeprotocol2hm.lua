@@ -219,6 +219,7 @@ function Protocol:Receive(peer, m)
     elseif m.kind == "INTENT" and not iscoord and t.phase == "prepared" then
         self:SetPhase("intent")
     elseif m.kind == "STATE" then
+        local previous_phase, previous_durable = self.peer_phase, self.peer_durable
         if m.phase == "intent" or m.phase == "applied" then
             -- Old packets must not undo newer durable evidence. The transport
             -- clears this evidence when a peer disconnects or changes boot ID.
@@ -227,6 +228,9 @@ function Protocol:Receive(peer, m)
                 self.peer_phase = m.phase
             end
         end
+        -- Event-driven wakeups must not turn identical STATE/INTENT replies into
+        -- a ping-pong loop while storage is still pending.
+        if self.peer_phase == previous_phase and self.peer_durable == previous_durable then return end
     elseif m.kind == "APPLY" and not iscoord and t.phase == "intent" and self.durable then
         local ok, reason = self.io.apply(t.name, t.incoming)
         if not ok then self:Fail(reason or "apply_failed"); return end

@@ -12,6 +12,7 @@ loader = lua.eval("function(s, name) return assert(loadstring(s, name)) end")
 for path in ["scripts/worldexchangeprotocol2hm.lua", "scripts/components/worldexchange2hm.lua",
              "easy_other/worldexchange.lua", "easy_other/containersort.lua", "modmain.lua"]:
     loader((ROOT / "content" / path).read_text(encoding="utf-8-sig"), path)
+loader((ROOT / "tests/native/world_exchange_speed_fixture.lua").read_text(encoding="utf-8-sig"), "native speed fixture")
 lua.globals().Protocol = loader((ROOT / "content/scripts/worldexchangeprotocol2hm.lua").read_text(encoding="utf-8"), "protocol")()
 lua.execute((ROOT / "tests/world_exchange_regression.lua").read_text(encoding="utf-8"))
 
