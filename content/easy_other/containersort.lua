@@ -614,258 +614,40 @@ local function realsortbtnfn(inst, doer)
 end
 local function defaultbtnvalidfn(inst)
     return (inst.components.container ~= nil or inst.replica.container ~= nil) and not inst:HasTag("dcs2hm") and
-        not inst.dcs2hm
+        not inst.dcs2hm and not inst:HasTag("exchangeloading2hm")
 end
 
--- 末影箱穿越
-local function exchangedestroydata(inst)
-    if inst.components.container then
-        local container = inst.components.container
-        for i = 1, container.numslots do
-            local item = container.slots[i]
-            if item ~= nil and item:IsValid() then item:PushEvent("player_despawn") end
-        end
-        container:DestroyContents()
-    end
+-- 末影箱穿越：持久化事务服务，整箱交换与双层同步存档。
+local function canexchange(player, inst)
+    return TheWorld.ismastersim and player and player:IsValid() and inst and inst:IsValid() and
+        inst:HasTag("pocketdimension_container") and inst.components.container and
+        inst.components.container.openlist[player] ~= nil
 end
-local function exchangesenddata(inst, rpcname, world_id, name, confirm)
-    if inst.components.container and world_id and name then
-        local rpc = GetShardModRPC("MOD_HARDMODE", rpcname)
-        if confirm then
-            SendModRPCToShard(rpc, nil, world_id, name)
-        else
-            local containerdata = inst.components.container:OnSave()
-            containerdata.time2hm = os.time()
-            inst.exchangetmpdata2hm = containerdata
-            exchangedestroydata(inst)
-            SendModRPCToShard(rpc, nil, world_id, name, DataDumper(containerdata, nil, true))
-        end
-    end
-end
-local function exchangeapplydata(inst, containerdata)
-    if inst.components.container and containerdata then
-        exchangedestroydata(inst)
-        inst.components.container:OnLoad(containerdata)
-    end
-end
-local function exchangetaskend(inst)
-    if inst:HasTag("exchangeloading2hm") then inst:RemoveTag("exchangeloading2hm") end
-    if inst.containersendtask2hm then inst.containersendtask2hm = nil end
-    if inst.containerreceivetask2hm then inst.containerreceivetask2hm = nil end
-    if inst.exchangeconfirmtask2hm then inst.exchangeconfirmtask2hm = nil end
-    if inst.sendcontainerproxyplayer2hm then
-        local player = inst.sendcontainerproxyplayer2hm
-        if player and player:IsValid() and player.components.talker then
-            player.components.talker:Say((TUNING.isCh2hm and ("穿越世界超时中止(可暂停穿越=25秒)") or
-                ("Exchange timeout invalid~(Pause game then exchange wait 25s)")))
-        end
-        inst.sendcontainerproxyplayer2hm = nil
-    end
-    if inst.sendcontainerproxydata2hm then inst.sendcontainerproxydata2hm = nil end
-    if inst.exchangetmpdata2hm then
-        exchangeapplydata(inst, inst.exchangetmpdata2hm)
-        inst.exchangetmpdata2hm = nil
-    end
-end
--- 另一世界的确认请求被确认
-AddShardModRPCHandler("MOD_HARDMODE", "exchangeconfirm2hm", function(shard_id, world_id, name)
-    if TheShard and tostring(TheShard:GetShardId()) ~= tostring(shard_id) and tostring(TheShard:GetShardId()) == tostring(world_id) then
-        local container = TheWorld:GetPocketDimensionContainer(name)
-        if container and container:IsValid() and container.components.container and container.exchangetmpdata2hm and not container.containersendtask2hm and
-            not container.exchangeconfirmtask2hm and container.containerreceivetask2hm and container.sendcontainerproxydata2hm then
-            container.exchangetmpdata2hm = nil
-            container.containerreceivetask2hm:Cancel()
-            container.containerreceivetask2hm = nil
-            exchangeapplydata(container, container.sendcontainerproxydata2hm)
-            container.sendcontainerproxydata2hm = nil
-            if container:HasTag("exchangeloading2hm") then container:RemoveTag("exchangeloading2hm") end
-        end
-    end
-end)
--- 所在世界的穿越请求被确认,更新数据,且确认对方的确认请求
-AddShardModRPCHandler("MOD_HARDMODE", "exchangeconfirmdata2hm", function(shard_id, world_id, name, containerdata)
-    if TheShard and tostring(TheShard:GetShardId()) ~= tostring(shard_id) and tostring(TheShard:GetShardId()) == tostring(world_id) then
-        if TheNet:IsServerPaused() then
-            TheNet:SetServerPaused(false) 
-            TheNet:Announce(TUNING.isCh2hm and "服务器已停止暂停" or "The server has stopped pausing") 
-        end
-        local container = TheWorld:GetPocketDimensionContainer(name)
-        if container.cancelpausetask2hm then
-            container.cancelpausetask2hm:Cancel()
-            container.cancelpausetask2hm = nil
-        end
-        if container and container:IsValid() and container.components.container and container.exchangetmpdata2hm and container.containersendtask2hm and
-            not container.containerreceivetask2hm and not container.exchangeconfirmtask2hm and container.sendcontainerproxyplayer2hm and containerdata then
-            local success, data = RunInSandboxSafe(containerdata)
-            if success and data and data.time2hm and os.time() - data.time2hm < 400 then
-                container:DoStaticTaskInTime(FRAMES * 1.5, exchangesenddata, "exchangeconfirm2hm", shard_id, name, true)
-                container.exchangetmpdata2hm = nil
-                container.containersendtask2hm:Cancel()
-                container.containersendtask2hm = nil
-                container.exchangeconfirmtask2hm = container:DoTaskInTime(0.25, exchangetaskend)
-                exchangeapplydata(container, data)
-                local player = container.sendcontainerproxyplayer2hm
-                if player and player:IsValid() and player.components.talker then
-                    player.components.talker:Say((TUNING.isCh2hm and ("成功穿越世界" .. shard_id .. "啦") or
-                        ("SUCCESS to exchange with world " .. shard_id .. "~")))
-                end
-                container.sendcontainerproxyplayer2hm = nil
-            end
-        end
-    end
-end)
--- 另一世界收到穿越请求,确认请求
-AddShardModRPCHandler("MOD_HARDMODE", "exchangesenddata2hm", function(shard_id, world_id, name, containerdata)
-    if TheShard and tostring(TheShard:GetShardId()) ~= tostring(shard_id) and tostring(TheShard:GetShardId()) == tostring(world_id) then
-        local container = TheWorld:GetPocketDimensionContainer(name)
-        if container and container:IsValid() and container.components.container and container.virtchest == nil and not container.containersendtask2hm and
-            not container.containerreceivetask2hm and not container.exchangeconfirmtask2hm and containerdata then
-            local success, data = RunInSandboxSafe(containerdata)
-            if success and data and data.time2hm and os.time() - data.time2hm < 350 then
-                if not container:HasTag("exchangeloading2hm") then container:AddTag("exchangeloading2hm") end
-                container.containerreceivetask2hm = container:DoTaskInTime(3, exchangetaskend)
-                container.sendcontainerproxydata2hm = data
-                container:DoStaticTaskInTime(FRAMES * 1.5, exchangesenddata, "exchangeconfirmdata2hm", shard_id, name)
-            end
-        end
-    end
-end)
-local function findcontainerproxyname(inst)
-    if TheWorld.PocketDimensionContainers then
-        for name, container in pairs(TheWorld.PocketDimensionContainers) do if container == inst then return name end end
-    end
-end
-local function findanotherworldid(inst)
-    if ShardList then
-        local shardids = {}
-        for world_id, v in pairs(ShardList) do
-            if TheShard and world_id ~= TheShard:GetShardId() and Shard_IsWorldAvailable(world_id) then
-                table.insert(
-                    shardids, world_id)
-            end
-        end
-        local total = #shardids
-        if total == 1 then
-            return shardids[1]
-        elseif total > 1 then
-            inst.lastexchangeidx2hm = (inst.lastexchangeidx2hm or 0) + 1
-            if inst.lastexchangeidx2hm > total then inst.lastexchangeidx2hm = 1 end
-            return shardids[inst.lastexchangeidx2hm]
-        end
-    end
-end
--- 所在世界进行穿越请求
 local function exchangefn(player, inst)
-    if TheWorld.ismastersim and inst.components.container and not inst.containersendtask2hm and not inst.containerreceivetask2hm and
-        not inst.exchangeconfirmtask2hm and inst.virtchest == nil and player then
-        local name = findcontainerproxyname(inst)
-        local world_id = findanotherworldid(inst)
-        -- SendModRPCToShard(GetShardModRPC("MOD_HARDMODE", "ms_prototyper_update"), nil, true)
-        if world_id and name then
-            inst.sendcontainerproxyplayer2hm = player
-            inst.containersendtask2hm = inst:DoTaskInTime(1.5, exchangetaskend)
-            if not inst:HasTag("exchangeloading2hm") then inst:AddTag("exchangeloading2hm") end
-            exchangesenddata(inst, "exchangesenddata2hm", world_id, name)
-        elseif player and player:IsValid() and player.components.talker then
-            player.components.talker:Say((TUNING.isCh2hm and "找不到世界和容器穿越哎" or "Can't find another world's container to exchange."))
-        end
+    if canexchange(player, inst) and TheWorld.components.worldexchange2hm then
+        TheWorld.components.worldexchange2hm:Request(player, inst)
     end
 end
--- 穿越按钮
 AddModRPCHandler("MOD_HARDMODE", "exchangebtn2hm", exchangefn)
 local function exchangevalidfn(inst)
-    return defaultbtnvalidfn(inst) and inst:HasTag("pocketdimension_container") and
-        not inst:HasTag("exchangeloading2hm")
+    return defaultbtnvalidfn(inst) and inst:HasTag("pocketdimension_container") and not inst:HasTag("exchangeloading2hm")
 end
-local function checkbtnstatus(_inst, inst, btn)
-    if not (inst and inst:IsValid() and not exchangevalidfn(inst)) then
-        _inst.checkdisabletask2hm:Cancel()
-        _inst.checkdisabletask2hm = nil
-        if btn and btn.Enable then btn:Enable() end
-    end
+local function exchangebtnfn(inst, doer)
+    if TheWorld.ismastersim then exchangefn(doer, inst)
+    else SendModRPCToServer(GetModRPC("MOD_HARDMODE", "exchangebtn2hm"), inst) end
 end
-local function exchangebtnfn(inst, doer, btn)
-    if btn and btn.Disable and btn.inst and not btn.inst.checkdisabletask2hm then
-        btn:Disable()
-        -- 暂停时不做计算
-        btn.inst.checkdisabletask2hm = btn.inst:DoPeriodicTask(0.1, checkbtnstatus, 0.5, inst, btn)
-    end
-    if inst.components.container and TheWorld.ismastersim then
-        exchangefn(doer, inst)
-    elseif inst.replica.container ~= nil then
-        SendModRPCToServer(GetModRPC("MOD_HARDMODE", "exchangebtn2hm"), inst)
+local function exchangestatusfn(player, inst)
+    if canexchange(player, inst) and TheWorld.components.worldexchange2hm then
+        TheWorld.components.worldexchange2hm:Status(player)
     end
 end
-
--- 暂停修复穿越功能按钮
-local function checkpausebtnstatus(_inst, inst, btn)
-    _inst.checkdisabletask2hm:Cancel()
-    _inst.checkdisabletask2hm = nil
-    if btn and btn.Enable then btn:Enable() end
+AddModRPCHandler("MOD_HARDMODE", "exchangestatus2hm", exchangestatusfn)
+local function exchangestatusbtnfn(inst, doer)
+    if TheWorld.ismastersim then exchangestatusfn(doer, inst)
+    else SendModRPCToServer(GetModRPC("MOD_HARDMODE", "exchangestatus2hm"), inst) end
 end
-local function pausefn(player, inst)
-    if TheWorld.ismastersim then
-        if TheNet:IsServerPaused() then
-            if inst.cancelpausetask2hm then
-                inst.cancelpausetask2hm:Cancel()
-                inst.cancelpausetask2hm = nil
-            end
-            TheNet:SetServerPaused(false)
-            TheNet:Announce(TUNING.isCh2hm and "服务器已停止暂停" or "The server has stopped pausing")
-        elseif not TheNet:IsServerPaused() then
-            -- if not inst.pausenumber2hm and not (player and TheNet:GetIsServerAdmin(player.userid)) then 
-            --     inst.pausenumber2hm = 1 
-            -- elseif inst.pausenumber2hm and not (player and TheNet:GetIsServerAdmin(player.userid)) then 
-            --     inst.pausenumber2hm = inst.pausenumber2hm + 1
-            -- end
-            if player and player:IsValid() then 
-                TheNet:Announce(TUNING.isCh2hm and "玩家 " .. (player.name or player.userid) .. " 使用了容器暂停按钮" or "Player " .. (player.name or player.userid) .. "use pause button in container")
-            end
-            TheNet:Announce(TUNING.isCh2hm and "服务器已暂停，30秒后超时自动解除" or "The server is paused, auto cancel pause after timeout 30 seconds")
-            SetServerPaused()
-            if inst.cancelpausetask2hm then
-                inst.cancelpausetask2hm:Cancel()
-                inst.cancelpausetask2hm = nil
-            end
-            inst.cancelpausetask2hm = inst:DoStaticTaskInTime(30, function(inst)
-                if TheNet:IsServerPaused() then
-                    TheNet:SetServerPaused(false)
-                    TheNet:Announce(TUNING.isCh2hm and "服务器暂停超时已自动解除" or "The server pause has been lifted automatically")
-                end
-            end)
-            -- if inst.removepausenumber2hm then
-            --     inst.removepausenumber2hm:Cancel()
-            --     inst.removepausenumber2hm = nil
-            -- end
-            -- inst.removepausenumber2hm = inst:DoStaticTaskInTime(60, function(inst)
-            --     if not inst.pausenumber2hm == nil then inst.pausenumber2hm = nil end
-            -- end)
-        end
-        -- if inst.pausenumber2hm and inst.pausenumber2hm >= 5 then
-        --     if player and player:IsValid() and not TheNet:GetIsServerAdmin(player.userid) then
-        --         TheNet:Announce(TUNING.isCh2hm and "非管理玩家 " .. (player.name or player.userid) .. " 疑似恶意使用容器暂停按钮" or "Non management player " .. (player.name or player.userid) .. "suspected of maliciously using container pause button")
-        --         if not inst.voting then
-        --             inst.voting = 1
-        --             TheWorld:PushEvent("ms_startvote", {commandhash = "kick", starteruserid = nil, targetuserid = player.userid})
-        --             inst:DoStaticTaskInTime(40,function(inst)
-        --                 inst.voting = nil
-        --             end)
-        --         end
-        --     end
-        -- end
-    end
-end
-AddModRPCHandler("MOD_HARDMODE", "pausebtn2hm", pausefn)
-local function pausebtnfn(inst, doer, btn)
-    if btn and btn.Disable and btn.inst and not btn.inst.checkdisabletask2hm then
-        btn:Disable()
-        btn.inst.checkdisabletask2hm = btn.inst:DoPeriodicTask(0.2, checkpausebtnstatus, 1, inst, btn)
-    end
-    if TheWorld.ismastersim then
-        pausefn(doer, inst)
-    elseif not TheWorld.ismastersim then
-        SendModRPCToServer(GetModRPC("MOD_HARDMODE", "pausebtn2hm"), inst)
-    end
+local function exchangestatusvalidfn(inst)
+    return inst and inst:HasTag("pocketdimension_container")
 end
 
 -- 容器收集
@@ -2500,17 +2282,17 @@ Use Orange Amulet will Picktop Near Same Items]],
         },
         exchangebtn = {
             text = TUNING.isCh2hm and "穿越" or "PassW",
-            helptext = TUNING.isCh2hm and [[与其他世界的该容器交换道具]] or
-                [[exchange container data with another world's the container]],
+            helptext = TUNING.isCh2hm and [[与另一世界整箱互换；交换期间锁定容器，双方保存后完成]] or
+                [[Swap whole containers; locked until both worlds save the exchange]],
             fn = exchangebtnfn,
             validfn = exchangevalidfn
         },
         pausebtn = {
-            text = TUNING.isCh2hm and "暂停" or "Pause Server",
-            helptext = TUNING.isCh2hm and [[穿越按钮失效可尝试暂停穿越修复]] or
-                [[Pause server to try to fix PassW button]],
-            fn = pausebtnfn,
-            validfn = exchangevalidfn
+            text = TUNING.isCh2hm and "状态" or "Status",
+            helptext = TUNING.isCh2hm and [[查看交换进度并重试通信；无需暂停服务器]] or
+                [[Check exchange progress and retry communication]],
+            fn = exchangestatusbtnfn,
+            validfn = exchangestatusvalidfn
         },
         reskinbtn = { text = TUNING.isCh2hm and "换装" or "Skin", fn = reskinbtnfn, validfn = reskinvalidfn },
         collectmeatbtn = { text = TUNING.isCh2hm and "收集" or "Collect", helptext = TUNING.isCh2hm and [[一键收集附近所有晾肉架中的产物放入物品栏(雨天会收集可风干物)
@@ -2833,7 +2615,8 @@ Use Orange Amulet will Picktop Near Same Items]],
                 supportchangebtnpos(self, addbutton(self, container, widget, doer, "dryingitembutton2hm", btnlist.drymeatbtn , 3), container)
                 return result
             end
-            if container and widget and not container:HasTag("dcs2hm") and not container.dcs2hm and btnlist and widget.poslist2hm then
+            if container and widget and not container:HasTag("dcs2hm") and
+                (not container.dcs2hm or container:HasTag("exchangeloading2hm")) and btnlist and widget.poslist2hm then
                 if TUNING.DATA2HM.opensort then
                     supportchangebtnpos(self,
                         addbutton(self, container, widget, doer, "sortbutton2hm", btnlist.sortbtn, 1), container)

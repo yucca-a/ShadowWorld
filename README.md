@@ -7,7 +7,7 @@
 - [私有维护仓库](https://github.com/yucca-a/ShadowWorld)，维护分支为 `codex/maintenance`。
 - 原作者署名及许可证保留在 [来源说明](content/ARCHIVE_SOURCE.txt) 和 [LICENSE](content/LICENSE) 中。
 
-开发中修复：[离线模式模组查看按钮](development/离线模式模组查看修复.md)，尚未发布至工坊。
+开发中修复：[离线模式模组查看按钮](development/离线模式模组查看修复.md)、[穿越世界事务重写](development/穿越世界事务机制_实装说明.md)，尚未发布至工坊。
 
 ## 目录
 
