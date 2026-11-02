@@ -1,3 +1,5 @@
+modimport("extra/frostjaw_trade.lua")
+
 local cache = {}
 local function modconfigs(key, ...)
     if cache[key] == nil then cache[key] = GetModConfigData(key, ...) end

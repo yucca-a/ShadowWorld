@@ -1,5 +1,9 @@
 local SpDamageUtil = require("components/spdamageutil")
 local mode = GetModConfigData("combat")
+if mode == 4 then
+    modimport("role/combat_progressive.lua")
+    return
+end
 -- 伤害细节显示
 local attackstatustip
 local tiplength = 0
@@ -470,6 +474,19 @@ elseif mode == 3 then
     end)
 end
 -- 显示开关
+-- Legacy modes keep their own calculations; inspection must not replace them.
+if mode ~= 2 then
+    local Report = require("combatdisplay2hm")
+    AddComponentPostInit("combat", function(combat)
+        if not TheWorld.ismastersim then return end
+        local previous = combat.CalcDamage
+        combat.CalcDamage = function(self, ...)
+            local damage, special = previous(self, ...)
+            if self.inst:HasTag("player") then Report(self.inst, damage, special) end
+            return damage, special
+        end
+    end)
+end
 local function wheninspectpunchingbag(inst)
     if not TheWorld.ismastersim then return end
     if inst.components.inspectable then
@@ -483,17 +500,6 @@ local function wheninspectpunchingbag(inst)
                               "\n\nHappyPatch Damage Status Display Now open\nInspect punching bag to close") or
                           (TUNING.isCh2hm and "\n\n[为爽而虐]攻击伤害计算显示已关闭\n检查拳击袋开关此功能" or
                               "\n\nHappyPatch Damage Status Display Now close\nInspect punching bag to open")
-                if mode ~= 2 then
-                    if viewer.components.combat.inspectstatus2hm then
-                        if viewer.components.combat.CalcDamage2hm == nil then
-                            viewer.components.combat.CalcDamage2hm = viewer.components.combat.CalcDamage
-                        end
-                        viewer.components.combat.CalcDamage = NewCalcDamage
-                    elseif viewer.components.combat.CalcDamage2hm ~= nil then
-                        viewer.components.combat.CalcDamage = viewer.components.combat.CalcDamage2hm
-                        viewer.components.combat.CalcDamage2hm = nil
-                    end
-                end
             end
             local desc, filter_context, author = GetDescription(self, viewer, ...)
             desc = (desc or "") .. (txt or "")

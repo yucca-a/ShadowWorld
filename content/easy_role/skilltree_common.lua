@@ -8,46 +8,67 @@ if not hardmode then skillpointsopt = -16 end -- 2025.7.17 melon:关闭困难模
 local no_more_point = skillpointsopt == -1 -- 2025.9.19 melon:选择0时永不获得技能点
 if skillpointsopt then
     TUNING.SKILL_THRESHOLDS = {4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 3, 1, 1, 1, 1, 1}
-    local maxpoints = {wilson = 26, willow = 24, wolfgang = 25, woodie = 27, wathgrithr = 23, wormwood = 26, wurt = 28, winona = 26, walter = 26, wortox = 27, wendy = 25}
+    -- 按实际可学习节点计数，避免新角色遗漏或技能树更新后固定上限失效。
+    local function GetMaxSkillPoints(characterprefab)
+        local total = 0
+        for _, skill in pairs(skilltreedefs.SKILLTREE_DEFS[characterprefab] or {}) do
+            if skill.rpc_id ~= nil and skill.lock_open == nil and skill.infographic == nil then total = total + 1 end
+        end
+        return total
+    end
+    local function GetMaxSkillXP(characterprefab)
+        local total = 0
+        for i = 1, math.min(GetMaxSkillPoints(characterprefab), #TUNING.SKILL_THRESHOLDS) do
+            total = total + TUNING.SKILL_THRESHOLDS[i]
+        end
+        return total
+    end
+    local function IsSkillToastMuted(characterprefab)
+        local muted = TUNING.TEMP2HM.mutedskilltoasts
+        return muted ~= nil and muted[characterprefab] == true
+    end
     AddClassPostConstruct("skilltreedata", function(self)
         local GetAvailableSkillPoints = self.GetAvailableSkillPoints
         self.GetAvailableSkillPoints = function(self, characterprefab, ...)
-            if not self.prefab2hm or self.prefab2hm ~= characterprefab then self.prefab2hm = characterprefab end
-            local result = GetAvailableSkillPoints(self, characterprefab, ...)
-            return result
+            local spent = 0
+            for _ in pairs(self:GetActivatedSkills(characterprefab) or {}) do spent = spent + 1 end
+            -- 只限制当前角色的可用点数，不让上一次查看的角色影响其他角色的存档校验。
+            return math.max(0, math.min(GetAvailableSkillPoints(self, characterprefab, ...), GetMaxSkillPoints(characterprefab) - spent))
         end
-        local GetPointsForSkillXP = self.GetPointsForSkillXP
-        self.GetPointsForSkillXP = function(self, ...)
-            if self.prefab2hm and maxpoints[self.prefab2hm] then return math.min(GetPointsForSkillXP(self, ...), maxpoints[self.prefab2hm]) end
-            return GetPointsForSkillXP(self, ...)
-        end
+        local GetSkillXP = self.GetSkillXP
+        local startxp = 0
         if skillpointsopt ~= true then
             local startskills = math.clamp(-skillpointsopt - 1, 0, 15)
-            local startxp = 0
             for i = 1, startskills do startxp = startxp + TUNING.SKILL_THRESHOLDS[i] end
-            local GetSkillXP = self.GetSkillXP
             self.GetSkillXP = function(self, ...)
                 local skillxp = GetSkillXP(self, ...)
                 -- 2025.9.19 melon:选择0时(no_more_point)永不获得技能点
                 local newxp = no_more_point and 0 or not self.disablehardxp2hm and (TheWorld and math.min(TheWorld.state.cycles + startxp, skillxp) or 0) or skillxp
-                -- local newxp = no_more_point and 0 or not self.disablehardxp2hm and TheWorld and (TheWorld.state.cycles + startxp) or skillxp -- 2025.10.13 melon:改为原本没点也能开局获得5点 存在问题:无技能树左上也有提示
                 return newxp
             end
             local OPAH_DoBackup = self.OPAH_DoBackup
             self.OPAH_DoBackup = function(self, ...)
+                local previous = self.disablehardxp2hm
                 self.disablehardxp2hm = true
                 local result = OPAH_DoBackup(self, ...)
-                self.disablehardxp2hm = nil
+                self.disablehardxp2hm = previous
                 return result
             end
-            local AddSkillXP = self.AddSkillXP
-            self.AddSkillXP = function(self, ...)
-                self.disablehardxp2hm = true
-                local result, xp = AddSkillXP(self, ...)
-                if TheWorld and TheWorld.state.cycles <= 160 then result = true end
-                self.disablehardxp2hm = nil
-                return result, xp
+        end
+        local AddSkillXP = self.AddSkillXP
+        self.AddSkillXP = function(self, amount, characterprefab, ...)
+            local previous = self.disablehardxp2hm
+            self.disablehardxp2hm = true
+            local maxxp = GetMaxSkillXP(characterprefab)
+            -- 停止新增溢出经验；保留旧存档的历史经验，供联机握手和备份使用。
+            local remainingxp = math.max(0, maxxp - GetSkillXP(self, characterprefab))
+            local result, xp = AddSkillXP(self, math.min(amount, remainingxp), characterprefab, ...)
+            -- 历史经验已满时，世界天数仍可能解锁点数，需要继续同步直到该角色的上限。
+            if skillpointsopt ~= true and not no_more_point and maxxp > 0 and TheWorld and TheWorld.state.cycles + startxp <= maxxp then
+                result = true
             end
+            self.disablehardxp2hm = previous
+            return result, xp
         end
     end)
     local function learnparentskill(self, currentskill, skilltreeupdater)
@@ -67,6 +88,48 @@ if skillpointsopt then
         end
     end
     AddClassPostConstruct("widgets/redux/skilltreebuilder", function(self)
+        local CreateTree = self.CreateTree
+        self.CreateTree = function(self, ...)
+            CreateTree(self, ...)
+            if not self.readonly and GetMaxSkillPoints(self.target) > 0 then
+                if not self.muteskilltoast2hm then
+                    local TEMPLATES = require "widgets/redux/templates"
+                    self.muteskilltoast2hm = self.root:AddChild(TEMPLATES.LabelCheckbox(function(button)
+                        button.checked = not button.checked
+                        button:Refresh()
+                        TUNING.TEMP2HM.mutedskilltoasts = TUNING.TEMP2HM.mutedskilltoasts or {}
+                        TUNING.TEMP2HM.mutedskilltoasts[self.target] = button.checked or nil
+                        SaveTemp2hm()
+                        if ThePlayer then ThePlayer:PushEvent("skilltreetoastsettingschanged2hm") end
+                    end, IsSkillToastMuted(self.target), TUNING.isCh2hm and "关闭洞察点提示" or "Mute Insight alerts"))
+                    self.muteskilltoast2hm:SetScale(0.65)
+                    self.muteskilltoast2hm:SetPosition(-242, 215)
+                    self.muteskilltoast2hm:SetTextColour(self.fromfrontend and UICOLOURS.GOLD or UICOLOURS.BLACK)
+                    self.muteskilltoast2hm:SetTooltip(TUNING.isCh2hm and "仅关闭此角色左上角的新洞察点提示，不影响获得和分配洞察点。设置会保存。" or
+                        "Hide this character's new Insight alerts. You can still earn and spend Insight. This setting is saved.")
+                end
+                self.muteskilltoast2hm.checked = IsSkillToastMuted(self.target)
+                self.muteskilltoast2hm:Refresh()
+                self.muteskilltoast2hm:Show()
+            elseif self.muteskilltoast2hm then
+                self.muteskilltoast2hm:Hide()
+            end
+        end
+        local SetFocusChangeDirs = self.SetFocusChangeDirs
+        self.SetFocusChangeDirs = function(self, ...)
+            SetFocusChangeDirs(self, ...)
+            if self.muteskilltoast2hm and self.muteskilltoast2hm:IsVisible() then
+                local top
+                for _, data in ipairs(self.buttongrid) do
+                    if not top or data.y > top.y or (data.y == top.y and data.x < top.x) then top = data end
+                end
+                if top then
+                    top.button:SetFocusChangeDir(MOVE_UP, self.muteskilltoast2hm)
+                    self.muteskilltoast2hm:SetFocusChangeDir(MOVE_DOWN, top.button)
+                    self.muteskilltoast2hm:SetFocusChangeDir(MOVE_RIGHT, top.button)
+                end
+            end
+        end
         local oldbuildbuttons = self.buildbuttons
         self.buildbuttons = function(self, ...)
             oldbuildbuttons(self, ...)
@@ -107,10 +170,12 @@ if skillpointsopt then
     end)
     AddClassPostConstruct("widgets/skilltreetoast", function(self)
         self.tab_gift:Hide()
-        self.shownotification = Profile:GetScrapbookHudDisplay()
         local UpdateElements = self.UpdateElements
         self.UpdateElements = function(self, ...)
             local craft_hide = self.craft_hide
+            local updater = self.owner.components.skilltreeupdater
+            self.shownotification = Profile:GetScrapbookHudDisplay() and not IsSkillToastMuted(self.owner.prefab)
+                and updater ~= nil and updater:GetAvailableSkillPoints() > 0
             self.craft_hide = craft_hide or not self.shownotification
             if self.shownotification then
                 self.tab_gift:Show()
@@ -120,16 +185,13 @@ if skillpointsopt then
             UpdateElements(self, ...)
             self.craft_hide = craft_hide
         end
-        local Onupdate = self.Onupdate
-        self.Onupdate = function(self, ...)
-            if self.shownotification ~= Profile:GetScrapbookHudDisplay() then
-                self.shownotification = Profile:GetScrapbookHudDisplay()
-                self:UpdateElements()
-            end
-            if self.opened then Onupdate(self, ...) end
+        self.inst:ListenForEvent("skilltreetoastsettingschanged2hm", function() self:UpdateElements() end, self.owner)
+        self.inst:ListenForEvent("onactivateskill_client", function() self:UpdateElements() end, self.owner)
+        -- 使用游戏实际的 OnUpdate 名称；关闭提示时仍由原方法清理手柄帮助。
+        local OnUpdate = self.OnUpdate
+        self.OnUpdate = function(self, ...)
+            if self.opened and self.controller_help then OnUpdate(self, ...) end
         end
-        local UpdateControllerHelp = self.UpdateControllerHelp
-        self.UpdateControllerHelp = function(self, ...) if self.opened then UpdateControllerHelp(self, ...) end end
     end)
 end
 

@@ -1,0 +1,15 @@
+Maintained branch based on: DST Patch For Happy/Shadow World 2.8.14.95
+Original Workshop: https://steamcommunity.com/sharedfiles/filedetails/?id=2886753796
+Original authors: 繁花丶海棠 | 胜天一猫 | 小蓝鲸 | leo468
+Original release note author: 锡徐
+Release note time: 2026-10-30 01:05 UTC+8
+Steam manifest: 182559942036552063
+Manifest creation time: 2026-10-30 01:03:46 UTC+8
+Recovered from Steam content servers using the locally cached historical manifest.
+All 432 original files (22,259,648 bytes) verified against manifest SHA-1 hashes.
+Publication metadata in modinfo.lua changed: branch name, maintenance credit, blank QQ group, and branch version 2.8.14.95.1. Original author credit is retained in comments and in this file.
+Gameplay scripts and original LICENSE were unchanged at the initial 2.8.14.95.1 publication.
+Maintained release 2.8.14.96 adds combat/armor balancing, skill-tree fixes, Wanda recovery fixes, and Frostjaw trade scaling. Original LICENSE and author notices are retained.
+Maintainer: Yucca
+Workshop branch: https://steamcommunity.com/sharedfiles/filedetails/?id=3832182265
+Visibility: Public

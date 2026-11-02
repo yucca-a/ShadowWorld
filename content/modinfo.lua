@@ -1,5 +1,6 @@
-version = "2.8.14.95"
-author = "繁花丶海棠 | 胜天一猫 | 小蓝鲸 | leo468"
+version = "2.8.14.96"
+-- Original authors: 繁花丶海棠 | 胜天一猫 | 小蓝鲸 | leo468
+author = "Yucca（维护）"
 forumthread = ""
 api_version = 10
 all_clients_require_mod = true
@@ -35,7 +36,8 @@ description = i18n({"当前版本:", "Version"}) .. version ..
 模组内置可选复活按钮(简单模式-角色加强-旺达选项)
 模组可选随机季节,内置随机级别岛屿地形(困难模式-天气/科技改动)
 
-交流群278163412,更新日志见群与工坊模组改动记录
+交流群：
+更新日志见本模组工坊改动记录
 模组不定期更新频繁,此时建议订阅客户端模组：无视服务器模组过期
 
 新wiki:https://pacthforhappy.fandom.com/zh/wiki/主页]],
@@ -46,7 +48,7 @@ In addition, the mod has made appropriate balance changes to the official charac
 
 new wiki but in chinese:https://pacthforhappy.fandom.com/zh/wiki/
 
-QQ Group 278163412]]
+QQ Group:]]
     })
 -- bugtracker_config = {
 --     email = "wakhh@qq.com",
@@ -908,12 +910,14 @@ configuration_options = {
         "Hunger Has Penalty.Eat Dried/Fresh Health Food or Booster Shot to Heal"
     })),
     item("combat", i18n({"战斗险境", "Combat Reduce"}),
-        i18n({"检查拳击袋,开关攻击伤害信息显示", "inspect Punching Bag open/close dmg status display"}), 3, 1, 3, 1, {
+        i18n({"检查拳击袋,开关攻击伤害信息显示", "inspect Punching Bag open/close dmg status display"}), 4, 1, 4, 1, {
             i18n({"使用原版机制，增益伤害全部乘算", "Original,not change"}),
             i18n({"[先乘算后加算]小于1.5的倍率乘算，大于等于1.5的倍率加算", "[first mult then add] <1.5 -> mult, >=1.5 -> add."}),
             i18n({"最大倍率上限封顶2.5倍，多余转为减伤和移速",
-                "2.5 max mult, excess part is converted into damage reduction and speed bonus"})
-        }, nil, {leftparttext, enabletext, enabletext}),
+                "2.5 max mult, excess part is converted into damage reduction and speed bonus"}),
+            i18n({"锋芒渐敛：普通2.5起递减趋近3倍，位面2起递减趋近2.5倍；无溢出生存补偿",
+                "Tempered Edge: regular 2.5->3x, planar 2->2.5x; no overflow defense/speed"})
+        }, nil, {leftparttext, enabletext, enabletext, i18n({filldesc(8) .. "锋芒渐敛", filldesc(13) .. "Tempered Edge"})}),
     item("regen_danger", i18n({"恢复险境", "Danger Regen"}), i18n({
         "吃东西缓慢回血,挨打后恢复效果受到折扣",
         "Eating heals slowly over time;recovery is reduced after getting hit"
@@ -1380,8 +1384,24 @@ configuration_options = {
             i18n("为敌人召唤暗影随从和转化敌人暗影分身", "Summon enermy's shadowprotector or friend enermy's shadow"),
             i18n({"禁用血量翻倍,禁用CD减半", "Disable Double Health,disable half skill cd"})
         }),
-    item("epic_armor_5", i18n({"巨兽装甲", "Epic Armor"}),
-        i18n({"巨兽装甲,使得巨兽无法被轻松击败", "Epic armored, can not be defeated easily"}), 1, 1, 5, 1),
+    {
+        name = "epic_armor_5",
+        label = i18n({"巨兽装甲", "Epic Armor"}),
+        hover = i18n({"遇强则坚通过动态减伤限制爆发与集火；传统装甲保留原有无敌机制。需要开启困难模式及怪物改动。",
+            "Adaptive Fortitude limits burst damage through dynamic resistance; traditional tiers retain their invulnerability. Requires Hard Mode and Monster Changes."}),
+        default = "dynamic",
+        options = {
+            {description = i18n({"禁用", "Disable"}), data = false},
+            {description = i18n({"传统 1 档", "Traditional 1"}), data = 1},
+            {description = i18n({"传统 2 档", "Traditional 2"}), data = 2},
+            {description = i18n({"传统 3 档", "Traditional 3"}), data = 3},
+            {description = i18n({"传统 4 档", "Traditional 4"}), data = 4},
+            {description = i18n({"传统 5 档", "Traditional 5"}), data = 5},
+            {description = i18n({"遇强则坚（默认）", "Adaptive Fortitude (default)"}), data = "dynamic",
+                hover = i18n({"单次伤害先限为最大生命10%，再按动态值减伤；每秒衰减1%最大生命/额外血量倍率平方根；无固定无敌、回血或陨石。",
+                    "Each hit is capped at 10% max health before dynamic resistance; pressure decays by 1% max health/sec divided by sqrt(extra health multiplier). No timed invulnerability, healing or meteors."})},
+        },
+    },
     itemvalue("epic_ruin", i18n({"巨兽摧毁", "Epic Ruin"}),
         i18n({"生物死亡时按所受巨兽伤害占比减少战利品",
             "Loot is reduced by the proportion of BOSS damage"}), 1, {
@@ -1465,3 +1485,7 @@ configuration_options = {
         "Monster Upgrade x armor Per day,reduce damage:1000/(1000+armor)"
     }), false, 1400, 3500, 100)
 }
+
+-- Maintained branch based on the original 2.8.14.95 release.
+-- Original copyright notices and LICENSE are retained in this package.
+name = i18n({"为爽而虐/暗影世界 永恒之季 回退女王改动", "DST Patch For Happy/Shadow World - Queen Changes Reverted"})

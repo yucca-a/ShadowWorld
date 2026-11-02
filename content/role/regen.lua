@@ -3,6 +3,10 @@ local REGEN_RATE2HM = 0.1 -- 每次恢复原本数值的 10%
 local REGEN_COUNT2HM = 10 -- 共 10 次
 local REGEN_SOURCE2hm = "regen_danger2hm"
 
+local function UsesOldAge2hm(inst)
+    return inst.components.oldager ~= nil
+end
+
 local function TickRegen2hm(inst)
     if inst == nil or not inst:IsValid() then return end
     local q = inst._regen2hm_queue
@@ -95,10 +99,13 @@ local function OnEat2hm(inst, data)
     health_delta = health_delta * stack_mult
     sanity_delta = sanity_delta * stack_mult
 
-    if health_delta > 0 then
-        StartRegen2hm(inst, "health", health_delta)
-    elseif health_delta < 0 then
-        inst.components.health:DoDelta(health_delta, nil, food.prefab)
+    -- Age-based characters already process HP once through the native eater.
+    if not UsesOldAge2hm(inst) then
+        if health_delta > 0 then
+            StartRegen2hm(inst, "health", health_delta)
+        elseif health_delta < 0 then
+            inst.components.health:DoDelta(health_delta, nil, food.prefab)
+        end
     end
 
     if sanity_delta > 0 then
@@ -112,13 +119,22 @@ AddComponentPostInit("eater", function(self)
     local oldset = self.SetAbsorptionModifiers
     self.SetAbsorptionModifiers = function(self, health, hunger, sanity, ...)
         local inst = self.inst
-        if inst ~= nil and inst.regen2hm_enabled and (health ~= 0 or sanity ~= 0) then
+        if inst ~= nil and inst.regen2hm_enabled then
             inst._regen2hm_modded_health = health
             inst._regen2hm_modded_sanity = sanity
             inst._regen2hm_modded_hunger = hunger
-            return oldset(self, 0, hunger, 0)
+            return oldset(self, UsesOldAge2hm(inst) and health or 0, hunger, 0)
         end
         return oldset(self, health, hunger, sanity, ...)
+    end
+    local Eat = self.Eat
+    self.Eat = function(self, ...)
+        local inst = self.inst
+        if inst.regen2hm_enabled then
+            -- oldager is added after eater on Wanda; check at the actual meal.
+            self.healthabsorption = UsesOldAge2hm(inst) and (inst._regen2hm_modded_health or 1) or 0
+        end
+        return Eat(self, ...)
     end
 end)
 
@@ -133,7 +149,7 @@ AddPlayerPostInit(function(inst)
         inst._regen2hm_modded_sanity = eater.sanityabsorption
         inst._regen2hm_modded_hunger = eater.hungerabsorption
         inst.regen2hm_enabled = true
-        eater:SetAbsorptionModifiers(0, inst._regen2hm_modded_hunger, 0)
+        eater:SetAbsorptionModifiers(inst._regen2hm_modded_health, inst._regen2hm_modded_hunger, inst._regen2hm_modded_sanity)
         inst:ListenForEvent("oneat", OnEat2hm)
     end)
 end)
@@ -187,7 +203,9 @@ end
 AddComponentPostInit("health", function(self)
     local oldDoDelta = self.DoDelta
     self.DoDelta = function(self, amount, overtime, cause, ignore_invincible, afflicter, ignore_absorb, ...)
-        if amount ~= nil and amount > 0 and self.inst ~= nil and self.inst:HasTag("player") and self.inst:HasTag(WOUND_TAG2HM) then
+        local oldager = self.inst ~= nil and self.inst.components.oldager or nil
+        if amount ~= nil and amount > 0 and self.inst ~= nil and self.inst:HasTag("player") and self.inst:HasTag(WOUND_TAG2HM)
+            and not (oldager ~= nil and oldager._taking_time_damage) then
             amount = amount * WOUND_HEAL_MULT2HM
         end
         return oldDoDelta(self, amount, overtime, cause, ignore_invincible, afflicter, ignore_absorb, ...)

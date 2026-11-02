@@ -253,7 +253,12 @@ if TUNING.hardmode2hm then
         end
         if GetModConfigData("eyeofterror") then modimport("epic/eyeofterror.lua") end
         if GetModConfigData("atriumstalker") then modimport("epic/atriumstalker.lua") end
-        if GetModConfigData("epic_armor_5") then modimport("epic/epic_armor.lua") end
+        local epic_armor_mode = GetModConfigData("epic_armor_5")
+        if epic_armor_mode == "dynamic" then
+            modimport("epic/dynamic_armor.lua")
+        elseif epic_armor_mode then
+            modimport("epic/epic_armor.lua")
+        end
 if GetModConfigData("epic_ruin") then modimport("epic/epic_ruin.lua") end
         if GetModConfigData("poor_armor") then modimport("epic/poor_armor.lua") end -- 2025.9.20 melon
         if GetModConfigData("pig_boss") then modimport("epic/pig_boss.lua") end -- 2025.5.3 melon

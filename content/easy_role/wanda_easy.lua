@@ -49,7 +49,7 @@ if GetModConfigData("wanda strengthen") then
     -- if hardmode then TUNING.WANDA_SHADOW_DAMAGE_OLD = 1.5 end -- 2025.8.2 melon:老年削弱至1.5倍
     AddPrefabPostInit("wanda", function(inst)
         if inst.components.oldager then
-            inst.components.oldager.base_rate = 0.02 -- 默认1/40
+            inst.components.oldager.base_rate = GetModConfigData("Wanda Don't Auto Drop Age") and 0 or 0.02 -- 显式停老化优先；默认1/40
         end
         if TUNING.DSTU then inst.skeleton_prefab = "skeleton_player" end -- 旺达死亡有骨架
     end)
