@@ -1,0 +1,14 @@
+-- 薇诺娜削弱，宝石发电机增加犀牛角
+-- AddPrefabPostInit(
+--     "winona",
+--     function(inst)
+--         -- inst:RemoveTag("hungrybuilder")
+--         -- AddDodgeAbility(inst)
+--     end
+-- )
+-- AddRecipePostInit("winona_battery_high", function(inst) table.insert(inst.ingredients, Ingredient("minotaurhorn", 1)) end)
+-- AddRecipePostInit("winona_battery_low", function(inst) table.insert(inst.ingredients, Ingredient("gears", 4)) end)
+-- AddRecipePostInit("winona_catapult", function(inst)
+--     table.insert(inst.ingredients, Ingredient("gears", 4))
+--     table.insert(inst.ingredients, Ingredient("trinket_6", 4))
+-- end)

@@ -1,0 +1,6 @@
+-- AddPrefabPostInit("world", function(inst)
+--     if not inst.ismastersim then return end
+--     if not inst.components.simplechatbot2hm then
+--         inst:AddComponent("simplechatbot2hm")
+--     end
+-- end)

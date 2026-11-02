@@ -1,0 +1,1 @@
+AddReplicableComponent("hoverer2hm")

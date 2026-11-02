@@ -1,0 +1,14 @@
+-- -- 韦斯增强，1.25倍攻击系数
+-- AddPrefabPostInit(
+--     "wes",
+--     function(inst)
+--         AddTauntAbility(inst)
+--         if not TheWorld.ismastersim then
+--             return inst
+--         end
+--         local current_health_percent = inst.components.health:GetPercent()
+--         inst.components.health.maxhealth = inst.components.health.maxhealth + 75
+--         inst.components.health:SetPercent(current_health_percent)
+--         inst.components.combat.damagemultiplier = TUNING.WATHGRITHR_DAMAGE_MULT
+--     end
+-- )

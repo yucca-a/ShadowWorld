@@ -1,0 +1,6 @@
+-- AddPrefabPostInit(
+--     "wilson",
+--     function(inst)
+--         -- AddDodgeAbility(inst)
+--     end
+-- )

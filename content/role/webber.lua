@@ -1,0 +1,17 @@
+-- local function OnMurdered(inst, data)
+    -- local victim = data.victim
+    -- if not data.negligent and -- Do not punish neglecting fish in the inventory.
+    -- inst.components.leader and victim ~= nil and victim:IsValid() and victim:HasTag("spider") and not inst.components.health:IsDead() and inst.components.combat then
+        -- if inst.components.sanity then inst.components.sanity:DoDelta(-25) end
+        -- inst.components.leader:RemoveFollowersByTag("spider")
+        -- inst.components.combat:ShareTarget(inst, 30, function(dude)
+            -- local should_share = not dude.components.health:IsDead()
+            -- if should_share and dude.defensive and not dude.no_targeting then dude.defensive = false end
+            -- return should_share
+        -- end, 10, {"_combat", "spider"})
+    -- end
+-- end
+-- AddPrefabPostInit("webber", function(inst)
+    -- if not TheWorld.ismastersim then return end
+    -- inst:ListenForEvent("murdered", OnMurdered)
+-- end)

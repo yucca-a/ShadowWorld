@@ -1,0 +1,6 @@
+Animstate:SetFloatParams
+可以显示部分动画
+SetScale
+x可以水平翻转，y可以竖直翻转
+SetOrientation
+为1可以竖直翻转且贴地，为2可以水平翻转且贴地

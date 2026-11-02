@@ -1,0 +1,551 @@
+-- -- 俯冲
+-- local function GetPointSpecialActions_DODGE(inst, pos, useitem, right)
+--     if right and GetTime() - inst.last_rightaction2hm_time > inst.rightaction2hm_cooldown then
+--         local rider = inst.replica.rider
+--         if rider == nil or not rider:IsRiding() then
+--             return {ACTIONS.DODGE_WALTER}
+--         end
+--     end
+--     return {}
+-- end
+-- local function OnSetOwner_DODGE(inst)
+--     if inst.components.playeractionpicker ~= nil then
+--         inst.components.playeractionpicker.pointspecialactionsfn = GetPointSpecialActions_DODGE
+--     end
+-- end
+-- function AddDodgeAbility(inst)
+--     inst.rightaction2hm = net_bool(inst.GUID, "player.rightaction2hm", "rightaction2hmdirty")
+--     inst:ListenForEvent(
+--         "rightaction2hmdirty",
+--         function()
+--             inst.last_rightaction2hm_time = GetTime()
+--         end
+--     )
+--     inst:ListenForEvent("setowner", OnSetOwner_DODGE)
+--     inst.rightaction2hm_cooldown = 2
+--     inst.last_rightaction2hm_time = GetTime() - inst.rightaction2hm_cooldown
+-- end
+-- AddAction(
+--     "DODGE_WALTER",
+--     "Dodge",
+--     function(act, data)
+--         act.doer.sg:GoToState("dodge", {pos = act.pos or Vector3(act.target.Transform:GetWorldPosition())})
+--         -- act.doer:PushEvent("dodge", {pos = act.pos or Vector3(act.target.Transform:GetWorldPosition())})
+--         return true
+--     end
+-- )
+-- ACTIONS.DODGE_WALTER.distance = math.huge
+-- ACTIONS.DODGE_WALTER.instant = true
+-- if TUNING.isCh2hm then
+--     STRINGS.ACTIONS.DODGE_WALTER = {GENERIC = "俯冲"}
+-- else
+--     STRINGS.ACTIONS.DODGE_WALTER = {GENERIC = "Dodge"}
+-- end
+-- -- AddStategraphEvent(
+-- --     "wilson",
+-- --     EventHandler(
+-- --         "dodge",
+-- --         function(inst, data)
+-- --             inst.sg:GoToState("dodge", data)
+-- --         end
+-- --     )
+-- -- )
+-- AddStategraphState(
+--     "wilson",
+--     State {
+--         name = "dodge",
+--         tags = {"busy", "evade", "no_stun", "canrotate"},
+--         onenter = function(inst, data)
+--             inst.components.locomotor:Stop()
+--             if data and data.pos then
+--                 local pos = data.pos:GetPosition()
+--                 inst:ForceFacePoint(pos.x, 0, pos.z)
+--             end
+--             inst.sg:SetTimeout(0.25)
+--             -- inst.AnimState:PlayAnimation("slide_pre")
+--             inst.AnimState:PlayAnimation("wortox_portal_jumpin_pre")
+--             inst.AnimState:PushAnimation("wortox_portal_jumpin_lag")
+--             -- inst.AnimState:PushAnimation("slide_loop")
+--             inst.SoundEmitter:PlaySound("dontstarve/characters/wortox/soul/hop_out")
+--             inst.Physics:SetMotorVelOverride(20, 0, 0)
+--             inst.components.locomotor:EnableGroundSpeedMultiplier(false)
+--             inst.was_invincible = inst.components.health.invincible
+--             inst.components.health:SetInvincible(true)
+--             inst.last_rightaction2hm_time = GetTime()
+--             inst.rightaction2hm:set(inst.rightaction2hm:value() == false and true or false)
+--             if inst.components.playercontroller ~= nil then
+--                 inst.components.playercontroller:RemotePausePrediction()
+--             end
+--             inst.sg:SetTimeout(0.25)
+--         end,
+--         ontimeout = function(inst)
+--             -- inst.sg:GoToState("dodge_pst")
+--             inst.sg:GoToState("idle")
+--         end,
+--         onexit = function(inst)
+--             inst.components.locomotor:EnableGroundSpeedMultiplier(true)
+--             inst.Physics:ClearMotorVelOverride()
+--             inst.components.locomotor:Stop()
+--             inst.components.locomotor:SetBufferedAction(nil)
+--             if not inst.was_invincible then
+--                 inst.components.health:SetInvincible(false)
+--             end
+--             inst.was_invincible = nil
+--         end
+--     }
+-- )
+-- -- AddStategraphState(
+-- --     "wilson",
+-- --     State {
+-- --         name = "dodge_pst",
+-- --         tags = {"evade", "no_stun"},
+-- --         onenter = function(inst)
+-- --             -- inst.AnimState:PlayAnimation("slide_pst")
+-- --             -- inst.AnimState:PlayAnimation("wortox_portal_jumpout")
+-- --             -- inst.AnimState:PlayAnimation("wortox_portal_jumpin")
+-- --         end,
+-- --         events = {
+-- --             EventHandler(
+-- --                 "animover",
+-- --                 function(inst)
+-- --                     inst.sg:GoToState("idle")
+-- --                 end
+-- --             )
+-- --         }
+-- --     }
+-- -- )
+-- AddStategraphState(
+--     "wilson_client",
+--     State {
+--         name = "dodge",
+--         tags = {"busy", "evade", "no_stun", "canrotate"},
+--         onenter = function(inst, data)
+--             inst.entity:SetIsPredictingMovement(false)
+--             if data and data.pos then
+--                 local pos = data.pos:GetPosition()
+--                 inst:ForceFacePoint(pos.x, 0, pos.z)
+--             end
+--             inst.components.locomotor:Stop()
+--             -- inst.AnimState:PlayAnimation("slide_pre")
+--             -- inst.AnimState:PushAnimation("slide_loop", false)
+--             inst.AnimState:PlayAnimation("wortox_portal_jumpin_pre")
+--             inst.AnimState:PushAnimation("wortox_portal_jumpin_lag", false)
+--             inst.components.locomotor:EnableGroundSpeedMultiplier(false)
+--             inst.last_rightaction2hm_time = GetTime()
+--             inst.rightaction2hm:set(inst.rightaction2hm:value() == false and true or false)
+--             inst:PerformPreviewBufferedAction()
+--             inst.sg:SetTimeout(2)
+--         end,
+--         onupdate = function(inst)
+--             if inst:HasTag("working") then
+--                 if inst.entity:FlattenMovementPrediction() then
+--                     inst.sg:GoToState("idle", "noanim")
+--                 end
+--             elseif inst.bufferedaction == nil then
+--                 inst.sg:GoToState("idle")
+--             end
+--         end,
+--         ontimeout = function(inst)
+--             inst:ClearBufferedAction()
+--             inst.sg:GoToState("idle")
+--         end,
+--         onexit = function(inst)
+--             inst.entity:SetIsPredictingMovement(true)
+--         end
+--     }
+-- )
+-- -- 倒走
+-- local function OnWarpBack(inst, data)
+--     if inst.components.positionalwarp ~= nil then
+--         if data ~= nil and data.reset_warp then
+--             inst.components.positionalwarp:Reset()
+--         else
+--             inst.components.positionalwarp:GetHistoryPosition(true)
+--         end
+--     end
+-- end
+-- local function GetPointSpecialActions_WARPBACK(inst, pos, useitem, right)
+--     if right and GetTime() - inst.last_rightaction2hm_time > inst.rightaction2hm_cooldown then
+--         local rider = inst.replica.rider
+--         if rider == nil or not rider:IsRiding() then
+--             return {ACTIONS.WARPBACK_WANDA}
+--         end
+--     end
+--     return {}
+-- end
+-- local function OnSetOwner_WARPBACK(inst)
+--     if inst.components.playeractionpicker ~= nil then
+--         inst.components.playeractionpicker.pointspecialactionsfn = GetPointSpecialActions_WARPBACK
+--     end
+-- end
+-- function AddWrapAbility(inst)
+--     inst.rightaction2hm = net_bool(inst.GUID, "player.rightaction2hm", "rightaction2hmdirty")
+--     inst:ListenForEvent(
+--         "rightaction2hmdirty",
+--         function()
+--             inst.last_rightaction2hm_time = GetTime()
+--         end
+--     )
+--     inst:ListenForEvent("setowner", OnSetOwner_WARPBACK)
+--     inst.rightaction2hm_cooldown = 2
+--     inst.last_rightaction2hm_time = GetTime() - inst.rightaction2hm_cooldown
+--     if not TheWorld.ismastersim then
+--         return inst
+--     end
+--     if not inst.components.positionalwarp then
+--         inst:AddComponent("positionalwarp")
+--         inst:DoTaskInTime(
+--             0,
+--             function()
+--                 inst.components.positionalwarp:SetMarker("pocketwatch_warp_marker")
+--             end
+--         )
+--         inst.components.positionalwarp:SetWarpBackDist(TUNING.WANDA_WARP_DIST_OLD)
+--         inst:ListenForEvent("onwarpback", OnWarpBack)
+--     end
+--     local oldEnableMarker = inst.components.positionalwarp.EnableMarker
+--     inst.components.positionalwarp.EnableMarker = function(self, enable)
+--         oldEnableMarker(self, true)
+--     end
+--     inst.components.positionalwarp:EnableMarker(true)
+-- end
+-- AddAction(
+--     "WARPBACK_WANDA",
+--     "Wrapback",
+--     function(act, data)
+--         act.doer.last_rightaction2hm_time = GetTime()
+--         act.doer.rightaction2hm:set(act.doer.rightaction2hm:value() == false and true or false)
+--         if TheNet:GetIsClient() then
+--             act.doer.sg:GoToState("pocketwatch_warpback_pre")
+--         else
+--             act.doer.sg:GoToState("warpback_pre")
+--         end
+--         return true
+--     end
+-- )
+-- ACTIONS.WARPBACK_WANDA.instant = true
+-- if TUNING.isCh2hm then
+--     STRINGS.ACTIONS.WARPBACK_WANDA = {GENERIC = "倒走"}
+-- else
+--     STRINGS.ACTIONS.WARPBACK_WANDA = {GENERIC = "Wrapback"}
+-- end
+-- AddStategraphState(
+--     "wilson",
+--     State {
+--         name = "warpback_pre",
+--         tags = {"busy"},
+--         onenter = function(inst)
+--             inst.components.locomotor:Stop()
+--             inst.AnimState:PlayAnimation("pocketwatch_warp_pre")
+--             local buffaction = inst:GetBufferedAction()
+--             if buffaction ~= nil then
+--                 inst.AnimState:OverrideSymbol("watchprop", "pocketwatch_warp", "watchprop")
+--                 inst.sg.statemem.castfxcolour = nil
+--             end
+--         end,
+--         timeline = {
+--             TimeEvent(
+--                 1 * FRAMES,
+--                 function(inst)
+--                     inst.SoundEmitter:PlaySound("wanda2/characters/wanda/watch/warp")
+--                 end
+--             )
+--         },
+--         events = {
+--             EventHandler(
+--                 "animover",
+--                 function(inst)
+--                     if inst.AnimState:AnimDone() then
+--                         local tx, ty, tz = inst.components.positionalwarp:GetHistoryPosition(false)
+--                         if tx ~= nil then
+--                             inst.sg.statemem.warpback = {dest_x = tx, dest_y = ty, dest_z = tz}
+--                             inst.sg:GoToState("pocketwatch_warpback", inst.sg.statemem) -- 'warpback' is set by the action function
+--                         else
+--                             inst.sg:GoToState("idle")
+--                             inst:DoTaskInTime(
+--                                 15 * FRAMES,
+--                                 function(inst)
+--                                     -- if the player starts moving right away then we can skip this
+--                                     if inst.sg == nil or inst.sg:HasStateTag("idle") then
+--                                         inst.components.talker:Say(
+--                                             STRINGS.CHARACTERS.WANDA.ACTIONFAIL.CAST_POCKETWATCH.WARP_NO_POINTS_LEFT
+--                                         )
+--                                     end
+--                                 end
+--                             )
+--                         end
+--                     end
+--                 end
+--             )
+--         }
+--     }
+-- )
+-- -- 恐惧和嘲讽
+-- local function GetPointSpecialActions_TAUNT(inst, pos, useitem, right)
+--     if right and GetTime() - inst.last_rightaction2hm_time > inst.rightaction2hm_cooldown then
+--         local rider = inst.replica.rider
+--         if rider == nil or not rider:IsRiding() then
+--             return {ACTIONS.TAUNT_WIGFRID}
+--         end
+--     end
+--     return {}
+-- end
+-- local function OnSetOwner_TAUNT(inst)
+--     if inst.components.playeractionpicker ~= nil then
+--         inst.components.playeractionpicker.pointspecialactionsfn = GetPointSpecialActions_TAUNT
+--     end
+-- end
+-- local function GetPointSpecialActions_PANIC(inst, pos, useitem, right)
+--     if right and GetTime() - inst.last_rightaction2hm_time > inst.rightaction2hm_cooldown then
+--         local rider = inst.replica.rider
+--         if rider == nil or not rider:IsRiding() then
+--             return {ACTIONS.PANIC_WIGFRID}
+--         end
+--     end
+--     return {}
+-- end
+-- local function OnSetOwner_PANIC(inst)
+--     if inst.components.playeractionpicker ~= nil then
+--         inst.components.playeractionpicker.pointspecialactionsfn = GetPointSpecialActions_PANIC
+--     end
+-- end
+-- function AddTauntAbility(inst)
+--     inst.AnimState:AddOverrideBuild("wathgrithr_sing")
+--     inst.rightaction2hm = net_bool(inst.GUID, "player.rightaction2hm", "rightaction2hmdirty")
+--     inst:ListenForEvent(
+--         "rightaction2hmdirty",
+--         function()
+--             inst.last_rightaction2hm_time = GetTime()
+--         end
+--     )
+--     inst:ListenForEvent("setowner", OnSetOwner_TAUNT)
+--     inst.rightaction2hm_cooldown = 10
+--     inst.last_rightaction2hm_time = GetTime() - inst.rightaction2hm_cooldown
+-- end
+-- function AddPanicAbility(inst)
+--     inst.AnimState:AddOverrideBuild("wathgrithr_sing")
+--     inst.rightaction2hm = net_bool(inst.GUID, "player.rightaction2hm", "rightaction2hmdirty")
+--     inst:ListenForEvent(
+--         "rightaction2hmdirty",
+--         function()
+--             inst.last_rightaction2hm_time = GetTime()
+--         end
+--     )
+--     inst:ListenForEvent("setowner", OnSetOwner_PANIC)
+--     inst.rightaction2hm_cooldown = 10
+--     inst.last_rightaction2hm_time = GetTime() - inst.rightaction2hm_cooldown
+-- end
+-- AddAction(
+--     "TAUNT_WIGFRID",
+--     "Taunt",
+--     function(act, data)
+--         act.doer.last_rightaction2hm_time = GetTime()
+--         act.doer.rightaction2hm:set(act.doer.rightaction2hm:value() == false and true or false)
+--         if TheNet:GetIsClient() then
+--             act.doer.sg:GoToState("sing_pre")
+--         else
+--             act.doer.sg:GoToState("taunt_pre")
+--         end
+--         return true
+--     end
+-- )
+-- AddAction(
+--     "PANIC_WIGFRID",
+--     "Panic",
+--     function(act, data)
+--         act.doer.last_rightaction2hm_time = GetTime()
+--         act.doer.rightaction2hm:set(act.doer.rightaction2hm:value() == false and true or false)
+--         if TheNet:GetIsClient() then
+--             act.doer.sg:GoToState("sing_pre")
+--         else
+--             act.doer.sg:GoToState("panic_pre")
+--         end
+--         return true
+--     end
+-- )
+-- ACTIONS.TAUNT_WIGFRID.instant = true
+-- ACTIONS.PANIC_WIGFRID.instant = true
+-- if TUNING.isCh2hm then
+--     STRINGS.ACTIONS.TAUNT_WIGFRID = {GENERIC = "嘲讽"}
+--     STRINGS.ACTIONS.PANIC_WIGFRID = {GENERIC = "恐惧"}
+-- else
+--     STRINGS.ACTIONS.TAUNT_WIGFRID = {GENERIC = "Taunt"}
+--     STRINGS.ACTIONS.PANIC_WIGFRID = {GENERIC = "Panic"}
+-- end
+-- local function AddEnemyDebuffFx(fx, target)
+--     target:DoTaskInTime(
+--         math.random() * 0.25,
+--         function()
+--             local x, y, z = target.Transform:GetWorldPosition()
+--             local fx = SpawnPrefab(fx)
+--             if fx then
+--                 fx.Transform:SetPosition(x, y, z)
+--             end
+--             return fx
+--         end
+--     )
+-- end
+-- local function taunt(singer, target)
+--     if not target:HasTag("bird") and target.components.combat then
+--         target.components.combat:SetTarget(singer)
+--         AddEnemyDebuffFx("battlesong_instant_taunt_fx", target)
+--     end
+-- end
+-- local function panic(singer, target)
+--     if target.components.hauntable ~= nil and target.components.hauntable.panicable then
+--         target.components.hauntable:Panic(TUNING.BATTLESONG_PANIC_TIME)
+--         AddEnemyDebuffFx("battlesong_instant_panic_fx", target)
+--     end
+-- end
+-- local function HasFriendlyLeader(target, singer, PVP_enabled)
+--     local target_leader = (target.components.follower ~= nil) and target.components.follower.leader or nil
+--     if target_leader and target_leader.components.inventoryitem then
+--         target_leader = target_leader.components.inventoryitem:GetGrandOwner()
+--         -- Don't attack followers if their follow object has no owner, unless its pvp, then there are no rules!
+--         if target_leader == nil then
+--             return not PVP_enabled
+--         end
+--     end
+--     return (target_leader ~= nil and (target_leader == singer or (not PVP_enabled and target_leader:HasTag("player")))) or
+--         (not PVP_enabled and target.components.domesticatable and target.components.domesticatable:IsDomesticated()) or
+--         (not PVP_enabled and target.components.saltlicker and target.components.saltlicker.salted)
+-- end
+-- local function DoRightAction(inst, fn)
+--     if fn ~= nil then
+--         local x, y, z = inst.Transform:GetWorldPosition()
+--         local entities_near_me =
+--             TheSim:FindEntities(x, y, z, 12, INSTANT_TARGET_MUST_HAVE_TAGS, INSTANT_TARGET_CANTHAVE_TAGS)
+--         for _, ent in ipairs(entities_near_me) do
+--             if
+--                 inst.components.combat:CanTarget(ent) and not HasFriendlyLeader(ent, inst, false) and
+--                     (not ent:HasTag("prey") or (ent:HasTag("prey") and ent:HasTag("hostile")))
+--              then
+--                 fn(inst, ent)
+--             end
+--         end
+--     end
+-- end
+-- AddStategraphState(
+--     "wilson",
+--     State {
+--         name = "taunt_pre",
+--         tags = {"busy", "nointerrupt"},
+--         onenter = function(inst)
+--             inst.components.locomotor:Stop()
+--             inst.AnimState:PlayAnimation("sing_pre", false)
+--         end,
+--         events = {
+--             EventHandler(
+--                 "animover",
+--                 function(inst)
+--                     if inst.AnimState:AnimDone() then
+--                         inst.sg:GoToState("taunt")
+--                     end
+--                 end
+--             )
+--         }
+--     }
+-- )
+-- AddStategraphState(
+--     "wilson",
+--     State {
+--         name = "panic_pre",
+--         tags = {"busy", "nointerrupt"},
+--         onenter = function(inst)
+--             inst.components.locomotor:Stop()
+--             inst.AnimState:PlayAnimation("sing_pre", false)
+--         end,
+--         events = {
+--             EventHandler(
+--                 "animover",
+--                 function(inst)
+--                     if inst.AnimState:AnimDone() then
+--                         inst.sg:GoToState("panic")
+--                     end
+--                 end
+--             )
+--         }
+--     }
+-- )
+-- AddStategraphState(
+--     "wilson",
+--     State {
+--         name = "taunt",
+--         tags = {"busy", "nointerrupt"},
+--         onenter = function(inst)
+--             inst.AnimState:PushAnimation("quote", false)
+--         end,
+--         timeline = {
+--             TimeEvent(
+--                 3 * FRAMES,
+--                 function(inst)
+--                     inst.SoundEmitter:PlaySound("dontstarve_DLC001/characters/wathgrithr/quote/taunt")
+--                 end
+--             ),
+--             TimeEvent(
+--                 24 * FRAMES,
+--                 function(inst)
+--                     DoRightAction(inst, taunt)
+--                 end
+--             ),
+--             TimeEvent(
+--                 34 * FRAMES,
+--                 function(inst)
+--                     inst.sg:RemoveStateTag("busy")
+--                     inst.sg:RemoveStateTag("nointerrupt")
+--                 end
+--             )
+--         },
+--         events = {
+--             EventHandler(
+--                 "animover",
+--                 function(inst)
+--                     if inst.AnimState:AnimDone() then
+--                         inst.sg:GoToState("idle")
+--                     end
+--                 end
+--             )
+--         }
+--     }
+-- )
+-- AddStategraphState(
+--     "wilson",
+--     State {
+--         name = "panic",
+--         tags = {"busy", "nointerrupt"},
+--         onenter = function(inst)
+--             inst.AnimState:PushAnimation("quote", false)
+--         end,
+--         timeline = {
+--             TimeEvent(
+--                 3 * FRAMES,
+--                 function(inst)
+--                     inst.SoundEmitter:PlaySound("dontstarve_DLC001/characters/wathgrithr/quote/dropattack")
+--                 end
+--             ),
+--             TimeEvent(
+--                 24 * FRAMES,
+--                 function(inst)
+--                     DoRightAction(inst, panic)
+--                 end
+--             ),
+--             TimeEvent(
+--                 34 * FRAMES,
+--                 function(inst)
+--                     inst.sg:RemoveStateTag("busy")
+--                     inst.sg:RemoveStateTag("nointerrupt")
+--                 end
+--             )
+--         },
+--         events = {
+--             EventHandler(
+--                 "animover",
+--                 function(inst)
+--                     if inst.AnimState:AnimDone() then
+--                         inst.sg:GoToState("idle")
+--                     end
+--                 end
+--             )
+--         }
+--     }
+-- )

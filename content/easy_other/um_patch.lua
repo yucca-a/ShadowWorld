@@ -1,0 +1,638 @@
+-----------------------------------------------------------------------------------
+---------------------[[2025.5.19 melon:永不妥协补丁]]------------------------------
+-- 永不妥协补丁  大部分功能与mod: 永不妥协补丁(uncompromising patch) 一样
+-----------------------------------------------------------------------------------
+-- 引用
+local UpvalueHacker = require("upvaluehacker2hm")
+-----------------------------------------------------------------------------------
+local select_um_patch = GetModConfigData("um_patch")
+select_um_patch = select_um_patch == true and 1 or select_um_patch -- 1部分改动 2全部改动 3测试内容
+--[[修改列表:
+选1/2/3时开启:
+将妥协的瓶中信出宝藏概率34%改回60%
+修复雪球砸亮茄崩溃
+妥协厨师袋也可以移动中打开
+熊皮衣格子
+
+选2/3开启:
+滑行手杖(马头杖)加移速减cd
+输出老鼠分时输出扣分物品名字和分数(根据TUNING.isCh2hm判断中英文输出)
+月龙、时令龙不再传送至玩家附近
+月麟甲加耐久 发光范围更大
+去除wixie幽闭
+修复温蒂灵魂万灵药不能双倍的问题，但概率减半
+熊大脱加载不再动
+
+选3才开启:(测试内容，可能有bug或者兼容性不好)
+开启鼠潮时自动打开老鼠分宣告
+修复开启独行长路时过冷/过热扣血上限时造成的卡顿
+(实际是去掉了一些tag判断，可能导致人物mod小巨鹿无法抵御过冷扣上限等相关问题)。
+--]]
+--------------------------------------------------------------------------------------------------------
+if TUNING.DSTU then
+    -- 部分改动 选1/2开启------------------------------------------------------------------------------
+    if select_um_patch == 1 or select_um_patch == 2 or select_um_patch == 3 then
+        -- 2025.8.22 melon:将妥协的瓶中信出宝藏概率34%改回60%
+        if TUNING.MESSAGEBOTTLE_NOTE_CHANCE > 0.4 then TUNING.MESSAGEBOTTLE_NOTE_CHANCE = 0.4 end
+        -- 2025.5.3 melon:修复雪球砸亮茄崩溃-------------------------------------------
+        AddStategraphPostInit("lunarthrall_plant_vine", function(sg)
+            if sg.events and sg.events.attacked and sg.events.attacked.fn then
+                sg.events.attacked.fn = function(inst)
+                    -- 增加判断是否有health组件
+                    if inst.components.health and not inst.components.health:IsDead() then
+                        if inst.sg:HasStateTag("caninterrupt") or not inst.sg:HasStateTag("busy") then
+                            inst.sg:GoToState("hit")
+                        end
+                    end
+                end
+            end
+        end)
+        -- 2025.5.3 melon:妥协厨师袋也可以移动中打开(但需要防止毒雾影响)-------------------------
+        -- 防毒雾写在lunar_shadow_items.lua了
+        AddPrefabPostInit("spicepack", function(inst)
+            inst:RemoveTag("portablestorage")
+            inst:AddTag("portablestoragePG")
+            if not TheWorld.ismastersim then return end
+            if inst.components.container.droponopen then inst.components.container.droponopen = nil end
+        end)
+        -- 2025.9.19 melon:熊皮衣格子移动到这里------------------------------------------------
+        local containers = require("containers")
+        containers.params.pack2hm2p3 =
+        {
+            widget =
+            {
+                slotpos = {},
+                animbank = "ui_icepack_2x3",
+                animbuild = "ui_icepack_2x3",
+                pos = Vector3(-5, -70, 0),
+            },
+            issidewidget = true,
+            type = "pack",
+        }
+        for y = 0, 2 do
+            table.insert(containers.params.pack2hm2p3.widget.slotpos, Vector3(-162, -75 * y + 75, 0))
+            table.insert(containers.params.pack2hm2p3.widget.slotpos, Vector3(-162 + 75, -75 * y + 75, 0))
+        end
+        local function OnContainerChanged(inst)
+            if inst.components.container:IsEmpty() then inst.components.inventoryitem.cangoincontainer = true
+            else inst.components.inventoryitem.cangoincontainer = false end
+        end
+        local function addpack(inst, widget) -- 加背包
+            if inst == nil or inst:HasTag("pocketbackpack") then return end -- 加过背包了，不重复加
+            inst:AddTag("pocketbackpack")
+            if not TheWorld.ismastersim then
+                inst.OnEntityReplicated = function(inst) inst.replica.container:WidgetSetup(widget) end
+                return inst
+            end
+            if inst.components.container == nil then
+                inst:AddComponent("container")
+                inst.components.container.itemtestfn = function(container, item) return true end -- 可放所有物品
+                inst.components.container:WidgetSetup(widget) -- 设置样式
+            end
+            -- 修改装备和脱下函数
+            if inst.components.equippable ~= nil then
+                local _onequipfn = inst.components.equippable.onequipfn
+                inst.components.equippable.onequipfn = function(inst, owner)
+                    if inst.components.container ~= nil then inst.components.container:Open(owner) end
+                    if _onequipfn ~= nil then _onequipfn(inst, owner) end
+                end
+                local _onunequipfn = inst.components.equippable.onunequipfn
+                inst.components.equippable.onunequipfn = function(inst, owner)
+                    if inst.components.container ~= nil then inst.components.container:Close(owner) end
+                    if _onunequipfn ~= nil then _onunequipfn(inst, owner) end
+                end
+            end
+            -- 检查有无燃料组件 没燃料的时候掉落东西
+            if inst.components.fueled ~= nil then
+                local _depleted = inst.components.fueled.depleted
+                inst.components.fueled:SetDepletedFn(function(inst)
+                    if inst.components.container ~= nil then -- 骨甲不掉
+                        inst.components.container:DropEverything()
+                    end
+                    if _depleted ~= nil then _depleted(inst) end
+                end)
+            end
+            -- 若有背包栏，则设置背包。兼容多格 护甲类不设置 2025.7.25
+            -- if EQUIPSLOTS["BACK"] ~= nil then
+            --     if inst.components.equippable ~= nil then
+            --         inst.components.equippable.equipslot = EQUIPSLOTS.BACK
+            --     end
+            -- end
+            -- 监听事件
+            inst:ListenForEvent("itemget", OnContainerChanged)
+            inst:ListenForEvent("itemlose", OnContainerChanged)
+        end
+        if TUNING.DSTU.POCKET_POWERTRIP then -- 开衣物改动才加
+            AddPrefabPostInit("beargervest", function(inst) addpack(inst, "pack2hm2p3") end) -- 熊皮衣
+        end
+    end
+
+    -- 选2时才开启的--------------------------------------------------------------------------------
+    if select_um_patch == 2 or select_um_patch == 3 then
+        -- 滑行手杖(马头杖)加移速-------------------------------------------------------
+        AddPrefabPostInit("the_real_charles_t_horse", function(inst)
+            if not TheWorld.ismastersim then return end
+            inst.components.equippable.walkspeedmult = 1.25 -- 装备移速
+        end)
+        -- 输出老鼠分时输出扣分物品代码-------------------------------------------------------
+        -- 2025.8.22 melon:根据妥协的更新进行修改
+        local function IsAVersionOfRot(v)
+            local rotprefabs = {"spoiled_food", "rottenegg", "spoiled_fish", "spoiled_fish_small"}
+            return table.contains(rotprefabs, v.prefab)
+        end
+        -- 2025.9.5 melon:排除的算分容器 钓鱼容器、暗影空间
+        local safe_container = {"meatrack", "mushroom_light", "mushroom_light2", "tacklestation2hm", "shadow_container", "offering_pot_upgraded", }
+        local function SnifferFoodScoreCalculations(inst, container, v)
+            local stackmult = v.components.stackable and v.components.stackable:StackSize() or 1
+            local preparedmult = v:HasTag("preparedfood") and 2 or 1
+            local delta = not container and (v:HasTag("fresh") and 5 or v:HasTag("stale") and 10 or (v:HasTag("spoiled") or IsAVersionOfRot(v)) and 15)
+                or (v:HasTag("stale") and 2.5 or (v:HasTag("spoiled") or IsAVersionOfRot(v)) and 5) or 0
+            delta = (delta > 0 and ((delta * preparedmult) * stackmult) or delta) -- 分解1
+            -- 输出物品名字和分数
+            if v and v.prefab and inst.foodscore < 240 and delta > 0 and TUNING.DSTU.ANNOUNCE_BASESTATUS then
+                local owner = v.components.inventoryitem and (v.components.inventoryitem:GetGrandOwner() or v.components.inventoryitem.owner)
+                local owner_is_player = owner and owner:HasTag("player")
+                local owner_name = owner and owner.prefab
+                -- 2025.9.5 melon:排除一些容器
+                if table.contains(safe_container, owner_name) then return end
+                if TUNING.isCh2hm then
+                    TheNet:SystemMessage(string.format("%-20s %-15s %-10s", "食物: " .. (STRINGS.NAMES[string.upper(v.prefab)] or v.prefab), (owner_is_player and " 玩家: " or " 容器: ") .. (owner_name and (STRINGS.NAMES[string.upper(owner_name)] or owner_name) or "无"), " 分数: " .. delta))
+                else
+                    TheNet:SystemMessage(string.format("%-20s %-15s %-10s", "Food: " .. (STRINGS.NAMES[string.upper(v.prefab)] or v.prefab), (owner_is_player and " player: " or " container: ") .. (owner_name and (STRINGS.NAMES[string.upper(owner_name)] or owner_name) or "none"), " score: " .. delta))
+                end
+            end
+            inst.foodscore = inst.foodscore + delta -- 分解2
+            -- 原有代码分解为上面2行 便于输出
+            -- inst.foodscore = inst.foodscore + (delta > 0 and ((delta * preparedmult) * stackmult) or delta)
+        end
+
+        local NO_CONTAINER_PREFABS = {"lureplant", "catcoon"}
+        local function IsProperContainer(owner)
+            return not owner or owner and not (table.contains(NO_CONTAINER_PREFABS, owner.prefab) or owner:HasAnyTag("lamp", "yots_post", "krampus_middleman", "pocketdimension_container", "buried"))
+        end
+        
+        local NOTAGS = {"engineeringbatterypowered", "smallcreature", "_container", "spore", "NORATCHECK", "_combat", "_health", "balloon", "heavy", "projectile", "frozen", "deployedfarmplant", "outofreach"}
+        local function TimeForACheckUp(inst, dev)
+            local x, y, z = inst.Transform:GetWorldPosition()
+        
+            local ents = TheSim:FindEntities(x, 0, z, 40, {"_inventoryitem"}, NOTAGS)
+
+            inst.ratscore = -60
+            inst.itemscore = 0
+            inst.foodscore = 0
+        
+            inst.ratburrows = TheWorld.components.ratcheck ~= nil and TheWorld.components.ratcheck:GetBurrows() or 0
+            inst.burrowbonus = 15 * inst.ratburrows
+        
+            if ents ~= nil then
+                for i, v in ipairs(ents) do
+                    if (inst.ratscore + inst.itemscore + inst.foodscore + inst.burrowbonus) < 240 then
+                        local container = v.components.inventoryitem:IsHeld() and (v.components.inventoryitem:GetGrandOwner() or v.components.inventoryitem.owner)
+                        if IsProperContainer(container) then
+                            if container then
+                                SnifferFoodScoreCalculations(inst, true, v)
+                            else
+                                SnifferFoodScoreCalculations(inst, false, v)
+                                if TUNING.DSTU.ITEMCHECK and v:HasAnyTag("_equippable", "tool", "gem") then
+                                    local delta = 30
+                                    if v.components.stackable then delta = math.min(30, v.components.stackable:StackSize() * 5) end
+                                    -- 输出物品名字和分数
+                                    if v.prefab and inst.itemscore < 240 and TUNING.DSTU.ANNOUNCE_BASESTATUS then
+                                        local owner = v.components.inventoryitem and (v.components.inventoryitem:GetGrandOwner() or v.components.inventoryitem.owner)
+                                        local owner_name = owner and owner.prefab
+                                        if TUNING.isCh2hm then
+                                            TheNet:SystemMessage(string.format("%-20s %-15s %-10s", "物品: " .. (STRINGS.NAMES[string.upper(v.prefab)] or v.prefab), " 容器: " .. (owner_name and (STRINGS.NAMES[string.upper(owner_name)] or owner_name) or "无"), " 分数: " .. delta))
+                                        else
+                                            TheNet:SystemMessage(string.format("%-20s %-15s %-10s", "Item: " .. (STRINGS.NAMES[string.upper(v.prefab)] or v.prefab), " container: " .. (owner_name and (STRINGS.NAMES[string.upper(owner_name)] or owner_name) or "none"), " score: " .. delta))
+                                        end
+                                    end
+                                    inst.itemscore = inst.itemscore + delta -- Oooh, wants wants! We steal!
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        
+            inst.ratscore = inst.ratscore + inst.itemscore + inst.foodscore + inst.burrowbonus
+            if inst.ratscore > 0 and TUNING.DSTU.ANNOUNCE_BASESTATUS then
+                if TUNING.isCh2hm then
+                    TheNet:SystemMessage("以上来自为爽而虐-配置:永不妥协补丁")
+                else
+                    TheNet:SystemMessage("The above is from Shadow World. Option:um_patch")
+                end
+            end
+            if TUNING.DSTU.ANNOUNCE_BASESTATUS then
+                if TUNING.isCh2hm then
+                    TheNet:SystemMessage("-------------------------")
+                    TheNet:SystemMessage("物品分 = " .. inst.itemscore)
+                    TheNet:SystemMessage("食物分 = " .. inst.foodscore)
+                    TheNet:SystemMessage("鼠巢分 = " .. inst.burrowbonus)
+                    -- TheNet:SystemMessage("老鼠分 = " .. inst.ratscore)
+                else
+                    TheNet:SystemMessage("-------------------------")
+                    TheNet:SystemMessage("Itemscore = " .. inst.itemscore)
+                    TheNet:SystemMessage("Foodscore = " .. inst.foodscore)
+                    TheNet:SystemMessage("Burrowbonus = " .. inst.burrowbonus)
+                    TheNet:SystemMessage("Ratscore = " .. inst.ratscore)
+                end
+            end
+            if inst.ratscore > 240 then inst.ratscore = 240 end
+            if TUNING.DSTU.ANNOUNCE_BASESTATUS then
+                if TUNING.isCh2hm then
+                    TheNet:SystemMessage("老鼠分 = " .. inst.ratscore)
+                    TheNet:SystemMessage("鼠潮倒计时 = " .. (TheWorld.components.ratcheck:GetRatTimer() ~= nil and TheWorld.components.ratcheck:GetRatTimer() or "... not available? timer is 0 second") .. "s")
+                    TheNet:SystemMessage("-------------------------")
+                else
+                    TheNet:SystemMessage("True Ratscore = " .. inst.ratscore)
+                    TheNet:SystemMessage("Timer = " .. (TheWorld.components.ratcheck:GetRatTimer() ~= nil and TheWorld.components.ratcheck:GetRatTimer() or "... not available? timer is 0 second") .. "s")
+                    TheNet:SystemMessage("-------------------------")
+                end
+            end
+        
+            if not dev then
+                TheWorld:PushEvent("reducerattimer", { value = inst.ratscore })
+        
+                inst.ratwarning = inst.ratscore / 48
+
+                if inst.ratscore >= 60 then
+                    if math.random() > 0.85 then
+                        if inst.ratwarning > 5 then inst.ratwarning = 5 end
+        
+                        for c = 1, (inst.ratwarning) do
+                            inst:DoTaskInTime((c / 5), function(inst)
+                                local warning = SpawnPrefab("uncompromising_ratwarning")
+                                warning.Transform:SetPosition(inst.Transform:GetWorldPosition())
+                            end)
+                        end
+        
+                        local players = TheSim:FindEntities(x, y, z, 40, {"player"}, {"playerghost"})
+                        for a, b in ipairs(players) do
+                            if math.random() > 0.5 then
+                                local str = inst.burrowbonus > inst.itemscore and inst.burrowbonus > inst.foodscore and "BURROWS"
+                                    or inst.itemscore > inst.burrowbonus and inst.itemscore > inst.foodscore and "ITEMS"
+                                    or inst.foodscore > inst.burrowbonus and inst.foodscore > inst.itemscore and "FOOD" or nil
+                                if str then
+                                    b:DoTaskInTime(2 + math.random(), function(b) b.components.talker:Say(GetString(b, "ANNOUNCE_RATSNIFFER_"..str, "LEVEL_1")) end)
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        -------------------------------------------
+        AddPrefabPostInit("uncompromising_ratsniffer",function(inst)
+            if not TheWorld.ismastersim then return end
+            local _TimeForACheckUp = nil -- 记录原来的函数
+            local count_fn = 0 -- 记录个数  保证只有一个目标函数时才修改
+            for i, func in ipairs(inst.event_listeners["rat_sniffer"][inst]) do -- 找函数
+                if UpvalueHacker.GetUpvalue(func, "SnifferFoodScoreCalculations") then
+                    _TimeForACheckUp = func -- 调用SnifferFoodScoreCalculations的即为所找监听函数
+                    count_fn = count_fn + 1
+                end
+            end
+            if _TimeForACheckUp ~= nil and count_fn == 1 then
+                inst:RemoveEventCallback("rat_sniffer", _TimeForACheckUp)
+                inst:ListenForEvent("rat_sniffer", TimeForACheckUp)
+                inst.TimeForACheckUp2hm = TimeForACheckUp -- 保存 方便后续修改
+                -- 妥协汉化改了写法，判断路径对才改，所以不需要DoTaskInTime(1了
+            end
+        end)
+        -- 2025.9.19 melon:鱼人头盔、鱼人工具、魔法帽不算老鼠分(魔法帽使用时会算分)
+        local no_rat_prefabs = {
+            "tophat", "mermarmorhat", "mermarmorupgradedhat", "merm_tool", "merm_tool_upgraded",
+            -- doll body/hat  2025.10.21
+            "costume_doll_body", "costume_blacksmith_body", "costume_mirror_body", "costume_queen_body",
+            "costume_king_body", "costume_tree_body", "costume_fool_body", 
+            "mask_dollhat", "mask_dollbrokenhat", "mask_dollrepairedhat", "mask_blacksmithhat", 
+            "mask_mirrorhat", "mask_queenhat", "mask_kinghat", "mask_treehat", "mask_foolhat", 
+        }
+        for _,prefab in ipairs(no_rat_prefabs) do
+            AddPrefabPostInit(prefab,function(inst) inst:AddTag("NORATCHECK") end)
+        end
+        -- 月龙、时令龙不再传送至玩家附近-------------------------------------------------------
+        local function LeaveWorld(inst) inst:Remove() end
+        local function OnEntitySleep(inst)
+            local PlayerPosition = inst:GetNearestPlayer()
+            if inst.shouldGoAway then
+                LeaveWorld(inst)
+            else
+                -- do nothing
+            end
+        end
+        AddPrefabPostInit("moonmaw_dragonfly",function(inst)
+            if not TheWorld.ismastersim then return end
+            -- 2025.8.17 melon:第2天月龙也不跟过来。但会导致非夏天脱加载不消失，要第2天才消失。
+            -- "seasontick" 这个监听事件妥协放到TheWorld.event_listeners里了
+            if TheWorld.event_listeners["seasontick"] then
+                for i, func in ipairs(TheWorld.event_listeners["seasontick"][inst]) do -- 找函数
+                    if UpvalueHacker.GetUpvalue(func, "OnSeasonChange") then -- seasontick里找OnSeasonChange
+                        local fn, i, prv = UpvalueHacker.GetUpvalue(func, "OnSeasonChange")
+                        if UpvalueHacker.GetUpvalue(fn, "OnEntitySleep") then -- OnSeasonChange里找OnEntitySleep
+                            UpvalueHacker.SetUpvalue(fn, OnEntitySleep, "OnEntitySleep")
+                        end
+                    end
+                end
+            end
+            -- "entitysleep"
+            local _OnEntitySleep = nil -- 记录原来的函数
+            local count_fn = 0 -- 记录个数  保证只有一个目标函数时才修改
+            for i, func in ipairs(inst.event_listeners["entitysleep"][inst]) do -- 找函数
+                if UpvalueHacker.GetUpvalue(func, "LeaveWorld") then
+                    -- TheNet:SystemMessage(debug.getinfo(func, "S").source or "nil")
+                    _OnEntitySleep = func -- 调用LeaveWorld的即为所找监听函数
+                    count_fn = count_fn + 1
+                end
+            end
+            if _OnEntitySleep ~= nil and count_fn == 1 then
+                inst:RemoveEventCallback("entitysleep", _OnEntitySleep)
+                inst:ListenForEvent("entitysleep", OnEntitySleep)
+                inst.OnEntitySleep2hm = OnEntitySleep -- 保存 方便后续修改
+            end
+        end)
+        AddPrefabPostInit("mock_dragonfly",function(inst)
+            if not TheWorld.ismastersim then return end
+            -- 2025.8.17 melon:第2天时令龙也不跟过来。但会导致非夏天脱加载不消失，要第2天才消失。
+            -- "seasontick" 这个监听事件妥协放到TheWorld.event_listeners里了
+            if TheWorld.event_listeners["seasontick"] then
+                for i, func in ipairs(TheWorld.event_listeners["seasontick"][inst]) do -- 找函数
+                    if UpvalueHacker.GetUpvalue(func, "OnSeasonChange") then -- seasontick里找OnSeasonChange
+                        local fn, i, prv = UpvalueHacker.GetUpvalue(func, "OnSeasonChange")
+                        if UpvalueHacker.GetUpvalue(fn, "OnEntitySleep") then -- OnSeasonChange里找OnEntitySleep
+                            UpvalueHacker.SetUpvalue(fn, OnEntitySleep, "OnEntitySleep")
+                        end
+                    end
+                end
+            end
+            -- "entitysleep"
+            local _OnEntitySleep = nil -- 记录原来的函数
+            local count_fn = 0 -- 记录个数  保证只有一个目标函数时才修改
+            for i, func in ipairs(inst.event_listeners["entitysleep"][inst]) do -- 找函数
+                if UpvalueHacker.GetUpvalue(func, "LeaveWorld") then
+                    _OnEntitySleep = func -- 调用LeaveWorld的即为所找监听函数
+                    count_fn = count_fn + 1
+                end
+            end
+            if _OnEntitySleep ~= nil and count_fn == 1 then
+                inst:RemoveEventCallback("entitysleep", _OnEntitySleep)
+                inst:ListenForEvent("entitysleep", OnEntitySleep)
+                inst.OnEntitySleep2hm = OnEntitySleep -- 保存 方便后续修改
+            end
+        end)
+        -- 月麟甲加耐久 发光范围更大-----------------------------------------------
+        AddPrefabPostInit("armor_glassmail",function(inst)
+            if not TheWorld.ismastersim then return end
+            if inst.components.armor then
+                inst.components.armor.maxcondition = inst.components.armor.maxcondition + 555
+                inst.components.armor.condition = inst.components.armor.condition + 555
+            end
+        end)
+        AddPrefabPostInit("armor_glassmail_shards",function(inst)
+            inst.Light:SetRadius(2.3) -- 原本2
+        end)
+        -- 2025.8.28 melon:去除wixie幽闭-----------------------------------------------
+        AddPrefabPostInit("wixie", function(inst)
+            if not TheWorld.ismastersim or not TheNet:IsDedicated() then -- 不是写在服务端
+                inst:DoTaskInTime(1,function(inst) -- 0.1防止不起效?
+                    if inst.wixietask then inst.wixietask:Cancel() end
+                end)
+            end
+        end)
+        -- 2025.8.31 melon:修复温蒂灵魂万灵药不能双倍的问题，但概率减半---------------------
+        local function elixir_numtogive(recipe, doer)
+            local total = 1
+            if doer.components.skilltreeupdater and doer.components.skilltreeupdater:IsActivated("wendy_potion_yield") then
+                if math.random() < 0.2 then total = total+1 end -- 原本0.4概率
+                if math.random() < 0.05 then total = total+1 end -- 原本0.1概率
+                if total > 1 then doer:PushEvent("craftedextraelixir",total) end
+            end
+            return total	
+        end
+        AddRecipe2(
+            "ghostlyelixir_fastregen",
+            { Ingredient(GLOBAL.CHARACTER_INGREDIENT.HEALTH, 50), Ingredient("ghostflower", 3) }, -- 简单版:50生命+3哀悼(困难版由role/wendy.lua覆盖)
+            TECH.NONE,
+            { builder_tag = "elixirbrewer", override_numtogive_fn = elixir_numtogive, no_deconstruction=true},
+            { "CHARACTER" }
+        )
+        -- 熊大脱加载不乱跑-------------------------------------------------------
+        -- 会让熊大容易脱仇恨
+        AddPrefabPostInit("bearger", function(inst)
+            if not TheWorld.ismastersim then return end
+            inst.entity:SetCanSleep(true) -- 熊大脱加载不再动
+        end)
+        -- 2025.10.7 melon:犀牛心移动到犀牛脚下
+        local function DeactivateShield(inst)
+            inst.Physics:ClearCollisionMask()
+            inst.Physics:Stop()
+            inst.Physics:CollidesWith(COLLISION.WORLD)
+            if inst:HasTag("forcefield") then
+                inst:RemoveTag("forcefield")
+                if inst._fx ~= nil then
+                    inst._fx:kill_fx()
+                    inst._fx = nil
+                end
+                if inst._unshieldtask ~= nil then
+                    inst._unshieldtask:Cancel()
+                end
+            end
+        end
+
+        local function ActivateShield(inst)
+            if inst.components.health and not inst.components.health:IsDead() then
+                inst:AddTag("forcefield")
+                if inst._fx ~= nil then
+                    inst._fx:kill_fx()
+                end
+                inst._fx = SpawnPrefab("forcefieldfx")
+                inst._fx.entity:SetParent(inst.entity)
+                inst._fx.Transform:SetPosition(0, -0.2, 0)
+                inst._fx.Transform:SetScale(1,1,1)
+                inst._fx.AnimState:SetMultColour(0, 0, 0, 1)
+
+                if inst._unshieldtask ~= nil then
+                    inst._unshieldtask:Cancel()
+                end
+                inst._unshieldtask = inst:DoTaskInTime(20, DeactivateShield) --If somehow AG can't reach this, we'll give a pity timer of 20 seconds.
+            end
+            if TheSim:FindFirstEntityWithTag("minotaur") and not inst.minotaur then --Updating it this way till we get a fix
+                local minotaur = TheSim:FindFirstEntityWithTag("minotaur")
+                if minotaur and minotaur:HasTag("swc2hm") and minotaur.swp2hm and minotaur.swp2hm:IsValid() then
+                    minotaur = minotaur.swp2hm
+                end
+                inst.minotaur = minotaur
+                minotaur:OrganUpdate(minotaur)
+            elseif inst.minotaur then
+                if inst.minotaur:HasTag("swc2hm") and inst.minotaur.swp2hm and inst.minotaur.swp2hm:IsValid() then
+                    inst.minotaur = inst.minotaur.swp2hm
+                end
+                inst.minotaur:OrganUpdate(inst.minotaur)
+            end
+        end
+
+        AddPrefabPostInit("minotaur_organ", function(inst)
+            if not TheWorld.ismastersim then return end
+            local src = "../mods/workshop-2039181790/scripts/prefabs/minotaur_organ.lua"
+            local periodtask = nil
+            local count_task = 0
+            if inst.pendingtasks then
+                -- TheNet:SystemMessage(tostring(GetTableSize(inst.pendingtasks)))
+                for a,b in pairs(inst.pendingtasks) do
+                    -- TheNet:SystemMessage(debug.getinfo(a.fn, "S").source or "nil")
+                    -- 路径对、间隔对
+                    if debug.getinfo(a.fn, "S").source == src and a.period == 1 then
+                        periodtask = a
+                        count_task = count_task + 1
+                    end
+                end
+            end
+            if periodtask ~= nil and count_task == 1 then
+                periodtask:Cancel() -- 取消原有task
+                inst.task2hm = inst:DoTaskInTime(1, ActivateShield)
+            end
+            inst:DoTaskInTime(60, function(inst) -- 60秒
+                local m = inst.minotaur or TheSim:FindFirstEntityWithTag("minotaur")
+                if m and m:HasTag("swc2hm") and m.swp2hm and m.swp2hm:IsValid() then
+                    m = m.swp2hm
+                end
+                if m and m:IsValid() and inst:IsValid() and inst.Transform then inst.Transform:SetPosition(m.Transform:GetWorldPosition()) end
+            end)
+        end)
+        -- 2025.10.13 melon:去掉犀牛影子的"minotaur"tag,这样心就不会保护影子了
+        -- AddPrefabPostInit("minotaur", function(inst)
+        --     inst:AddTag("minotaur2hm") -- 用于防止犀牛与影子互相索敌
+        --     if not TheWorld.ismastersim then return end
+        --     inst:DoTaskInTime(0.3, function(inst)
+        --         if inst:HasTag("swc2hm") then inst:RemoveTag("minotaur") end
+        --     end)
+        -- end)
+        -- 2025.10.15 melon:让暗影触手和荆棘不打犀牛
+        -- AddPrefabPostInit("bigshadowtentacle", function(inst)
+        --     if not TheWorld.ismastersim then return end
+        --     if inst.components.combat then inst.components.combat:AddNoAggroTag("minotaur") end
+        -- end)
+    end
+
+    -- 选3开启---------------------------------------------------------------------------------------
+    if select_um_patch == 3 then
+        -- 2025.5.3 melon:开启鼠潮时自动打开老鼠分宣告------------------------------------
+        AddPrefabPostInit("charcoal", function(inst)
+            if not TheWorld.ismastersim then return end
+            if TUNING.DSTU.ANNOUNCE_BASESTATUS then return end
+            inst.open_task2hm = inst:DoTaskInTime(0, function(inst)
+                if inst:HasTag("NORATCHECK") then -- 木炭有NORATCHECK标签说明开启了鼠潮
+                    TUNING.DSTU.ANNOUNCE_BASESTATUS = true -- 开启老鼠分宣告
+                end
+            end)
+        end)
+        -- 2025.10.24 melon:修复开启独行长路时过冷/过热扣血上限时造成的卡顿。----------------------
+        -- (实际是去掉了一些tag判断，可能导致人物mod小巨鹿无法抵御过冷扣上限等相关问题)。
+        local function CheckAndApplyTempDamage(inst, data)
+            if data ~= nil and data.amount ~= nil and data.amount < 0 and data.cause ~= nil and inst.components.health ~= nil then
+                if TUNING.DSTU.MAXTEMPDAMAGE and (data.cause == "cold" or data.cause == "hot") then
+                    local worldtemperature = inst.um_world_temperature ~= nil and math.abs(inst.um_world_temperature - 35) / 20 or 0
+                    local temp_buffer = 7 - worldtemperature
+        
+                    if inst.um_temp_healthdelta ~= nil and inst.um_temp_healthdelta >= temp_buffer then
+                        -- melon:remove tag check
+                        -- if (data.cause == "hot" and not inst:HasTag("heatresistant")) or (data.cause == "cold" and not inst:HasTag("coldresistant") and not inst:HasTag("weerclops")) then
+                            inst.components.health:DeltaPenalty(math.abs(data.amount / inst.components.health.maxhealth))
+                        -- end
+                    else
+                        if inst.um_temp_healthdelta == nil then
+                            inst.um_temp_healthdelta = 0
+                        end
+        
+                        inst.um_temp_healthdelta = inst.um_temp_healthdelta + FRAMES
+                    end
+        
+                    if inst.um_temp_healthdelta_task ~= nil then
+                        inst.um_temp_healthdelta_task:Cancel()
+                    end
+        
+                    inst.um_temp_healthdelta_task = inst:DoPeriodicTask(1, function()
+                        inst.um_temp_healthdelta = inst.um_temp_healthdelta - 1
+        
+                        if inst.um_temp_healthdelta <= 0 then
+                            inst.um_temp_healthdelta = 0
+        
+                            if inst.um_temp_healthdelta_task ~= nil then
+                                inst.um_temp_healthdelta_task:Cancel()
+                            end
+        
+                            inst.um_temp_healthdelta_task = nil
+                        end
+                    end)
+                elseif TUNING.DSTU.MAXHUNGERDAMAGE and data.cause == "hunger" then
+                    if inst.um_temp_hungerdelta ~= nil and inst.um_temp_hungerdelta >= 1 then
+                        inst.components.health:DeltaPenalty(math.abs(data.amount / inst.components.health.maxhealth))
+                    else
+                        if inst.um_temp_hungerdelta == nil then
+                            inst.um_temp_hungerdelta = 0
+                        else
+                            inst.um_temp_hungerdelta = inst.um_temp_hungerdelta + .5
+                        end
+                    end
+        
+                    if inst.um_temp_hungerdelta_task ~= nil then
+                        inst.um_temp_hungerdelta_task:Cancel()
+                        inst.um_temp_hungerdelta_task = nil
+                    end
+        
+                    inst.um_temp_hungerdelta_task = inst:DoTaskInTime(1.5, function()
+                        inst.um_temp_hungerdelta = inst.um_temp_hungerdelta - 1
+        
+                        if inst.um_temp_hungerdelta <= 0 then
+                            inst.um_temp_hungerdelta = nil
+        
+                            if inst.um_temp_hungerdelta_task ~= nil then
+                                inst.um_temp_hungerdelta_task:Cancel()
+                            end
+        
+                            inst.um_temp_hungerdelta_task = nil
+                        end
+                    end)
+                    --inst.components.health:DeltaPenalty(0.01)
+                end
+            end
+        end
+        if TUNING.DSTU.MAXTEMPDAMAGE or TUNING.DSTU.MAXHUNGERDAMAGE then
+            AddPlayerPostInit(function(inst)
+                if not TheWorld.ismastersim then return end
+                local src = "../mods/workshop-2039181790/postinit/player.lua"
+                local count = 0
+                local _CheckAndApplyTempDamage = nil
+                for i, func in ipairs(inst.event_listeners["healthdelta"][inst]) do
+                    -- print2hm(debug.getinfo(func, "S").source) -- test
+                    if debug.getinfo(func, "S").source == src then
+                        _CheckAndApplyTempDamage = func
+                        count = count + 1
+                    end
+                end
+                if _CheckAndApplyTempDamage ~= nil and count == 1 then
+                    inst:RemoveEventCallback("healthdelta", _CheckAndApplyTempDamage)
+                    inst:ListenForEvent("healthdelta", CheckAndApplyTempDamage)
+                    inst.CheckAndApplyTempDamage2hm = CheckAndApplyTempDamage -- 记录
+                end
+            end)
+        end
+    end
+end -- if TUNING.DSTU
+----------------------------------------------------------------------------------------------------
+-- 临时修复bug
+if TUNING.DSTU and select_um_patch ~= 1 then
+
+end
+----------------------------------------------------------------------------------------------------
+-- 测试用  金斧子攻击生成老鼠分检查点
+-- if TUNING.DSTU then
+--     AddPrefabPostInit("goldenaxe", function(inst) -- 金斧子
+--         if not TheWorld.ismastersim then return end
+--         local _onattack = inst.components.weapon.onattack
+--         inst.components.weapon.onattack = function(inst, ...) -- 生成1个对象方便测试
+--             SpawnPrefab("uncompromising_ratsniffer").Transform:SetPosition(inst.Transform:GetWorldPosition())
+--             if _onattack ~= nil then _onattack(inst, ...) end
+--         end
+--     end)
+-- end
