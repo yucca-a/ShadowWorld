@@ -59,8 +59,54 @@ local function viewModConfiguration(self, mod, mod_config_data)
     TheFrontEnd:PushScreen(screen)
 end
 
+local function getWorldModsListing()
+    -- Offline sessions may have no server listing. Keep the button independent of it,
+    -- and resolve the current session's mods/configuration when the list is opened.
+    local server_listing = TheNet:GetServerListing()
+    local listing = {mods_description = {}, _processed_mods_config_data = {}}
+    if type(server_listing) == "table" then
+        if type(server_listing.mods_description) == "table" then
+            for key, mod in pairs(server_listing.mods_description) do listing.mods_description[key] = mod end
+        end
+        local config_data = server_listing._processed_mods_config_data
+        if type(config_data) ~= "table" and type(server_listing.mods_config_data) == "string" then
+            local success, data = RunInSandboxSafe(server_listing.mods_config_data)
+            if success and type(data) == "table" then config_data = data end
+        end
+        if type(config_data) == "table" then
+            -- Do not write fallback values into the network listing's shared cache.
+            for name, data in pairs(config_data) do listing._processed_mods_config_data[name] = data end
+        end
+    end
+    if next(listing.mods_description) == nil then
+        for _, mod in ipairs(ModManager.mods) do
+            local modinfo = KnownModIndex:GetModInfo(mod.modname) or {}
+            if not modinfo.client_only_mod then
+                table.insert(listing.mods_description, {mod_name = mod.modname, modinfo_name = modinfo.name or mod.modname})
+            end
+        end
+    end
+    for _, mod in pairs(listing.mods_description) do
+        if type(listing._processed_mods_config_data[mod.mod_name]) ~= "table" then
+            local config_data = {}
+            if ModManager:GetMod(mod.mod_name) then
+                local modinfo = KnownModIndex:GetModInfo(mod.mod_name) or {}
+                for _, option in ipairs(modinfo.configuration_options or {}) do
+                    if option.name ~= nil then
+                        -- Use the same runtime lookup as modmain: world overrides,
+                        -- server values, false and zero must not become local defaults.
+                        config_data[option.name] = GLOBAL.GetModConfigData(option.name, mod.mod_name)
+                    end
+                end
+            end
+            listing._processed_mods_config_data[mod.mod_name] = config_data
+        end
+    end
+    return listing
+end
+
 local function viewWorldModsConfigData(self)
-    if not self.server_listing then return end
+    self.server_listing = getWorldModsListing()
     local mods_list = {}
     for _, mod in pairs(self.server_listing.mods_description) do
         local onclick = nil
@@ -176,13 +222,7 @@ local defaulttex = "reskin_tool_bouquet.tex"
 local defaultatlas
 local numChoices
 local function addModsInfobtn2hm(self, name)
-    self.server_listing = TheNet:GetServerListing()
-    if not self.server_listing or not TUNING.TEMP2HM then return end
-    -- 󰀂
-    if self.server_listing._processed_mods_config_data == nil and self.server_listing.mods_config_data ~= nil then
-        local success, temp_config_data = RunInSandboxSafe(self.server_listing.mods_config_data)
-        if success and temp_config_data ~= nil then self.server_listing._processed_mods_config_data = temp_config_data end
-    end
+    if not TUNING.TEMP2HM then return end
     if not defaultatlas then defaultatlas = GetInventoryItemAtlas(defaulttex, true) end
     -- 加载记忆图标
     local currtex = TUNING.TEMP2HM.btn2hmicon and TUNING.TEMP2HM.btn2hmicon[name] and TUNING.TEMP2HM.btn2hmicon[name].tex or defaulttex

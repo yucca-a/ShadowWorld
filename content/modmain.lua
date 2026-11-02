@@ -74,7 +74,7 @@ end
 
 -- 模组相关-----------------------------------------------------------------------------
 if ((TUNING.TEMP2HM.openmods == nil and GetModConfigData("Show Mod Icon In Game")) or TUNING.TEMP2HM.openmods) and
-    (TheNet:GetIsClient() or TUNING.DSA_ONE_PLAYER_MODE or (TheNet:GetServerIsClientHosted() and TheNet:GetIsServerAdmin())) then modimport("easy_other/ui.lua") end
+    not TheNet:IsDedicated() then modimport("easy_other/ui.lua") end
 if GetModConfigData("Disable Outdate Tip") then modimport("easy_other/mod.lua") end
 -- 快捷存取和额外容器按钮
 if GetModConfigData("Container Sort") or GetModConfigData("Items collect") then modimport("easy_other/containersort.lua") end

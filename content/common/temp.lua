@@ -19,7 +19,7 @@ TUNING.TEMP2HM = LoadData(TEMP_FILE) or {}
 TUNING.DATA2HM = TUNING.DATA2HM or {}
 function SaveTemp2hm() TheSim:SetPersistentString(TEMP_FILE, DataDumper(TUNING.TEMP2HM)) end
 -- 强行开关功能
-local isclient = TheNet:GetIsClient() or TUNING.DSA_ONE_PLAYER_MODE or (TheNet:GetServerIsClientHosted() and TheNet:GetIsServerAdmin())
+local isclient = not TheNet:IsDedicated()
 local fastbtn = GetModConfigData("Container Sort") or GetModConfigData("Items collect")
 if isclient then
     local configloadtip = TUNING.isCh2hm and "[为爽而虐客户端专属配置已保存,下次进入游戏时生效]" or
