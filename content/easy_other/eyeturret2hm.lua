@@ -2,6 +2,7 @@
 local DAMAGE, HEALTH, REGEN = 200, 2000, 50
 local CHAIN_RANGE, CHAIN_JUMPS, CHAIN_MULT = 6, 4, 0.8
 local ARMOR_TIME, ARMOR_CD = 10, 60
+local deployingUpgrades
 local CHAIN_CANT_TAGS = {"INLIMBO", "notarget", "invisible", "flight", "FX", "DECOR", "player", "playerghost",
                          "eyeturret", "structure", "wall", "engineering", "companion", "player_aligned", "domesticated"}
 
@@ -153,8 +154,15 @@ local function EquipElectricWeapon(inst)
 end
 
 local function UpgradeTest(inst, item)
-    return Alive(inst) and ((item.prefab == "dragon_scales" and not inst.eyeturretfire2hm) or
+    return inst:IsValid() and (inst.prefab == "eyeturret_item" or Alive(inst)) and
+                          ((item.prefab == "dragon_scales" and not inst.eyeturretfire2hm) or
                            (item.prefab == "shroom_skin" and not inst.eyeturretspore2hm))
+end
+
+local function ApplyUpgrades(inst, upgrades)
+    inst.eyeturretfire2hm = upgrades.fire or nil
+    inst.eyeturretspore2hm = upgrades.spore or nil
+    if inst.eyeturretspore2hm then inst:AddTag("eyeturretsporeproof2hm") end
 end
 
 local function OnUpgrade(inst, giver, item)
@@ -170,6 +178,66 @@ local function OnUpgrade(inst, giver, item)
             "Turret upgraded: spore immunity."))
     end
 end
+
+-- Inventory tiles request right-click USEITEM actions. Native alltrader GIVE is
+-- normally left-click only, so expose the same native action for these materials.
+AddComponentAction("USEITEM", "inventoryitem", function(inst, doer, target, actions, right)
+    if right and target ~= nil and target.prefab == "eyeturret_item" and target:HasTag("alltrader") and
+        (inst.prefab == "dragon_scales" or inst.prefab == "shroom_skin") then
+        for _, action in ipairs(actions) do if action == ACTIONS.GIVE then return end end
+        table.insert(actions, ACTIONS.GIVE)
+    end
+end)
+
+local function InstallUpgradeReceiver(inst)
+    inst:AddTag("trader")
+    inst:AddTag("alltrader") -- dragon_scales/shroom_skin have no native tradable component
+    if not TheWorld.ismastersim then return end
+    if inst.components.trader == nil then inst:AddComponent("trader") end
+    local trader = inst.components.trader
+    trader.acceptnontradable = true
+    local test, onaccept = trader.test, trader.onaccept
+    trader:SetAcceptTest(function(i, item, giver, count)
+        if item.prefab == "dragon_scales" or item.prefab == "shroom_skin" then
+            return (count == nil or count == 1) and UpgradeTest(i, item)
+        end
+        return test ~= nil and test(i, item, giver, count) or false
+    end)
+    trader:SetOnAccept(function(i, giver, item, ...)
+        if item.prefab == "dragon_scales" or item.prefab == "shroom_skin" then
+            OnUpgrade(i, giver, item)
+        elseif onaccept ~= nil then
+            onaccept(i, giver, item, ...)
+        end
+    end)
+    SetOnSave(inst, function(i, data)
+        data.eyeturretupgrades2hm = {fire = i.eyeturretfire2hm or nil, spore = i.eyeturretspore2hm or nil}
+        if i.prefab == "eyeturret" then data.hasplaced2hm = true end
+    end)
+    SetOnLoad(inst, function(i, data)
+        local upgrades = data ~= nil and data.eyeturretupgrades2hm or nil
+        if upgrades ~= nil then ApplyUpgrades(i, upgrades) end
+    end)
+end
+
+AddPrefabPostInit("eyeturret_item", function(inst)
+    InstallUpgradeReceiver(inst)
+    if not TheWorld.ismastersim then return end
+    local ondeploy = inst.components.deployable.ondeploy
+    inst.components.deployable.ondeploy = function(item, ...)
+        -- The native deploy callback spawns the turret synchronously and then
+        -- removes the item. Transfer during its prefab init, before removal;
+        -- keep the native placement, skins, physics and other mod callbacks.
+        local previous = deployingUpgrades
+        deployingUpgrades = {fire = item.eyeturretfire2hm, spore = item.eyeturretspore2hm}
+        local function finish(ok, ...)
+            deployingUpgrades = previous
+            if not ok then error((...), 0) end
+            return ...
+        end
+        return finish(pcall(ondeploy, item, ...))
+    end
+end)
 
 local function ArmorFX(inst)
     if inst.poor_armor2hm_fx == nil or not inst.poor_armor2hm_fx:IsValid() then
@@ -203,9 +271,12 @@ local function OnHealthDelta(inst, data)
 end
 
 AddPrefabPostInit("eyeturret", function(inst)
-    inst:AddTag("trader")
-    inst:AddTag("alltrader") -- dragon_scales/shroom_skin have no native tradable component
+    InstallUpgradeReceiver(inst)
     if not TheWorld.ismastersim then return end
+    if deployingUpgrades ~= nil and not deployingUpgrades.used then
+        ApplyUpgrades(inst, deployingUpgrades)
+        deployingUpgrades.used = true
+    end
     inst.eyeturretenhanced2hm = true
     inst.components.health:SetMaxHealth(HEALTH)
     inst.components.health:StartRegen(REGEN, 1)
@@ -215,35 +286,6 @@ AddPrefabPostInit("eyeturret", function(inst)
     inst:ListenForEvent("healthdelta", OnHealthDelta)
     -- Retain the original two shields. New placements now begin at full health.
     inst.hasplaced2hm = true
-    if inst.components.trader == nil then inst:AddComponent("trader") end
-    local trader = inst.components.trader
-    trader.acceptnontradable = true
-    local test, onaccept = trader.test, trader.onaccept
-    trader:SetAcceptTest(function(i, item, giver, count)
-        if item.prefab == "dragon_scales" or item.prefab == "shroom_skin" then
-            return (count == nil or count == 1) and UpgradeTest(i, item)
-        end
-        return test ~= nil and test(i, item, giver, count) or false
-    end)
-    trader:SetOnAccept(function(i, giver, item, ...)
-        if item.prefab == "dragon_scales" or item.prefab == "shroom_skin" then
-            OnUpgrade(i, giver, item)
-        elseif onaccept ~= nil then
-            onaccept(i, giver, item, ...)
-        end
-    end)
-    SetOnSave(inst, function(i, data)
-        data.eyeturretupgrades2hm = {fire = i.eyeturretfire2hm or nil, spore = i.eyeturretspore2hm or nil}
-        data.hasplaced2hm = true
-    end)
-    SetOnLoad(inst, function(i, data)
-        local upgrades = data ~= nil and data.eyeturretupgrades2hm or nil
-        if upgrades ~= nil then
-            i.eyeturretfire2hm = upgrades.fire or nil
-            i.eyeturretspore2hm = upgrades.spore or nil
-            if i.eyeturretspore2hm then i:AddTag("eyeturretsporeproof2hm") end
-        end
-    end)
 end)
 
 -- Restrict immunity to these clouds; the tower still takes other aura damage.

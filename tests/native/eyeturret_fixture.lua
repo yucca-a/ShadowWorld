@@ -39,6 +39,9 @@ AddPrefabPostInit("world", function(world)
                 near(turret.components.combat.defaultdamage, TUNING.EYETURRET_DAMAGE, "disabled native damage")
                 near(horns("eyeturret_item"), 0, "disabled recipe")
                 check(not turret.eyeturretenhanced2hm and not turret.components.trader, "disabled tower has no upgrade logic")
+                local kit = SpawnPrefab("eyeturret_item")
+                check(kit.components.trader == nil and not kit:HasTag("alltrader"), "disabled portable item has no upgrades")
+                kit:Remove()
                 print("[EYETURRET_NATIVE] DISABLED_PASS")
                 c_shutdown(false)
                 return
@@ -73,6 +76,80 @@ AddPrefabPostInit("world", function(world)
 
             local giver = SpawnPrefab("pigman")
             stop(giver)
+            -- Exercise the actual player inventory-tile action and its stategraph,
+            -- not just Trader:AcceptGift on an item lying on the ground.
+            local player = SpawnPrefab("wilson")
+            player.entity:SetCanSleep(false)
+            -- SpawnPrefab has no network owner; attach the native action picker
+            -- that the game normally installs when a real client owns a player.
+            if player.components.playeractionpicker == nil then player:AddComponent("playeractionpicker") end
+            player.components.inventory:Open()
+            player.Transform:SetPosition(x, 0, z + 6)
+            local kit = SpawnPrefab("eyeturret_item")
+            player.components.inventory:GiveItem(kit, 1)
+            local scale = SpawnPrefab("dragon_scales")
+            scale.components.stackable:SetStackSize(2)
+            player.components.inventory:GiveActiveItem(scale)
+            local function inventorygive(material)
+                check(player.components.inventory:CanAccessItem(kit), "test player's inventory is open and accessible")
+                check(not player.sg:HasStateTag("busy"), "test player ready for inventory action")
+                local actions = player.components.playeractionpicker:GetUseItemActions(kit, material, true)
+                check(actions[1] ~= nil and actions[1].action == ACTIONS.GIVE, "inventory tile selects native GIVE " .. material.prefab)
+                check(actions[1]:IsValid(), "native inventory buffered action valid")
+                player.components.inventory:UseItemFromInvTile(kit, ACTIONS.GIVE.code)
+                world:DoTaskInTime(.8, function()
+                    local action = player:GetBufferedAction()
+                    print("[EYETURRET_NATIVE] INVENTORY_ACTION_STATE", player.sg.currentstate.name,
+                        player:IsAsleep(), action and action.action.id or "none", kit.eyeturretfire2hm or false)
+                end)
+            end
+            inventorygive(scale)
+            world:DoTaskInTime(1.5, function()
+                check(kit.eyeturretfire2hm, "player inventory action upgraded fire")
+                near(scale.components.stackable:StackSize(), 1, "inventory action consumes exactly one scale")
+                check(not kit.components.trader:AcceptGift(player, scale) and scale:IsValid(), "inventory duplicate keeps remaining material")
+                player.components.inventory:RemoveItem(scale, true)
+                scale:Remove()
+                local skin = SpawnPrefab("shroom_skin")
+                player.components.inventory:GiveActiveItem(skin)
+                inventorygive(skin)
+                world:DoTaskInTime(1.5, function()
+                    check(kit.eyeturretspore2hm and not skin:IsValid(), "player inventory action upgraded spore immunity")
+                    local record = kit:GetSaveRecord()
+                    kit:Remove()
+                    kit = SpawnSaveRecord(record)
+                    player.components.inventory:GiveItem(kit, 1)
+                    check(kit.eyeturretfire2hm and kit.eyeturretspore2hm, "portable save restores both upgrades")
+                    local deploypoint
+                    for radius = 8, 20, 4 do
+                        for step = 1, 16 do
+                            local angle = step * PI / 8
+                            local point = Vector3(x + math.cos(angle) * radius, 0, z + math.sin(angle) * radius)
+                            if kit.components.deployable:CanDeploy(point, nil, player) then deploypoint = point; break end
+                        end
+                        if deploypoint ~= nil then break end
+                    end
+                    check(deploypoint ~= nil, "valid native turret placement")
+                    check(kit.components.deployable:Deploy(deploypoint, player), "native Deploy succeeds")
+                    check(not kit:IsValid(), "native Deploy consumes upgraded item")
+                    local placed
+                    for _, entity in ipairs(TheSim:FindEntities(deploypoint.x, 0, deploypoint.z, 1, {"eyeturret"}, {"INLIMBO"})) do
+                        if entity.prefab == "eyeturret" then placed = entity; break end
+                    end
+                    check(placed ~= nil and placed.eyeturretfire2hm and placed.eyeturretspore2hm and
+                        placed:HasTag("eyeturretsporeproof2hm"), "native deployment inherits both upgrades")
+                    stop(placed)
+                    local placedrecord = placed:GetSaveRecord()
+                    placed:Remove()
+                    placed = SpawnSaveRecord(placedrecord)
+                    stop(placed)
+                    check(placed.eyeturretfire2hm and placed.eyeturretspore2hm, "deployed inherited upgrades survive save/load")
+                    placed:Remove()
+                    player:Remove()
+                    world.eyeturretitemtestpassed2hm = true
+                    print("[EYETURRET_NATIVE] INVENTORY_GIVE_SAVE_DEPLOY_PASS")
+                end)
+            end)
             local function give(name)
                 local item = SpawnPrefab(name)
                 local actions = {}
@@ -161,6 +238,7 @@ AddPrefabPostInit("world", function(world)
                         near(wall.components.health.currenthealth, wallhealth, "adjacent wall takes no fire damage")
                         near(chest.components.propagator.currentheat, 0, "adjacent chest received no heat")
                         print("[EYETURRET_NATIVE] SAFE_FIRE_PASS")
+                        check(world.eyeturretitemtestpassed2hm, "portable inventory test completed")
                         print("[EYETURRET_NATIVE] ALL_PASS")
                         c_shutdown(false)
                     end)

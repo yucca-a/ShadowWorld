@@ -92,6 +92,6 @@ python tests/build_fast_exchange_probes.py exit --run-id local_exit
 
 ## 眼球炮塔加强
 
-运行 `python tests/run_eyeturret_tests.py`，可在第一个参数提供游戏 `scripts.zip` 路径。85项检查读取原生 `Projectile:Hit`、`Combat:DoAttack`、`Health:SetVal/DoFireDamage`、材料给予动作收集和给予流程；覆盖默认开关、原版与Wathom配方、五段电击链伤、潮湿／电免疫／独立防御、友军与建筑筛选、升级消耗和保存、孢子云定向免疫、隔离火焰、植物电击点燃拦截、冰盾秒杀及原有双护盾。
+运行 `python tests/run_eyeturret_tests.py`，可在第一个参数提供游戏 `scripts.zip` 路径。115项检查读取原生 `Projectile:Hit`、`Combat:DoAttack`、`Health:SetVal/DoFireDamage`、材料给予动作收集和给予流程；覆盖默认开关、原版与Wathom配方、五段电击链伤、潮湿／电免疫／独立防御、友军与建筑筛选、升级消耗和保存、孢子云定向免疫、隔离火焰、植物电击点燃拦截、冰盾秒杀及原有双护盾。物品状态专项包含背包右键给予、升级保存、原生部署继承、混合升级、重复材料及失败上下文清理。
 
-`tests/native/eyeturret_fixture.lua` 仅用于名为 `ShadowWorld isolated eyeturret test` 的一次性原生服务器。夹具创建、攻击和删除测试实体，验证原生伤害、升级保存、两类孢子云、冰川座狼冰盾和建筑防火，完成后关闭；关闭加强选项时检查原生属性和配方。需要本机永不妥协测试版，不能导入真实存档。该测试没有操作实际客户端的给予按钮或检查画面表现。
+`tests/native/eyeturret_fixture.lua` 仅用于名为 `ShadowWorld isolated eyeturret test` 的一次性原生服务器。夹具创建、攻击和删除测试实体，验证原生伤害、升级保存、两类孢子云、冰川座狼冰盾和建筑防火，完成后关闭；关闭加强选项时检查原生属性、配方和物品状态。补充原生玩家 `Inventory:UseItemFromInvTile` 及状态机执行给予、材料堆叠消耗、物品保存、`Deployable:Deploy` 继承及放置后的保存。需要本机永不妥协测试版，不能导入真实存档。该测试没有操作实际客户端窗口或检查画面表现。

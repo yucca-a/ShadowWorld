@@ -5,9 +5,10 @@ GLOBAL=_G; TUNING={isCh2hm=true,ELECTRIC_DAMAGE_MULT=1.5,ELECTRIC_WET_DAMAGE_MUL
 TheWorld={ismastersim=true,PushEvent=function()end};TheNet={GetIsServer=function()return true end}
 GetTime=function()return clock end
 CanEntityBecomeCorpse=function()return false end;NotifyPlayerProgress=function()end;ProfileStatsAdd=function()end
-local hooks,recipes,entities,tasks,componenthooks={},{},{},{},{}
+local hooks,recipes,entities,tasks,componenthooks,componentactions={},{},{},{},{},{}
 AddPrefabPostInit=function(n,f)hooks[n]=hooks[n]or{};table.insert(hooks[n],f)end
 AddComponentPostInit=function(n,f)componenthooks[n]=f end
+AddComponentAction=function(t,n,f)check(t=='USEITEM'and n=='inventoryitem','narrow native inventory action hook');componentactions[#componentactions+1]=f end
 AddRecipePostInit=function(n,f)recipes[n]=f end
 Ingredient=function(n,a)return {type=n,amount=a}end
 SetOnSave=function(i,f)i.OnSave=f end;SetOnLoad=function(i,f)i.OnLoad=f end
@@ -209,6 +210,47 @@ check(restored.eyeturretfire2hm and restored.eyeturretspore2hm and restored:HasT
 local legacy=tower(200);legacy:OnLoad({hasplaced2hm=true});check(not legacy.eyeturretfire2hm and not legacy.eyeturretspore2hm,'legacy save loads without upgrades')
 local incomplete=tower(300);check(not incomplete.components.trader:AcceptGift(nil,gift('dragon_scales'),20),'bulk gift does not waste a stack')
 
+local function portable(ondeploy)
+    local i=entity('eyeturret_item')
+    i.components.inventoryitem={owner=actiongiver}
+    i.components.deployable={ondeploy=ondeploy or function(item,pt,deployer)
+        local placed=tower(pt.x);item:Remove();return placed,nil,'native-return'
+    end}
+    return apply('eyeturret_item',i)
+end
+local item=portable();item.replica={}
+check(item.components.health==nil and item.components.trader~=nil,'portable item gets upgrades without combat components')
+for _,name in ipairs({'dragon_scales','shroom_skin'})do
+    local material=gift(name);material.replica={}
+    local actions={};collectgive(material,actiongiver,item,actions,true)
+    for _,fn in ipairs(componentactions)do fn(material,actiongiver,item,actions,true)end
+    check(actions[1]==ACTIONS.GIVE,'inventory tile right-click offers GIVE for '..name)
+    for _,fn in ipairs(componentactions)do fn(material,actiongiver,item,actions,true)end
+    check(#actions==1,'inventory GIVE action is not duplicated')
+    check(item.components.trader:AcceptGift(actiongiver,material)and material.removed,'inventory item accepts and consumes '..name)
+    local extra=gift(name);check(not item.components.trader:AcceptGift(actiongiver,extra)and not extra.removed,'portable duplicate rejected '..name)
+end
+local stored={};item:OnSave(stored);item:Remove()
+item=portable();item:OnLoad(stored)
+check(item.eyeturretfire2hm and item.eyeturretspore2hm,'portable upgrades survive save/load')
+local placed,middle,tail=item.components.deployable.ondeploy(item,{x=700},actiongiver)
+check(item.removed and placed.eyeturretfire2hm and placed.eyeturretspore2hm,'native deployment inherits both item upgrades')
+check(middle==nil and tail=='native-return','deployment wrapper preserves all native return values')
+local fresh=tower(800);check(not fresh.eyeturretfire2hm and not fresh.eyeturretspore2hm,'later unrelated turrets inherit no deployment flags')
+local partial=portable();partial.components.trader:AcceptGift(nil,gift('dragon_scales'))
+local converted=partial.components.deployable.ondeploy(partial,{x=900},actiongiver)
+check(converted.eyeturretfire2hm and not converted.eyeturretspore2hm,'single material upgrade transfers independently')
+check(converted.components.trader:AcceptGift(nil,gift('shroom_skin'))and converted.eyeturretspore2hm,'remaining upgrade can be given after placing')
+local failed=portable(function()error('injected deployment failure')end)
+failed.components.trader:AcceptGift(nil,gift('dragon_scales'))
+check(not pcall(failed.components.deployable.ondeploy,failed,{x=1000},actiongiver),'deployment failure remains visible')
+check(failed:IsValid()and failed.eyeturretfire2hm,'failed deployment keeps upgraded item')
+local afterfailed=tower(1100);check(not afterfailed.eyeturretfire2hm,'failed deployment cannot leak upgrade context')
+local wrong={};for _,fn in ipairs(componentactions)do fn(gift('rocks'),actiongiver,item,wrong,true)end
+check(#wrong==0,'new inventory action excludes other materials')
+wrong={};for _,fn in ipairs(componentactions)do fn(gift('dragon_scales'),actiongiver,t,wrong,true)end
+check(#wrong==0,'new inventory action does not change placed-turret actions')
+
 local cloudtags={'noauradamage'}
 for _,name in ipairs({'sporecloud','sporecloud_toad'})do
     local cloud=entity(name);cloud.components.aura={auraexcludetags=cloudtags};apply(name,cloud)
@@ -272,5 +314,7 @@ TheWorld.ismastersim=false
 local preview=entity('eyeturret');apply('eyeturret',preview)
 check(preview:HasTag('trader')and not preview.eyeturretenhanced2hm,'client receives action tag without server components')
 check(preview:HasTag('alltrader'),'client offers material GIVE action')
+local itempreview=entity('eyeturret_item');apply('eyeturret_item',itempreview)
+check(itempreview:HasTag('alltrader')and itempreview.components.trader==nil,'client portable preview only adds native action tags')
 local pc=entity('eye_charge');apply('eye_charge',pc);check(pc.components.projectile==nil,'client projectile is safe')
 print('EYETURRET_CHECKS_PASS '..checks)
