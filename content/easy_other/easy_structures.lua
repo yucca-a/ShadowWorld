@@ -2,6 +2,23 @@
 --------------------------------------------------------------------------------
 local hardmode = TUNING.hardmode2hm
 
+-- Recipe-preview mods can temporarily set a client's ismastersim flag. Their
+-- temporary entities must never mutate or broadcast the server's station index.
+local function UnregisterReskinPrototyper2hm(inst)
+    if not TheNet:GetIsServer() or not TheWorld or not TheWorld.ismastersim or
+        not TheShard or inst.persist == false or inst.persists == false then return end
+    local persistent = TheWorld.components and TheWorld.components.persistent2hm
+    local data = persistent and persistent.data
+    local stations = data and data.reskinprototyper2hm
+    if type(stations) ~= "table" then return end
+    local worldid, id = tostring(TheShard:GetShardId()), tostring(inst.GUID)
+    local entries = stations[worldid]
+    if type(entries) ~= "table" or entries[id] == nil then return end
+    entries[id] = nil
+    SendModRPCToShard(GetShardModRPC("MOD_HARDMODE", "ms_prototyper_update"),
+        nil, nil, DataDumper(stations, nil, true))
+end
+
 -- 泰拉瑞亚宝箱彩蛋
 -- 2025.3.16 melon:加个开关,，单纯加了个if
 if GetModConfigData("Terra Easter egg") then
@@ -316,36 +333,14 @@ if GetModConfigData("Science Machine Refine Materials") then
         end
         inst:ListenForEvent("onburnt", function()
             inst:RemoveComponent("trader") 
-            if not TheShard or inst.persist == false then return end
-            local worldid = tostring(TheShard:GetShardId())
-            local data = TheWorld.components.persistent2hm and TheWorld.components.persistent2hm.data
-            local GUID = tostring(inst.GUID)
-            data.reskinprototyper2hm = data.reskinprototyper2hm or {}
-            if data.reskinprototyper2hm[worldid] then
-                local keys = table.getkeys(data.reskinprototyper2hm[worldid])
-                if table.contains(keys, GUID) then
-                    data.reskinprototyper2hm[worldid][GUID] = nil
-                    SendModRPCToShard(GetShardModRPC("MOD_HARDMODE", "ms_prototyper_update"), nil, nil, DataDumper(data.reskinprototyper2hm, nil, true))
-                end
-            end
+            UnregisterReskinPrototyper2hm(inst)
         end)
         if not inst.components.persistent2hm then inst:AddComponent("persistent2hm") end
         inst.components.persistent2hm.data.id = inst.GUID
         SetOnSave2hm(inst, OnSave)
         SetOnLoad2hm(inst, OnLoad)
         inst:ListenForEvent("onremove", function()
-            if not TheShard or inst.persist == false then return end
-            local worldid = tostring(TheShard:GetShardId())
-            local data = TheWorld.components.persistent2hm and TheWorld.components.persistent2hm.data
-            local GUID = tostring(inst.GUID)
-            data.reskinprototyper2hm = data.reskinprototyper2hm or {}
-            if data.reskinprototyper2hm[worldid] then
-                local keys = table.getkeys(data.reskinprototyper2hm[worldid])
-                if table.contains(keys, GUID) then
-                    data.reskinprototyper2hm[worldid][GUID] = nil
-                    SendModRPCToShard(GetShardModRPC("MOD_HARDMODE", "ms_prototyper_update"), nil, nil, DataDumper(data.reskinprototyper2hm, nil, true))
-                end
-            end
+            UnregisterReskinPrototyper2hm(inst)
         end)
     end)
 end
@@ -602,36 +597,14 @@ if GetModConfigData("Alchemy Engine Redeem Gold Nugget") then
         end
         inst:ListenForEvent("onburnt", function()
             inst:RemoveComponent("trader")
-            if not TheShard or inst.persist == false then return end
-                local worldid = tostring(TheShard:GetShardId())
-                local data = TheWorld.components.persistent2hm and TheWorld.components.persistent2hm.data
-                local GUID = tostring(inst.GUID)
-                data.reskinprototyper2hm = data.reskinprototyper2hm or {}
-            if data.reskinprototyper2hm[worldid] then
-                local keys = table.getkeys(data.reskinprototyper2hm[worldid])
-                if table.contains(keys, GUID) then
-                    data.reskinprototyper2hm[worldid][GUID] = nil
-                    SendModRPCToShard(GetShardModRPC("MOD_HARDMODE", "ms_prototyper_update"), nil, nil, DataDumper(data.reskinprototyper2hm, nil, true))
-                end
-            end
+            UnregisterReskinPrototyper2hm(inst)
         end)
         if not inst.components.persistent2hm then inst:AddComponent("persistent2hm") end
         inst.components.persistent2hm.data.id = inst.GUID
         SetOnSave2hm(inst, OnSave)
         SetOnLoad2hm(inst, OnLoad)
         inst:ListenForEvent("onremove", function()
-            if not TheShard or inst.persist == false then return end
-                local worldid = tostring(TheShard:GetShardId())
-                local data = TheWorld.components.persistent2hm and TheWorld.components.persistent2hm.data
-                local GUID = tostring(inst.GUID)
-                data.reskinprototyper2hm = data.reskinprototyper2hm or {}
-            if data.reskinprototyper2hm[worldid] then
-                local keys = table.getkeys(data.reskinprototyper2hm[worldid])
-                if table.contains(keys, GUID) then
-                    data.reskinprototyper2hm[worldid][GUID] = nil
-                    SendModRPCToShard(GetShardModRPC("MOD_HARDMODE", "ms_prototyper_update"), nil, nil, DataDumper(data.reskinprototyper2hm, nil, true))
-                end
-            end
+            UnregisterReskinPrototyper2hm(inst)
         end)
     end)
 end
@@ -855,36 +828,14 @@ if GetModConfigData("Shadow Manipulator Break Down Objects") then
         end
         inst:ListenForEvent("onburnt", function() 
             inst:RemoveComponent("trader") 
-            if not TheShard or inst.persist == false then return end
-                local worldid = tostring(TheShard:GetShardId())
-                local data = TheWorld.components.persistent2hm and TheWorld.components.persistent2hm.data
-                local GUID = tostring(inst.GUID)
-                data.reskinprototyper2hm = data.reskinprototyper2hm or {}
-            if data.reskinprototyper2hm[worldid] then
-                local keys = table.getkeys(data.reskinprototyper2hm[worldid])
-                if table.contains(keys, GUID) then
-                    data.reskinprototyper2hm[worldid][GUID] = nil
-                    SendModRPCToShard(GetShardModRPC("MOD_HARDMODE", "ms_prototyper_update"), nil, nil, DataDumper(data.reskinprototyper2hm, nil, true))
-                end
-            end
+            UnregisterReskinPrototyper2hm(inst)
         end)
         if not inst.components.persistent2hm then inst:AddComponent("persistent2hm") end
         inst.components.persistent2hm.data.id = inst.GUID
         SetOnSave2hm(inst, OnSave)
         SetOnLoad2hm(inst, OnLoad)
         inst:ListenForEvent("onremove", function()
-            if not TheShard or inst.persist == false then return end
-                local worldid = tostring(TheShard:GetShardId())
-                local data = TheWorld.components.persistent2hm and TheWorld.components.persistent2hm.data
-                local GUID = tostring(inst.GUID)
-                data.reskinprototyper2hm = data.reskinprototyper2hm or {}
-            if data.reskinprototyper2hm[worldid] then
-                local keys = table.getkeys(data.reskinprototyper2hm[worldid])
-                if table.contains(keys, GUID) then
-                    data.reskinprototyper2hm[worldid][GUID] = nil
-                    SendModRPCToShard(GetShardModRPC("MOD_HARDMODE", "ms_prototyper_update"), nil, nil, DataDumper(data.reskinprototyper2hm, nil, true))
-                end
-            end
+            UnregisterReskinPrototyper2hm(inst)
         end)
     end)
 end
@@ -1078,32 +1029,10 @@ if GetModConfigData("Prestihatitator Redeem shadowmagic Tag") then
         end
         inst:ListenForEvent("onburnt", function() 
             inst:RemoveComponent("trader") 
-            if not TheShard or inst.persist == false then return end
-                local worldid = tostring(TheShard:GetShardId())
-                local data = TheWorld.components.persistent2hm and TheWorld.components.persistent2hm.data
-                local GUID = tostring(inst.GUID)
-                data.reskinprototyper2hm = data.reskinprototyper2hm or {}
-            if data.reskinprototyper2hm[worldid] then
-                local keys = table.getkeys(data.reskinprototyper2hm[worldid])
-                if table.contains(keys, GUID) then
-                    data.reskinprototyper2hm[worldid][GUID] = nil
-                    SendModRPCToShard(GetShardModRPC("MOD_HARDMODE", "ms_prototyper_update"), nil, nil, DataDumper(data.reskinprototyper2hm, nil, true))
-                end
-            end
+            UnregisterReskinPrototyper2hm(inst)
         end)
         inst:ListenForEvent("onremove", function()
-            if not TheShard or inst.persist == false then return end
-                local worldid = tostring(TheShard:GetShardId())
-                local data = TheWorld.components.persistent2hm and TheWorld.components.persistent2hm.data
-                local GUID = tostring(inst.GUID)
-                data.reskinprototyper2hm = data.reskinprototyper2hm or {}
-            if data.reskinprototyper2hm[worldid] then
-                local keys = table.getkeys(data.reskinprototyper2hm[worldid])
-                if table.contains(keys, GUID) then
-                    data.reskinprototyper2hm[worldid][GUID] = nil
-                    SendModRPCToShard(GetShardModRPC("MOD_HARDMODE", "ms_prototyper_update"), nil, nil, DataDumper(data.reskinprototyper2hm, nil, true))
-                end
-            end
+            UnregisterReskinPrototyper2hm(inst)
         end)
     end)
 end

@@ -83,3 +83,9 @@ python tests/build_fast_exchange_probes.py exit --run-id local_exit
 `tests/native/world_exchange_rollback_fixture.lua` 仅用于**完整隔离的玩家存档副本**，服务器名必须为 `ShadowWorld isolated rollback copy`。保留原有模组、选项和分片 ID；在测试模组末尾导入夹具。它先验证安装前回档恢复到旧天数，再覆盖测试箱、交换、共同保存，并依次调用原生 `c_rollback(1)`、`c_rollback(1)`、`c_rollback(2)`、`c_rollback(4)`。每轮验证共同检查点、箱内数量及交换期间零世界保存，全部通过后输出 `ALL_ROLLBACKS_PASS` 并关闭。它会修改副本和箱内物品，不能导入正式存档。固定阶段键不可复用到另一轮测试。
 
 回档控制恢复优化后，协议／适配检查为 **518＋77**，快速协议／检查点为 **126**，回档专项为 **39**，合计 **760**。新增提前通知的来源、目标及重复校验、并行恢复的一致性、写入排空和控制锁释放检查。原生夹具输出 `CONTROLS_READY_MS`，统计加载后控制门控等待；首次冷启动应剔除，后四次对应回档。相同存档副本与模组配置的旧／新版对照结果见[控制恢复优化记录](../development/穿越世界回档控制恢复_优化记录.md)。
+
+## 科技建筑配方预览兼容
+
+运行 `python tests/run_prototyper_preview_tests.py`；可用 `--preview-source` 指定本机“群鸟绘卷”的 `scripts/util/entutil.lua`。测试读取其实际 `ClonePrefab` 方法并执行本模组真实建筑挂钩，40 项断言覆盖客户端预览移除、服务器权限、缺失保存表、正常条目清理、重复事件及临时实体。`--source-ref d340da5` 会在灵子分解器客户端预览移除断言失败，复现本次缺陷。
+
+`tests/native/prototyper_private_space_fixture.lua` 用于独立双层测试世界，名称须为 `ShadowWorld isolated private space test`。它生成科技建筑、模拟玩家与测试物品，验证燃料解锁、帽子升级、私人空间绑定及共同保存回档；会修改测试世界并执行回档，不能导入正式玩家存档。
