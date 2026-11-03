@@ -1,3 +1,36 @@
+-- Independent character switches; shared SG callbacks must test the attacker.
+local walterEnabled = GetModConfigData("walter")
+local wixieEnabled = TUNING.DSTU and GetModConfigData("wixie")
+local function Enabled(owner)
+    if owner ~= nil and owner.components ~= nil and owner.components.inventoryitem ~= nil then
+        owner = owner.components.inventoryitem.owner or owner
+    end
+    if owner ~= nil and owner.prefab == "wixie" then return wixieEnabled end
+    return walterEnabled
+end
+
+-- SpeedUpState2hm rewrites timeline entries. Use an actor-local copy so Walter
+-- and Wixie (or two players with different hunger) never change each other's SG.
+local function PrivateState(inst, state)
+    local current = inst.sg.currentstate
+    if current ~= nil and current.slingshot_source2hm == state then return current end
+    local private = {}
+    for key, value in pairs(state) do private[key] = value end
+    private.slingshot_source2hm = state
+    private.rate2hm, private.entities2hm = nil, nil
+    if state.timeline ~= nil then
+        private.timeline = {}
+        for i, entry in ipairs(state.timeline) do
+            local copy = {}
+            for key, value in pairs(entry) do copy[key] = value end
+            copy.time, copy.time2hm = entry.time2hm or entry.time, nil
+            private.timeline[i] = copy
+        end
+    end
+    inst.sg.currentstate = private
+    return private
+end
+
 if TUNING.DSTU and TUNING.WIXIE_HEALTH then
     -- 烟花弹跳
     local radius = 0.5
@@ -10,7 +43,8 @@ if TUNING.DSTU and TUNING.WIXIE_HEALTH then
         local x, y, z = inst.Transform:GetWorldPosition()
         inst.Transform:SetPosition(x + (inst.xdir2hm and radius or -radius), y, z + (inst.zdir2hm and radius or -radius))
     end
-    local function delayfirecrackers(inst)
+    local function startfirecrackers(inst)
+        if not Enabled(inst.attacker) then return end
         inst.xdir2hm = math.random() < 0.5
         inst.zdir2hm = math.random() < 0.5
         inst.index2hm = 0
@@ -18,10 +52,11 @@ if TUNING.DSTU and TUNING.WIXIE_HEALTH then
     end
     AddPrefabPostInit("firecrackers_slingshot", function(inst)
         if not TheWorld.ismastersim then return end
-        inst:ListenForEvent("onignite", delayfirecrackers)
+        inst:ListenForEvent("onignite", function(i) i:DoTaskInTime(0, startfirecrackers) end)
     end)
     -- 连发漩涡和地震弱化
     local function clearinst(inst)
+        if not Enabled(inst.attacker) then return end
         local x, y, z = inst.Transform:GetWorldPosition()
         local ents = TheSim:FindEntities(x, y, z, 5, {"shadowtalker"})
         for i, v in ipairs(ents) do
@@ -45,18 +80,19 @@ if TUNING.DSTU and TUNING.WIXIE_HEALTH then
                 local onenter = state.onenter
                 state.onenter = function(inst, ...)
                     if onenter then onenter(inst, ...) end
+                    if not Enabled(inst) or inst.sg.currentstate == nil or inst.sg.currentstate.name ~= state.name then return end
                     local realrate = inst.prefab == "wixie" and 1.6 or 1.7
                     if inst.components.hunger then
                         realrate = realrate + 1 - inst.components.hunger:GetPercent()
                     elseif inst.replica.hunger then
                         realrate = realrate + 1 - inst.replica.hunger:GetPercent()
                     end
-                    SpeedUpState2hm(inst, state, 1 / realrate)
+                    SpeedUpState2hm(inst, PrivateState(inst, state), 1 / realrate)
                 end
                 local onexit = state.onexit
                 state.onexit = function(inst, ...)
                     if onexit then onexit(inst, ...) end
-                    RemoveSpeedUpState2hm(inst, state, true)
+                    if Enabled(inst) then RemoveSpeedUpState2hm(inst, inst.sg.currentstate, true) end
                 end
             end
         end
@@ -73,6 +109,7 @@ local function processslingshot_shoot(sg)
             local onenter = state.onenter
             state.onenter = function(inst, ...)
                 if onenter then onenter(inst, ...) end
+                if not Enabled(inst) or inst.sg.currentstate == nil or inst.sg.currentstate.name ~= state.name then return end
                 local weapon
                 if inst.components.inventory then
                     weapon = inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS)
@@ -92,12 +129,12 @@ local function processslingshot_shoot(sg)
                 elseif inst.replica.hunger then
                     realrate = realrate + 1 - inst.replica.hunger:GetPercent()
                 end
-                SpeedUpState2hm(inst, state, 1 / realrate)
+                SpeedUpState2hm(inst, PrivateState(inst, state), 1 / realrate)
             end
             local onexit = state.onexit
             state.onexit = function(inst, ...)
                     if onexit then onexit(inst, ...) end
-                    RemoveSpeedUpState2hm(inst, state, true)
+                    if Enabled(inst) then RemoveSpeedUpState2hm(inst, inst.sg.currentstate, true) end
             end
         end
     end
@@ -108,18 +145,19 @@ local function processslingshot_shoot(sg)
             local onenter = state.onenter
             state.onenter = function(inst, ...)
             if onenter then onenter(inst, ...) end
+            if not Enabled(inst) or inst.sg.currentstate == nil or inst.sg.currentstate.name ~= state.name then return end
                 local realrate = 2
                 if inst.components.hunger then
                     realrate = realrate + 1 - inst.components.hunger:GetPercent()
                 elseif inst.replica.hunger then
                     realrate = realrate + 1 - inst.replica.hunger:GetPercent()
                 end
-                SpeedUpState2hm(inst, state, 1 / realrate)
+                SpeedUpState2hm(inst, PrivateState(inst, state), 1 / realrate)
             end
             local onexit = state.onexit
             state.onexit = function(inst, ...)
                 if onexit then onexit(inst, ...) end
-                RemoveSpeedUpState2hm(inst, state, true)
+                if Enabled(inst) then RemoveSpeedUpState2hm(inst, inst.sg.currentstate, true) end
             end
         end
     end
@@ -130,6 +168,7 @@ local function processslingshot_shoot(sg)
             local onenter = state.onenter
             state.onenter = function(inst, ...)
             if onenter then onenter(inst, ...) end
+            if not Enabled(inst) or inst.sg.currentstate == nil or inst.sg.currentstate.name ~= state.name then return end
                 local weapon
                 if inst.components.inventory then
                     weapon = inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS)
@@ -149,12 +188,12 @@ local function processslingshot_shoot(sg)
                 elseif inst.replica.hunger then
                     realrate = realrate + 1 - inst.replica.hunger:GetPercent()
                 end
-                SpeedUpState2hm(inst, state, 1 / realrate)
+                SpeedUpState2hm(inst, PrivateState(inst, state), 1 / realrate)
             end
             local onexit = state.onexit
             state.onexit = function(inst, ...)
                 if onexit then onexit(inst, ...) end
-                RemoveSpeedUpState2hm(inst, state, true)
+                if Enabled(inst) then RemoveSpeedUpState2hm(inst, inst.sg.currentstate, true) end
             end
         end
     end
@@ -187,15 +226,20 @@ for i, v in pairs(slingshotammos) do
     AddPrefabPostInit(v, function(inst)
         if not TheWorld.ismastersim then return end
         if inst.components.projectile then
-            inst.components.projectile.range = 20
+            local projectile = inst.components.projectile
+            local thrown = projectile.onthrown
+            projectile:SetOnThrownFn(function(i, owner, target, attacker, ...)
+                if thrown ~= nil then thrown(i, owner, target, attacker, ...) end
+                if Enabled(attacker or owner) then projectile.range = 20 end
+            end)
         end
     end)
 end
 
 -- 帐篷材料削弱
-AddRecipePostInit("portabletent_item", function(inst)
+if walterEnabled then AddRecipePostInit("portabletent_item", function(inst)
 	inst.ingredients = {Ingredient("bedroll_straw", 1),
 						Ingredient("twigs", 4),
 						Ingredient("silk", 4)
 						}
-end)
+end) end

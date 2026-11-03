@@ -95,3 +95,9 @@ python tests/build_fast_exchange_probes.py exit --run-id local_exit
 运行 `python tests/run_eyeturret_tests.py`，可在第一个参数提供游戏 `scripts.zip` 路径。115项检查读取原生 `Projectile:Hit`、`Combat:DoAttack`、`Health:SetVal/DoFireDamage`、材料给予动作收集和给予流程；覆盖默认开关、原版与Wathom配方、五段电击链伤、潮湿／电免疫／独立防御、友军与建筑筛选、升级消耗和保存、孢子云定向免疫、隔离火焰、植物电击点燃拦截、冰盾秒杀及原有双护盾。物品状态专项包含背包右键给予、升级保存、原生部署继承、混合升级、重复材料及失败上下文清理。
 
 `tests/native/eyeturret_fixture.lua` 仅用于名为 `ShadowWorld isolated eyeturret test` 的一次性原生服务器。夹具创建、攻击和删除测试实体，验证原生伤害、升级保存、两类孢子云、冰川座狼冰盾和建筑防火，完成后关闭；关闭加强选项时检查原生属性、配方和物品状态。补充原生玩家 `Inventory:UseItemFromInvTile` 及状态机执行给予、材料堆叠消耗、物品保存、`Deployable:Deploy` 继承及放置后的保存。需要本机永不妥协测试版，不能导入真实存档。该测试没有操作实际客户端窗口或检查画面表现。
+
+## 维希独立配置与幽闭兼容
+
+运行 `python tests/run_wixie_tests.py`，需要本机安装正式版 `2039181790` 与测试版 `3193922031`。268项检查读取实际两版维希幽闭算法、原生配置窗口选项构造和保存代码、本模组变速工具；覆盖两侧任务、恐慌、监听保留、独立开关、角色时间线隔离、原有默认系数、弹丸归属、条件显示、隐藏值保存及界面异常后的方法恢复。
+
+`tests/native/wixie_fixture.lua` 仅用于名称为 `ShadowWorld isolated Wixie test` 的隔离世界，会生成角色、生物和护甲，并在验证后关闭。分别配置 `walter=false,wixie=true,walter_easy=false,um_patch=false,["Wixie No Claustrophobia"]=true`，以及相反角色开关、`um_patch=2`、幽闭移除为false。它检查实际共用状态图的并发隔离、Beta网络幽闭值和开启／关闭后的原生表现，不能用于真实玩家存档。

@@ -1,5 +1,6 @@
 -- 本模组需要的一些设定的通用补充
 modimport("common/common.lua")
+require("wixieconfig2hm").Install(GLOBAL, modname)
 modimport("common/language2hm.lua")
 modimport("common/replica.lua")
 modimport("init/assets")
@@ -61,6 +62,7 @@ if TUNING.easymode2hm then
         if GetModConfigData("wormwood_easy") then modimport("easy_role/wormwood_easy.lua") end
         if GetModConfigData("wurt_easy") then modimport("easy_role/wurt_easy.lua") end
         if GetModConfigData("walter_easy") then modimport("easy_role/walter_easy.lua") end
+        if TUNING.DSTU and GetModConfigData("Wixie No Claustrophobia") then modimport("easy_role/wixie_easy.lua") end
         if GetModConfigData("wanda_easy") then modimport("easy_role/wanda_easy.lua") end
         if GetModConfigData("Wanda Dread Watch") then modimport("easy_role/wanda_dreadwatch2hm.lua") end -- 恐惧-警告表:附身暗影心房升级警钟,独立开关默认开启
         if GetModConfigData("wonkey_easy") then modimport("easy_role/wonkey_easy.lua") end -- wonkey
@@ -163,7 +165,7 @@ if TUNING.hardmode2hm then
         if GetModConfigData("wortox") then modimport("role/wortox.lua") end
         if GetModConfigData("wurt") then modimport("role/wurt.lua") end
         if GetModConfigData("wanda") then modimport("role/wanda.lua") end
-        if GetModConfigData("walter") then modimport("role/walter.lua") end
+        if GetModConfigData("walter") or (TUNING.DSTU and GetModConfigData("wixie")) then modimport("role/walter.lua") end
         if GetModConfigData("maxwell") then modimport("role/waxwell.lua") end
     end
     -- 天气改动

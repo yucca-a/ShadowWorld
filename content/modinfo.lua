@@ -750,7 +750,7 @@ configuration_options = {
     item("Walter Throw Slingshot First Attack", i18n({"沃尔特弹弓攻击优化", "Walter Slingshot Attack Fix"}),
         i18n({"兼容妥协勋章;困难模式沃尔特妥协蓄力连发伤害削弱", "UM/Medal Mod support walter Force Enable Slingshot"}), true, nil, nil,
         -1, {
-            i18n({"wixie同沃尔特弹弓攻击优化", "wixie & walter slingshot attack fix"}),
+            i18n({"沃尔特弹弓攻击优化，兼容永不妥协与勋章", "Walter slingshot compatibility with UM and Medal"}),
             i18n({"普通攻击前扔接弹弓,4.5秒内2倍伤害", "Throw Slingshot Before Simple Attack;4.5s 2x damage"})
         }),
     item("Walter Right Dodge Longer", i18n({"沃尔特骑乘时连续右键冲刺", "Walter Ride Right Dodge Double"}),
@@ -765,6 +765,9 @@ configuration_options = {
     item("Walter Use Wixie Slingshot", i18n({"沃尔特可使用wixie弹弓", "Walter Use Wixie Slingshot"}),
         i18n({"开启后沃尔特可装备并使用不妥协wixie专属弹弓",
             "Enable Walter to equip and use wixie's exclusive slingshot (right-click charge shot). Disabled by default"}), false),
+    item("Wixie No Claustrophobia", i18n({"维希：移除幽闭恐惧", "Wixie: No Claustrophobia"}),
+        i18n({"独立于沃尔特和永不妥协补丁；兼容正式版及测试版，清除幽闭积累、恐慌与视觉效果",
+            "Independent of Walter and UM patch; supports stable/Beta fear, panic and overlay removal"}), true),
     item("wortox_easy", i18n({"-------------------- 󰀀 沃拓克斯总开关", "󰀀 Wortox Master Switch"})),
     item("Wortox Eat Food Normal", i18n({"沃拓克斯吃食物获得75%三维", "Wortox Eat Food 75% H/S/H"})),
     item("Wortox Has No Soul Limit", i18n({"沃拓克斯无限制灵魂", "Wortox Has No Soul Limit"}),
@@ -1010,6 +1013,9 @@ configuration_options = {
     -- item("wx78", i18n({"wx78", "Wx78"})),
     item("walter", i18n({"沃尔特", "Walter"}),
         i18n({"弹弓蓄力时间变久;妥协鞭炮弹沙石弹加速弹削弱", "UM some ammoe weak;UM slingshot slow right attack"})),
+    item("wixie", i18n({"维希（Wixie）", "Wixie"}),
+        i18n({"维希弹弓蓄力、普攻减速和特殊弹药调整；不受沃尔特开关控制，仅永不妥协启用时显示",
+            "Independent Wixie slingshot timing and special-ammo adjustments; shown only with UM enabled"}), true),
     item("maxwell", i18n({"麦斯威尔", "Maxwell"}),
         i18n({"暗影牢笼禁锢怪物的时间缩短", "Shadow Prison imprisons monsters for a shorter time"})),
     item("wortox", i18n({"沃拓克斯", "Wortox"}), i18n({"灵魂回血会消耗同等饥饿", "Soul's heal will consume the same hunger"})),

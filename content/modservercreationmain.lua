@@ -151,3 +151,6 @@ if success and success2 and not ModConfigurationScreen._happypatch2hm then
     -- 	end
     -- end)
 end
+
+-- Keep Wixie-only options conditional on the enabled server mods.
+GLOBAL.require("wixieconfig2hm").Install(GLOBAL, modname)

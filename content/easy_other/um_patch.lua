@@ -19,7 +19,7 @@ select_um_patch = select_um_patch == true and 1 or select_um_patch -- 1部分改
 输出老鼠分时输出扣分物品名字和分数(根据TUNING.isCh2hm判断中英文输出)
 月龙、时令龙不再传送至玩家附近
 月麟甲加耐久 发光范围更大
-去除wixie幽闭
+维希幽闭恐惧由独立选项控制
 修复温蒂灵魂万灵药不能双倍的问题，但概率减半
 熊大脱加载不再动
 
@@ -390,14 +390,6 @@ if TUNING.DSTU then
         end)
         AddPrefabPostInit("armor_glassmail_shards",function(inst)
             inst.Light:SetRadius(2.3) -- 原本2
-        end)
-        -- 2025.8.28 melon:去除wixie幽闭-----------------------------------------------
-        AddPrefabPostInit("wixie", function(inst)
-            if not TheWorld.ismastersim or not TheNet:IsDedicated() then -- 不是写在服务端
-                inst:DoTaskInTime(1,function(inst) -- 0.1防止不起效?
-                    if inst.wixietask then inst.wixietask:Cancel() end
-                end)
-            end
         end)
         -- 2025.8.31 melon:修复温蒂灵魂万灵药不能双倍的问题，但概率减半---------------------
         local function elixir_numtogive(recipe, doer)
