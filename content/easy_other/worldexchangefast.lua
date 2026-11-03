@@ -14,6 +14,27 @@ GLOBAL.ShardIndex.GetSaveData = function(index, callback)
 end
 AddSimPostInit(Engine.RestorePlayers)
 
+-- Preserve vanilla's exact rollback-count/truncation rules. Intercept only the
+-- restart it requests, after native selection, to tell the cave its target.
+local rollback, nextInstance = GLOBAL.WorldRollbackFromSim, GLOBAL.StartNextInstance
+local rolling
+GLOBAL.WorldRollbackFromSim = function(count)
+    local e = engine()
+    if not e then return rollback(count) end
+    return e:Rollback(function()
+        rolling = e
+        rollback(count)
+        rolling = nil
+    end)
+end
+GLOBAL.StartNextInstance = function(params)
+    if rolling then
+        local e = rolling; rolling = nil
+        return e:BeforeRollbackRestart(function() nextInstance(params) end)
+    end
+    return nextInstance(params)
+end
+
 Engine.nativeSave = GLOBAL.SaveGame
 GLOBAL.SaveGame = function(shutdown, callback)
     local e = engine()

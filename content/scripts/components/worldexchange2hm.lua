@@ -420,7 +420,9 @@ function WorldExchange:Update()
     if not self.protocol then return end
     local now = self:Now()
     if not self.nexthello or now >= self.nexthello then
-        self.nexthello = now + 5
+        local recovering = not next(self.peers) or (self.engine and
+            (self.engine.timeline_wait or self.engine.core.phase == "joining"))
+        self.nexthello = now + (recovering and .25 or 5)
         for peer in pairs(ShardList or {}) do
             peer = tostring(peer)
             if peer ~= self.id and Shard_IsWorldAvailable(peer) then self:Hello(peer) end

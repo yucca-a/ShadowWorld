@@ -147,4 +147,41 @@ recovering:RebaseNative({snapshot=13,token="delayed-timeline"})
 check(recovering.pending_rebase and not delayed.state.rebase,"in-flight body write delays native rebase")
 release()
 check(not recovering:Writing() and delayed.state.cuts["cut/1"],"pending body and journal finish before recovery")
+local invoked, wakes=0,0
+local draining=setmetatable({store={busy=true,queue={}},service={session="DRAIN",Wake=function()wakes=wakes+1 end}},Engine)
+draining.Hold=function(_,value)check(value,"rollback holds before draining writes")end
+draining:Rollback(function()invoked=invoked+1 end)
+draining:Rollback(function()error("duplicate rollback")end)
+draining:Update()
+check(invoked==0 and wakes==1,"native rollback waits for pending writes and ignores duplicate requests")
+draining.store.busy=false;draining:Update()
+check(invoked==1,"native rollback starts once after writes drain")
+
+local hinted,flushed,resets=0,false,0
+local notice=setmetatable({store={state={current="c/2",nextserial=2,cuts={["c/1"]={serial=1},["c/2"]={serial=2}}},
+    io={read=function(path,cb)
+        check(path=="session/ROLLBACK/0000000015","hint reads native-selected snapshot after truncation")
+        cb(true,"return {map={persistdata={worldexchange2hm={checkpoint='c/1',checkpoint_serial=1}}}}")
+    end}},service={session="ROLLBACK",peers={["2"]={fast=2}},Now=function()return 10 end,
+    Send=function(_,peer,m)check(peer=="2" and m.op=="ROLLBACK_HINT" and m.id=="c/1" and m.serial==1,"hint preserves exact selected cut");hinted=hinted+1 end,
+    Flush=function()flushed=true end}},Engine)
+TheNet={IsDedicated=function()return true end,GetWorldSessionFile=function()return "session/ROLLBACK/0000000015"end}
+Shard_IsWorldAvailable=function()return true end
+notice:BeforeRollbackRestart(function()resets=resets+1 end)
+check(hinted==1 and flushed and resets==0 and notice.exits[1].at==10.1,"hint leaves before master restart without a fixed long delay")
+notice.exits[1].callback();check(resets==1,"original restart resumes after notice")
+
+local enabled,paused=true,false
+local pc={IsEnabled=function()return enabled end,Enable=function(_,value)enabled=value end}
+AllPlayers={{components={playercontroller=pc}}}
+TheNet.IsServerPaused=function()return paused end
+TheNet.SetServerPaused=function(_,value)paused=value end
+local gate=setmetatable({released=true,core={generation="c/1"}},Engine)
+gate:Hold(true)
+check(not enabled and paused and pc.worldexchange_resume2hm,"recovery holds movement until verification")
+gate:Hold(false)
+check(enabled and not paused and not pc.worldexchange_resume2hm,"verified completion releases movement immediately")
+enabled=false;gate:Hold(true);gate:Hold(false)
+check(not enabled,"recovery does not enable controls disabled by another feature")
+AllPlayers={}
 print("Production native rollback checks:",checks)

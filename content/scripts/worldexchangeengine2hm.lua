@@ -228,6 +228,7 @@ function Engine.Attach(service)
                     p.lastseen and service:Now() - p.lastseen < 15
             end,
             send = function(peer, message) service:Send(peer, message) end,
+            wake = function() service:Wake() end,
             idle = function() return self:Idle() end,
             hold = function(hold) self:Hold(hold) end,
             log = function(message) print("[WorldExchange2hm]", message) end,
@@ -241,6 +242,8 @@ function Engine.Attach(service)
         if not service.legacy then self:UseFastProtocol() end
         self:Hold((boot and boot.loaded ~= nil) or self.timeline_wait or false)
         for peer, info in pairs(service.peers) do self:PeerHello(peer, info) end
+        service.nexthello = 0
+        service:Wake()
     end
     if store.state then attach()
     else store:Load(function(state, reason)
@@ -250,6 +253,40 @@ function Engine.Attach(service)
 end
 
 function Engine:CanAdvance() return not self.restarting and not self.timeline_wait and not self.rollback_request end
+
+function Engine:Rollback(callback)
+    if self.rollback_callback or self.restarting then return end
+    self.restarting = true
+    self:Hold(true)
+    self.rollback_callback = callback
+    self.service:Wake()
+end
+
+function Engine:BeforeRollbackRestart(callback)
+    local file = Engine.NativeFile(ShardGameIndex, self.service.session)
+    if not file then callback(); return end
+    self.store.io.read(file, function(found, raw)
+        local parsed, world = false, nil
+        if found and raw then parsed, world = RunInSandboxSafe(raw) end
+        local record = parsed and checkpointrecord(world)
+        local id = record and record.checkpoint and Engine.ResolveCut(self.store.state, record)
+        local cut, sent = id and self.store.state.cuts[id], false
+        if cut then
+            for peer, info in pairs(self.service.peers) do
+                if info.fast == 2 and info.timeline == self.store.state.timeline and Shard_IsWorldAvailable(peer) then
+                    self.service:Send(peer, {v=3, kind="CHECKPOINT", op="ROLLBACK_HINT", id=id, serial=cut.serial})
+                    sent = true
+                end
+            end
+        end
+        if sent then
+            print("[WorldExchange2hm] Preload rollback checkpoint", id)
+            self.service:Flush()
+            self.exits = self.exits or {}
+            table.insert(self.exits, {at=self.service:Now() + .1, callback=callback})
+        else callback() end
+    end)
+end
 
 function Engine:Restart()
     self.restarting = true
@@ -514,6 +551,11 @@ function Engine:Exit(callback)
 end
 
 function Engine:Update()
+    if self.rollback_callback and not self:Writing() then
+        local callback = self.rollback_callback; self.rollback_callback = nil
+        callback()
+        return
+    end
     if self.pending_rebase then self:ContinueRebase() end
     if self.pending_cut and not self:Writing() then
         local id = self.pending_cut; self.pending_cut = nil

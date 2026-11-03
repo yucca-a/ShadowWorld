@@ -272,4 +272,28 @@ check(exitCount==1,"offline peer does not trap normal exit")
 acknowledge();exitClock=2;offlineExit:Update()
 check(exitCount==1,"late checkpoint callback cannot exit twice")
 
+-- Early rollback notice starts the live cave reload before the master exits.
+local early=simulation();early:start()
+local target=early.nodes["1"].core.generation
+early:trade();early.nodes["1"].core:Request()
+early:until_(function()return early:ready() and early.saves==4 end,"early rollback second cut")
+local primary,cave=early.nodes["1"],early.nodes["2"]
+local function hint(core,peer,id,serial)core:Receive(peer,{v=3,kind="CHECKPOINT",op="ROLLBACK_HINT",id=id,serial=serial})end
+hint(cave.core,"wrong",target,1)
+check(not cave.restart and cave.core:IsReady(),"unrelated shard cannot request early rollback")
+hint(primary.core,"2",target,1)
+check(not primary.restart and primary.core:IsReady(),"secondary cannot rewind master with a hint")
+hint(cave.core,"1","missing",1);hint(cave.core,"1",target,999)
+check(not cave.restart and cave.core:IsReady(),"unknown or mismatched target hint is ignored")
+hint(cave.core,"1",target,1)
+check(cave.hold and not cave.core:IsReady(),"valid hint holds before loading target")
+early:until_(function()return cave.restart end,"cave starts early rollback")
+check(cave.store.state.forced==target and cave.core.requested==target,"early target durable before restart")
+hint(cave.core,"1",target,1)
+check(cave.store.state.forced==target,"duplicate hint cannot reverse selection")
+early:node("1",primary.disk,target,target);early:node("2",cave.disk,true)
+early:until_(function()return early:ready()end,"early paired recovery")
+check(early.nodes["1"].core.generation==target and early.nodes["2"].core.generation==target,"early notice still requires paired verification")
+check(early.nodes["1"].items=="gold" and early.nodes["2"].items=="rocks","early rollback conserves target inventories")
+
 print("Production fast/checkpoint checks:",checks)

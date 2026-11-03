@@ -1,5 +1,21 @@
 -- Only for the isolated copy of the reported rollback failure. Never ship.
 local key = "sw_rollback_copy_fixture_v1"
+local Engine = require("worldexchangeengine2hm")
+local attach = Engine.Attach
+Engine.Attach = function(service)
+    attach(service)
+    local e = service.engine
+    if not e or e.latency_instrumented then return end
+    e.latency_instrumented = true
+    local began, measured, hold = service:Now(), false, e.Hold
+    e.Hold = function(self, value)
+        hold(self, value)
+        if not value and not measured and self.core:IsReady() then
+            measured = true
+            print("[ROLLBACK_COPY] CONTROLS_READY_MS", TheShard:GetShardId(), (service:Now()-began)*1000)
+        end
+    end
+end
 local remote, acknowledged, command = {}, nil, nil
 AddShardModRPCHandler("SW_ROLLBACK_COPY", "status", function(peer, state)
     local ok, data = RunInSandboxSafe(state)

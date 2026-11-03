@@ -45,6 +45,7 @@ function Checkpoint:Info()
         ready = self.io.bootready(), generation = self.generation}
 end
 function Checkpoint:Connected(peer, boot)
+    local changed = self.peer ~= peer or self.peerboot ~= boot
     if self.peer and self.peer ~= peer then self:Fail("only_two_shards_supported"); return end
     if self.peerboot and self.peerboot ~= boot then
         self.phase, self.remote = "joining", nil
@@ -53,6 +54,11 @@ function Checkpoint:Connected(peer, boot)
     end
     self.suspended = nil
     self.peer, self.peerboot, self.lastpeer = peer, boot, self.io.now()
+    if changed then
+        self.lastsend = -100
+        self:Send("INFO", self:Info())
+        if self.io.wake then self.io.wake() end
+    end
 end
 function Checkpoint:Disconnected(peer)
     if peer ~= self.peer then return end
@@ -69,6 +75,7 @@ function Checkpoint:Request(callback, exiting)
     self.want = true
     if exiting then self.exiting = true end
     self.lastsend = -100
+    if self.io.wake then self.io.wake() end
 end
 
 function Checkpoint:Register(uid, owner, raw, callback)
@@ -189,9 +196,21 @@ end
 
 function Checkpoint:Receive(peer, m)
     if peer ~= self.peer or m.v ~= 3 or m.kind ~= "CHECKPOINT" or self.phase == "error" then return end
+    local before = self.phase
     local op = m.op
     if m.exiting == true then self.peerexitrequested = true end
-    if op == "INFO" then
+    if op == "ROLLBACK_HINT" and not self.io.master then
+        local cut = self.store.state.cuts[m.id]
+        if not cut or cut.serial ~= m.serial then return end
+        if self.selecting or (not self.opened and self.loaded == m.id) then return end
+        -- Advisory from the authenticated master after native truncation. Start
+        -- loading the verified target in parallel with the master's restart.
+        -- A lost hint is harmless: the regular INFO/SELECT recovery still runs.
+        self.requested, self.phase = m.id, "joining"
+        self.io.hold(true)
+        self.io.log("preloading rollback checkpoint " .. m.id)
+        self:Select(m.id, true)
+    elseif op == "INFO" then
         if type(m.cuts) ~= "table" or type(m.boot) ~= "string" or m.boot ~= self.peerboot then return end
         self.remote = m
         if self.io.master and self.phase == "joining" then self:Choose() end
@@ -199,6 +218,7 @@ function Checkpoint:Receive(peer, m)
         self:Select(m.id, m.manual == true)
     elseif op == "LOADED" and self.io.master and self.selection and m.id == self.selection.id then
         self.peerloaded = m.id
+        self.lastsend = -100
     elseif op == "ACTIVATE" and m.id == self.generation and self.phase == "activating" then
         self.activation = true
         self:Send("ACTIVE", {id = m.id})
@@ -240,6 +260,8 @@ function Checkpoint:Receive(peer, m)
         end
         if self.arrived[m.uid] == m.token then self:Send("ARRIVED_ACK", {uid = m.uid, token = m.token}) end
     elseif op == "ARRIVED_ACK" and self.inbound[m.uid] == m.token then self.inbound[m.uid] = nil end
+    if self.phase ~= before then self.lastsend = -100 end
+    if self.io.wake then self.io.wake() end
 end
 
 function Checkpoint:Saved(cut, world)
@@ -247,6 +269,7 @@ function Checkpoint:Saved(cut, world)
     self.store:PutCut(cut, world, function(ok, reason)
         if not ok then self:Fail(reason); return end
         self.phase, self.lastsend = "prepared", -100
+        if self.io.wake then self.io.wake() end
     end)
 end
 function Checkpoint:Seal()
@@ -256,6 +279,7 @@ function Checkpoint:Seal()
         if not ok then self:Fail(reason); return end
         self.generation, self.loaded = self.pending.id, self.pending.id
         self.phase, self.lastsend = "sealed", -100
+        if self.io.wake then self.io.wake() end
     end)
 end
 function Checkpoint:Open()
