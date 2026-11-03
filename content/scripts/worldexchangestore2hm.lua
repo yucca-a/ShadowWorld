@@ -81,11 +81,16 @@ function Store:Drain()
 end
 
 function Store:PutCut(cut, world, cb)
+    self.pending = (self.pending or 0) + 1
+    local function finish(ok, reason)
+        self.pending = self.pending - 1
+        cb(ok, reason)
+    end
     local record = copy(cut)
     record.world = self.prefix .. "_world_" .. tostring(cut.serial) .. "_" .. digest(cut.id):gsub(":", "_")
     record.digest = digest(world)
     self:Write(record.world, world, function(ok)
-        if not ok then cb(false, "checkpoint_write_failed"); return end
+        if not ok then finish(false, "checkpoint_write_failed"); return end
         self:Update(function(state)
             for uid, baseline in pairs(state.baselines or {}) do
                 if record.players[uid] == nil then
@@ -95,7 +100,7 @@ function Store:PutCut(cut, world, cb)
             state.cuts[record.id] = record
             for uid in pairs(record.owners) do state.registry[uid] = true end
             state.nextserial = math.max(state.nextserial or 0, record.serial)
-        end, cb)
+        end, finish)
     end)
 end
 
@@ -129,9 +134,29 @@ function Store:Select(id, manual, cb)
         state.current, state.forced = id, id
         if manual then
             local serial = state.cuts[id].serial
-            for key, cut in pairs(state.cuts) do if cut.serial > serial then state.cuts[key] = nil end end
+            state.redirects = state.redirects or {}
+            for key, cut in pairs(state.cuts) do
+                if cut.serial > serial then state.redirects[key] = id; state.cuts[key] = nil end
+            end
         end
     end, cb)
+end
+
+-- A native rollback can cross the installation boundary of fast mode. Preserve
+-- the old journal as an archive, then establish a new paired native timeline.
+function Store:RebaseNative(rebase, cb)
+    local raw = self.io.encode(self.state)
+    local key = self.prefix .. "_archive_" .. self.state.revision .. "_" .. digest(rebase.token):gsub(":", "_")
+    self:Write(key, raw, function(ok)
+        if not ok then cb(false, "rollback_archive_failed"); return end
+        self:Update(function(state)
+            state.archives = state.archives or {}
+            state.archives[key] = digest(raw)
+            state.cuts, state.registry, state.baselines, state.redirects = {}, {}, {}, {}
+            state.current, state.forced = nil, nil
+            state.timeline, state.rebase = rebase.token, copy(rebase)
+        end, cb)
+    end)
 end
 
 function Store:Seal(id, cb)

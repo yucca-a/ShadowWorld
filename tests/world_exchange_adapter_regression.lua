@@ -5,7 +5,8 @@ GetTimeReal = function() return now * 1000 end
 AllPlayers, TUNING, ShardList = {}, {}, {}
 TheShard = {GetShardId = function() return "1" end}
 Shard_IsWorldAvailable = function() return true end
-GetShardModRPC = function() return "rpc" end
+GetShardModRPC = function() return {namespace="mod_hardmode",id=1} end
+GetShardModRPCHandler = function()return function()end end
 SendModRPCToShard = function(_, peer, ...) table.insert(wire, {peer = peer, args = {...}}) end
 local function world()
     return {meta = {session_identifier = "session-1"}, components = {}, saves = 0,

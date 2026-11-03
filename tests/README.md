@@ -77,3 +77,7 @@ python tests/build_fast_exchange_probes.py exit --run-id local_exit
 同一 `run-id` 用于一组准备＋恢复；重做独立测试时换新 ID，以免复用阶段标记或模拟玩家。夹具成功后请求关闭测试服；若一层已关闭导致另一层静态任务暂停，应在核对 `VERIFIED` 后只结束剩余的测试进程。
 
 原生验证结果与未覆盖的真实客户端场景见 [快速版实装说明](../development/穿越世界快速版_实装说明.md)。
+
+2026-11-03 回档启动修复增加 `fast_rollback_regression.lua`，随 `run_fast_exchange_tests.py` 运行，另通过 **29 项**检查：安装前原生回档、归档读回失败、玩家归属清理、时间线握手隔离、提交后中断恢复、废弃编号跳转及旧版无跳转记录的兼容、原生快照与元数据恢复顺序、暂停时专用 RPC 通道和写入排空。
+
+`tests/native/world_exchange_rollback_fixture.lua` 仅用于**完整隔离的玩家存档副本**，服务器名必须为 `ShadowWorld isolated rollback copy`。保留原有模组、选项和分片 ID；在测试模组末尾导入夹具。它先验证安装前回档恢复到旧天数，再覆盖测试箱、交换、共同保存，并依次调用原生 `c_rollback(1)`、`c_rollback(1)`、`c_rollback(2)`、`c_rollback(4)`。每轮验证共同检查点、箱内数量及交换期间零世界保存，全部通过后输出 `ALL_ROLLBACKS_PASS` 并关闭。它会修改副本和箱内物品，不能导入正式存档。固定阶段键不可复用到另一轮测试。

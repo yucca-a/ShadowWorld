@@ -56,7 +56,7 @@ function WorldExchange:Wake()
         self.waketask = nil
         self.advancing = true
         if self.engine then self.engine:Update() end
-        self.protocol:Tick()
+        if not self.engine or self.engine:CanAdvance() then self.protocol:Tick() end
         self:Flush()
         self.advancing = nil
     end)
@@ -308,9 +308,14 @@ function WorldExchange:Hello(peer, reply, target, challenge)
         self.challenges[peer] = self.challenges[peer] or {}
         self.challenges[peer][challenge] = self:Now() + 60
     end
+    local info = {v = 1, session = self.session, fast = self.engine and 2 or nil}
+    if self.engine then
+        info.timeline, info.rebase = self.engine.store.state.timeline, self.engine.store.state.rebase
+        info.rollback_request = self.engine.rollback_request
+    end
     SendModRPCToShard(GetShardModRPC("MOD_HARDMODE", "worldexchange_v1"), peer,
         reply and "HELLO_ACK" or "HELLO", self.boot, target or "", challenge, 0, 0,
-        DataDumper({v = 1, session = self.session, fast = self.engine and 2 or nil}, nil, true))
+        DataDumper(info, nil, true))
 end
 
 function WorldExchange:Send(peer, message)
@@ -360,8 +365,9 @@ function WorldExchange:Packet(peer, kind, boot, target, id, index, count, data)
             self.protocol.retry = 0
             self.inbox[peer] = nil
         end
-        self.peers[peer] = {boot = boot, session = info.session, fast = info.fast, lastseen = self:Now()}
-        if self.engine and info.fast == 2 then self.engine.core:Connected(peer, boot); self:Wake() end
+        info.boot, info.lastseen = boot, self:Now()
+        self.peers[peer] = info
+        if self.engine then self.engine:PeerHello(peer, info); self:Wake() end
         local t = self.protocol.active
         if t and t.peer == peer then
             local expected = t.coordinator == self.id and t.participant_session or t.coordinator_session
@@ -390,7 +396,7 @@ function WorldExchange:Packet(peer, kind, boot, target, id, index, count, data)
     if part.received == count then
         inbox[id] = nil
         local ok, message = RunInSandboxSafe(table.concat(part.chunks))
-        if ok and type(message) == "table" then
+        if ok and type(message) == "table" and (not self.engine or self.engine:CanAdvance()) then
             if message.v == 3 and self.engine and not self.legacy then self.engine.core:Receive(peer, message)
             else self.protocol:Receive(peer, message) end
             self:Wake()
@@ -429,7 +435,7 @@ function WorldExchange:Update()
     if not self.nexttick or now >= self.nexttick then
         self.nexttick = now + 0.5
         if self.engine then self.engine:Update() end
-        self.protocol:Tick()
+        if not self.engine or self.engine:CanAdvance() then self.protocol:Tick() end
     end
     self:Flush()
 end

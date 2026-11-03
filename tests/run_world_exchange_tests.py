@@ -13,6 +13,7 @@ for path in ["scripts/worldexchangeprotocol2hm.lua", "scripts/components/worldex
              "easy_other/worldexchange.lua", "easy_other/containersort.lua", "modmain.lua"]:
     loader((ROOT / "content" / path).read_text(encoding="utf-8-sig"), path)
 loader((ROOT / "tests/native/world_exchange_speed_fixture.lua").read_text(encoding="utf-8-sig"), "native speed fixture")
+loader((ROOT / "tests/native/world_exchange_rollback_fixture.lua").read_text(encoding="utf-8-sig"), "native rollback fixture")
 lua.globals().Protocol = loader((ROOT / "content/scripts/worldexchangeprotocol2hm.lua").read_text(encoding="utf-8"), "protocol")()
 lua.execute((ROOT / "tests/world_exchange_regression.lua").read_text(encoding="utf-8"))
 
@@ -26,6 +27,8 @@ with ZipFile(scripts) as archive:
     start = util.index("function RunInSandboxSafe(")
     lua.execute(util[start:util.index("\nend", start) + 4])
 lua.execute('package.preload["worldexchangeprotocol2hm"] = function() return Protocol end')
+lua.globals().ExchangeRPC = loader((ROOT / "content/scripts/worldexchangerpc2hm.lua").read_text(encoding="utf-8"), "rpc dispatch")()
+lua.execute('package.preload["worldexchangerpc2hm"] = function() return ExchangeRPC end')
 lua.execute('package.preload["worldexchangeengine2hm"] = function() return {} end; modimport = function() end')
 lua.globals().WorldExchange = loader((ROOT / "content/scripts/components/worldexchange2hm.lua").read_text(encoding="utf-8"), "adapter")()
 lua.globals().integration_source = (ROOT / "content/easy_other/worldexchange.lua").read_text(encoding="utf-8")

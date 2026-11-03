@@ -15,8 +15,9 @@ with ZipFile(scripts) as z:
     util = z.read("scripts/util.lua").decode("utf-8-sig")
     start = util.index("function RunInSandboxSafe(")
     lua.execute(util[start:util.index("\nend", start)+4])
-for name in ["worldexchangeprotocol2hm", "worldexchangestore2hm", "worldexchangeinstant2hm", "worldexchangecheckpoint2hm", "worldexchangeengine2hm"]:
+for name in ["worldexchangeprotocol2hm", "worldexchangestore2hm", "worldexchangeinstant2hm", "worldexchangecheckpoint2hm", "worldexchangeengine2hm", "worldexchangerpc2hm"]:
     module = load((ROOT / "content/scripts" / (name + ".lua")).read_text(encoding="utf-8"), name)
     lua.globals()[name] = module
     lua.execute(f'package.preload["{name}"] = function() return {name} end')
 lua.execute((ROOT / "tests/fast_exchange_regression.lua").read_text(encoding="utf-8"))
+lua.execute((ROOT / "tests/fast_rollback_regression.lua").read_text(encoding="utf-8"))

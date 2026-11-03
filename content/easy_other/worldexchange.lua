@@ -9,6 +9,8 @@ AddShardModRPCHandler("MOD_HARDMODE", "worldexchange_v1", function(shard_id, ...
     local service = TheWorld and TheWorld.components.worldexchange2hm
     if service then service:Packet(tostring(shard_id), ...) end
 end)
+require("worldexchangerpc2hm").Install(GLOBAL, GetShardModRPC("MOD_HARDMODE", "worldexchange_v1"),
+    GetShardModRPCHandler("MOD_HARDMODE", "worldexchange_v1"))
 
 -- Preserve the native synchronized snapshot mechanism and observe its completion.
 -- OnSave captures the exact phase included in that particular snapshot.

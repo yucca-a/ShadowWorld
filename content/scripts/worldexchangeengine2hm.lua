@@ -33,16 +33,39 @@ end
 function Engine.ResolveCut(state, record)
     if not state.forced and not (record and record.checkpoint) then return nil, "older_save_has_no_checkpoint" end
     local selected = state.forced or record.checkpoint
+    for _ = 1, 64 do
+        local redirect = state.redirects and state.redirects[selected]
+        if not redirect then break end
+        selected = redirect
+    end
     if not state.cuts[selected] and not state.forced then
         local serial = record.checkpoint_serial or tonumber(selected:match("/(%d+)$"))
         -- Native world serialization precedes immutable backup commit. A crash
         -- between them leaves a newer marker but no committed candidate: load
         -- the previous committed cut, then negotiate with the other shard.
-        if serial and serial > (state.nextserial or 0) then selected = state.current end
+        local current = state.current and state.cuts[state.current]
+        if serial and (serial > (state.nextserial or 0) or (current and serial > current.serial)) then
+            -- Older fast builds discarded future cuts without redirects but
+            -- retained their physical files. Those newer abandoned markers also
+            -- recover through the current committed ancestor, never forward.
+            selected = state.current
+        end
     end
     if not selected or not state.cuts[selected] then return nil, "selected_checkpoint_missing" end
     local current = state.current and state.cuts[state.current]
     return selected, nil, not state.forced and current and state.cuts[selected].serial < current.serial or false
+end
+
+function Engine.NativeFile(index, session)
+    if not TheNet:IsDedicated() and index:GetSlot() ~= nil and not index:GetServerData().use_legacy_session_path then
+        return TheNet:GetWorldSessionFileInClusterSlot(index:GetSlot(), index:GetShard() or "Master", session)
+    end
+    return TheNet:GetWorldSessionFile(session)
+end
+
+function Engine.NewRebase(snapshot, session)
+    return {snapshot = snapshot, origin = session,
+        token = session .. "/native/" .. snapshot .. "/" .. os.time() .. "/" .. math.random(1, 1073741823)}
 end
 
 function Engine.Bootstrap(index, native, callback)
@@ -56,6 +79,46 @@ function Engine.Bootstrap(index, native, callback)
         local record = checkpointrecord(native)
         Engine.boot = {store = store, session = session, ready = true,
             legacy = record and record.version == 1 and record.active ~= nil}
+        local file = Engine.NativeFile(index, session)
+        Engine.boot.native_snapshot = file and tonumber(file:match("/(%d+)$"))
+        -- A power loss can occur after the new timeline is committed but before
+        -- its native truncation/reload. Resume that same decision; an empty new
+        -- journal is not permission to load the abandoned newer world.
+        local rebase = state.rebase
+        if rebase and not next(state.cuts) and ((record and record.checkpoint) or
+            (Engine.boot.native_snapshot and Engine.boot.native_snapshot > rebase.snapshot)) then
+            local target = file and file:gsub("/%d+$", "/" .. string.format("%010d", rebase.snapshot))
+            assert(target, "WorldExchange: pending native rollback snapshot unavailable")
+            store.io.read(target, function(found, raw)
+                local parsed, data = false, nil
+                if found and raw then parsed, data = RunInSandboxSafe(raw) end
+                local saved = parsed and checkpointrecord(data)
+                assert(parsed and data.meta and data.meta.session_identifier == session and
+                    not (saved and saved.checkpoint), "WorldExchange: pending native rollback target unavailable")
+                TheNet:TruncateSnapshots(session, rebase.snapshot)
+                Engine.boot.native_snapshot = rebase.snapshot
+                Engine.boot.legacy = saved and saved.version == 1 and saved.active ~= nil
+                print("[WorldExchange2hm] Resume native rollback", rebase.snapshot)
+                callback(data)
+            end)
+            return
+        end
+        if next(state.cuts) and not state.forced and not (record and record.checkpoint) then
+            assert(Engine.boot.native_snapshot, "WorldExchange: native rollback snapshot unavailable")
+            if TheShard:IsMaster() then
+                local rebase = Engine.NewRebase(Engine.boot.native_snapshot, session)
+                store:RebaseNative(rebase, function(ok, failure)
+                    assert(ok, "WorldExchange native rollback: " .. tostring(failure))
+                    Engine.boot.rebasing = true
+                    print("[WorldExchange2hm] Native rollback before fast mode", rebase.snapshot)
+                    callback(native)
+                end)
+            else
+                Engine.boot.rollback_request = Engine.boot.native_snapshot
+                callback(native)
+            end
+            return
+        end
         if not next(state.cuts) then
             assert(not record or record.version ~= 2 or not record.checkpoint, "WorldExchange checkpoint backup is missing")
             callback(native); return
@@ -160,7 +223,8 @@ function Engine.Attach(service)
             bootready = function() return not boot or boot.ready end,
             connected = function(peer, epoch)
                 local p = service.peers[peer]
-                return p and p.boot == epoch and p.fast == 2 and Shard_IsWorldAvailable(peer) and
+                return p and p.boot == epoch and p.fast == 2 and self:CanAdvance() and
+                    p.timeline == store.state.timeline and Shard_IsWorldAvailable(peer) and
                     p.lastseen and service:Now() - p.lastseen < 15
             end,
             send = function(peer, message) service:Send(peer, message) end,
@@ -168,22 +232,116 @@ function Engine.Attach(service)
             hold = function(hold) self:Hold(hold) end,
             log = function(message) print("[WorldExchange2hm]", message) end,
             save = function(cut, owners) self:Capture(cut, owners) end,
-            restart = function()
-                self.restarting = true
-                StartNextInstance({reset_action = RESET_ACTION.LOAD_SLOT, save_slot = ShardGameIndex:GetSlot(), save_shard = ShardGameIndex:GetShard()})
-            end,
+            restart = function() self:RestartToCut(store.state.forced) end,
         }, store, boot and boot.loaded, boot and boot.requested)
         if boot and boot.error then self.core:Fail(boot.error) end
         service.legacy = service.protocol.active ~= nil and (service.saved_version or 1) == 1
+        self.rollback_request = boot and boot.rollback_request
+        self.timeline_wait = (store.state.rebase ~= nil and not (boot and boot.loaded)) or self.rollback_request ~= nil
         if not service.legacy then self:UseFastProtocol() end
-        self:Hold(boot and boot.loaded ~= nil or false)
-        for peer, info in pairs(service.peers) do if info.fast == 2 then self.core:Connected(peer, info.boot) end end
+        self:Hold((boot and boot.loaded ~= nil) or self.timeline_wait or false)
+        for peer, info in pairs(service.peers) do self:PeerHello(peer, info) end
     end
     if store.state then attach()
     else store:Load(function(state, reason)
         assert(state and not next(state.cuts), "WorldExchange requires its pre-world recovery loader: " .. tostring(reason))
         attach()
     end) end
+end
+
+function Engine:CanAdvance() return not self.restarting and not self.timeline_wait and not self.rollback_request end
+
+function Engine:Restart()
+    self.restarting = true
+    StartNextInstance({reset_action = RESET_ACTION.LOAD_SLOT, save_slot = ShardGameIndex:GetSlot(), save_shard = ShardGameIndex:GetShard()})
+end
+
+function Engine:RestartToCut(id)
+    self.restarting = true
+    if self:Writing() then self.pending_cut = id; return end
+    self.store:ReadCut(id, function(raw, failure, cut)
+        if not raw then self.core:Fail(failure); return end
+        local parsed, world = RunInSandboxSafe(raw)
+        if not parsed or type(world) ~= "table" then self.core:Fail("native_checkpoint_invalid"); return end
+        local persist = world.world_network and world.world_network.persistdata or {}
+        local metadata = DataDumper({clock = persist.clock, seasons = persist.seasons}, nil, true)
+        local file = Engine.NativeFile(ShardGameIndex, self.service.session)
+        local current = file and tonumber(file:match("/(%d+)$"))
+        if not current then self.core:Fail("native_snapshot_missing"); return end
+        local function write(snapshot)
+            local target = file:gsub("/%d+$", "/" .. string.format("%010d", snapshot))
+            self.store:Write(target, raw, function(ok)
+                if not ok then self.core:Fail("native_checkpoint_restore_failed"); return end
+                self.store:Write(target .. ".meta", metadata, function(saved)
+                    if not saved then self.core:Fail("native_checkpoint_metadata_failed"); return end
+                    TheNet:TruncateSnapshots(self.service.session, snapshot)
+                    self:Restart()
+                end)
+            end)
+        end
+        if cut.native_snapshot then write(cut.native_snapshot); return end
+        -- Compatibility with checkpoints made before native index tracking.
+        local function find(snapshot)
+            if snapshot < math.max(1, current - 32) then write(current); return end
+            self.store.io.read(file:gsub("/%d+$", "/" .. string.format("%010d", snapshot)), function(ok, text)
+                local parsed, data = false, nil
+                if ok and text then parsed, data = RunInSandboxSafe(text) end
+                local record = parsed and checkpointrecord(data)
+                if record and record.checkpoint == id then write(snapshot) else find(snapshot - 1) end
+            end)
+        end
+        find(current)
+    end)
+end
+
+function Engine:RebaseNative(rebase)
+    if self.restarting then return end
+    if type(rebase) ~= "table" or type(rebase.snapshot) ~= "number" or rebase.snapshot < 1 or
+        rebase.snapshot % 1 ~= 0 or type(rebase.token) ~= "string" or #rebase.token > 200 then return end
+    self.restarting = true
+    self:Hold(true)
+    self.pending_rebase = rebase
+    self:ContinueRebase()
+end
+
+function Engine:Writing()
+    return self.capture ~= nil or self.store.busy or (self.store.pending or 0) > 0 or #self.store.queue > 0
+end
+
+function Engine:ContinueRebase()
+    if self:Writing() then return end
+    local rebase = self.pending_rebase
+    self.pending_rebase = nil
+    local file = Engine.NativeFile(ShardGameIndex, self.service.session)
+    if not file then self.core:Fail("native_rollback_missing"); return end
+    local target = file:gsub("/%d+$", "/" .. string.format("%010d", rebase.snapshot))
+    self.store.io.read(target, function(ok, raw)
+        local parsed, data = false, nil
+        if ok and raw then parsed, data = RunInSandboxSafe(raw) end
+        local record = parsed and checkpointrecord(data)
+        if not parsed or not data.meta or data.meta.session_identifier ~= self.service.session or
+            (record and record.checkpoint) then self.core:Fail("native_rollback_target_unavailable"); return end
+        self.store:RebaseNative(rebase, function(saved, reason)
+            if not saved then self.core:Fail(reason); return end
+            print("[WorldExchange2hm] Align native rollback", rebase.snapshot)
+            TheNet:TruncateSnapshots(self.service.session, rebase.snapshot)
+            self:Restart()
+        end)
+    end)
+end
+
+function Engine:PeerHello(peer, info)
+    if self.restarting or info.fast ~= 2 then return end
+    if TheShard:IsMaster() and type(info.rollback_request) == "number" and not self.rollback_request then
+        self:RebaseNative(Engine.NewRebase(info.rollback_request, self.service.session)); return
+    end
+    if not TheShard:IsMaster() and info.timeline ~= self.store.state.timeline and info.rebase then
+        self:RebaseNative(info.rebase); return
+    end
+    if info.timeline ~= self.store.state.timeline or self.rollback_request then return end
+    self.timeline_wait = nil
+    self.core:Connected(peer, info.boot)
+    if self.service.legacy then self:Hold(false) end
 end
 
 function Engine:UseFastProtocol()
@@ -195,7 +353,7 @@ function Engine:UseFastProtocol()
 end
 
 function Engine:Idle()
-    if self.service.protocol.active or self.store.busy then return false end
+    if self.service.protocol.active or self:Writing() then return false end
     for _, player in ipairs(AllPlayers) do if player._despawning then return false end end
     local native = self.service.inst.components.shardtransactionsteps
     if native then
@@ -286,7 +444,8 @@ function Engine:Joined(player, baseline, migration)
 end
 
 function Engine:Capture(cut, owners)
-    local snapshot = {id = cut.id, serial = cut.serial, players = {}, owners = Store.Copy(owners)}
+    local snapshot = {id = cut.id, serial = cut.serial, players = {}, owners = Store.Copy(owners),
+        native_snapshot = TheNet:GetCurrentSnapshot()}
     self.capture = snapshot
     local uids, position = {}, 0
     for uid in pairs(owners) do table.insert(uids, uid) end
@@ -355,6 +514,11 @@ function Engine:Exit(callback)
 end
 
 function Engine:Update()
+    if self.pending_rebase then self:ContinueRebase() end
+    if self.pending_cut and not self:Writing() then
+        local id = self.pending_cut; self.pending_cut = nil
+        self:RestartToCut(id)
+    end
     if self.exits then
         for n = #self.exits, 1, -1 do
             if self.service:Now() >= self.exits[n].at then
@@ -364,6 +528,7 @@ function Engine:Update()
         end
     end
     if Engine.boot and Engine.boot.session == self.service.session and Engine.boot.error then self.core:Fail(Engine.boot.error); return end
+    if not self:CanAdvance() then return end
     if self.service.legacy then
         if not self.service.protocol.active then self:UseFastProtocol() else return end
     end
