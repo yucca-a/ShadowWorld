@@ -206,36 +206,81 @@ for _,graph in ipairs({'wilson','wilson_client'})do
         end
     end
 end
--- Equipment restrictions use actual server/replica and stable/Beta cast code.
+-- Native restrictions and both actual UM action wrappers, on server and client.
+ACTIONS={ATTACK='attack'}
+IsEntityDead=function(i)return i.dead or false end
 for _,master in ipairs({false,true})do for _,enabled in ipairs({false,true})do
-    local e=env();local hooks,components={},{}
-    e.TUNING={DSTU=true,WIXIE_HEALTH=1,easymode2hm=false};e.TheWorld={ismastersim=master}
+    local e=env();local hooks,components,graphs={},{},{}
+    e.TUNING={DSTU=true,WIXIE_HEALTH=1,easymode2hm=false,SLINGSHOT_DISTANCE=10,SLINGSHOT_DISTANCE_MAX=14}
+    e.TheWorld={ismastersim=master}
     e.GetModConfigData=function(n)return n=='Walter Use Wixie Slingshot'and enabled or false end
     e.AddPrefabPostInit=function(n,f)hooks[n]=f end
     e.AddComponentPostInit=function(n,f)components[n]=f end
+    e.AddStategraphPostInit=function(n,f)graphs[n]=f end
     assert(setfenv(assert(loadstring(access_patch)),e))()
-    local w=actor('walter');w:AddTag('player')
-    if hooks.walter then hooks.walter(w)end
-    check(w:HasTag('troublemaker')==enabled,'own switch controls permission independent of easy/attack settings')
+    local w=actor('walter');w:AddTag('player');hooks.walter(w)
+    check(w:HasTag('troublemaker')==enabled,'only exclusive permission follows switch')
     for _,tag in ipairs({'troublemaker','slingshot_sharpshooter','pebblemaker'})do
         local weapon={components={},replica={inventoryitem={GetEquipRestrictedTag=function()return tag end}}}
         local restricted=assert(loadstring(master and server_restricted or client_restricted))()
-        check(restricted({inst=weapon,restrictedtag=tag},w)==not enabled,'native equipment restriction '..tag)
+        check(restricted({inst=weapon,restrictedtag=tag},w)==(tag=='troublemaker'and not enabled),'native restriction '..tag)
         local other=actor('wilson');other:AddTag('player')
         check(restricted({inst=weapon,restrictedtag=tag},other),'other characters remain restricted')
+        weapon.components.linkeditem={IsEquippableRestrictedToOwner=function()return true end,GetOwnerUserID=function()return 'other_player' end}
+        w.userid='walter_player'
+        check(restricted({inst=weapon,restrictedtag=tag},w),'linked ownership remains enforced on '..tag)
     end
-    for _,code in ipairs({stable_fear_cast,beta_fear_cast})do
-        check(assert(loadstring(code))()(w)==enabled,'actual UM right-click cast follows permission')
+    for _,version in ipairs({'stable','beta'})do
+        local graph=master and 'wilson'or'wilson_client'
+        local sg={actionhandlers={[ACTIONS.ATTACK]={deststate=assert(loadstring(_G['SG'..graph..'_attack']))()}}}
+        assert(loadstring(_G[version..'_fear_SGwixie'..(master and ''or'_client')]))()(sg)
+        graphs[graph](sg)
+        local selected
+        w.sg.mem={};w.components.combat=master and{GetWeapon=function()return selected end}or nil
+        w.replica.combat={GetWeapon=function()return selected end}
+        for _,name in ipairs({'slingshot','slingshotex','slingshot2','slingshot2ex'})do
+            selected=actor(name);selected:AddTag('slingshot')
+            check(sg.actionhandlers[ACTIONS.ATTACK].deststate(w,{target={}})=='slingshot_shoot','actual '..version..' '..graph..' fires '..name)
+        end
+        selected=actor('slingshot_matilda');selected:AddTag('slingshot')
+        if enabled then check(sg.actionhandlers[ACTIONS.ATTACK].deststate(w,{target={}})=='shove','exclusive attack remains UM')end
+        local wixie=actor('wixie');wixie:AddTag('troublemaker');wixie.sg.mem={}
+        wixie.components.combat=w.components.combat;wixie.replica.combat=w.replica.combat
+        selected=actor('slingshot');selected:AddTag('slingshot')
+        check(sg.actionhandlers[ACTIONS.ATTACK].deststate(wixie,{target={}})=='shove','Wixie retains her base slingshot shove')
+        w.dead=true;w.components.health.IsDead=function()return true end
+        check(sg.actionhandlers[ACTIONS.ATTACK].deststate(w,{target={}})==nil,'dead Walter cannot attack')
+        w.dead=false;w.components.health.IsDead=function()return false end
+    end
+    if master then
+        local called=0
+        local equip={restrictedtag='troublemaker',onequipfn=function()called=called+1 end,onunequipfn=function()called=called+1 end}
+        function equip:SetOnEquip(f)self.onequipfn=f end
+        function equip:SetOnUnequip(f)self.onunequipfn=f end
+        local weapon={damage=10,attackrange=.5,hitrange=.5}
+        function weapon:SetDamage(n)self.damage=n end
+        function weapon:SetRange(a,b)self.attackrange=a;self.hitrange=b end
+        local item={components={equippable=equip,weapon=weapon}}
+        hooks.slingshot(item)
+        check(equip.restrictedtag=='slingshot_sharpshooter','base slingshot restores replicated native restriction')
+        equip.onequipfn(item,w)
+        check(weapon.damage==0 and weapon.attackrange==10 and weapon.hitrange==14,'Walter native projectile range')
+        equip.onunequipfn(item,w)
+        check(weapon.damage==10 and weapon.attackrange==.5 and weapon.hitrange==.5,'unequip restores UM weapon values')
+        equip.onequipfn(item,actor('wixie'));equip.onunequipfn(item,actor('wixie'))
+        check(weapon.damage==10 and weapon.attackrange==.5 and called==4,'Wixie values and callbacks unchanged')
+        local ammo={components={container={restrictedtag='troublemaker'}}};hooks.slingshotammo_container(ammo)
+        check(ammo.components.container.restrictedtag=='slingshot_sharpshooter','native ammo container access restored')
     end
     if enabled then
         local seen
         local spawner={SpawnAtLocation=function(_,_,p)seen=p:HasTag('troublemaker');return 'spawned' end}
         components.playerspawner(spawner)
         check(spawner:SpawnAtLocation({},w)=='spawned'and not seen,'Walter keeps native spawn route')
-        check(w:HasTag('troublemaker'),'permission restored after spawn')
+        check(w:HasTag('troublemaker'),'exclusive permission restored after spawn')
         local wixie=actor();wixie:AddTag('troublemaker');spawner:SpawnAtLocation({},wixie)
         check(seen and wixie:HasTag('troublemaker'),'Wixie retains wardrobe spawn')
-    else check(components.playerspawner==nil and hooks.walter==nil,'disabled option installs no hooks')end
+    else check(components.playerspawner==nil,'disabled option needs no spawn workaround')end
 end end
 locale='zh';assert(loadstring(modinfo_source))()
 local found={};for _,v in ipairs(configuration_options)do found[v.name]=v end

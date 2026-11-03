@@ -1,0 +1,40 @@
+{
+  "version": "2.8.14.97.2",
+  "cases": [
+    {
+      "case": "BetaFinal",
+      "log_sha256": "4aa20f5183ba8d95f7354228a69dc56edc1ca3fd79d5fde9b49415b9a8cf862c",
+      "live_shots": 4,
+      "equipment": true,
+      "locomote_and_async_exit": true
+    },
+    {
+      "case": "StableFinal",
+      "log_sha256": "1ff0dd4c71ee7ad8b26452d619639b3e72fee2302e972bb6c41b56d1638405fd",
+      "live_shots": 4,
+      "equipment": true,
+      "locomote_and_async_exit": true
+    },
+    {
+      "case": "BetaDisabledFinal",
+      "log_sha256": "68f086a6115449d39441a9594d4bf019669b2f9af33a91e080ab068412b3505e",
+      "live_shots": 4,
+      "equipment": true,
+      "locomote_and_async_exit": true
+    },
+    {
+      "case": "StableDisabledFinal",
+      "log_sha256": "2557d1e86b7b09b6f551dc7223846efa48036632cd49b2cb0d24fdc7cff60b1e",
+      "live_shots": 4,
+      "equipment": true,
+      "locomote_and_async_exit": true
+    }
+  ],
+  "source_sha256": {
+    "common/walter_wixie_slingshot.lua": "d221fd7d22705c9c6c03148c1ccd5d0529c9609d78b8b25bb0f86334a19b818d",
+    "role/walter.lua": "b9605fe8e63376606334678117c225c3a0294466f0dbdebd5f26570e27b5fb74",
+    "modinfo.lua": "4905c87b1abd48862613816515e5807428adfaeb478c00d6ccedbd49b33b71d7"
+  },
+  "fixture_sha256": "78a2f8bc7c4167e81f4f23cb671560b4663f46867be59461433d9600f869e8c3",
+  "headless_fixture": "Keep test projectiles and targets awake because no logged-in client keeps them active."
+}

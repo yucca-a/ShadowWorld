@@ -3,8 +3,8 @@
 固定工坊条目：https://steamcommunity.com/sharedfiles/filedetails/?id=3832182265
 游戏：Don't Starve Together（322330）
 维护者：Yucca
-当前已发布版本：2.8.14.97.1，基于原版 2.8.14.95。
-最近发布：2026-11-03，弹弓状态机崩溃与沃尔特弹弓权限热修。官方上传器返回 Update completed，线上版本号和完整更新日志核对通过。日志见 workshop\update-notes-2.8.14.97.1.txt。
+当前已发布版本：2.8.14.97.2，基于原版 2.8.14.95。
+最近发布：2026-11-03，沃尔特原版与专属弹弓权限分离。官方上传器返回 Update completed，线上版本号和完整更新日志核对通过。日志见 workshop\update-notes-2.8.14.97.2.txt。
 
 日常维护位置
 源码：D:\Users\Yucca\Documents\ChatGPT\ShadowWorld\content
@@ -12,7 +12,7 @@
 原始版本压缩包、清单和首次发布记录：backups（历史档案，不是待发布源码）
 本次迁移校验与上传器原配置备份：work（不纳入 Git）
 Git 远程仓库：https://github.com/yucca-a/ShadowWorld（私有），维护分支 codex/maintenance。
-发布标签：upstream-v2.8.14.95、v2.8.14.96、v2.8.14.96.1、v2.8.14.97、v2.8.14.97.1。回退方法见 development/版本回退说明.md。
+发布标签：upstream-v2.8.14.95、v2.8.14.96、v2.8.14.96.1、v2.8.14.97、v2.8.14.97.1、v2.8.14.97.2。回退方法见 development/版本回退说明.md。
 Git 备份包含完整源码、资源、测试和维护资料；不包含玩家世界存档及本机临时工具。
 
 修改入口
@@ -25,7 +25,7 @@ content\scripts：实体与组件等。
 保留 LICENSE 和已有的版权声明。
 
 更新到现有工坊条目
-1. 修改并在测试世界验证代码，再把 modinfo.lua 第一行改为新版本号，本轮发布为 2.8.14.97.1。
+1. 修改并在测试世界验证代码，再把 modinfo.lua 第一行改为新版本号，本轮发布为 2.8.14.97.2。
 2. 打开 D:\SteamLibrary\steamapps\common\Don't Starve Mod Tools\ModUploader.exe。
 3. Target Game 选择 Don't Starve Together，选中本模组后点 Edit。确认页面链接 ID 为 3832182265，不要点 Add。
 4. 勾选 Update Data，目录必须为本项目的 content 文件夹。不要选择整个 ShadowWorld 项目根目录。

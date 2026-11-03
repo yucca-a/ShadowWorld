@@ -24,11 +24,21 @@ for key, mod in [("beta_fear", "3193922031"), ("stable_fear", "2039181790")]:
     start = source.index("local function can_cast_fn(")
     end = source.index('\nenv.AddPrefabPostInit("slingshot"', start)
     lua.globals()[key + "_cast"] = source[start:end] + "\nreturn can_cast_fn"
+    for graph in ["SGwixie", "SGwixie_client"]:
+        source = (path.parents[2] / ("wixie_postinit/stategraphs/" + graph + ".lua")).read_text(encoding="utf-8-sig")
+        start = source.index("    local _OldAttack =")
+        end = source.index("    local _OldBuild =", start)
+        lua.globals()[key + "_" + graph] = "return function(inst)\n" + source[start:end] + "\nend"
 common = (ROOT / "content/common/common.lua").read_text(encoding="utf-8-sig")
 start = common.index("function RemoveSpeedUpState2hm(")
 end = common.index("\nend", common.index("function SpeedUpState2hm(")) + 4
 lua.globals().native_speed = common[start:end]
 with ZipFile("D:/SteamLibrary/steamapps/common/Don't Starve Together/data/databundles/scripts.zip") as z:
+    for graph in ["SGwilson", "SGwilson_client"]:
+        source = z.read("scripts/stategraphs/" + graph + ".lua").decode("utf-8-sig")
+        start = source.index("ActionHandler(ACTIONS.ATTACK,") + len("ActionHandler(ACTIONS.ATTACK,")
+        end = source.index("ActionHandler(", start)
+        lua.globals()[graph + "_attack"] = "return " + source[start:end].strip().removesuffix(",").removesuffix(")")
     lua.execute(z.read("scripts/class.lua").decode("utf-8-sig"))
     lua.execute('package.loaded["class"] = Class')
     lua.execute(z.read("scripts/stategraph.lua").decode("utf-8-sig"))
