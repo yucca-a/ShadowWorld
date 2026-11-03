@@ -108,4 +108,5 @@ return {
     "tropicalfishbuff2hm",
     "spiderbag2hm",
     "devil_heart2hm",
+    "eyeturret_safefire2hm",
 }

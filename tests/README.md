@@ -89,3 +89,9 @@ python tests/build_fast_exchange_probes.py exit --run-id local_exit
 运行 `python tests/run_prototyper_preview_tests.py`；可用 `--preview-source` 指定本机“群鸟绘卷”的 `scripts/util/entutil.lua`。测试读取其实际 `ClonePrefab` 方法并执行本模组真实建筑挂钩，40 项断言覆盖客户端预览移除、服务器权限、缺失保存表、正常条目清理、重复事件及临时实体。`--source-ref d340da5` 会在灵子分解器客户端预览移除断言失败，复现本次缺陷。
 
 `tests/native/prototyper_private_space_fixture.lua` 用于独立双层测试世界，名称须为 `ShadowWorld isolated private space test`。它生成科技建筑、模拟玩家与测试物品，验证燃料解锁、帽子升级、私人空间绑定及共同保存回档；会修改测试世界并执行回档，不能导入正式玩家存档。
+
+## 眼球炮塔加强
+
+运行 `python tests/run_eyeturret_tests.py`，可在第一个参数提供游戏 `scripts.zip` 路径。81项检查读取原生 `Projectile:Hit`、`Combat:DoAttack`、`Health:SetVal/DoFireDamage` 和给予流程；覆盖默认开关、原版与Wathom配方、五段电击链伤、潮湿／电免疫／独立防御、友军与建筑筛选、升级消耗和保存、孢子云定向免疫、隔离火焰、植物电击点燃拦截、冰盾秒杀及原有双护盾。
+
+`tests/native/eyeturret_fixture.lua` 仅用于名为 `ShadowWorld isolated eyeturret test` 的一次性原生服务器。夹具创建、攻击和删除测试实体，验证原生伤害、升级保存、两类孢子云、冰川座狼冰盾和建筑防火，完成后关闭；关闭加强选项时检查原生属性和配方。需要本机永不妥协测试版，不能导入真实存档。该测试没有操作实际客户端的给予按钮或检查画面表现。
