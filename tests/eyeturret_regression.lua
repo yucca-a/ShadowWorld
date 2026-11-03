@@ -9,7 +9,11 @@ CanEntityBecomeCorpse=function()return false end;NotifyPlayerProgress=function()
 local hooks,recipes,entities,tasks,componenthooks,componentactions={},{},{},{},{},{}
 AddPrefabPostInit=function(n,f)hooks[n]=hooks[n]or{};table.insert(hooks[n],f)end
 AddComponentPostInit=function(n,f)componenthooks[n]=f end
-AddComponentAction=function(t,n,f)check(t=='USEITEM'and n=='inventoryitem','narrow native inventory action hook');componentactions[#componentactions+1]=f end
+AddComponentAction=function(t,n,f)
+    local key=t..':'..n;check(not componentactions[key],'shared action registered only once: '..key);componentactions[key]=f
+end
+ACTIONS={};Action=function(t)return t end;AddAction=function(a)ACTIONS[a.id]=a end
+assert(loadstring(common_actions_source))()
 AddRecipePostInit=function(n,f)recipes[n]=f end
 Ingredient=function(n,a)return {type=n,amount=a}end
 local function wrap(i,key,f)local old=i[key];i[key]=function(...)if old then old(...)end;return f(...)end end
@@ -21,6 +25,7 @@ AddStategraphState=function(n,s)check(n=='eyeturret','only turret stategraph ext
 AddStategraphPostInit=function(n,f)check(n=='eyeturret','only turret death state wrapped');f(graph)end
 Class=function(ctor)local c={};c.__index=c;return setmetatable(c,{__call=function(_,...)local s=setmetatable({},c);ctor(s,...);return s end})end
 local Timer=assert(loadstring(timer_source))()
+local Repairable=assert(loadstring(repair_source))()
 FunctionOrValue=function(v,...)if type(v)=='function'then return v(...)else return v end end
 IsEntityElectricImmune=function(t)return t:HasTag('electricdamageimmune')end
 IsRangedWeapon=function()return true end
@@ -77,14 +82,12 @@ local function entity(name,x)
     function i:RestartBrain(reason)if self.brainstopped==reason then self.brainstopped=nil end end
     function i:AddComponent(n)
         if n=='timer'then self.components.timer=Timer(self);return end
-        check(n=='trader','only trader component added')
-        self.components[n]={inst=self,enabled=true,deleteitemonaccept=true,
-            SetAcceptTest=function(t,f)t.test=f end,SetOnAccept=function(t,f)t.onaccept=f end,
-            AbleToAccept=Trader.AbleToAccept,WantsToAccept=Trader.WantsToAccept,AcceptGift=Trader.AcceptGift}
+        check(n=='repairable2hm','reuse upstream repair component')
+        self.components[n]=Repairable(self)
     end
     entities[#entities+1]=i;return i
 end
-Combat={};Projectile={};Health={};Trader={};SpellCaster={}
+Combat={};Projectile={};Health={};SpellCaster={}
 for _,code in pairs(native)do assert(loadstring(code))()end
 local function health(i,hp)
     local h={inst=i,currenthealth=hp,maxhealth=hp,minhealth=0,fire_timestart=0,firedamageinlastsecond=0,firedamagecaptimer=0}
@@ -217,27 +220,28 @@ for _,i in ipairs({neutral,friend,building,player,ally})do i:Remove()end
 local function gift(name)
     local i=entity(name);i.components.inventoryitem={RemoveFromOwner=function()end};return i
 end
-local collectgive=assert(loadstring(give_action_source))()
-ACTIONS={GIVE={}}
+local collectrepair=componentactions['USEITEM:inventoryitem']
 local actiongiver=entity('wilson');actiongiver.replica={}
 t.replica={}
 for _,name in ipairs({'dragon_scales','shroom_skin'})do
     local material=gift(name);material.replica={}
-    local actions={};collectgive(material,actiongiver,t,actions,false)
-    check(actions[1]==ACTIONS.GIVE,'native material action exposes GIVE for '..name)
+    local actions={};collectrepair(material,actiongiver,t,actions,false)
+    check(actions[1]==ACTIONS.REPAIR2HM,'shared material action exposes REPAIR2HM for '..name)
 end
-check(t.components.trader.acceptnontradable==true,'server accepts these non-tradable materials')
-local scales=gift('dragon_scales');check(t.components.trader:AcceptGift(nil,scales),'dragon scale accepted')
+check(t.components.trader==nil and t.components.repairable2hm,'no separate trader path needed')
+local scales=gift('dragon_scales');check(t.components.repairable2hm:Repair(nil,scales),'dragon scale accepted')
 check(scales.removed and t.eyeturretfire2hm,'one scale consumed for upgrade')
-local duplicate=gift('dragon_scales');check(not t.components.trader:AcceptGift(nil,duplicate)and not duplicate.removed,'duplicate scale is not consumed')
-local skin=gift('shroom_skin');check(t.components.trader:AcceptGift(nil,skin)and skin.removed,'skin accepted and consumed')
+local duplicate=gift('dragon_scales');check(not t.components.repairable2hm:Repair(nil,duplicate)and not duplicate.removed,'duplicate scale is not consumed')
+local skin=gift('shroom_skin');check(t.components.repairable2hm:Repair(nil,skin)and skin.removed,'skin accepted and consumed')
 check(t:HasTag('eyeturretsporeproof2hm'),'targeted immunity tag')
-local skin2=gift('shroom_skin');check(not t.components.trader:AcceptGift(nil,skin2)and not skin2.removed,'duplicate skin rejected')
-check(not t.components.trader:AcceptGift(nil,gift('rocks')),'unrelated gifts rejected')
+local skin2=gift('shroom_skin');check(not t.components.repairable2hm:Repair(nil,skin2)and not skin2.removed,'duplicate skin rejected')
+check(not t.components.repairable2hm:Repair(nil,gift('rocks')),'unrelated gifts rejected')
 local saved={};t:OnSave(saved);local restored=tower(100);restored:OnLoad(saved)
 check(restored.eyeturretfire2hm and restored.eyeturretspore2hm and restored:HasTag('eyeturretsporeproof2hm'),'both upgrades restored')
 local legacy=tower(200);legacy:OnLoad({hasplaced2hm=true});check(not legacy.eyeturretfire2hm and not legacy.eyeturretspore2hm,'legacy save loads without upgrades')
-local incomplete=tower(300);check(not incomplete.components.trader:AcceptGift(nil,gift('dragon_scales'),20),'bulk gift does not waste a stack')
+local incomplete=tower(300);local stack=gift('dragon_scales');local remaining=20
+stack.components.stackable={Get=function(_,n)check(n==1,'upgrade requests exactly one material');remaining=remaining-n;return gift('dragon_scales')end}
+check(incomplete.components.repairable2hm:Repair(nil,stack) and remaining==19 and stack:IsValid(),'stack upgrade consumes one and retains remainder')
 
 local function portable(ondeploy)
     local i=entity('eyeturret_item')
@@ -247,17 +251,25 @@ local function portable(ondeploy)
     end}
     return apply('eyeturret_item',i)
 end
+local existing=entity('eyeturret_item')
+existing.repairmaterials2hm={rocks=1}
+existing.components.deployable={ondeploy=function()end}
+existing:AddComponent('repairable2hm')
+existing.components.repairable2hm.customrepair=function()return false end
+apply('eyeturret_item',existing)
+local denied=gift('rocks')
+check(existing.repairmaterials2hm.rocks==1,'existing material registry is retained')
+check(existing.components.repairable2hm:Repair(nil,denied)==false and denied:IsValid(),'existing repair rejection is not converted to success')
+check(existing.components.repairable2hm:Repair(nil,gift('dragon_scales')),'new upgrade coexists with existing repair callback')
 local item=portable();item.replica={}
-check(item.components.health==nil and item.components.trader~=nil,'portable item gets upgrades without combat components')
+check(item.components.health==nil and item.components.repairable2hm~=nil,'portable item gets upgrades without combat components')
 for _,name in ipairs({'dragon_scales','shroom_skin'})do
     local material=gift(name);material.replica={}
-    local actions={};collectgive(material,actiongiver,item,actions,true)
-    for _,fn in ipairs(componentactions)do fn(material,actiongiver,item,actions,true)end
-    check(actions[1]==ACTIONS.GIVE,'inventory tile right-click offers GIVE for '..name)
-    for _,fn in ipairs(componentactions)do fn(material,actiongiver,item,actions,true)end
-    check(#actions==1,'inventory GIVE action is not duplicated')
-    check(item.components.trader:AcceptGift(actiongiver,material)and material.removed,'inventory item accepts and consumes '..name)
-    local extra=gift(name);check(not item.components.trader:AcceptGift(actiongiver,extra)and not extra.removed,'portable duplicate rejected '..name)
+    local actions={};collectrepair(material,actiongiver,item,actions,true)
+    check(actions[1]==ACTIONS.REPAIR2HM,'inventory tile right-click offers REPAIR2HM for '..name)
+    check(#actions==1,'shared inventory upgrade action is not duplicated')
+    check(item.components.repairable2hm:Repair(actiongiver,material)and material.removed,'inventory item accepts and consumes '..name)
+    local extra=gift(name);check(not item.components.repairable2hm:Repair(actiongiver,extra)and not extra.removed,'portable duplicate rejected '..name)
 end
 local stored={};item:OnSave(stored);item:Remove()
 item=portable();item:OnLoad(stored)
@@ -266,19 +278,19 @@ local placed,middle,tail=item.components.deployable.ondeploy(item,{x=700},action
 check(item.removed and placed.eyeturretfire2hm and placed.eyeturretspore2hm,'native deployment inherits both item upgrades')
 check(middle==nil and tail=='native-return','deployment wrapper preserves all native return values')
 local fresh=tower(800);check(not fresh.eyeturretfire2hm and not fresh.eyeturretspore2hm,'later unrelated turrets inherit no deployment flags')
-local partial=portable();partial.components.trader:AcceptGift(nil,gift('dragon_scales'))
+local partial=portable();partial.components.repairable2hm:Repair(nil,gift('dragon_scales'))
 local converted=partial.components.deployable.ondeploy(partial,{x=900},actiongiver)
 check(converted.eyeturretfire2hm and not converted.eyeturretspore2hm,'single material upgrade transfers independently')
-check(converted.components.trader:AcceptGift(nil,gift('shroom_skin'))and converted.eyeturretspore2hm,'remaining upgrade can be given after placing')
+check(converted.components.repairable2hm:Repair(nil,gift('shroom_skin'))and converted.eyeturretspore2hm,'remaining upgrade can be given after placing')
 local failed=portable(function()error('injected deployment failure')end)
-failed.components.trader:AcceptGift(nil,gift('dragon_scales'))
+failed.components.repairable2hm:Repair(nil,gift('dragon_scales'))
 check(not pcall(failed.components.deployable.ondeploy,failed,{x=1000},actiongiver),'deployment failure remains visible')
 check(failed:IsValid()and failed.eyeturretfire2hm,'failed deployment keeps upgraded item')
 local afterfailed=tower(1100);check(not afterfailed.eyeturretfire2hm,'failed deployment cannot leak upgrade context')
-local wrong={};for _,fn in ipairs(componentactions)do fn(gift('rocks'),actiongiver,item,wrong,true)end
+local wrong={};collectrepair(gift('rocks'),actiongiver,item,wrong,true)
 check(#wrong==0,'new inventory action excludes other materials')
-wrong={};for _,fn in ipairs(componentactions)do fn(gift('dragon_scales'),actiongiver,t,wrong,true)end
-check(#wrong==0,'new inventory action does not change placed-turret actions')
+wrong={};collectrepair(gift('dragon_scales'),actiongiver,t,wrong,true)
+check(#wrong==0,'upgraded turret no longer offers the same upgrade')
 
 local cloudtags={'noauradamage'}
 for _,name in ipairs({'sporecloud','sporecloud_toad'})do
@@ -360,7 +372,7 @@ local function enemy_tower(name,tags)
     near(i.components.health.maxhealth,1500,'enemy health untouched '..name)
     near(i.components.health.regen.amount,12,'enemy regeneration untouched '..name)
     near(i.components.combat.defaultdamage,75,'enemy combat damage untouched '..name)
-    check(not i.eyeturretenhanced2hm and not i.components.trader and not i:HasTag('alltrader'),'enemy gets no enhancement or trading '..name)
+    check(not i.eyeturretenhanced2hm and not i.components.repairable2hm and not i:HasTag('repairable2hm'),'enemy gets no enhancement or upgrade action '..name)
     check(w.components.weapon.damage==75 and w.components.weapon.stimuli==nil,'enemy weapon retains its own damage/type')
     check(i.OnSave==save and i.OnLoad==load,'enemy save/load callbacks remain untouched')
     i:PushEvent('healthdelta',{oldpercent=1,newpercent=.3})
@@ -400,8 +412,8 @@ retaliating:Remove()
 
 -- Native Health:SetVal and the full native Timer drive the recovery lifecycle.
 local resting=tower(2400)
-resting.components.trader:AcceptGift(nil,gift('dragon_scales'))
-resting.components.trader:AcceptGift(nil,gift('shroom_skin'))
+resting.components.repairable2hm:Repair(nil,gift('dragon_scales'))
+resting.components.repairable2hm:Repair(nil,gift('shroom_skin'))
 local deathcount=0;resting:ListenForEvent('death',function()deathcount=deathcount+1 end)
 resting:PushEvent('healthdelta',{oldpercent=1,newpercent=.3})
 resting.components.health:SetVal(0,'combat')
@@ -416,7 +428,7 @@ check(not resting.deathloot and not resting.physicsremoved,'friendly death state
 near(resting.components.timer:GetTimeLeft('eyeturret_recovery2hm'),2400,'five standard days are forty minutes')
 resting.components.health:SetVal(1500,'healing');resting.components.health:DoDelta(50,true,'regen')
 check(resting.components.health.currenthealth==0 and deathcount==1,'healing cannot bypass recovery or replay death')
-check(not resting.components.trader:AcceptGift(nil,gift('dragon_scales')),'resting tower rejects upgrades')
+check(not resting.components.repairable2hm:Repair(nil,gift('dragon_scales')),'resting tower rejects upgrades')
 check(resting.components.inspectable.descriptionfn(resting):find('5.0',1,true),'inspect reports remaining days')
 tick(479)
 check(resting.colour[4]==0 and not resting.eyeturretfadetask2hm,'fade-out finishes and releases its task')
@@ -460,7 +472,7 @@ local otherdead=victim('eyeturret',2600,{'companion','hostile'});otherdead.compo
 check(not staff.components.spellcaster:CanCast(actiongiver,otherdead),'staff still rejects other dead targets')
 resting:AddTag('INLIMBO');check(not staff.components.spellcaster:CanCast(actiongiver,resting),'staff retains native visibility/limbo restrictions');resting:RemoveTag('INLIMBO')
 for _,target in ipairs({resting,tower(2700)})do
-    if target~=resting then target.components.trader:AcceptGift(nil,gift('dragon_scales'))end
+    if target~=resting then target.components.repairable2hm:Repair(nil,gift('dragon_scales'))end
     target:PushEvent('ondeconstructstructure')
     check(target.refunds.dragon_scales==1,'deconstruction returns exactly one installed scale')
     check(target.refunds.shroom_skin==(target==resting and 1 or nil),'deconstruction returns only installed mushroom skin')
@@ -469,7 +481,7 @@ for _,target in ipairs({resting,tower(2700)})do
     target:Remove()
 end
 local unmodified=tower(2800);unmodified:PushEvent('ondeconstructstructure');check(not unmodified.refunds,'no free upgrade materials without upgrades')
-local packed=portable();packed.components.trader:AcceptGift(nil,gift('shroom_skin'))
+local packed=portable();packed.components.repairable2hm:Repair(nil,gift('shroom_skin'))
 local before=#entities;packed:PushEvent('ondeconstructstructure')
 check(#entities==before+1 and entities[#entities].prefab=='shroom_skin','upgraded portable item also refunds its material')
 local failingstaff=entity('greenstaff');failingstaff.components.spellcaster={canuseondead=false,CanCast=function()error('injected cast error')end}
@@ -517,8 +529,8 @@ check(pending.cancelled and not fading.eyeturretfadetask2hm,'removal during tran
 
 TheWorld.ismastersim=false
 local preview=entity('eyeturret');preview:AddTag('companion');apply('eyeturret',preview)
-check(preview:HasTag('trader')and not preview.eyeturretenhanced2hm,'client receives action tag without server components')
-check(preview:HasTag('alltrader'),'client offers material GIVE action')
+check(preview:HasTag('repairable2hm')and not preview.eyeturretenhanced2hm,'client receives action tag without server components')
+check(not preview:HasTag('alltrader') and preview.repairmaterials2hm.dragon_scales==1,'client uses common material action')
 local basepreview=entity('eyeturret_base');local replicationcalled=false
 basepreview.entity.GetParent=function()return preview end
 basepreview.OnEntityReplicated=function()replicationcalled=true end
@@ -527,9 +539,9 @@ check(replicationcalled and basepreview.client_forward_target==preview,'client b
 for _,spec in ipairs({{'eyeturret',{'hostile','companion'}},{'shadoweyeturret',{'shadoweyeturret','hostile'}}})do
     local enemy=entity(spec[1]);for _,tag in ipairs(spec[2])do enemy:AddTag(tag)end
     apply('eyeturret',enemy)
-    check(not enemy:HasTag('trader')and not enemy:HasTag('alltrader'),'enemy client has no fake upgrade action')
+    check(not enemy:HasTag('repairable2hm')and not enemy.repairmaterials2hm,'enemy client has no fake upgrade action')
 end
 local itempreview=entity('eyeturret_item');apply('eyeturret_item',itempreview)
-check(itempreview:HasTag('alltrader')and itempreview.components.trader==nil,'client portable preview only adds native action tags')
+check(itempreview:HasTag('repairable2hm')and itempreview.components.repairable2hm==nil,'client portable preview only adds native action tags')
 local pc=entity('eye_charge');apply('eye_charge',pc);check(pc.components.projectile==nil,'client projectile is safe')
 print('EYETURRET_CHECKS_PASS '..checks)

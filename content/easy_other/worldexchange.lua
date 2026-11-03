@@ -32,7 +32,16 @@ local oldShardUpdate = GLOBAL.Shard_UpdateWorldState
 GLOBAL.Shard_UpdateWorldState = function(world_id, state, ...)
     local result = oldShardUpdate(world_id, state, ...)
     local service = TheWorld and TheWorld.components.worldexchange2hm
-    if service then service:Disconnected(tostring(world_id)) end
+    if service then
+        if state == REMOTESHARDSTATE.READY then
+            -- A READY notification is not a disconnect. Resetting a healthy
+            -- peer here also freezes all players until another handshake.
+            service.nexthello = 0
+            service:Wake()
+        else
+            service:Disconnected(tostring(world_id))
+        end
+    end
     return result
 end
 

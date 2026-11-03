@@ -180,12 +180,24 @@ function Engine.RestorePlayers()
             end
         else
             local _, data = RunInSandboxSafe(raw)
-            -- This runs before vanilla RestoreSnapshotUserSession/IncrementSnapshot.
-            TheNet:SerializeUserSession(uid, raw, false, nil, DataDumper({character = data.prefab}, nil, true))
             local file = TheNet:GetUserSessionFile(boot.session, uid)
-            assert(file, "WorldExchange: restored player file missing")
             pending = pending + 1
-            TheNet:DeserializeUserSession(file, function(ok, restored) done(ok and restored == raw) end)
+            local function restore()
+                -- This runs before native RestoreSnapshotUserSession. The Lua
+                -- record now carries MapExplorer data as well (see player hook).
+                TheNet:SerializeUserSession(uid, raw, false, nil, DataDumper({character = data.prefab}, nil, true))
+                local restoredfile = TheNet:GetUserSessionFile(boot.session, uid)
+                if not restoredfile then done(false); return end
+                TheNet:DeserializeUserSession(restoredfile, function(ok, restored) done(ok and restored == raw) end)
+            end
+            if file then
+                TheNet:DeserializeUserSession(file, function(ok, current)
+                    -- Do not replace a matching native session with a write
+                    -- lacking its classified entity: native map data lives
+                    -- outside the Lua inventory record and must be retained.
+                    if ok and current == raw then done(true) else restore() end
+                end)
+            else restore() end
         end
     end
     done(true)

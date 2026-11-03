@@ -182,6 +182,7 @@ local function ApplyUpgrades(inst, upgrades)
     if not IsUpgradeTarget(inst) then return end
     inst.eyeturretfire2hm = upgrades.fire or nil
     inst.eyeturretspore2hm = upgrades.spore or nil
+    if inst.eyeturretfire2hm then inst:AddTag("eyeturretfire2hm") end
     if inst.eyeturretspore2hm then inst:AddTag("eyeturretsporeproof2hm") end
 end
 
@@ -189,6 +190,7 @@ local function OnUpgrade(inst, giver, item)
     if not IsUpgradeTarget(inst) then return end
     if item.prefab == "dragon_scales" then
         inst.eyeturretfire2hm = true
+        inst:AddTag("eyeturretfire2hm")
     elseif item.prefab == "shroom_skin" then
         inst.eyeturretspore2hm = true
         inst:AddTag("eyeturretsporeproof2hm")
@@ -205,6 +207,7 @@ local function RefundUpgrades(inst)
     local fire, spore = inst.eyeturretfire2hm, inst.eyeturretspore2hm
     -- Clear first: even a repeated deconstruction event must not refund twice.
     inst.eyeturretfire2hm, inst.eyeturretspore2hm = nil, nil
+    inst:RemoveTag("eyeturretfire2hm")
     inst:RemoveTag("eyeturretsporeproof2hm")
     for prefab, upgraded in pairs({dragon_scales = fire, shroom_skin = spore}) do
         if upgraded then
@@ -218,38 +221,35 @@ local function RefundUpgrades(inst)
     end
 end
 
--- Inventory tiles request right-click USEITEM actions. Native alltrader GIVE is
--- normally left-click only, so expose the same native action for these materials.
-AddComponentAction("USEITEM", "inventoryitem", function(inst, doer, target, actions, right)
-    if right and IsUpgradeTarget(target) and target.prefab == "eyeturret_item" and target:HasTag("alltrader") and
-        (inst.prefab == "dragon_scales" or inst.prefab == "shroom_skin") then
-        for _, action in ipairs(actions) do if action == ACTIONS.GIVE then return end end
-        table.insert(actions, ACTIONS.GIVE)
-    end
-end)
-
 local function InstallUpgradeReceiver(inst)
     if not IsUpgradeTarget(inst) then return end
-    inst:AddTag("trader")
-    inst:AddTag("alltrader") -- dragon_scales/shroom_skin have no native tradable component
+    -- Match existing material upgrades (torch, dread watch, magician hat): use
+    -- the shared REPAIR2HM action, including inventory-tile right clicks.
+    local materials = inst.repairmaterials2hm
+    inst.repairmaterials2hm = setmetatable({}, {__index = function(_, prefab)
+        if prefab == "dragon_scales" then return not inst:HasTag("eyeturretfire2hm") and 1 or nil end
+        if prefab == "shroom_skin" then return not inst:HasTag("eyeturretsporeproof2hm") and 1 or nil end
+        return materials and materials[prefab]
+    end})
+    inst.repairtext2hm = "UPGRADE"
+    inst:AddTag("repairable2hm")
+    inst:AddTag("fastrepair2hm")
     if not TheWorld.ismastersim then return end
-    if inst.components.trader == nil then inst:AddComponent("trader") end
-    local trader = inst.components.trader
-    trader.acceptnontradable = true
-    local test, onaccept = trader.test, trader.onaccept
-    trader:SetAcceptTest(function(i, item, giver, count)
+    if inst.components.repairable2hm == nil then inst:AddComponent("repairable2hm") end
+    local repair = inst.components.repairable2hm
+    repair.repairmaterials = inst.repairmaterials2hm
+    local customrepair = repair.customrepair
+    repair.customrepair = function(i, repairuse, giver, item)
         if item.prefab == "dragon_scales" or item.prefab == "shroom_skin" then
-            return (count == nil or count == 1) and UpgradeTest(i, item)
-        end
-        return test ~= nil and test(i, item, giver, count) or false
-    end)
-    trader:SetOnAccept(function(i, giver, item, ...)
-        if item.prefab == "dragon_scales" or item.prefab == "shroom_skin" then
+            if not UpgradeTest(i, item) then return false end
             OnUpgrade(i, giver, item)
-        elseif onaccept ~= nil then
-            onaccept(i, giver, item, ...)
+            if item.components.stackable then item.components.stackable:Get(1):Remove()
+            else item:Remove() end
+            return true
         end
-    end)
+        if customrepair then return customrepair(i, repairuse, giver, item) end
+        return -1
+    end
     inst:ListenForEvent("ondeconstructstructure", RefundUpgrades)
     SetOnSave(inst, function(i, data)
         if not IsUpgradeTarget(i) then return end

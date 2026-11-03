@@ -701,6 +701,17 @@ AddAction("Lunge_WAXWELL2HM", "lunge", function(act, data)
 end)
 ACTIONS.Lunge_WAXWELL2HM.distance = math.huge
 ACTIONS.Lunge_WAXWELL2HM.instant = true
+-- The native prediction state only recognizes native lunge state names.
+-- Preserve its animation/timeout handling, but also accept our server states.
+AddStategraphPostInit("wilson_client", function(sg)
+    local state = sg.states.combat_lunge_start
+    if state then
+        state.server_states = state.server_states or {}
+        for _, name in ipairs({"lunge_pre2hm", "lunge_loop2hm"}) do
+            state.server_states[hash(name)] = true
+        end
+    end
+end)
 STRINGS.ACTIONS.Lunge_WAXWELL2HM = {GENERIC = TUNING.isCh2hm and "暗袭" or "Lunge"}
 local function endlungecd(inst)
     inst.shadowlungecdtask2hm = nil

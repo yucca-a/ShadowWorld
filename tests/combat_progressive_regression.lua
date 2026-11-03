@@ -215,6 +215,19 @@ planar(mount, 10); planar(saddle, 5)
 p.components.rider = {IsRiding = function() return true end, GetMount = function() return mount end, GetSaddle = function() return saddle end}
 d, sp = c:CalcDamage(target); near(d, 345); near(sp.planar, 15)
 near(mc:CalcDamage(target), 400, "NPCs retain native calculation")
+-- Maxwell's followers must not inherit their owner's progressive calculation.
+local maxwell, maxwellcombat = player("waxwell")
+maxwellcombat.damagemultiplier = 100
+local servants = 0
+for i = 1, 3 do
+    local servant = entity("shadowduelist", {shadowminion = true})
+    servant.components.follower = {leader = maxwell}
+    local sc = combat(servant)
+    sc.defaultdamage = 20
+    near(sc:CalcDamage(target), 20, "shadow servant retains its own native attack")
+    servants = servants + sc:CalcDamage(target)
+end
+near(servants, 60, "three servants add three attacks, not the owner's multiplier")
 
 -- Match native semantics when no source exceeds the thresholds.
 for _, base in ipairs({0, 50, 100}) do

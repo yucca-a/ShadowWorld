@@ -1,5 +1,6 @@
 """Research-only instant exchange tests. Does not enable the prototype in the mod."""
 from pathlib import Path
+from zipfile import ZipFile
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -7,6 +8,10 @@ sys.path.insert(0, str(ROOT / "work/test-python"))
 from lupa.lua51 import LuaRuntime
 
 lua = LuaRuntime(unpack_returned_tuples=True)
+with ZipFile("D:/SteamLibrary/steamapps/common/Don't Starve Together/data/databundles/scripts.zip") as archive:
+    util = archive.read("scripts/util.lua").decode("utf-8-sig")
+    start = util.index("function deepcopy(")
+    lua.execute(util[start:util.index("\nend", start)+4])
 load = lua.eval("function(source, name) return assert(loadstring(source, name))() end")
 lua.globals().Base = load((ROOT / "content/scripts/worldexchangeprotocol2hm.lua").read_text(encoding="utf-8"), "durable-protocol")
 lua.execute('package.preload["worldexchangeprotocol2hm"] = function() return Base end')

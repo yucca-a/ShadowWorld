@@ -13,6 +13,11 @@ GLOBAL.ShardIndex.GetSaveData = function(index, callback)
     return getSaveData(index, function(data) Engine.Bootstrap(index, data, callback) end)
 end
 AddSimPostInit(Engine.RestorePlayers)
+AddPlayerPostInit(function(inst)
+    if TheWorld.ismastersim and (Engine.enabled or (Engine.boot and Engine.boot.loaded)) then
+        require("worldexchangemaps2hm").Install(inst)
+    end
+end)
 
 -- Preserve vanilla's exact rollback-count/truncation rules. Intercept only the
 -- restart it requests, after native selection, to tell the cave its target.
@@ -137,7 +142,9 @@ AddComponentPostInit("worldmigrator", function(component)
     local activate = component.Activate
     component.Activate = function(self, doer)
         local e = engine()
-        if e and not e.core:IsReady() then return false, "NODESTINATION" end
+        if e and (not e.core:IsReady() or (doer and doer.userid and not e.core:CanMigrate(doer.userid))) then
+            return false, "NODESTINATION"
+        end
         return activate(self, doer)
     end
 end)

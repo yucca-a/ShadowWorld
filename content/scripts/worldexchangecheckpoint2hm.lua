@@ -105,7 +105,8 @@ function Checkpoint:CompleteRegistration(uid)
 end
 
 function Checkpoint:CanMigrate(uid)
-    return self:IsReady() and not self.registrations[uid] and self.store.state.registry[uid] == true
+    return self:IsReady() and not self.registrations[uid] and not self.outbound[uid] and not self.inbound[uid]
+        and self.store.state.registry[uid] == true
 end
 function Checkpoint:Depart(uid)
     self.departures = self.departures + 1
@@ -122,6 +123,7 @@ function Checkpoint:Arrived(uid, token, origin)
     end
     self.inbound[uid] = token
     self.lastsend = -100
+    if self.io.wake then self.io.wake() end
 end
 function Checkpoint:Idle()
     return self.io.idle() and not self.regbusy and not next(self.outbound) and not next(self.inbound) and not self.store.busy
@@ -174,13 +176,19 @@ function Checkpoint:Select(id, manual)
         local function sealed(ok, reason)
             if not ok then self:Fail(reason); return end
             self.generation, self.phase, self.activation = id, "activating", nil
+            self.lastsend = -100
             self:Send("LOADED", {id = id})
+            if self.io.wake then self.io.wake() end
         end
         if manual then
             self.store:Select(id, true, function(ok, reason)
                 if not ok then self:Fail(reason); return end
                 self.store:Seal(id, sealed)
             end)
+        elseif self.store.state.current == id and not self.store.state.forced then
+            -- Load already verified this committed journal and world body.
+            -- Rewriting the same journal adds disk latency to every login.
+            sealed(true)
         else self.store:Seal(id, sealed) end
         return
     end
@@ -307,14 +315,18 @@ function Checkpoint:Tick()
         self.phase, self.lastsend = "frozen", -100
     end
     if self.io.master and self.phase == "frozen" and self.peerdrained == self.pending.id then
+        local matching = true
         for uid, owner in pairs(self.peerowners) do
             -- A migration can finish after the peer sent DRAINED. Wait for its
             -- refreshed owner map instead of accepting the stale one.
-            if self.owners[uid] and self.owners[uid] ~= owner then return end
-            self.owners[uid] = owner
+            if self.owners[uid] and self.owners[uid] ~= owner then matching = false end
         end
-        self.phase = "capture_wait"
-        self:Send("CAPTURE", {id = self.pending.id, owners = self.owners})
+        if matching then
+            for uid, owner in pairs(self.peerowners) do self.owners[uid] = owner end
+            self.phase = "capture_wait"
+            self:Send("CAPTURE", {id = self.pending.id, owners = self.owners})
+        end
+        -- A stale DRAINED map must not stop REGISTER/ARRIVED retries below.
     end
     if self.phase == "capture_wait" and self:Idle() then
         self.phase = "saving"

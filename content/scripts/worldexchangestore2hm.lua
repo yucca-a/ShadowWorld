@@ -2,10 +2,7 @@
 -- missing committed record is an error, never permission to guess an old state.
 local Store = {}
 Store.__index = Store
-local function copy(value)
-    if type(value) ~= "table" then return value end
-    local out = {}; for k, v in pairs(value) do out[k] = copy(v) end; return out
-end
+local copy = deepcopy
 local function digest(data)
     local hash = 5381
     for i = 1, #data do hash = (hash * 33 + data:byte(i)) % 4294967296 end

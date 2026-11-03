@@ -4,12 +4,7 @@ local Protocol = {}
 Protocol.__index = Protocol
 local VERSION = 1
 
-local function copy(value)
-    if type(value) ~= "table" then return value end
-    local result = {}
-    for k, v in pairs(value) do result[k] = copy(v) end
-    return result
-end
+local copy = deepcopy
 
 function Protocol.new(io, saved)
     local self = setmetatable({io = io, sequence = 0, closed = {}, retry = 0, interval = 1}, Protocol)

@@ -292,7 +292,7 @@ TUNING.USEITEMFNS2HM = {}
 TUNING.EQUIPPEDFNS2HM = {}
 TUNING.INVENTORYFNS2HM = {}
 AddComponentAction("USEITEM", "inventoryitem",
-                   function(inst, doer, target, actions) for _, fn in ipairs(TUNING.USEITEMFNS2HM) do fn(inst, doer, target, actions) end end)
+                   function(inst, doer, target, actions, right) for _, fn in ipairs(TUNING.USEITEMFNS2HM) do fn(inst, doer, target, actions, right) end end)
 AddComponentAction("EQUIPPED", "equippable",
                    function(inst, doer, target, actions, right) for _, fn in ipairs(TUNING.EQUIPPEDFNS2HM) do fn(inst, doer, target, actions, right) end end)
 AddComponentAction("INVENTORY", "inventoryitem", function(inst, doer, actions, right) for _, fn in ipairs(TUNING.INVENTORYFNS2HM) do fn(inst, doer, actions, right) end end)
@@ -317,7 +317,6 @@ STRINGS.ACTIONS.REPAIR2HM.GENERIC = STRINGS.ACTIONS.REPAIR.GENERIC
 STRINGS.ACTIONS.REPAIR2HM.ADDFUEL = STRINGS.ACTIONS.ADDFUEL
 STRINGS.ACTIONS.REPAIR2HM.UPGRADE = STRINGS.ACTIONS.UPGRADE.GENERIC
 STRINGS.ACTIONS.REPAIR2HM.PURIFY = TUNING.isCh2hm and "净化" or "purify"
-STRINGS.ACTIONS.REPAIR2HM = STRINGS.ACTIONS.REPAIR
 AddStategraphActionHandler("wilson", ActionHandler(ACTIONS.REPAIR2HM, function(inst, action)
     return action.target:HasTag("fastrepair2hm") and "doshortaction" or "dolongaction"
 end))

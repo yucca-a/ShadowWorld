@@ -32,6 +32,11 @@
       "tag": "v2.8.14.97.2",
       "files": 454,
       "bytes": 22425770
+    },
+    {
+      "tag": "v2.8.14.97.3",
+      "files": 456,
+      "bytes": 22433390
     }
   ],
   "archive_sha256": {
@@ -39,11 +44,14 @@
     "work/release-2.8.14.96/ShadowWorld-2.8.14.96-source.zip": "9af3d06fa0bc232becb39935cbdd0585b812217c7ceb148ef316058e6a37ebaa",
     "work/release-2.8.14.97/ShadowWorld-2.8.14.97-content.zip": "9161a11940d7e6aed4209958ecb854b57a25cd56ec483fa379f263424fe176fc",
     "work/release-2.8.14.97.1/ShadowWorld-2.8.14.97.1-content.zip": "0232b20e4d4afe425cde84792e3f32e0dcc8ec0f0c05541ac084859b5f45342f",
-    "work/release-2.8.14.97.2/ShadowWorld-2.8.14.97.2-content.zip": "c6483bb84cd33734a6fa1cc9b2204c676d0d8c77157da65eaf0face1cb97d4fc"
+    "work/release-2.8.14.97.2/ShadowWorld-2.8.14.97.2-content.zip": "c6483bb84cd33734a6fa1cc9b2204c676d0d8c77157da65eaf0face1cb97d4fc",
+    "work/release-2.8.14.97.3/ShadowWorld-2.8.14.97.3-content.zip": "e151ca6ddd03d97bba4370f14388dd156902a9afd9b0b1e97cd4c42b19fc42ec"
   },
   "current_matches_published_manifest": true,
   "current_changes_from_v2_8_14_96": [
+    "common/common.lua",
     "common/monster_nightvision.lua",
+    "common/patch.lua",
     "common/role_nightvision.lua",
     "common/temp.lua",
     "common/walter_wixie_slingshot.lua",
@@ -55,6 +63,7 @@
     "easy_other/um_patch.lua",
     "easy_other/worldexchange.lua",
     "easy_other/worldexchangefast.lua",
+    "easy_role/rightaction.lua",
     "easy_role/walter_easy.lua",
     "easy_role/wathom_easy.lua",
     "easy_role/webber_easy.lua",
@@ -66,17 +75,19 @@
     "modservercreationmain.lua",
     "role/walter.lua",
     "scripts/components/worldexchange2hm.lua",
+    "scripts/ingredientcollect2hm.lua",
     "scripts/prefabs/eyeturret_safefire2hm.lua",
     "scripts/prefabs2hm.lua",
     "scripts/wixieconfig2hm.lua",
     "scripts/worldexchangecheckpoint2hm.lua",
     "scripts/worldexchangeengine2hm.lua",
     "scripts/worldexchangeinstant2hm.lua",
+    "scripts/worldexchangemaps2hm.lua",
     "scripts/worldexchangeprotocol2hm.lua",
     "scripts/worldexchangerpc2hm.lua",
     "scripts/worldexchangestore2hm.lua",
     "weather/dusk.lua"
   ],
   "history_kind": "Imported version snapshots; not original development commit history",
-  "current_tag": "v2.8.14.97.2"
+  "current_tag": "v2.8.14.97.3"
 }

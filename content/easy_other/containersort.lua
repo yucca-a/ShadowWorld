@@ -5,6 +5,7 @@ local Widget = require "widgets/widget"
 local ThreeSlice = require "widgets/threeslice"
 local Image = require "widgets/image"
 local cooking = require("cooking")
+local IngredientCollectionNeeded = require("ingredientcollect2hm")
 require "widgets/widgetutil"
 local containercfg = GetModConfigData("Container Sort")
 local itemscfg = GetModConfigData("Items collect")
@@ -2725,6 +2726,10 @@ if itemscfg then
     if craftmenucollectsupport or hasitemscollect or foodingredientcollectsupport then
         -- 后面的doer和item都是可选的,主要用于ctrl alt右键道具收集道具
         collectrecipefn = function(inst, recipe_type, neednum, doer, item, forceitemtestfn)
+            if neednum ~= nil and neednum ~= false then
+                if type(neednum) ~= "number" or neednum ~= neednum or neednum == math.huge or neednum <= 0 then return end
+                neednum = math.ceil(neednum)
+            end
             if not recipe_type or recipe_type == "" or
                 not ((inst.components.inventory and inst.components.inventory.maxslots > 0) or
                     (inst.components.container and inst.components.container.numslots > 0)) then
@@ -2976,8 +2981,9 @@ if itemscfg then
                      ingredient_recipe, ...)
                 if self.recipe_type and num_need and num_found and not IsCharacterIngredient(self.recipe_type) then
                     self.onrightclick2hm = function()
-                        collectrecipeclientfn(self.owner or ThePlayer, self.recipe_type, not has_enough and
-                            ((num_need * (self.parent and self.parent.parent and self.parent.parent.quantity or 1) - num_found)))
+                        local owner = self.owner or ThePlayer
+                        collectrecipeclientfn(owner, self.recipe_type, IngredientCollectionNeeded(owner, self.recipe_type,
+                            num_need, self.parent and self.parent.parent and self.parent.parent.quantity, num_found))
                     end
                     self:SetTooltip((self.tooltip or "") ..
                         "\n" .. TheInput:GetLocalizedControl(TheInput:GetControllerID(), CONTROL_SECONDARY) .. ": " ..

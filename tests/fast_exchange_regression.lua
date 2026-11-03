@@ -296,4 +296,56 @@ early:until_(function()return early:ready()end,"early paired recovery")
 check(early.nodes["1"].core.generation==target and early.nodes["2"].core.generation==target,"early notice still requires paired verification")
 check(early.nodes["1"].items=="gold" and early.nodes["2"].items=="rocks","early rollback conserves target inventories")
 
+-- Multiplayer round trips must not race an unacknowledged arrival. Hold only
+-- that player's next migration, while unrelated players can keep moving.
+local mp=simulation();mp:start()
+local ma,mb=mp.nodes['1'],mp.nodes['2']
+for _,uid in ipairs({'A','B','C'}) do
+    ma.core:Register(uid,'1','before-'..uid)
+end
+mp:until_(function()return not ma.core.regbusy and not mb.core.regbusy end,'multiplayer registration')
+for round=1,12 do
+    local uid=({'A','B','C'})[(round-1)%3+1]
+    local from=ma.core.owners[uid]=='1' and ma or mb
+    local to=from==ma and mb or ma
+    local token=from.core:Depart(uid)
+    to.core:Arrived(uid,token,from.id)
+    local drops=0
+    mp.filter=function(p)
+        if p.m.op=='ARRIVED_ACK' and drops<3 then drops=drops+1;return false end
+        return true
+    end
+    check(not to.core:CanMigrate(uid),'arrival pending blocks only a second departure for same player')
+    check(not from.core:CanMigrate(uid),'source cannot overlap its pending departure')
+    local other=uid=='A' and 'B' or 'A'
+    local otherowner=ma.core.owners[other]=='1' and ma or mb
+    check(otherowner.core:CanMigrate(other),'pending arrival does not block an unrelated player')
+    mp:until_(function()return not from.core.outbound[uid] and not to.core.inbound[uid]end,'lost migration ACK')
+    check(from.core.owners[uid]==to.id and to.core.owners[uid]==to.id,'both owners converge after lost ACK')
+    mp.filter=nil
+    ma.core:Request()
+    mp:until_(function()return mp:ready() and not ma.core.want end,'checkpoint after multiplayer migration')
+    mp:trade()
+end
+check(not ma.hold and not mb.hold,'repeated multiplayer migrations leave no global control lock')
+-- A stale owner map must still allow unrelated arrival/registration retries.
+local sent={}
+local stale=setmetatable({io={master=true,now=function()return 10 end,connected=function()return true end,
+    send=function(_,m)sent[m.op]=true end},peer='2',peerboot='b',phase='frozen',pending={id='c'},
+    peerdrained='c',peerowners={A='2'},owners={A='1'},lastsend=-100,
+    registrations={B={localdone=true,owner='1'}},inbound={C='token'}},Core)
+stale:Tick()
+check(sent.REGISTER and sent.ARRIVED and sent.FREEZE,'owner disagreement cannot starve control retries')
+check(stale.phase=='frozen','owner disagreement must not save inconsistent player ownership')
+
+local writes,wakes=0,0
+local already=setmetatable({io={idle=function()return true end,wake=function()wakes=wakes+1 end,
+    send=function()end},peer='2',loaded='c',phase='joining',
+    store={state={current='c',cuts={c={}}},Seal=function(_,_,cb)writes=writes+1;cb(true)end}},Core)
+already:Select('c',false)
+check(writes==0 and wakes==1 and already.phase=='activating' and already.lastsend==-100,
+    'verified current checkpoint activates without rewriting its journal or waiting for resend timer')
+already.phase='joining';already.store.state.forced='c'
+already:Select('c',false)
+check(writes==1,'forced recovery still seals its journal before activation')
 print("Production fast/checkpoint checks:",checks)
