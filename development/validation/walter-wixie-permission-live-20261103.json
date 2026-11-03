@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-03",
+  "game_version": 761239,
+  "mod_version": "2.8.14.97.2",
+  "configuration": {
+    "Walter Use Wixie Slingshot": true,
+    "UM beta wixie_walter": true,
+    "Functional Medal": true,
+    "Legion": true
+  },
+  "finding": "In the inspected live test character, all installed slingshot part skills are inactive on both server and client. Native slingshot2ex skill checks therefore disable special targeting. The Wixie permission remained enabled throughout.",
+  "live_control": "Temporarily bypassed CheckRequiredSkillsForPlayer on only the equipped test weapon. Mouse targeting and shooting produced native slingshot_special/slingshot_special2, second-slot projectile, magicamplified=true. Restoring the original method disabled targeting again. No skills were granted and no configuration was changed.",
+  "cleanup": "Original skill check and projectile callback restored; newstate listener and temporary globals removed; restoration confirmed in server output.",
+  "production_changes": false,
+  "published": false,
+  "limitation": "This identifies the blocker in the inspected save. It does not establish that earlier friends reports had the same cause. Graphical test used a temporary per-weapon skill-check bypass; the isolated native test used actual activated skills.",
+  "native_enabled_test": {
+    "log": "UM-enabled-special-baseline-stdout.txt",
+    "sha256": "47cf84cc2a25d3c1fb14f3fadf2eb4aa10cc8703a3ac1b121dc6036ff8657ac4",
+    "result_lines": [
+      "[00:00:47]: [WALTER_SPECIAL] RESULT\thost\tPASS\t1\t2\tidle",
+      "[00:00:50]: [WALTER_SPECIAL] RESULT\tremote\tPASS\t1\t2\tidle",
+      "[00:00:53]: [WALTER_SPECIAL] RESULT\tmedal_host\tPASS\t1\t2\tidle",
+      "[00:00:56]: [WALTER_SPECIAL] RESULT\tmedal_remote\tPASS\t1\t2\tidle",
+      "[00:00:59]: [WALTER_SPECIAL] RESULT\tammo_host\tPASS\t1\t2\tidle",
+      "[00:01:02]: [WALTER_SPECIAL] RESULT\tammo_remote\tPASS\t1\t2\tidle",
+      "[00:01:05]: [WALTER_SPECIAL] RESULT\tparts_host\tPASS\t1\t2\tidle",
+      "[00:01:08]: [WALTER_SPECIAL] RESULT\tparts_remote\tPASS\t1\t2\tidle",
+      "[00:01:08]: [WALTER_SPECIAL] ALL_PASS"
+    ]
+  },
+  "live_evidence": [
+    "[00:08:02]: [SW_AIM_HAND]\twalter\tslingshot2ex\ttrue\tfalse",
+    "[00:12:53]: [SW_AIM_READY]\tfalse\tfalse",
+    "[00:12:53]: [SW_AIM_AMMO]\t1\tnil",
+    "[00:12:53]: [SW_AIM_AMMO]\t2\tnil",
+    "[00:15:04]: [SW_AIM_LOADED]\tslingshot2ex\tfalse\tfalse",
+    "[00:15:04]: [SW_AIM_PART]\tslingshot_band_mimic\twalter_slingshot_bands\tfalse",
+    "[00:15:04]: [SW_AIM_PART]\tslingshot_frame_gems\twalter_slingshot_frames\tfalse",
+    "[00:15:04]: [SW_AIM_PART]\tslingshot_handle_sticky\twalter_slingshot_handles\tfalse",
+    "[00:16:52]: [SW_AIM_TEST_READY]\ttrue\ttrue",
+    "[00:19:01]: [SW_AIM_LAUNCH]\tslingshotammo_rock_proj\t2\ttrue",
+    "[00:21:53]: [SW_AIM_RESTORED]\tfalse\ttrue",
+    "[00:54:21]: [SW_AIM_CLIENT_SKILL]\twalter_slingshot_modding\tfalse",
+    "[00:54:21]: [SW_AIM_CLIENT_SKILL]\twalter_slingshot_bands\tfalse",
+    "[00:54:21]: [SW_AIM_CLIENT_SKILL]\twalter_slingshot_frames\tfalse",
+    "[00:54:21]: [SW_AIM_CLIENT_SKILL]\twalter_slingshot_handles\tfalse"
+  ]
+}

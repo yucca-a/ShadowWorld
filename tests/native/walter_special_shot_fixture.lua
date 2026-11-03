@@ -5,14 +5,6 @@ AddPrefabPostInit("world", function(world)
     world:PushEvent("ms_setautosaveenabled", false)
     local function check(ok, why) assert(ok, "WALTER_SPECIAL: " .. why) end
     world:DoTaskInTime(5, function()
-        if TUNING.DSTU then
-            local walter = SpawnPrefab("walter")
-            check(walter and walter:IsValid(), "Walter spawns under UM")
-            check(walter:HasTag("slingshot_sharpshooter"), "Walter native permission preserved")
-            print("[PROPAGATOR_CLEANUP] UM_WALTER_SPAWN_PASS")
-            c_shutdown(false)
-            return
-        end
         local x, y, z = world.components.playerspawner:GetAnySpawnPoint()
         local walter = SpawnPrefab("walter")
         walter.Transform:SetPosition(x, 0, z)

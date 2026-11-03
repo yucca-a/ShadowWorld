@@ -209,15 +209,52 @@ end
 -- Native restrictions and both actual UM action wrappers, on server and client.
 ACTIONS={ATTACK='attack'}
 IsEntityDead=function(i)return i.dead or false end
+hash=function(name)return 'hash:'..name end
 for _,master in ipairs({false,true})do for _,enabled in ipairs({false,true})do
     local e=env();local hooks,components,graphs={},{},{}
     e.TUNING={DSTU=true,WIXIE_HEALTH=1,easymode2hm=false,SLINGSHOT_DISTANCE=10,SLINGSHOT_DISTANCE_MAX=14}
     e.TheWorld={ismastersim=master}
+    e.ModManager={GetPostInitFns=function()return {} end}
     e.GetModConfigData=function(n)return n=='Walter Use Wixie Slingshot'and enabled or false end
     e.AddPrefabPostInit=function(n,f)hooks[n]=f end
     e.AddComponentPostInit=function(n,f)components[n]=f end
     e.AddStategraphPostInit=function(n,f)graphs[n]=f end
     assert(setfenv(assert(loadstring(access_patch)),e))()
+    do
+        local graph=master and 'wilson' or 'wilson_client'
+        local released=0
+        local native=State{name='slingshot_charge',tags={'busy','aoecharging'},
+            server_states=not master and {'slingshot_charge'} or nil,
+            events={EventHandler('chargingreticulereleased',function()released=released+1 end)}}
+        local sg={name=graph,states={slingshot_charge=native},actionhandlers={}}
+        for _,f in ipairs(e.ModManager:GetPostInitFns('StategraphPostInit',graph))do f(sg)end
+        local saved=sg.states.slingshot_charge_native2hm
+        check(saved and saved:is_a(State),'saved charge retains engine State methods')
+        check(native.name=='slingshot_charge','original State name untouched')
+        if not master then
+            check(saved.server_states[hash(saved.name)] and not saved.server_states[hash(native.name)],'client predicts matching native charge alias')
+        end
+        saved:HandleEvent({inst={}},'chargingreticulereleased',{})
+        check(released==1,'native release handler survives UM replacement')
+        local entered,exited=0,0
+        local um=State{name='slingshot_charge',tags={'abouttoattack'},
+            onenter=function()entered=entered+1 end,onexit=function()exited=exited+1 end}
+        sg.states.slingshot_charge=um
+        graphs[graph](sg)
+        for _,prefab in ipairs({'slingshotex','slingshot999ex','slingshot','slingshot_gnasher','slingshot_matilda'})do
+            local p=actor('walter');local charged=prefab=='slingshotex' or prefab=='slingshot999ex'
+            local weapon={prefab=prefab,components={aoecharging=charged and {} or nil}}
+            p.replica.inventory={GetEquippedItem=function()return weapon end}
+            p.components.inventory=master and p.replica.inventory or nil
+            local selected
+            p.sg.GoToState=function(_,name)selected=name;um.onexit(p)end
+            local before=entered;um.onenter(p)
+            check(charged and selected==saved.name or not charged and selected==nil,'charge route '..graph..prefab)
+            check(entered==before+(charged and 0 or 1),'only UM weapons invoke UM charge')
+            if charged then check(exited==0,'redirect skips unentered UM cleanup')end
+        end
+        check(#e.ModManager:GetPostInitFns('StategraphPostInit','spider')==0,'unrelated graph hooks unchanged')
+    end
     local w=actor('walter');w:AddTag('player');hooks.walter(w)
     check(w:HasTag('troublemaker')==enabled,'only exclusive permission follows switch')
     for _,tag in ipairs({'troublemaker','slingshot_sharpshooter','pebblemaker'})do
@@ -238,7 +275,7 @@ for _,master in ipairs({false,true})do for _,enabled in ipairs({false,true})do
         local selected
         w.sg.mem={};w.components.combat=master and{GetWeapon=function()return selected end}or nil
         w.replica.combat={GetWeapon=function()return selected end}
-        for _,name in ipairs({'slingshot','slingshotex','slingshot2','slingshot2ex'})do
+        for _,name in ipairs({'slingshot','slingshotex','slingshot999ex','slingshot2','slingshot2ex'})do
             selected=actor(name);selected:AddTag('slingshot')
             check(sg.actionhandlers[ACTIONS.ATTACK].deststate(w,{target={}})=='slingshot_shoot','actual '..version..' '..graph..' fires '..name)
         end

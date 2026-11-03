@@ -129,4 +129,6 @@ python tests/build_fast_exchange_probes.py exit --run-id local_exit
 
 `tests/run_propagator_tests.py` 使用游戏原生传热组件和永不妥协正式／测试版的实际包装函数，复现失效实体在 `OnRemoveFromEntity → OnUpdate(0)` 中传入空坐标的崩溃。验证修复后定时任务仍被取消、正常传热和融冰通知仍执行、永不妥协冬季范围在调用后恢复。`tests/native/propagator_cleanup_fixture.lua` 在上述隔离世界中回放移除常青树后的组件清理及完整燃烧延迟回调。
 
-`tests/native/walter_special_shot_fixture.lua` 检查原生铥矿弹弓的动作收集、本机 `OnLeftClick`、远程 `OnRemoteLeftClick`、第二弹药格及实际弹丸生成。能力勋章环境还覆盖童真勋章、落水弹，以及铥矿框架／附身皮筋／果冻手柄。无图形测试只提供瞄准线数据与视觉取消回调，不代表已完成实际客户端鼠标、画面及本地辅助模组验收；这些检查通过也不能据此认定玩家报告的问题已修复。若加载永不妥协，此夹具仅验证沃尔特生成与原版弹弓权限，配合传热清理夹具运行。
+`tests/native/walter_special_shot_fixture.lua` 检查原生铥矿弹弓的动作收集、本机 `OnLeftClick`、远程 `OnRemoteLeftClick`、第二弹药格及实际弹丸生成。能力勋章环境还覆盖童真勋章、落水弹，以及铥矿框架／附身皮筋／果冻手柄。加载永不妥协时同样执行完整射击测试。无图形测试只提供瞄准线数据与视觉取消回调，不代表已完成实际客户端鼠标、画面及本地辅助模组验收；这些检查通过也不能据此认定玩家报告的问题已修复。
+
+`tests/native/walter_charge_fixture.lua` 仅用于上述隔离弹弓世界，验证真实废料框架及其升级版的蓄力、松键发射、取消与卸下清理，安装猪皮皮筋和黏糊手柄以避免附身皮筋随机节省弹药干扰消耗断言。启用永不妥协后，还通过远程右键动作检查沃尔特（开关开启时）与维希的原始／犬牙／玛蒂尔达弹弓，提供等同于鼠标坐标 RPC 的瞄准数据并验证实际施法及弹药消耗。`run_wixie_tests.py` 另覆盖服务器／预测客户端的状态分流、预测状态匹配、继承方法，以及两版永不妥协的装备和普通攻击权限。

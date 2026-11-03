@@ -164,9 +164,9 @@ local function processslingshot_shoot(sg)
             end
         end
     end
-    if sg.states.slingshot_charge then
-        local state = sg.states.slingshot_charge
-        if not state.upanimPG then
+    for _, name in ipairs({"slingshot_charge", "slingshot_charge_native2hm"}) do
+        local state = sg.states[name]
+        if state and not state.upanimPG then
             state.upanimPG = true
             local onenter = state.onenter
             state.onenter = function(inst, ...)

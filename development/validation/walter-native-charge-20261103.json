@@ -1,0 +1,200 @@
+{
+  "date": "2026-11-03",
+  "game_version": 761239,
+  "workshop_base_version": "2.8.14.97.2",
+  "published": false,
+  "finding": "With the same current UM beta, both the full pre-split revision and pre-fix HEAD lose native wagpunk charging: UM replaces slingshot_charge on server and client, charge owner remains nil, charge ticks stay zero and release launches no projectile. This predates the character split.",
+  "frame_behaviour": {
+    "slingshot": "UM spellcaster charging",
+    "slingshot2": "Bone frame: two ammo slots, no charge component in either revision",
+    "slingshot2ex": "Gems/thulecite: native aimed CASTAOE special shot",
+    "slingshotex/slingshot999ex": "Wagpunk: native hold/release AOECharging"
+  },
+  "live_after_user_skills": [
+    "[00:39:14]: [SW_SKILLED]\tslingshot2\ttrue",
+    "[00:39:14]: [SW_SKILLED]\tmodding\ttrue",
+    "[00:39:14]: [SW_SKILLED]\tbands\ttrue",
+    "[00:39:14]: [SW_SKILLED]\tframes\ttrue",
+    "[00:39:14]: [SW_SKILLED]\thandles\ttrue"
+  ],
+  "fix": "Preserve engine charge State before mod post-inits, route native AOECharging weapons to its own matching server/client state, retain native release/cancel cleanup and ShadowWorld slowdown. Keep UM spellcaster weapons on UM charge. Include slingshot999ex in native attack permissions.",
+  "historical_control": [
+    {
+      "revision": "4a2b4adf028c294434baa837753e9c4450637659",
+      "log": "BeforeSplit-v2-stdout.txt",
+      "sha256": "77679a7e9611c2d9d2842bfe3f29d6da72e64c1f1d17efd8cdde402ec59742b0",
+      "results": [
+        "[00:00:41]: [SW_HISTORY] PERMISSIONS\ttrue\ttrue",
+        "[00:00:41]: [SW_HISTORY] STATE\twilson\tfalse\tfalse",
+        "[00:00:41]: [SW_HISTORY] STATE\twilson_client\tfalse\tfalse",
+        "[00:00:41]: [SW_HISTORY] WEAPON\tslingshot\ttrue\ttrue\tfalse\tfalse\ttrue",
+        "[00:00:41]: [SW_HISTORY] WEAPON\tslingshot2\ttrue\tfalse\tfalse\tfalse\tfalse",
+        "[00:00:41]: [SW_HISTORY] WEAPON\tslingshot2ex\ttrue\tfalse\ttrue\tfalse\tfalse",
+        "[00:00:41]: [SW_HISTORY] WEAPON\tslingshotex\ttrue\tfalse\tfalse\ttrue\tfalse",
+        "[00:00:41]: [SW_HISTORY] ENTER\tslingshotex\tslingshot_charge\tfalse",
+        "[00:00:43]: [SW_HISTORY] CHARGE\tslingshotex\tfalse\t0",
+        "[00:00:45]: [SW_HISTORY] RESULT\tslingshotex\t0\tslingshot_charge",
+        "[00:00:45]: [SW_HISTORY] WEAPON\tslingshot999ex\ttrue\tfalse\tfalse\ttrue\tfalse",
+        "[00:00:45]: [SW_HISTORY] ENTER\tslingshot999ex\tslingshot_charge\tfalse",
+        "[00:00:47]: [SW_HISTORY] CHARGE\tslingshot999ex\tfalse\t0",
+        "[00:00:49]: [SW_HISTORY] RESULT\tslingshot999ex\t0\tslingshot_charge",
+        "[00:00:49]: [SW_HISTORY] WEAPON\tslingshot_gnasher\ttrue\ttrue\tfalse\tfalse\ttrue",
+        "[00:00:49]: [SW_HISTORY] WEAPON\tslingshot_matilda\ttrue\ttrue\tfalse\tfalse\ttrue",
+        "[00:00:49]: [SW_HISTORY] DONE"
+      ]
+    },
+    {
+      "revision": "f9a8dd01357ffc0a8d33f9cc3d313f3f88b10c4e",
+      "log": "AfterSplit-v2-stdout.txt",
+      "sha256": "d0c79aca66adf621b9e31e2658af5203c114967bf3b49356034dd0e768fde242",
+      "results": [
+        "[00:00:41]: [SW_HISTORY] PERMISSIONS\ttrue\ttrue",
+        "[00:00:41]: [SW_HISTORY] STATE\twilson\tfalse\tfalse",
+        "[00:00:41]: [SW_HISTORY] STATE\twilson_client\tfalse\tfalse",
+        "[00:00:41]: [SW_HISTORY] WEAPON\tslingshot\ttrue\ttrue\tfalse\tfalse\ttrue",
+        "[00:00:41]: [SW_HISTORY] WEAPON\tslingshot2\ttrue\tfalse\tfalse\tfalse\tfalse",
+        "[00:00:41]: [SW_HISTORY] WEAPON\tslingshot2ex\ttrue\tfalse\ttrue\tfalse\tfalse",
+        "[00:00:41]: [SW_HISTORY] WEAPON\tslingshotex\ttrue\tfalse\tfalse\ttrue\tfalse",
+        "[00:00:41]: [SW_HISTORY] ENTER\tslingshotex\tslingshot_charge\tfalse",
+        "[00:00:43]: [SW_HISTORY] CHARGE\tslingshotex\tfalse\t0",
+        "[00:00:45]: [SW_HISTORY] RESULT\tslingshotex\t0\tslingshot_charge",
+        "[00:00:45]: [SW_HISTORY] WEAPON\tslingshot999ex\ttrue\tfalse\tfalse\ttrue\tfalse",
+        "[00:00:45]: [SW_HISTORY] ENTER\tslingshot999ex\tslingshot_charge\tfalse",
+        "[00:00:47]: [SW_HISTORY] CHARGE\tslingshot999ex\tfalse\t0",
+        "[00:00:49]: [SW_HISTORY] RESULT\tslingshot999ex\t0\tslingshot_charge",
+        "[00:00:49]: [SW_HISTORY] WEAPON\tslingshot_gnasher\ttrue\ttrue\tfalse\tfalse\ttrue",
+        "[00:00:49]: [SW_HISTORY] WEAPON\tslingshot_matilda\ttrue\ttrue\tfalse\tfalse\ttrue",
+        "[00:00:49]: [SW_HISTORY] DONE"
+      ]
+    }
+  ],
+  "native_validation": [
+    {
+      "log": "ChargeBetaOn-v2-stdout.txt",
+      "sha256": "6cd66fec336cfb320f9c0c5460dc0c5863496af192a10c019b7d819509eb622d",
+      "passed": 12,
+      "results": [
+        "[00:00:44]: [WALTER_CHARGE] PASS\tslingshotex\trelease",
+        "[00:00:48]: [WALTER_CHARGE] PASS\tslingshotex\tcancel",
+        "[00:00:52]: [WALTER_CHARGE] PASS\tslingshotex\tunequip",
+        "[00:00:55]: [WALTER_CHARGE] PASS\tslingshot999ex\trelease",
+        "[00:00:59]: [WALTER_CHARGE] PASS\tslingshot999ex\tcancel",
+        "[00:01:02]: [WALTER_CHARGE] PASS\tslingshot999ex\tunequip",
+        "[00:01:06]: [WALTER_CHARGE] PASS\twalter\tslingshot\tUM",
+        "[00:01:10]: [WALTER_CHARGE] PASS\twalter\tslingshot_gnasher\tUM",
+        "[00:01:14]: [WALTER_CHARGE] PASS\twalter\tslingshot_matilda\tUM",
+        "[00:01:18]: [WALTER_CHARGE] PASS\twixie\tslingshot\tUM",
+        "[00:01:22]: [WALTER_CHARGE] PASS\twixie\tslingshot_gnasher\tUM",
+        "[00:01:26]: [WALTER_CHARGE] PASS\twixie\tslingshot_matilda\tUM"
+      ]
+    },
+    {
+      "log": "ChargeBetaOff-v2-stdout.txt",
+      "sha256": "2460528d658535f5f31358a65a3b98994218511d8e269611edbc1eb2c8f2c72a",
+      "passed": 9,
+      "results": [
+        "[00:00:44]: [WALTER_CHARGE] PASS\tslingshotex\trelease",
+        "[00:00:48]: [WALTER_CHARGE] PASS\tslingshotex\tcancel",
+        "[00:00:52]: [WALTER_CHARGE] PASS\tslingshotex\tunequip",
+        "[00:00:55]: [WALTER_CHARGE] PASS\tslingshot999ex\trelease",
+        "[00:00:59]: [WALTER_CHARGE] PASS\tslingshot999ex\tcancel",
+        "[00:01:02]: [WALTER_CHARGE] PASS\tslingshot999ex\tunequip",
+        "[00:01:06]: [WALTER_CHARGE] PASS\twixie\tslingshot\tUM",
+        "[00:01:10]: [WALTER_CHARGE] PASS\twixie\tslingshot_gnasher\tUM",
+        "[00:01:14]: [WALTER_CHARGE] PASS\twixie\tslingshot_matilda\tUM"
+      ]
+    },
+    {
+      "log": "ChargeStableOn-stdout.txt",
+      "sha256": "eb476983559e236b5bd7b716600582d5c6952d41ba60a2668d2acaee5ce4f83f",
+      "passed": 12,
+      "results": [
+        "[00:00:40]: [WALTER_CHARGE] PASS\tslingshotex\trelease",
+        "[00:00:44]: [WALTER_CHARGE] PASS\tslingshotex\tcancel",
+        "[00:00:48]: [WALTER_CHARGE] PASS\tslingshotex\tunequip",
+        "[00:00:51]: [WALTER_CHARGE] PASS\tslingshot999ex\trelease",
+        "[00:00:55]: [WALTER_CHARGE] PASS\tslingshot999ex\tcancel",
+        "[00:00:58]: [WALTER_CHARGE] PASS\tslingshot999ex\tunequip",
+        "[00:01:02]: [WALTER_CHARGE] PASS\twalter\tslingshot\tUM",
+        "[00:01:06]: [WALTER_CHARGE] PASS\twalter\tslingshot_gnasher\tUM",
+        "[00:01:10]: [WALTER_CHARGE] PASS\twalter\tslingshot_matilda\tUM",
+        "[00:01:14]: [WALTER_CHARGE] PASS\twixie\tslingshot\tUM",
+        "[00:01:18]: [WALTER_CHARGE] PASS\twixie\tslingshot_gnasher\tUM",
+        "[00:01:22]: [WALTER_CHARGE] PASS\twixie\tslingshot_matilda\tUM"
+      ]
+    },
+    {
+      "log": "ChargeStableOff-stdout.txt",
+      "sha256": "7a647d8b621c813088360ca6ef3e6aa725079d4b604e4eae4c89f455ffd72201",
+      "passed": 9,
+      "results": [
+        "[00:00:40]: [WALTER_CHARGE] PASS\tslingshotex\trelease",
+        "[00:00:44]: [WALTER_CHARGE] PASS\tslingshotex\tcancel",
+        "[00:00:48]: [WALTER_CHARGE] PASS\tslingshotex\tunequip",
+        "[00:00:51]: [WALTER_CHARGE] PASS\tslingshot999ex\trelease",
+        "[00:00:55]: [WALTER_CHARGE] PASS\tslingshot999ex\tcancel",
+        "[00:00:58]: [WALTER_CHARGE] PASS\tslingshot999ex\tunequip",
+        "[00:01:02]: [WALTER_CHARGE] PASS\twixie\tslingshot\tUM",
+        "[00:01:06]: [WALTER_CHARGE] PASS\twixie\tslingshot_gnasher\tUM",
+        "[00:01:10]: [WALTER_CHARGE] PASS\twixie\tslingshot_matilda\tUM"
+      ]
+    },
+    {
+      "log": "ChargeNoUM-v2-stdout.txt",
+      "sha256": "dafc8c56c1653f36a0fa2e85c87e791bc626957131b91672695f12cf63291a1c",
+      "passed": 6,
+      "results": [
+        "[00:00:30]: [WALTER_CHARGE] PASS\tslingshotex\trelease",
+        "[00:00:34]: [WALTER_CHARGE] PASS\tslingshotex\tcancel",
+        "[00:00:38]: [WALTER_CHARGE] PASS\tslingshotex\tunequip",
+        "[00:00:41]: [WALTER_CHARGE] PASS\tslingshot999ex\trelease",
+        "[00:00:45]: [WALTER_CHARGE] PASS\tslingshot999ex\tcancel",
+        "[00:00:48]: [WALTER_CHARGE] PASS\tslingshot999ex\tunequip"
+      ]
+    },
+    {
+      "log": "NativeSpecialChargeFixed-stdout.txt",
+      "sha256": "410bd32167547e736123473c57d51c1b811a0acb1d80f4ed638554ff0aa33c1c",
+      "passed": 8,
+      "results": [
+        "[00:00:50]: [WALTER_SPECIAL] RESULT\thost\tPASS\t1\t2\tidle",
+        "[00:00:53]: [WALTER_SPECIAL] RESULT\tremote\tPASS\t1\t2\tidle",
+        "[00:00:56]: [WALTER_SPECIAL] RESULT\tmedal_host\tPASS\t1\t2\tidle",
+        "[00:00:59]: [WALTER_SPECIAL] RESULT\tmedal_remote\tPASS\t1\t2\tidle",
+        "[00:01:02]: [WALTER_SPECIAL] RESULT\tammo_host\tPASS\t1\t2\tidle",
+        "[00:01:05]: [WALTER_SPECIAL] RESULT\tammo_remote\tPASS\t1\t2\tidle",
+        "[00:01:08]: [WALTER_SPECIAL] RESULT\tparts_host\tPASS\t1\t2\tidle",
+        "[00:01:11]: [WALTER_SPECIAL] RESULT\tparts_remote\tPASS\t1\t2\tidle"
+      ]
+    }
+  ],
+  "lua51_syntax_files": 375,
+  "wixie_regression_checks": 512,
+  "propagator_lifecycle_cases": 12,
+  "local_sync": {
+    "directory": "D:\\SteamLibrary\\steamapps\\workshop\\content\\322330\\3832182265",
+    "backup": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\slingshot-charge-local-backup-20261103",
+    "files": [
+      {
+        "file": "common/walter_wixie_slingshot.lua",
+        "sha256": "f5b15bff749a30f04aed88381cfb42c876600484dae0447521a4cc803e9d49a3"
+      },
+      {
+        "file": "role/walter.lua",
+        "sha256": "27f29670fbfb4ed68381886adccbed2fd903a8a78ea4f83cae87d0c28d920026"
+      },
+      {
+        "file": "common/patch.lua",
+        "sha256": "c868151d61290045659d8df04fb7f9da78ead03d14020a1ddb7a477dd96d9933"
+      }
+    ],
+    "requires_game_and_server_restart": true,
+    "live_running_world_reloaded": false
+  },
+  "limitations": [
+    "No graphical client validation of the new charge alias yet; headless runtime and client State/prediction mapping checks passed.",
+    "UM fixture supplies aim coordinates normally sent by its mouse RPC.",
+    "Earlier friends thulecite failure is not established as this wagpunk state collision; no speculative CASTAOE input changes."
+  ],
+  "fixture_adjustments": "First fixture run exposed two fixture assumptions: mimic band may conserve ammo, and headless UM needs mouse coordinates. Switched to pigskin band and supplied normal aim coordinates, then reran all matrices."
+}

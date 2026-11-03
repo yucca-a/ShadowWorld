@@ -8,6 +8,8 @@
 - [私有维护仓库](https://github.com/yucca-a/ShadowWorld)，维护分支为 `codex/maintenance`。
 - 原作者署名及许可证保留在 [来源说明](content/ARCHIVE_SOURCE.txt) 和 [LICENSE](content/LICENSE) 中。
 
+本地待发布修复：保留沃尔特废料框架弹弓的原版蓄力动作，避免被永不妥协的同名动作覆盖；补齐升级废料框架的普通射击权限，并修正失效实体的传热清理崩溃。已同步本机模组，完整重启游戏与服务器后生效。验证记录见 [弹弓蓄力对照与回归](development/validation/walter-native-charge-20261103.json)。工坊仍为上述已发布版本。
+
 本次发布的修复与加强：[离线模式模组查看按钮](development/离线模式模组查看修复.md)、[穿越世界快速版](development/穿越世界快速版_实装说明.md)、[科技建筑配方预览崩溃修复](development/科技建筑配方预览崩溃_修复记录.md)、[眼球炮塔加强](development/眼球炮塔加强_实装说明.md)、[维希独立配置与幽闭兼容](development/维希独立配置与幽闭恐惧兼容.md)、[怪物角色夜视与沃托姆兼容](development/怪物角色夜视与沃托姆兼容.md)，均已包含在 2.8.14.97 中。
 
 ## 目录
