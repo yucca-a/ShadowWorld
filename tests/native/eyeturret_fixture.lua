@@ -75,7 +75,10 @@ AddPrefabPostInit("world", function(world)
             stop(giver)
             local function give(name)
                 local item = SpawnPrefab(name)
-                check(turret.components.trader:AcceptGift(giver, item), "upgrade accepted " .. name)
+                local actions = {}
+                item:CollectActions("USEITEM", giver, turret, actions, false)
+                check(table.contains(actions, ACTIONS.GIVE), "native material action offers GIVE " .. name)
+                check(ACTIONS.GIVE.fn(BufferedAction(giver, turret, ACTIONS.GIVE, item)), "native GIVE upgrades " .. name)
                 check(not item:IsValid(), "upgrade consumes one " .. name)
             end
             give("dragon_scales")

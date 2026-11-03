@@ -204,6 +204,7 @@ end
 
 AddPrefabPostInit("eyeturret", function(inst)
     inst:AddTag("trader")
+    inst:AddTag("alltrader") -- dragon_scales/shroom_skin have no native tradable component
     if not TheWorld.ismastersim then return end
     inst.eyeturretenhanced2hm = true
     inst.components.health:SetMaxHealth(HEALTH)
@@ -216,6 +217,7 @@ AddPrefabPostInit("eyeturret", function(inst)
     inst.hasplaced2hm = true
     if inst.components.trader == nil then inst:AddComponent("trader") end
     local trader = inst.components.trader
+    trader.acceptnontradable = true
     local test, onaccept = trader.test, trader.onaccept
     trader:SetAcceptTest(function(i, item, giver, count)
         if item.prefab == "dragon_scales" or item.prefab == "shroom_skin" then

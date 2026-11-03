@@ -43,6 +43,7 @@ local function entity(name,x)
     function i:AddTag(t)self.tags[t]=true end
     function i:HasTag(t)return self.tags[t]or false end
     function i:HasOneOfTags(tags)for _,t in ipairs(tags)do if self:HasTag(t)then return true end end;return false end
+    function i:HasAnyTag(...)return self:HasOneOfTags({...})end
     function i:GetPhysicsRadius(d)return d end
     function i:GetDistanceSqToInst(o)return (self.x-o.x)^2 end
     function i:GetWetMultiplier()return self.wet or 0 end
@@ -186,6 +187,16 @@ for _,i in ipairs({neutral,friend,building,player,ally})do i:Remove()end
 local function gift(name)
     local i=entity(name);i.components.inventoryitem={RemoveFromOwner=function()end};return i
 end
+local collectgive=assert(loadstring(give_action_source))()
+ACTIONS={GIVE={}}
+local actiongiver=entity('wilson');actiongiver.replica={}
+t.replica={}
+for _,name in ipairs({'dragon_scales','shroom_skin'})do
+    local material=gift(name);material.replica={}
+    local actions={};collectgive(material,actiongiver,t,actions,false)
+    check(actions[1]==ACTIONS.GIVE,'native material action exposes GIVE for '..name)
+end
+check(t.components.trader.acceptnontradable==true,'server accepts these non-tradable materials')
 local scales=gift('dragon_scales');check(t.components.trader:AcceptGift(nil,scales),'dragon scale accepted')
 check(scales.removed and t.eyeturretfire2hm,'one scale consumed for upgrade')
 local duplicate=gift('dragon_scales');check(not t.components.trader:AcceptGift(nil,duplicate)and not duplicate.removed,'duplicate scale is not consumed')
@@ -260,5 +271,6 @@ armor:PushEvent('healthdelta',{oldpercent=.3,newpercent=.5});check(armor.poor_33
 TheWorld.ismastersim=false
 local preview=entity('eyeturret');apply('eyeturret',preview)
 check(preview:HasTag('trader')and not preview.eyeturretenhanced2hm,'client receives action tag without server components')
+check(preview:HasTag('alltrader'),'client offers material GIVE action')
 local pc=entity('eye_charge');apply('eye_charge',pc);check(pc.components.projectile==nil,'client projectile is safe')
 print('EYETURRET_CHECKS_PASS '..checks)
