@@ -16,6 +16,8 @@ local function PrivateState(inst, state)
     if current ~= nil and current.slingshot_source2hm == state then return current end
     local private = {}
     for key, value in pairs(state) do private[key] = value end
+    -- State:HandleEvent and other engine methods live on the class metatable.
+    setmetatable(private, getmetatable(state))
     private.slingshot_source2hm = state
     private.rate2hm, private.entities2hm = nil, nil
     if state.timeline ~= nil then
@@ -23,6 +25,7 @@ local function PrivateState(inst, state)
         for i, entry in ipairs(state.timeline) do
             local copy = {}
             for key, value in pairs(entry) do copy[key] = value end
+            setmetatable(copy, getmetatable(entry))
             copy.time, copy.time2hm = entry.time2hm or entry.time, nil
             private.timeline[i] = copy
         end

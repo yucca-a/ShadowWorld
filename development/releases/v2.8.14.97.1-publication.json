@@ -1,0 +1,42 @@
+{
+  "workshop_id": "3832182265",
+  "version": "2.8.14.97.1",
+  "tag": "v2.8.14.97.1",
+  "published_at_utc": "2026-11-03T11:37:41+00:00",
+  "uploader_status": "Update completed",
+  "title": "为爽而虐/暗影世界 淬炼之季",
+  "visibility": "Public",
+  "version_tag_verified": true,
+  "published_notes_match_prepared_text": true,
+  "patch_notes_file": "workshop/update-notes-2.8.14.97.1.txt",
+  "patch_notes_sha256": "602e9d557cb7c0a9d1fce94cc67f0c23e569a04109153a3baa17c7534237b827",
+  "content_file_count": 454,
+  "content_bytes": 22422959,
+  "content_archive_sha256": "0232b20e4d4afe425cde84792e3f32e0dcc8ec0f0c05541ac084859b5f45342f",
+  "checks": {
+    "wixie_regression": 372,
+    "lua51_syntax_files": 373,
+    "native_cases": [
+      "stable_permission_enabled",
+      "beta_permission_enabled",
+      "beta_permission_disabled"
+    ],
+    "native_equipment_prefabs": [
+      "slingshot",
+      "slingshotex",
+      "slingshot2",
+      "slingshot2ex",
+      "slingshot_matilda",
+      "slingshot_gnasher"
+    ],
+    "native_locomote_and_async_exit": true,
+    "source_hashes_match_upload": true,
+    "real_client_visual_test": false
+  },
+  "update_data": true,
+  "upload_redundant_files": true,
+  "update_details": false,
+  "update_preview_image": false,
+  "server_data_bytes": 22423051,
+  "server_data_source": "Official ModUploader refreshed server details"
+}

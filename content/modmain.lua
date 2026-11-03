@@ -15,6 +15,7 @@ modimport("common/bugfix.lua")
 modimport("init/hover")
 modimport("common/monster_nightvision.lua")
 modimport("common/role_nightvision.lua")
+modimport("common/walter_wixie_slingshot.lua")
 require("debugcommands2hm")
 TUNING.HAPPYPATCHMOD = true -- 供其他模组访问
 TUNING.HappyPatchTest = modname == "HappyPatch"

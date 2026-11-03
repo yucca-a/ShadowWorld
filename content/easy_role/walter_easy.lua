@@ -154,12 +154,6 @@ if slingshotmode then
     AddPrefabPostInit("walter", function(inst)
         if slingshotmode == -1 then inst:AddTag("slingshot_gym2hm") end
         if TUNING.DSTU and TUNING.WIXIE_HEALTH then
-            -- 沃尔特可使用wixie弹弓:由配置Walter Use Wixie Slingshot控制(默认关闭);关闭则不加troublemaker/pebblemaker标签,沃尔特不能用wixie专属弹弓
-            if GetModConfigData("Walter Use Wixie Slingshot") then
-                inst:AddTag("pebblemaker")
-                inst:AddTag("slingshot_sharpshooter")
-                inst:AddTag("troublemaker")
-            end
             if not TheWorld.ismastersim then return end
             if inst.starting_inventory and not table.contains(inst.starting_inventory, "slingshot") then
                 table.insert(inst.starting_inventory, "slingshot")
@@ -170,19 +164,6 @@ if slingshotmode then
         end
     end)
     if TUNING.DSTU and TUNING.WIXIE_HEALTH then
-        AddComponentPostInit("playerspawner", function(self)
-            local SpawnAtLocation = self.SpawnAtLocation
-            self.SpawnAtLocation = function(self, inst, player, ...)
-                local hastroublemaker
-                if player and player:IsValid() and player.prefab == "walter" and player:HasTag("troublemaker") then
-                    hastroublemaker = true
-                    player:RemoveTag("troublemaker")
-                end
-                local res = SpawnAtLocation(self, inst, player, ...)
-                if hastroublemaker then player:AddTag("troublemaker") end
-                return res
-            end
-        end)
         -- 蓄力攻击时如果有简易血条，血条位置下移，从而显示蓄力进度
         local function dychealthbarfix2hm(userid)
             for index, player in ipairs(AllPlayers) do

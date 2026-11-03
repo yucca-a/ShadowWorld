@@ -1,4 +1,4 @@
-version = "2.8.14.97"
+version = "2.8.14.97.1"
 -- Original authors: 繁花丶海棠 | 胜天一猫 | 小蓝鲸 | leo468
 author = "Yucca（维护）"
 forumthread = ""
@@ -763,8 +763,8 @@ configuration_options = {
         i18n({"骑乘按ctrl+右键冲刺, 开启妥协改动时装备弹弓无法冲刺",
             "Walter press Ctrl can't Dodge, equipment slingshot cannot sprint when weixi and walter(Uncompromising) is enabled"})),
     item("Walter Use Wixie Slingshot", i18n({"沃尔特可使用wixie弹弓", "Walter Use Wixie Slingshot"}),
-        i18n({"开启后沃尔特可装备并使用不妥协wixie专属弹弓",
-            "Enable Walter to equip and use wixie's exclusive slingshot (right-click charge shot). Disabled by default"}), false),
+        i18n({"独立开关；开启后沃尔特可使用永不妥协中的普通、改装及维希专属弹弓。默认关闭",
+            "Independent switch: lets Walter use ordinary, modified and Wixie slingshots under UM. Disabled by default"}), false),
     item("Wixie No Claustrophobia", i18n({"维希：移除幽闭恐惧", "Wixie: No Claustrophobia"}),
         i18n({"独立于沃尔特和永不妥协补丁；兼容正式版及测试版，清除幽闭积累、恐慌与视觉效果",
             "Independent of Walter and UM patch; supports stable/Beta fear, panic and overlay removal"}), true),

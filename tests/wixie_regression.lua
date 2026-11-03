@@ -18,6 +18,8 @@ local function actor(name)
     local i={prefab=name or 'wixie',components={},replica={},event_listeners={},tags={},sg={statemem={}}}
     function i:IsValid()return true end
     function i:HasTag(t)return self.tags[t]or false end
+    function i:AddTag(t)self.tags[t]=true end
+    function i:RemoveTag(t)self.tags[t]=nil end
     function i:HasAnyTag(...)for _,t in ipairs({...})do if self:HasTag(t)then return true end end;return false end
     function i:ListenForEvent(e,f)self.event_listeners[e]=self.event_listeners[e]or{};self.event_listeners[e][self]=self.event_listeners[e][self]or{};table.insert(self.event_listeners[e][self],f)end
     function i:RemoveEventCallback(e,f)local a=self.event_listeners[e]and self.event_listeners[e][self]or{};for n=#a,1,-1 do if a[n]==f then table.remove(a,n)end end end
@@ -180,6 +182,61 @@ do
     local i=actor('wixie');i.sg.currentstate=state;state.onenter(i)
     check(i.sg.currentstate==idle and i.animspeed==nil,'native aborted charge stays idle without applying slowdown')
 end
+-- Exercise the engine's actual buffered event dispatch while the private
+-- slingshot state is active. Plain table fixtures miss inherited State methods.
+for _,graph in ipairs({'wilson','wilson_client'})do
+    for _,name in ipairs({'slingshot_charge','slingshot_shoot','slingshot_special'})do
+        for _,character in ipairs({'wixie','walter'})do
+            local e,h,r,graphs=runrole(role_patch,true,true)
+            local handled,fallback,fired=0,0,0
+            local state=State{name=name,onenter=function()end,onexit=function()end,
+                timeline={TimeEvent(1,function()fired=fired+1 end)},
+                events={EventHandler('locomote',function()handled=handled+1;return true end)}}
+            local sg={name=graph,states={[name]=state},events={
+                animover=EventHandler('animover',function()fallback=fallback+1 end)}}
+            for _,f in ipairs(graphs[graph])do f(sg)end
+            local i=actor(character);i.sg=StateGraphInstance(sg,i)
+            i.sg.currentstate=state;i.sg.timeout=10;state.onenter(i)
+            i.sg:PushEvent('locomote');i.sg:PushEvent('animover');i.sg:HandleEvents()
+            check(handled==1 and fallback==1,'native event dispatch survives '..graph..character..name)
+            check(i.sg.currentstate:is_a(State),'private state retains native State class')
+            check(i.sg.currentstate.timeline[1]:is_a(TimeEvent),'private timeline retains native TimeEvent class')
+            i.sg.currentstate.timeline[1].fn(i);check(fired==1,'private timeline callback preserved')
+            state.onexit(i);near(i.animspeed,1,'native state exit restores speed')
+        end
+    end
+end
+-- Equipment restrictions use actual server/replica and stable/Beta cast code.
+for _,master in ipairs({false,true})do for _,enabled in ipairs({false,true})do
+    local e=env();local hooks,components={},{}
+    e.TUNING={DSTU=true,WIXIE_HEALTH=1,easymode2hm=false};e.TheWorld={ismastersim=master}
+    e.GetModConfigData=function(n)return n=='Walter Use Wixie Slingshot'and enabled or false end
+    e.AddPrefabPostInit=function(n,f)hooks[n]=f end
+    e.AddComponentPostInit=function(n,f)components[n]=f end
+    assert(setfenv(assert(loadstring(access_patch)),e))()
+    local w=actor('walter');w:AddTag('player')
+    if hooks.walter then hooks.walter(w)end
+    check(w:HasTag('troublemaker')==enabled,'own switch controls permission independent of easy/attack settings')
+    for _,tag in ipairs({'troublemaker','slingshot_sharpshooter','pebblemaker'})do
+        local weapon={components={},replica={inventoryitem={GetEquipRestrictedTag=function()return tag end}}}
+        local restricted=assert(loadstring(master and server_restricted or client_restricted))()
+        check(restricted({inst=weapon,restrictedtag=tag},w)==not enabled,'native equipment restriction '..tag)
+        local other=actor('wilson');other:AddTag('player')
+        check(restricted({inst=weapon,restrictedtag=tag},other),'other characters remain restricted')
+    end
+    for _,code in ipairs({stable_fear_cast,beta_fear_cast})do
+        check(assert(loadstring(code))()(w)==enabled,'actual UM right-click cast follows permission')
+    end
+    if enabled then
+        local seen
+        local spawner={SpawnAtLocation=function(_,_,p)seen=p:HasTag('troublemaker');return 'spawned' end}
+        components.playerspawner(spawner)
+        check(spawner:SpawnAtLocation({},w)=='spawned'and not seen,'Walter keeps native spawn route')
+        check(w:HasTag('troublemaker'),'permission restored after spawn')
+        local wixie=actor();wixie:AddTag('troublemaker');spawner:SpawnAtLocation({},wixie)
+        check(seen and wixie:HasTag('troublemaker'),'Wixie retains wardrobe spawn')
+    else check(components.playerspawner==nil and hooks.walter==nil,'disabled option installs no hooks')end
+end end
 locale='zh';assert(loadstring(modinfo_source))()
 local found={};for _,v in ipairs(configuration_options)do found[v.name]=v end
 check(found.wixie and found.wixie.default==true,'independent hard option defaults on')

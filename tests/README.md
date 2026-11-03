@@ -98,7 +98,7 @@ python tests/build_fast_exchange_probes.py exit --run-id local_exit
 
 ## 维希独立配置与幽闭兼容
 
-运行 `python tests/run_wixie_tests.py`，需要本机安装正式版 `2039181790` 与测试版 `3193922031`。268项检查读取实际两版维希幽闭算法、原生配置窗口选项构造和保存代码、本模组变速工具；覆盖两侧任务、恐慌、监听保留、独立开关、角色时间线隔离、原有默认系数、弹丸归属、条件显示、隐藏值保存及界面异常后的方法恢复。
+运行 `python tests/run_wixie_tests.py`，需要本机安装正式版 `2039181790` 与测试版 `3193922031`。372项检查读取实际两版维希幽闭算法、原生配置窗口选项构造和保存代码、本模组变速工具；覆盖两侧任务、恐慌、监听保留、独立开关、角色时间线隔离、原有默认系数、弹丸归属、条件显示、隐藏值保存及界面异常后的方法恢复。
 
 `tests/native/wixie_fixture.lua` 仅用于名称为 `ShadowWorld isolated Wixie test` 的隔离世界，会生成角色、生物和护甲，并在验证后关闭。分别配置 `walter=false,wixie=true,walter_easy=false,um_patch=false,["Wixie No Claustrophobia"]=true`，以及相反角色开关、`um_patch=2`、幽闭移除为false。它检查实际共用状态图的并发隔离、Beta网络幽闭值和开启／关闭后的原生表现，不能用于真实玩家存档。
 
@@ -121,3 +121,8 @@ python tests/build_fast_exchange_probes.py exit --run-id local_exit
 `tests/native/eyeturret_recovery_fixture.lua` 仅供名字为 `ShadowWorld isolated eyeturret recovery test` 的一次性独立服务器使用，会生成、击毁、恢复和拆解实体，不能导入玩家存档。搭配完整开发版和永不妥协测试版，关闭独立“随机大小”规则（`Random Sized=false`）以隔离属性断言；分别测试眼球塔加强开启与关闭。通过原生 `ForceKill`、`GetSaveRecord/SpawnSaveRecord`、计时器快进、真实炮弹和 `CASTSPELL` 检验死亡不移除、不掉落、父眼球透明／独立底座保留、恢复满血和升级攻击，以及正常／休养／背包物品落地后的拆解返还。快进只发生在独立测试世界，测试不会等待现实40分钟。无渲染服务器检查动画透明度和底座可见状态，未操作实际客户端验收皮肤画面和鼠标点选。
 
 眼球过渡专项：0.6秒淡出、0.8秒淡入，并验证中间透明度与完成端点、颜色保留、淡入中再次击毁、重复死亡不重播、读档直接恢复状态及拆解时清理任务。原生休养夹具新增 `FADE_OUT_PASS` / `FADE_IN_PASS` 标记；继续验证完整死亡、保存、恢复和拆解流程。
+
+
+弹弓热修补充实际 `Class`、`State`、`TimeEvent`、`StateGraphInstance:HandleEvents`，覆盖蓄力／普通／特殊射击中 `locomote` 和图级事件；旧版会复现 `stategraph.lua:465` 的缺失 `HandleEvent`。权限测试使用原生服务端与客户端装备限制代码、两版永不妥协蓄力判定，验证开关独立性和出生路径。
+
+`tests/native/wixie_slingshot_hotfix_fixture.lua` 仅用于名为 `ShadowWorld isolated slingshot hotfix test` 的隔离世界，实际生成沃尔特、维希及六种弹弓，执行库存装备、缓冲事件与异步状态更新，完成后关闭测试服；不得导入玩家存档。
