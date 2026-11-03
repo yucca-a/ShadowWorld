@@ -35,7 +35,7 @@ python tests/run_world_exchange_tests.py $dstScripts
 
 ## 即时交换实验
 
-以下是研发原型，**没有启用正式功能，也没有完整的原生检查点控制器**。
+以下保留早期研发原型的复现方式；它们本身不属于正式控制器。后续正式接入的验证见下节“快速版实装回归”。
 
 ```powershell
 python tests/run_instant_exchange_tests.py
@@ -50,3 +50,30 @@ python tests/build_instant_probes.py
 - `checkpoint`：会生成模拟玩家，覆盖测试世界状态，并删除明确记录的原始快照文件。第一次启动必须等待**两层**都输出 `READY_FOR_COLD_RESTART`，然后强制结束这两个测试进程，不执行退出保存；第二次启动应在两层看到 `VERIFIED_WORLD_AND_PLAYER`。成功后夹具自行退出。固定试验键会保留在临时存档中，复跑应使用新的隔离存档。
 
 原生恢复试验覆盖的是受控的世界状态和每层一个模拟玩家背包，不覆盖实际联网玩家、迁移、自动协调回档或任意阶段断电。具体发现及尚未完成的接入条件见 [即时交换实验进度](../development/穿越世界即时交换_实验进度.md)。
+
+## 快速版实装回归
+
+```powershell
+python tests/run_world_exchange_tests.py $dstScripts
+python tests/run_fast_exchange_tests.py $dstScripts
+```
+
+当前分别通过 **593**（518＋75）和 **117** 项断言。新增覆盖：连续 20 次穿越零世界保存、各类检查点消息丢失／重复、保存期间排空在途交换、检查点各阶段中断、原生保存先于备份提交的窗口、单层重启、手动共同回档、提交清单损坏、玩家原状态／空记录、迁移归属与旧确认、冻结后的玩家记录不可变、暂停时墙钟推进、双方先后退出、对端离线时退出及退出后的重复保存抑制。日志中的主动恢复失败来自故障注入。
+
+```powershell
+python tests/build_fast_exchange_probes.py speed --run-id local_speed
+python tests/build_fast_exchange_probes.py crash --run-id local_crash
+python tests/build_fast_exchange_probes.py savecrash --run-id local_savecrash
+python tests/build_fast_exchange_probes.py exit --run-id local_exit
+```
+
+生成文件仅位于 `work/fast-exchange-probes/`，不会安装或启动游戏。复制到**一次性独立测试模组**并在末尾导入 `exchange_runtime_diagnostic.lua`；服务器名称使用 `ShadowWorld isolated exchange test`。必须使用独立存档与端口，绝不能导入玩家世界。
+
+- `speed`：等待真实共同检查点开放后交换三轮，验证每轮世界保存计数不变，输出 `ELAPSED_MS`、`NO_WORLD_SAVE` 和双方 `ROUND_PASS`。
+- `crash`：两层都输出 `READY_KILL_CAVES_ONLY` 后，只强制关闭洞穴进程。重启洞穴，保留原地面进程让控制器自行恢复；两层均应输出 `VERIFIED ... crash`。夹具会清空测试箱、生成模拟玩家、修改背包并覆盖原生玩家文件。
+- `exit`：第一轮自动请求正常保存退出；使用同一生成文件再次启动，两层均应输出 `VERIFIED ... exit`。
+- `savecrash`：在已完成交换后请求共同保存，夹具故意停在洞穴原生保存完成、独立备份尚未提交的位置。看到 `NATIVE_SAVED_WITHOUT_COMMITTED_BACKUP` 后只关闭洞穴再重启，双方应输出 `VERIFIED ... savecrash`，并恢复上一共同检查点。
+
+同一 `run-id` 用于一组准备＋恢复；重做独立测试时换新 ID，以免复用阶段标记或模拟玩家。夹具成功后请求关闭测试服；若一层已关闭导致另一层静态任务暂停，应在核对 `VERIFIED` 后只结束剩余的测试进程。
+
+原生验证结果与未覆盖的真实客户端场景见 [快速版实装说明](../development/穿越世界快速版_实装说明.md)。

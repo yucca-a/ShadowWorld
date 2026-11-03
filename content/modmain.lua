@@ -77,8 +77,9 @@ if ((TUNING.TEMP2HM.openmods == nil and GetModConfigData("Show Mod Icon In Game"
     not TheNet:IsDedicated() then modimport("easy_other/ui.lua") end
 if GetModConfigData("Disable Outdate Tip") then modimport("easy_other/mod.lua") end
 -- 快捷存取和额外容器按钮
+-- Recovery must remain installed when the container buttons are later disabled.
+modimport("easy_other/worldexchange.lua")
 if GetModConfigData("Container Sort") or GetModConfigData("Items collect") then
-    modimport("easy_other/worldexchange.lua")
     modimport("easy_other/containersort.lua")
 end
 -- if GetModConfigData("simple chatbot") then modimport("easy_other/simplechatbot.lua") end

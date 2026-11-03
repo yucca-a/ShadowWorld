@@ -252,4 +252,17 @@ check(decoded and state.kind == "STATE" and state.durable == true, "latest confi
 check(#wire == 4 and sender.sendbudget == 0, "control priority still shares the same four-chunk budget")
 sender.nexthello = now + 5; sender:Disconnected("2")
 check(sender.nexthello == 0, "world availability change avoids the old five-second handshake wait")
+local clocked = WorldExchange(world())
+local updates = 0
+clocked.Update = function() updates = updates + 1 end
+local initialclock = clocked:Now()
+for _ = 1, 60 do clocked:OnWallUpdate(1/60) end
+check(clocked:Now() >= initialclock + .99, "wall clock advances while static game clock is frozen")
+check(updates >= 8 and updates <= 11, "paused transport update stays bounded near ten times per second")
+sender.peers["2"] = {boot = "boot-B", session = "session-2"}
+sender.outbox = {}
+sender:Send("2", {v=3,kind="CHECKPOINT",op="REGISTER",uid="one"})
+sender:Send("2", {v=3,kind="CHECKPOINT",op="REGISTER",uid="two"})
+sender:Send("2", {v=3,kind="CHECKPOINT",op="REGISTERED",uid="one"})
+check(#sender.outbox == 3, "checkpoint messages preserve distinct players and operations")
 print("World exchange adapter: " .. assertions .. " assertions passed")

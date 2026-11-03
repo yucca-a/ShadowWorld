@@ -1,6 +1,8 @@
 -- Install on both shards. The existing container buttons call this service.
+local Engine = require("worldexchangeengine2hm")
 AddPrefabPostInit("world", function(inst)
-    if inst.ismastersim and not inst.components.worldexchange2hm then inst:AddComponent("worldexchange2hm") end
+    if inst.ismastersim and (Engine.enabled or (Engine.boot and (Engine.boot.loaded or Engine.boot.legacy))) and
+        not inst.components.worldexchange2hm then inst:AddComponent("worldexchange2hm") end
 end)
 
 AddShardModRPCHandler("MOD_HARDMODE", "worldexchange_v1", function(shard_id, ...)
@@ -45,3 +47,5 @@ AddComponentPostInit("container", function(self)
         end
     end
 end)
+
+modimport("easy_other/worldexchangefast.lua")

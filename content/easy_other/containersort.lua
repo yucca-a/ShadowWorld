@@ -2282,8 +2282,8 @@ Use Orange Amulet will Picktop Near Same Items]],
         },
         exchangebtn = {
             text = TUNING.isCh2hm and "穿越" or "PassW",
-            helptext = TUNING.isCh2hm and [[与另一世界整箱互换；交换期间锁定容器，双方保存后完成]] or
-                [[Swap whole containers; locked until both worlds save the exchange]],
+            helptext = TUNING.isCh2hm and [[与另一世界整箱互换；双方确认后解锁，无需每次保存世界]] or
+                [[Swap whole containers; unlock after both worlds confirm, without saving on each exchange]],
             fn = exchangebtnfn,
             validfn = exchangevalidfn
         },

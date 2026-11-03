@@ -26,6 +26,7 @@ with ZipFile(scripts) as archive:
     start = util.index("function RunInSandboxSafe(")
     lua.execute(util[start:util.index("\nend", start) + 4])
 lua.execute('package.preload["worldexchangeprotocol2hm"] = function() return Protocol end')
+lua.execute('package.preload["worldexchangeengine2hm"] = function() return {} end; modimport = function() end')
 lua.globals().WorldExchange = loader((ROOT / "content/scripts/components/worldexchange2hm.lua").read_text(encoding="utf-8"), "adapter")()
 lua.globals().integration_source = (ROOT / "content/easy_other/worldexchange.lua").read_text(encoding="utf-8")
 lua.execute((ROOT / "tests/world_exchange_adapter_regression.lua").read_text(encoding="utf-8"))

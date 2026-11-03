@@ -1,10 +1,12 @@
 local Protocol = require("worldexchangeprotocol2hm")
+local Engine = require("worldexchangeengine2hm")
 local CHUNK, MAX_CHUNKS = 8192, 64
 local LIMIT = CHUNK * MAX_CHUNKS
 local TEXT = {
     preparing = {"正在连接另一世界并准备交换……", "Preparing the world exchange..."},
-    finishing = {"物品已保存，正在完成双方确认……", "Items saved; waiting for final confirmation..."},
-    done = {"穿越完成，双方物品已交换并保存。", "World exchange completed and saved."},
+    finishing = {"正在完成双方确认……", "Waiting for final confirmation..."},
+    done = {"穿越完成，双方物品已交换。", "World exchange completed."},
+    checkpoint_pending = {"正在准备双层共同存档或恢复连接，请稍后再试。", "Preparing the shared checkpoint or reconnecting; please retry shortly."},
     busy = {"此世界已有交换正在处理，请稍后再试。", "An exchange is already in progress."},
     connecting = {"正在连接另一世界，请稍后重试；两层都需要安装新版模组。", "Connecting; both shards need the updated mod."},
     timeout = {"对方尚未准备好，交换已取消，原物品保留。", "The peer was not ready; original items were kept."},
@@ -30,9 +32,21 @@ local WorldExchange = Class(function(self, inst)
     self.message_sequence = 0
     self.boot = tostring(os.time()) .. ":" .. tostring(GetTimeReal()) .. ":" .. tostring(math.random(1, 1073741823))
     self.task = inst:DoStaticPeriodicTask(0.1, function() self:Update() end)
+    if inst.StartWallUpdatingComponent then inst:StartWallUpdatingComponent(self) end
 end)
 
-function WorldExchange:Now() return GetStaticTime() end
+function WorldExchange:Now() return math.max(GetStaticTime(), self.wallclock or 0) end
+function WorldExchange:OnWallUpdate(dt)
+    -- GetRealTime has coarse resolution on some dedicated builds. Accumulate
+    -- WallUpdate's seconds so retries remain live while simulation is paused,
+    -- without turning sub-second packet budgets into one-second waits.
+    self.wallclock = math.max((self.wallclock or GetStaticTime()) + math.max(dt or 0, 0), GetStaticTime())
+    local now = self:Now()
+    if not self.advancing and (not self.lastwall or now - self.lastwall >= .1) then
+        self.lastwall = now
+        self:Update()
+    end
+end
 
 function WorldExchange:Wake()
     if self.waketask or self.advancing or not self.protocol then return end
@@ -41,6 +55,7 @@ function WorldExchange:Wake()
     self.waketask = self.inst:DoStaticTaskInTime(0, function()
         self.waketask = nil
         self.advancing = true
+        if self.engine then self.engine:Update() end
         self.protocol:Tick()
         self:Flush()
         self.advancing = nil
@@ -79,6 +94,7 @@ function WorldExchange:Initialize()
     }, self.saved)
     self.saved = nil
     if self.protocol.active then self:Lock(self.protocol.active.name); self:Wake() end
+    if Engine.enabled or (Engine.boot and (Engine.boot.loaded or Engine.boot.legacy)) then Engine.Attach(self) end
 end
 
 function WorldExchange:Container(name)
@@ -261,13 +277,20 @@ end
 
 function WorldExchange:OnSave()
     if self.protocol then
+        if self.engine and not self.legacy then
+            local data = self.protocol:Save()
+            data.checkpoint = self.engine.capture and self.engine.capture.id or self.engine.core:Generation()
+            local cut = self.engine.capture or self.engine.store.state.cuts[data.checkpoint]
+            data.checkpoint_serial = cut and cut.serial
+            return data
+        end
         if self.savecapture then self.savecapture.marker = self.protocol:Marker() end
         return self.protocol:Save()
     end
     return self.saved
 end
 
-function WorldExchange:OnLoad(data) self.saved = data end
+function WorldExchange:OnLoad(data) self.saved, self.saved_version = data, data and data.version end
 
 function WorldExchange:LoadPostPass()
     self:Initialize()
@@ -275,7 +298,7 @@ function WorldExchange:LoadPostPass()
 end
 
 function WorldExchange:OnSaved(capture)
-    if self.protocol then self.protocol:OnSaved(capture.marker); self:Wake() end
+    if self.protocol and (not self.engine or self.legacy) then self.protocol:OnSaved(capture.marker); self:Wake() end
 end
 
 function WorldExchange:Hello(peer, reply, target, challenge)
@@ -287,7 +310,7 @@ function WorldExchange:Hello(peer, reply, target, challenge)
     end
     SendModRPCToShard(GetShardModRPC("MOD_HARDMODE", "worldexchange_v1"), peer,
         reply and "HELLO_ACK" or "HELLO", self.boot, target or "", challenge, 0, 0,
-        DataDumper({v = 1, session = self.session}, nil, true))
+        DataDumper({v = 1, session = self.session, fast = self.engine and 2 or nil}, nil, true))
 end
 
 function WorldExchange:Send(peer, message)
@@ -297,7 +320,8 @@ function WorldExchange:Send(peer, message)
     if #encoded > LIMIT then self.protocol:Fail("too_large"); return end
     -- Replace unsent retries of the same phase instead of accumulating a backlog.
     for _, pending in ipairs(self.outbox) do
-        if pending.peer == peer and pending.txid == message.id and pending.kind == message.kind then
+        if pending.peer == peer and pending.txid == message.id and pending.kind == message.kind and
+            pending.op == message.op and pending.uid == message.uid then
             if pending.index == 1 then
                 pending.data = encoded
                 pending.count = math.max(1, math.ceil(#encoded / CHUNK))
@@ -308,7 +332,8 @@ function WorldExchange:Send(peer, message)
     if #self.outbox >= 32 then return end
     self.message_sequence = self.message_sequence + 1
     table.insert(self.outbox, {peer = peer, target = connection.boot, id = tostring(self.message_sequence),
-        txid = message.id, kind = message.kind, data = encoded, index = 1, count = math.max(1, math.ceil(#encoded / CHUNK))})
+        txid = message.id, kind = message.kind, op = message.op, uid = message.uid,
+        data = encoded, index = 1, count = math.max(1, math.ceil(#encoded / CHUNK))})
     self:Wake()
 end
 
@@ -335,7 +360,8 @@ function WorldExchange:Packet(peer, kind, boot, target, id, index, count, data)
             self.protocol.retry = 0
             self.inbox[peer] = nil
         end
-        self.peers[peer] = {boot = boot, session = info.session}
+        self.peers[peer] = {boot = boot, session = info.session, fast = info.fast, lastseen = self:Now()}
+        if self.engine and info.fast == 2 then self.engine.core:Connected(peer, boot); self:Wake() end
         local t = self.protocol.active
         if t and t.peer == peer then
             local expected = t.coordinator == self.id and t.participant_session or t.coordinator_session
@@ -348,6 +374,7 @@ function WorldExchange:Packet(peer, kind, boot, target, id, index, count, data)
     if kind ~= "DATA" or target ~= self.boot or not connection or connection.boot ~= boot or
         type(id) ~= "string" or #id > 40 or type(index) ~= "number" or type(count) ~= "number" or
         index % 1 ~= 0 or count % 1 ~= 0 or index < 1 or count < 1 or count > MAX_CHUNKS or index > count or #data > CHUNK then return end
+    connection.lastseen = self:Now()
     self.inbox[peer] = self.inbox[peer] or {}
     local inbox = self.inbox[peer]
     local part = inbox[id]
@@ -363,7 +390,11 @@ function WorldExchange:Packet(peer, kind, boot, target, id, index, count, data)
     if part.received == count then
         inbox[id] = nil
         local ok, message = RunInSandboxSafe(table.concat(part.chunks))
-        if ok and type(message) == "table" then self.protocol:Receive(peer, message); self:Wake() end
+        if ok and type(message) == "table" then
+            if message.v == 3 and self.engine and not self.legacy then self.engine.core:Receive(peer, message)
+            else self.protocol:Receive(peer, message) end
+            self:Wake()
+        end
     end
 end
 
@@ -371,6 +402,7 @@ function WorldExchange:Disconnected(peer)
     peer = tostring(peer)
     self.peers[peer], self.inbox[peer], self.challenges[peer] = nil, nil, nil
     self.nexthello = 0
+    if self.engine then self.engine.core:Disconnected(peer) end
     if self.protocol and self.protocol.active and self.protocol.active.peer == peer then
         self.protocol.peer_phase, self.protocol.peer_durable = nil, nil
         self.protocol.retry = 0
@@ -396,6 +428,7 @@ function WorldExchange:Update()
     end
     if not self.nexttick or now >= self.nexttick then
         self.nexttick = now + 0.5
+        if self.engine then self.engine:Update() end
         self.protocol:Tick()
     end
     self:Flush()
@@ -446,6 +479,14 @@ end
 
 function WorldExchange:Status(player)
     local t = self.protocol and self.protocol.active
+    if self.engine and not self.engine.core:IsReady() and not t then
+        return self:Notify(player.userid, self.engine.core.error and "snapshot_mismatch" or "checkpoint_pending")
+    end
+    if t and self.engine and not self.legacy then
+        self:Notify(player.userid, t.error or "waiting")
+        self.protocol.retry = 0; self:Wake()
+        return
+    end
     self:Notify(player.userid, not t and "idle" or t.error or
         ((t.phase == "intent" or t.phase == "applied" or t.phase == "aborting") and "saving" or "waiting"))
     if self.protocol then self.protocol.retry = 0; self:Wake() end

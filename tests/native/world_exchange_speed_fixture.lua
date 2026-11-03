@@ -1,6 +1,12 @@
 -- Disposable isolated shards only. Replaces shadow-container contents, runs
 -- three measured exchanges, and shuts down the servers. Never import in a player world.
 local ready = {}
+local saves = 0
+local serializeWorld = GLOBAL.SerializeWorldSession
+GLOBAL.SerializeWorldSession = function(...)
+    saves = saves + 1
+    return serializeWorld(...)
+end
 AddShardModRPCHandler("SW_EXCHANGE_TEST", "ready", function(id, round) ready[tostring(id)] = round end)
 AddPrefabPostInit("goldnugget", function(inst)
     if TheWorld.ismastersim and not inst.components.persistent2hm then inst:AddComponent("persistent2hm") end
@@ -16,6 +22,7 @@ AddPrefabPostInit("world", function(inst)
         local service = inst.components.worldexchange2hm
         local box = inst:GetPocketDimensionContainer("shadow")
         if not service or not service.protocol or not box then return end
+        if service.engine and not service.engine.core:IsReady() then return end
         local master = TheShard:IsMaster()
         if not installed then
             installed = true
@@ -23,11 +30,15 @@ AddPrefabPostInit("world", function(inst)
             service.protocol.Start = function(self, ...)
                 local before = (GetStaticTime() * 1000)
                 local ok, why = start(self, ...)
-                if ok then self.benchstart = before; print("[EXCHANGE_SPEED] START", round, before) end
+                if ok then self.benchstart, self.benchsaves = before, saves; print("[EXCHANGE_SPEED] START", round, before) end
                 return ok, why
             end
             service.protocol.Finish = function(self, outcome)
                 if self.benchstart then print("[EXCHANGE_SPEED] ELAPSED_MS", round, (GetStaticTime() * 1000) - self.benchstart, outcome) end
+                if service.engine and self.benchstart then
+                    check(saves == self.benchsaves, "no world save during fast exchange")
+                    print("[EXCHANGE_SPEED] NO_WORLD_SAVE", round)
+                end
                 return finish(self, outcome)
             end
             service.Apply = function(self, ...)
