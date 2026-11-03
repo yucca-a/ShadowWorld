@@ -1,0 +1,58 @@
+{
+  "date": "2026-11-03",
+  "base_version": "2.8.14.97.2",
+  "publication_status": "unpublished",
+  "crash_log_sha256": "103c7fba8a2437f0bc8a659d95b2592668aa59e9c6d233233949c81d7548bad8",
+  "crash_finding": "Invalid evergreen propagator cleanup calls OnUpdate(0) from OnRemoveFromEntity; coordinates are nil. The supplied crash report does not list ShadowWorld among enabled mods.",
+  "fix": "Guard both OnUpdate and OnRemoveEntity, stop periodic updates for removed or positionless entities, retain native OnRemoveFromEntity cleanup and valid-entity propagation.",
+  "slingshot_finding": "Reported thulecite LMB failure remains unconfirmed. No speculative slingshot input changes are included.",
+  "mods": {
+    "Functional Medal": "1.6.8.2",
+    "Legion": "7.7.0",
+    "NewConstant Base": "0.9.65",
+    "NewConstant Core": "0.9.57",
+    "NewConstant Abyss": "0.9.65"
+  },
+  "validation": {
+    "lua51_syntax_files": 373,
+    "propagator_lifecycle_cases": 12,
+    "existing_wixie_checks": 438,
+    "real_graphical_client_test": false,
+    "headless_reticule_visuals_stubbed": true
+  },
+  "native_cases": [
+    {
+      "log": "Medal-parts-stdout.txt",
+      "sha256": "d7d8895e01fc5e7ce8fcf8ac526f526972cdecac8563d852be4ef099293e1149",
+      "native_shots": 8,
+      "passed": true
+    },
+    {
+      "log": "Combo-parts-stdout.txt",
+      "sha256": "74113022a7dcd78b9492f2bd4d62bcd9206ca7f1c7585cc46e7871c569e4527a",
+      "native_shots": 8,
+      "passed": true
+    },
+    {
+      "log": "PropagatorStable-stdout.txt",
+      "sha256": "fd8cfd4fc4f831e31411412cd14e935fe222c0d0efb7b1d70409a03e4f2f7ebf",
+      "invalid_entity_cleanup": true,
+      "walter_spawn": true,
+      "full_native_burn_callback": false
+    },
+    {
+      "log": "PropagatorBeta-full-stdout.txt",
+      "sha256": "ca73064c2c43c5988537cd621a572edf39cf19d1e189f64e0bc4ee5ddb6ed99c",
+      "invalid_entity_cleanup": true,
+      "walter_spawn": true,
+      "full_native_burn_callback": true
+    }
+  ],
+  "source_sha256": {
+    "content/common/patch.lua": "c868151d61290045659d8df04fb7f9da78ead03d14020a1ddb7a477dd96d9933",
+    "tests/native/propagator_cleanup_fixture.lua": "1b97ffba1f83cb601100344bfcbe5222583defe5e96cbcee94be267113098bea",
+    "tests/native/walter_special_shot_fixture.lua": "0aa513f45ba00172c92f45f116969b6067284c2921f9ed691fa2bf2be42bcd60",
+    "tests/propagator_regression.lua": "2add83b1aa5e36f547d3215f039c12cf5a4cc14410acc66ed64b228afe35c893",
+    "tests/run_propagator_tests.py": "bf35b2982a75c085aa187eda4ed8bfe041fe26f48933101a9f20fa10c7bf1d79"
+  }
+}

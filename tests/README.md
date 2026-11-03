@@ -126,3 +126,7 @@ python tests/build_fast_exchange_probes.py exit --run-id local_exit
 弹弓热修补充实际 `Class`、`State`、`TimeEvent`、`StateGraphInstance:HandleEvents`，覆盖蓄力／普通／特殊射击中 `locomote` 和图级事件；旧版会复现 `stategraph.lua:465` 的缺失 `HandleEvent`。权限测试使用原生服务端与客户端装备限制代码、两版永不妥协蓄力判定，验证开关独立性和出生路径。
 
 `tests/native/wixie_slingshot_hotfix_fixture.lua` 仅用于名为 `ShadowWorld isolated slingshot hotfix test` 的隔离世界，实际生成沃尔特、维希及六种弹弓，执行库存装备、缓冲事件与异步状态更新，完成后关闭测试服；不得导入玩家存档。
+
+`tests/run_propagator_tests.py` 使用游戏原生传热组件和永不妥协正式／测试版的实际包装函数，复现失效实体在 `OnRemoveFromEntity → OnUpdate(0)` 中传入空坐标的崩溃。验证修复后定时任务仍被取消、正常传热和融冰通知仍执行、永不妥协冬季范围在调用后恢复。`tests/native/propagator_cleanup_fixture.lua` 在上述隔离世界中回放移除常青树后的组件清理及完整燃烧延迟回调。
+
+`tests/native/walter_special_shot_fixture.lua` 检查原生铥矿弹弓的动作收集、本机 `OnLeftClick`、远程 `OnRemoteLeftClick`、第二弹药格及实际弹丸生成。能力勋章环境还覆盖童真勋章、落水弹，以及铥矿框架／附身皮筋／果冻手柄。无图形测试只提供瞄准线数据与视觉取消回调，不代表已完成实际客户端鼠标、画面及本地辅助模组验收；这些检查通过也不能据此认定玩家报告的问题已修复。若加载永不妥协，此夹具仅验证沃尔特生成与原版弹弓权限，配合传热清理夹具运行。

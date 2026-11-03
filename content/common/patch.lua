@@ -582,12 +582,25 @@ end
 --     end
 -- end)
 
--- propagator组件缺少坐标判空，打个补丁
+-- 燃烧后的延迟清理也会经 OnRemoveFromEntity 调用 OnUpdate。
+-- 实体已被移除时不再查询坐标，仍让原来的组件清理取消任务。
 AddComponentPostInit("propagator", function(self)
+    local function HasPosition(inst)
+        if not (inst and inst:IsValid() and inst.Transform) then return false end
+        local x, y, z = inst.Transform:GetWorldPosition()
+        return type(x) == "number" and type(y) == "number" and type(z) == "number"
+    end
+    local oldOnUpdate = self.OnUpdate
+    self.OnUpdate = function(self, ...)
+        if not HasPosition(self.inst) then
+            self:StopUpdating()
+            return
+        end
+        return oldOnUpdate(self, ...)
+    end
     local oldOnRemoveEntity = self.OnRemoveEntity
     self.OnRemoveEntity = function(self, ...)
-        local x, y, z = self.inst.Transform:GetWorldPosition()
-        if x == nil or y == nil or z == nil then return end
+        if not HasPosition(self.inst) then return end
         return oldOnRemoveEntity(self, ...)
     end
 end)
