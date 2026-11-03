@@ -158,43 +158,5 @@ if TUNING.DSTU and GetModConfigData("wathom upgrade") then
     end
 end  -- 2025.7.9 end
 
--- 2025.4.22 melon:沃托姆锁定夜视和滤镜
--- 2026.8.7:重构为"微光+永久夜视"游戏机制方案,不再覆盖不妥协内部变量。
--- 二轮修复:GetLightAtPoint 对玩家附近动态点光源不敏感(火把/提灯实测也无法>0.9),
---   故黑雾/心跳改用"服务器端拦截 WathomInDark 标签"从根源屏蔽(AddTag 是 DST 通用 API,
---   不依赖不妥协内部变量);微光保留为视觉微光。客户端永久夜视+春天滤镜由
---   common/wathom_nightvision_client.lua 强制(房主由本文件直接包装,立即生效)。
-if TUNING.DSTU and GetModConfigData("wathom nightvision") then
-    AddPrefabPostInit("wathom", function(inst)
-        if not TheWorld.ismastersim then return end
-        inst:AddTag("wathom_nv_2hm") -- 客户端据此开启永久夜视(标签随实体复制)
-        -- 拦截不妥协的 WathomInDark 标签:服务器端根本不添加 → 客户端黑雾/心跳特效永远不会出现。
-        -- (不妥协 CheckLight 黑暗分支用 inst:AddTag("WathomInDark") 添加,被拦截后其 RemoveTag 逻辑照常执行,无副作用)
-        local _AddTag_orig = inst.AddTag
-        function inst:AddTag(tag)
-            if tag == "WathomInDark" then return end
-            return _AddTag_orig(self, tag)
-        end
-        -- 微光:沃托姆自带光源(视觉微光;若光照判定生效则锦上添花,但黑雾不依赖它)
-        if not (inst._wathomlight2hm and inst._wathomlight2hm:IsValid()) then
-            inst._wathomlight2hm = SpawnPrefab("deathcurselight2hm")
-        end
-        inst._wathomlight2hm.entity:SetParent(inst.entity)
-        inst._wathomlight2hm.Light:SetFalloff(0.4)
-        inst._wathomlight2hm.Light:SetIntensity(2)
-        inst._wathomlight2hm.Light:SetRadius(6)
-        inst._wathomlight2hm.Light:SetColour(180 / 255, 195 / 255, 150 / 255)
-        inst._wathomlight2hm.Light:Enable(true)
-        -- 房主(客户端托管)场景:服务器实体即客户端渲染实体,直接包装 playervision 立即生效
-        -- (纯远程客户端由 common/wathom_nightvision_client.lua 依据标签处理)
-        local function applyvision()
-            if inst.components.playervision and TUNING.wathom_nv_patch2hm then
-                TUNING.wathom_nv_patch2hm(inst.components.playervision)
-            end
-        end
-        applyvision()
-        inst:DoTaskInTime(0.5, function()
-            if inst:IsValid() then applyvision() end
-        end)
-    end)
-end  -- 2025.4.22 end
+-- Stable monster/Wathom night vision is installed independently by
+-- common/monster_nightvision.lua on servers and clients.

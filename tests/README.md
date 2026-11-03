@@ -92,7 +92,7 @@ python tests/build_fast_exchange_probes.py exit --run-id local_exit
 
 ## 眼球炮塔加强
 
-运行 `python tests/run_eyeturret_tests.py`，可在第一个参数提供游戏 `scripts.zip` 路径。115项检查读取原生 `Projectile:Hit`、`Combat:DoAttack`、`Health:SetVal/DoFireDamage`、材料给予动作收集和给予流程；覆盖默认开关、原版与Wathom配方、五段电击链伤、潮湿／电免疫／独立防御、友军与建筑筛选、升级消耗和保存、孢子云定向免疫、隔离火焰、植物电击点燃拦截、冰盾秒杀及原有双护盾。物品状态专项包含背包右键给予、升级保存、原生部署继承、混合升级、重复材料及失败上下文清理。
+运行 `python tests/run_eyeturret_tests.py`，可在第一个参数提供游戏 `scripts.zip` 路径。271项检查读取原生 `Projectile:Hit`、`Combat:DoAttack`、`Health:SetVal/DoFireDamage`、材料给予动作收集和给予流程；覆盖默认开关、原版与Wathom配方、五段电击链伤、潮湿／电免疫／独立防御、友军与建筑筛选、升级消耗和保存、孢子云定向免疫、隔离火焰、植物电击点燃拦截、冰盾秒杀及原有双护盾。物品状态专项包含背包右键给予、升级保存、原生部署继承、混合升级、重复材料及失败上下文清理。
 
 `tests/native/eyeturret_fixture.lua` 仅用于名为 `ShadowWorld isolated eyeturret test` 的一次性原生服务器。夹具创建、攻击和删除测试实体，验证原生伤害、升级保存、两类孢子云、冰川座狼冰盾和建筑防火，完成后关闭；关闭加强选项时检查原生属性、配方和物品状态。补充原生玩家 `Inventory:UseItemFromInvTile` 及状态机执行给予、材料堆叠消耗、物品保存、`Deployable:Deploy` 继承及放置后的保存。需要本机永不妥协测试版，不能导入真实存档。该测试没有操作实际客户端窗口或检查画面表现。
 
@@ -101,3 +101,23 @@ python tests/build_fast_exchange_probes.py exit --run-id local_exit
 运行 `python tests/run_wixie_tests.py`，需要本机安装正式版 `2039181790` 与测试版 `3193922031`。268项检查读取实际两版维希幽闭算法、原生配置窗口选项构造和保存代码、本模组变速工具；覆盖两侧任务、恐慌、监听保留、独立开关、角色时间线隔离、原有默认系数、弹丸归属、条件显示、隐藏值保存及界面异常后的方法恢复。
 
 `tests/native/wixie_fixture.lua` 仅用于名称为 `ShadowWorld isolated Wixie test` 的隔离世界，会生成角色、生物和护甲，并在验证后关闭。分别配置 `walter=false,wixie=true,walter_easy=false,um_patch=false,["Wixie No Claustrophobia"]=true`，以及相反角色开关、`um_patch=2`、幽闭移除为false。它检查实际共用状态图的并发隔离、Beta网络幽闭值和开启／关闭后的原生表现，不能用于真实玩家存档。
+
+## 怪物角色夜视与沃托姆
+
+运行 `python tests/run_monster_nightvision_tests.py`：421项检查执行原生夜视、黑暗伤害与伍迪变身函数，风华（3413376081）完整智能夜视模块，以及永不妥协正式／测试版实际夜视函数和回声界面；覆盖沃拓克斯黑名单、动态标签、配置同步、复活、视觉来源共存、风华切换／天亮回调、三种变身的显示与保护，以及原有漫漫长夜规则。需要安装上述三种模组；相关实体、网络和绘图为模拟。`tests/native/monster_nightvision_fixture.lua` 仅用于名为 `ShadowWorld isolated monster vision test` 的一次性世界，会生成角色、修改标签与昼夜、实际变身并自动关闭服务器。详见[实装说明](../development/怪物角色夜视与沃托姆兼容.md)。
+
+正式版地表、测试版地表／洞穴和关闭两项开关共四组原生服务器验证通过；追加风华兼容后，四组均再次通过伍迪三形态真实变身、旧式关闭调用、服务端黑暗保护与还原测试。真实客户端画面尚未人工验收。
+
+芜猴／韦伯／沃特迁移新增检查覆盖：原有角色与父级开关、三项独立来源、怪物来源共存、各漫漫长夜档位、仅服务端创建微光、风华关闭、幽灵／死亡／复活、洞穴、角色移除及重建。昼夜模拟遵循原生 `worldstate` 先通知 `phase`、后更新布尔标志的顺序；迁移初版的布尔标志判定在该回归中失败。
+
+`tests/native/role_nightvision_fixture.lua` 仅用于服务器名为 `ShadowWorld isolated role vision test` 的一次性测试世界。关闭通用怪物夜视，开启三个角色对应选项与父级开关，分别测试普通漫漫长夜、危险经典地表／洞穴及角色选项关闭。夹具生成、杀死和移除测试角色，切换昼夜，检查原生光照检测、黑暗伤害启动条件、网络值、理智保留、幽灵视觉与光源清理；洞穴额外关闭／重开实际补光，确认夜视保持时黑暗危险随光源消失／恢复，随后关闭服务器。不能导入正式存档。
+
+上述角色专项四组原生测试全部通过，危险洞穴额外输出 `LIGHT_SAFETY_CONTROL_PASS`，以实际开／关光源验证保护来源。洞穴的昼夜检查使用原生 `cavephase`，其普通 `phase` 始终为夜晚。
+
+眼球塔兼容新增 `tests/native/newconstant_eyeturret_fixture.lua`，仅用于名为 `ShadowWorld isolated eyeturret compatibility test` 的一次性世界。加载真实永恒新界核心与深渊／Nightmare，关闭随机生物大小以隔离本选项影响；通过真实遗迹刷新器生成两类敌塔，验证属性、保存、共享炮弹与红宝石点燃，真实击杀后确认其仍会正常移除，触发 `resetruins` 后再次检查。测试会生成／删除实体、造成伤害、刷新遗迹并关闭服务器，不能用于玩家存档。
+
+### 眼球塔击毁休养与拆解
+
+`tests/native/eyeturret_recovery_fixture.lua` 仅供名字为 `ShadowWorld isolated eyeturret recovery test` 的一次性独立服务器使用，会生成、击毁、恢复和拆解实体，不能导入玩家存档。搭配完整开发版和永不妥协测试版，关闭独立“随机大小”规则（`Random Sized=false`）以隔离属性断言；分别测试眼球塔加强开启与关闭。通过原生 `ForceKill`、`GetSaveRecord/SpawnSaveRecord`、计时器快进、真实炮弹和 `CASTSPELL` 检验死亡不移除、不掉落、父眼球透明／独立底座保留、恢复满血和升级攻击，以及正常／休养／背包物品落地后的拆解返还。快进只发生在独立测试世界，测试不会等待现实40分钟。无渲染服务器检查动画透明度和底座可见状态，未操作实际客户端验收皮肤画面和鼠标点选。
+
+眼球过渡专项：0.6秒淡出、0.8秒淡入，并验证中间透明度与完成端点、颜色保留、淡入中再次击毁、重复死亡不重播、读档直接恢复状态及拆解时清理任务。原生休养夹具新增 `FADE_OUT_PASS` / `FADE_IN_PASS` 标记；继续验证完整死亡、保存、恢复和拆解流程。

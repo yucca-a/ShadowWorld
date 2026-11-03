@@ -1,7 +1,8 @@
 local checks, guid, clock = 0, 0, 0
 local function check(ok, why) checks = checks + 1; assert(ok, why) end
 local function near(a,b,why) check(math.abs(a-b)<0.00001,why..': '..tostring(a)..' vs '..tostring(b)) end
-GLOBAL=_G; TUNING={isCh2hm=true,ELECTRIC_DAMAGE_MULT=1.5,ELECTRIC_WET_DAMAGE_MULT=1,MAX_FIRE_DAMAGE_PER_SECOND=120}
+GLOBAL=_G; TUNING={TOTAL_DAY_TIME=480,isCh2hm=true,ELECTRIC_DAMAGE_MULT=1.5,ELECTRIC_WET_DAMAGE_MULT=1,MAX_FIRE_DAMAGE_PER_SECOND=120}
+FRAMES=1/30
 TheWorld={ismastersim=true,PushEvent=function()end};TheNet={GetIsServer=function()return true end}
 GetTime=function()return clock end
 CanEntityBecomeCorpse=function()return false end;NotifyPlayerProgress=function()end;ProfileStatsAdd=function()end
@@ -11,7 +12,16 @@ AddComponentPostInit=function(n,f)componenthooks[n]=f end
 AddComponentAction=function(t,n,f)check(t=='USEITEM'and n=='inventoryitem','narrow native inventory action hook');componentactions[#componentactions+1]=f end
 AddRecipePostInit=function(n,f)recipes[n]=f end
 Ingredient=function(n,a)return {type=n,amount=a}end
-SetOnSave=function(i,f)i.OnSave=f end;SetOnLoad=function(i,f)i.OnLoad=f end
+local function wrap(i,key,f)local old=i[key];i[key]=function(...)if old then old(...)end;return f(...)end end
+SetOnSave=function(i,f)wrap(i,'OnSave',f)end;SetOnLoad=function(i,f)wrap(i,'OnLoad',f)end
+SetOnPreLoad=function(i,f)wrap(i,'OnPreLoad',f)end
+State=function(t)return t end;EventHandler=function(n,f)return {name=n,fn=f}end
+local graph={states={death={onenter=function(i)i.deathloot=true;i.physicsremoved=true end}}}
+AddStategraphState=function(n,s)check(n=='eyeturret','only turret stategraph extended');graph.states[s.name]=s end
+AddStategraphPostInit=function(n,f)check(n=='eyeturret','only turret death state wrapped');f(graph)end
+Class=function(ctor)local c={};c.__index=c;return setmetatable(c,{__call=function(_,...)local s=setmetatable({},c);ctor(s,...);return s end})end
+local Timer=assert(loadstring(timer_source))()
+FunctionOrValue=function(v,...)if type(v)=='function'then return v(...)else return v end end
 IsEntityElectricImmune=function(t)return t:HasTag('electricdamageimmune')end
 IsRangedWeapon=function()return true end
 StopTrackingDelayOwner=function()end
@@ -37,11 +47,14 @@ local function entity(name,x)
     i.entity={SetParent=function()end,AddTransform=function()end,AddAnimState=function()end,AddNetwork=function()end,
         SetPristine=function()end,IsVisible=function()return true end,IsValid=function()return i:IsValid()end}
     i.Transform={GetWorldPosition=function()return i.x,0,0 end,SetPosition=function()end,SetScale=function()end}
-    i.AnimState={SetBank=function()end,SetBuild=function()end,PlayAnimation=function()end,SetBloomEffectHandle=function()end,SetFinalOffset=function()end}
+    i.colour={1,1,1,1}
+    i.AnimState={SetBank=function()end,SetBuild=function()end,PlayAnimation=function()end,SetBloomEffectHandle=function()end,SetFinalOffset=function()end,
+        GetMultColour=function()return unpack(i.colour)end,SetMultColour=function(_,...)i.colour={...}end}
     i.Physics={Stop=function()end}
     function i:IsValid()return not self.removed end
     function i:IsInLimbo()return self:HasTag('INLIMBO')end
     function i:AddTag(t)self.tags[t]=true end
+    function i:RemoveTag(t)self.tags[t]=nil end
     function i:HasTag(t)return self.tags[t]or false end
     function i:HasOneOfTags(tags)for _,t in ipairs(tags)do if self:HasTag(t)then return true end end;return false end
     function i:HasAnyTag(...)return self:HasOneOfTags({...})end
@@ -52,14 +65,18 @@ local function entity(name,x)
         source=source or self;source.events[n]=source.events[n]or{}
         table.insert(source.events[n],{inst=self,fn=f})
     end
-    function i:PushEvent(n,d)for _,h in ipairs(self.events[n]or{})do if h.inst:IsValid()then h.fn(h.inst,d)end end end
+    function i:PushEvent(n,d)for _,h in ipairs(self.events[n]or{})do if h.inst:IsValid()then h.fn(self,d)end end end
     function i:Remove()if self.removed then return end;self:PushEvent('onremove');self.removed=true end
-    function i:DoTaskInTime(dt,f)
-        local t={at=clock+dt,fn=f,inst=self,Cancel=function(t)t.cancelled=true end};table.insert(tasks,t);return t
+    function i:DoTaskInTime(dt,f,...)
+        local args={...}
+        local t={at=clock+dt,fn=function(inst)return f(inst,unpack(args))end,inst=self,Cancel=function(t)t.cancelled=true end};table.insert(tasks,t);return t
     end
     function i:DoPeriodicTask(p,f)local t=self:DoTaskInTime(p,f);t.period=p;return t end
     function i:StartUpdatingComponent()end
+    function i:StopBrain(reason)self.brainstopped=reason end
+    function i:RestartBrain(reason)if self.brainstopped==reason then self.brainstopped=nil end end
     function i:AddComponent(n)
+        if n=='timer'then self.components.timer=Timer(self);return end
         check(n=='trader','only trader component added')
         self.components[n]={inst=self,enabled=true,deleteitemonaccept=true,
             SetAcceptTest=function(t,f)t.test=f end,SetOnAccept=function(t,f)t.onaccept=f end,
@@ -67,7 +84,7 @@ local function entity(name,x)
     end
     entities[#entities+1]=i;return i
 end
-Combat={};Projectile={};Health={};Trader={}
+Combat={};Projectile={};Health={};Trader={};SpellCaster={}
 for _,code in pairs(native)do assert(loadstring(code))()end
 local function health(i,hp)
     local h={inst=i,currenthealth=hp,maxhealth=hp,minhealth=0,fire_timestart=0,firedamageinlastsecond=0,firedamagecaptimer=0}
@@ -79,6 +96,8 @@ local function health(i,hp)
     h.SetVal=Health.SetVal
     h.SetMaxHealth=function(s,v)s.currenthealth=v;s.maxhealth=v end
     h.StartRegen=function(s,a,p)s.regen={amount=a,period=p}end
+    h.StopRegen=function(s)s.regen=nil end
+    h.SetPercent=function(s,p)s:SetVal(p*s.maxhealth)end
     h.GetFireDamageScale=function(s)return s.firemult or 1 end
     h.DoFireDamage=Health.DoFireDamage
     h.DoDelta=function(s,v,_,cause,ignore,attacker)
@@ -91,6 +110,7 @@ local function combat(i)
     local c={inst=i,ignorehitrange=false,defaultdamage=65}
     c.GetWeapon=function(s)return s.weapon end
     c.SetDefaultDamage=function(s,v)s.defaultdamage=v end
+    c.DropTarget=function(s)s.target=nil end
     c.IsAlly=function(_,t)return t.ally end
     c.CanTarget=function(_,t)return not t.untargetable end
     c.CanHitTarget=function(_,t)return t~=nil and t:IsValid()end
@@ -124,8 +144,17 @@ end}
 assert(loadstring(turret_source))()
 local function apply(n,i)for _,f in ipairs(hooks[n]or{})do f(i)end;return i end
 local function tower(x)
-    local i=entity('eyeturret',x);i:AddTag('eyeturret');health(i,1000);combat(i)
-    i.components.lootdropper={AddChanceLoot=function(_,n,p)i.loot=n;i.lootchance=p end}
+    local i=entity('eyeturret',x);i:AddTag('eyeturret');i:AddTag('companion');health(i,1000);combat(i)
+    i.components.lootdropper={AddChanceLoot=function(_,n,p)i.loot=n;i.lootchance=p end,
+        SpawnLootPrefab=function(_,n)i.refunds=i.refunds or {};i.refunds[n]=(i.refunds[n]or 0)+1;return entity(n)end}
+    i.components.inventory={DisableDropOnDeath=function(s)s.dropondeath=false end}
+    i.components.inspectable={}
+    i.base={}
+    i.Light={Enable=function(_,v)i.lightenabled=v end,SetRadius=function(_,v)i.lightradius=v end}
+    i._lightframe={set=function(_,v)i.lightframe=v end}
+    i.syncanim=function(s,n)s.animation=n end
+    i.sg={GoToState=function(s,n)s.currentstate={name=n};if graph.states[n]then graph.states[n].onenter(i)end end,
+        HasStateTag=function(s,t)return s.currentstate and s.currentstate.name=='eyeturret_recover2hm'and t=='busy'end}
     apply('eyeturret',i)
     local w=entity('weapon');w.components.weapon={damage=65,SetDamage=function(s,d)s.damage=d end,
         SetElectric=function(s)s.stimuli='electric'end,CanRangedAttack=function()return true end,OnAttack=function()end}
@@ -163,7 +192,7 @@ near(t.components.health.maxhealth,2000,'maximum health');near(t.components.heal
 near(t.components.health.regen.amount,50,'regeneration');near(t.components.health.regen.period,1,'regen interval')
 near(t.components.combat.defaultdamage,200,'panel base damage');near(t.components.combat.weapon.components.weapon.damage,200,'projectile weapon base')
 check(t.components.combat.weapon.components.weapon.stimuli=='electric','weapon is electric as soon as equipped')
-check(t.loot==nil,'native death loot is not changed')
+check(t.loot==nil,'native loot table is not replaced')
 local enemies={}
 for n=1,6 do enemies[n]=victim('hound',10+(n-1)*5)end
 local neutral=victim('pigman',10.2,{})
@@ -285,6 +314,11 @@ local immune=victim('dragonfly',10,{'hostile','fireimmune'});hit(t,immune)
 check(immune.eyeturretsafefire2hm==nil,'fire immunity respected');immune:Remove()
 local killed=victim('hound',10);hit(t,killed);local f=killed.eyeturretsafefire2hm;killed.components.health:SetVal(0,'test')
 check(not f:IsValid(),'dead target removes flame immediately');killed:Remove()
+local extinguished=victim('hound',10);hit(t,extinguished);local ef=extinguished.eyeturretsafefire2hm
+extinguished:PushEvent('onextinguish')
+check(extinguished:IsValid()and not ef:IsValid()and not extinguished.eyeturretsafefire2hm,'extinguishing removes only the flame, not its event source')
+hit(t,extinguished);ef=extinguished.eyeturretsafefire2hm;extinguished:Remove()
+check(not ef:IsValid(),'removing a burning target clears flame without recursive target removal')
 
 local shielded=victim('glacialhound',10)
 local deaths=0;shielded:ListenForEvent('death',function()deaths=deaths+1 end)
@@ -310,10 +344,191 @@ local old=armor.poor_33cdtask2hm;armor:PushEvent('healthdelta',{oldpercent=.3,ne
 check(armor.poor_33cdtask2hm==old,'shield cooldown does not restart on every hit')
 armor:PushEvent('healthdelta',{oldpercent=.3,newpercent=.5});check(armor.poor_33cdtask2hm==old,'regeneration cannot trigger armor')
 
+-- NewConstant enemies share eye_charge but are not player turrets. Exercise
+-- strict eligibility even when a foreign hook routes them through our callback
+-- or a stale/copying mod leaves enhancement flags on an enemy.
+local function enemy_tower(name,tags)
+    local i=entity(name,2000);health(i,1500);combat(i)
+    i.components.combat.defaultdamage=75
+    i.components.health.regen={amount=12,period=1}
+    for _,tag in ipairs(tags)do i:AddTag(tag)end
+    local save=function()end;local load=function()end;i.OnSave=save;i.OnLoad=load
+    apply('eyeturret',i)
+    local w=entity('enemyweapon');w.components.weapon={damage=75,SetDamage=function(s,d)s.damage=d end,
+        SetElectric=function(s)s.stimuli='electric'end,CanRangedAttack=function()return true end,OnAttack=function()end}
+    i.components.combat.weapon=w;i:PushEvent('equip',{item=w});tick(0)
+    near(i.components.health.maxhealth,1500,'enemy health untouched '..name)
+    near(i.components.health.regen.amount,12,'enemy regeneration untouched '..name)
+    near(i.components.combat.defaultdamage,75,'enemy combat damage untouched '..name)
+    check(not i.eyeturretenhanced2hm and not i.components.trader and not i:HasTag('alltrader'),'enemy gets no enhancement or trading '..name)
+    check(w.components.weapon.damage==75 and w.components.weapon.stimuli==nil,'enemy weapon retains its own damage/type')
+    check(i.OnSave==save and i.OnLoad==load,'enemy save/load callbacks remain untouched')
+    i:PushEvent('healthdelta',{oldpercent=1,newpercent=.3})
+    check(not i.allmiss2hm and not i.poor_33cdtask2hm,'enemy never gets our shield')
+    return i
+end
+for _,spec in ipairs({
+    {'shadoweyeturret',{'hostile','shadoweyeturret','shadow_aligned'}},
+    {'shadoweyeturret2',{'hostile','shadoweyeturret','shadow_aligned'}},
+    {'eyeturret',{'companion','hostile'}},
+    {'eyeturret',{'companion','shadoweyeturret'}},
+    {'eyeturret',{}},
+    {'shadoweyeturret',{'companion'}},
+})do
+    local enemy=enemy_tower(spec[1],spec[2])
+    -- A legacy marker alone must never turn a hostile projectile electric.
+    enemy.eyeturretenhanced2hm=true;enemy.eyeturretfire2hm=true
+    local victim1=victim('hound',2010);local victim2=victim('hound',2015)
+    hit(enemy,victim1)
+    near(10000-victim1.components.health.currenthealth,75,'enemy projectile has original physical damage')
+    near(victim2.components.health.currenthealth,10000,'enemy projectile cannot chain')
+    check(victim1.eyeturretsafefire2hm==nil,'enemy cannot acquire our isolated flame')
+    victim1.components.burnable:Ignite(true,enemy,enemy)
+    check(victim1.components.burnable.nativelit,'enemy native gem fire is not intercepted')
+    local glacial=victim('glacialhound',2010);hit(enemy,glacial)
+    check(not glacial.components.health:IsDead(),'enemy cannot acquire glacial execution')
+    enemy.components.health:SetVal(0,'test');graph.states.death.onenter(enemy)
+    check(enemy.deathloot and enemy.physicsremoved and not enemy.eyeturretrecovering2hm and not enemy.components.timer,
+        'enemy retains native death, loot and collider removal')
+    enemy:Remove();victim1:Remove();victim2:Remove();glacial:Remove()
+end
+local retaliating=tower(2200)
+retaliating.components.combat.target=entity('wilson');retaliating.components.combat.target:AddTag('player')
+retaliating:PushEvent('healthdelta',{oldpercent=1,newpercent=.6})
+check(retaliating.eyeturretenhanced2hm and retaliating.allmiss2hm,'friendly turret retaliation does not revoke its identity')
+retaliating:Remove()
+
+-- Native Health:SetVal and the full native Timer drive the recovery lifecycle.
+local resting=tower(2400)
+resting.components.trader:AcceptGift(nil,gift('dragon_scales'))
+resting.components.trader:AcceptGift(nil,gift('shroom_skin'))
+local deathcount=0;resting:ListenForEvent('death',function()deathcount=deathcount+1 end)
+resting:PushEvent('healthdelta',{oldpercent=1,newpercent=.3})
+resting.components.health:SetVal(0,'combat')
+check(resting.components.health:IsDead()and resting.eyeturretrecovering2hm,'zero health starts recovery')
+check(resting.persists and resting.components.health.nofadeout and not resting:HasTag('NOCLICK'),'dead tower persists and remains clickable')
+check(not resting.components.inventory.dropondeath and resting.components.combat:GetWeapon(),'death retains its equipped weapon')
+check(not resting.components.health.regen and resting.brainstopped and not resting.allmiss2hm,'recovery stops regeneration brain and shield')
+check(not resting.poor_armor2hm_fx and not resting.poor_33cdtask2hm,'recovery removes shield effects and cooldown')
+check(resting.colour[4]==1 and resting.eyeturretfadetask2hm and resting.animation=='idle_loop'and not resting.lightenabled,'eye starts fading from current opacity with inactive light')
+graph.states.death.onenter(resting)
+check(not resting.deathloot and not resting.physicsremoved,'friendly death state neither drops loot nor removes obstacle')
+near(resting.components.timer:GetTimeLeft('eyeturret_recovery2hm'),2400,'five standard days are forty minutes')
+resting.components.health:SetVal(1500,'healing');resting.components.health:DoDelta(50,true,'regen')
+check(resting.components.health.currenthealth==0 and deathcount==1,'healing cannot bypass recovery or replay death')
+check(not resting.components.trader:AcceptGift(nil,gift('dragon_scales')),'resting tower rejects upgrades')
+check(resting.components.inspectable.descriptionfn(resting):find('5.0',1,true),'inspect reports remaining days')
+tick(479)
+check(resting.colour[4]==0 and not resting.eyeturretfadetask2hm,'fade-out finishes and releases its task')
+local data={};resting:OnSave(data);data.timer=resting.components.timer:OnSave()
+near(data.timer.timers.eyeturret_recovery2hm.timeleft,1921,'save retains exact remaining time')
+for _,healthfirst in ipairs({true,false})do
+    local reload=tower(2500)
+    local replayed=0;reload:ListenForEvent('death',function()replayed=replayed+1 end)
+    reload:OnPreLoad(data)
+    if healthfirst then reload.components.health:SetVal(0,'file_load')end
+    reload.components.timer:OnLoad(data.timer)
+    if not healthfirst then reload.components.health:SetVal(0,'file_load')end
+    reload:OnLoad(data)
+    check(replayed==0 and reload.eyeturretrecovering2hm and reload.colour[4]==0,'reload avoids duplicate death in either component order')
+    check(reload.eyeturretfire2hm and reload.eyeturretspore2hm,'resting save retains both upgrades')
+    near(reload.components.timer:GetTimeLeft('eyeturret_recovery2hm'),1921,'reload does not restart five-day countdown')
+    reload.components.timer:LongUpdate(1920);tick(0)
+    check(reload.eyeturretrecovering2hm and reload.components.health:IsDead(),'long update does not recover early')
+    reload.components.timer:LongUpdate(1);tick(0)
+    check(not reload.eyeturretrecovering2hm and reload.components.health.currenthealth==2000,'full elapsed simulation time restores full health')
+    check(reload.colour[4]==0 and reload.eyeturretfadetask2hm and not reload.brainstopped and reload.sg.currentstate.name=='idle','recovery starts eye fade-in and immediately restores brain')
+    check(reload.components.health.regen.amount==50 and reload.components.combat.weapon.components.weapon.stimuli=='electric','recovery restores regeneration and electric attack')
+    reload.components.health:SetVal(0,'second defeat')
+    near(reload.components.timer:GetTimeLeft('eyeturret_recovery2hm'),2400,'second defeat begins a fresh recovery')
+    reload:Remove()
+end
+tick(1920)
+check(resting.eyeturretrecovering2hm,'not restored one second before deadline')
+tick(1)
+check(not resting.eyeturretrecovering2hm and resting.components.health.currenthealth==2000,'normal timer recovers at exactly five days')
+
+AllRecipes={eyeturret={ingredients={},numtogive=1},eyeturret_item={ingredients={},numtogive=1}}
+local staff=entity('greenstaff')
+staff.components.spellcaster={spell=function()end,canuseontargets=true,canonlyuseonrecipes=true,canuseondead=false,CanCast=SpellCaster.CanCast}
+apply('greenstaff',staff)
+check(staff.components.spellcaster:CanCast(actiongiver,resting),'green staff can deconstruct active friendly tower')
+resting.components.health:SetVal(0,'test')
+check(staff.components.spellcaster:CanCast(actiongiver,resting),'green staff can deconstruct zero-health resting tower')
+check(not staff.components.spellcaster.canuseondead,'staff death exception remains scoped to a single call')
+local otherdead=victim('eyeturret',2600,{'companion','hostile'});otherdead.components.health:SetVal(0,'test')
+check(not staff.components.spellcaster:CanCast(actiongiver,otherdead),'staff still rejects other dead targets')
+resting:AddTag('INLIMBO');check(not staff.components.spellcaster:CanCast(actiongiver,resting),'staff retains native visibility/limbo restrictions');resting:RemoveTag('INLIMBO')
+for _,target in ipairs({resting,tower(2700)})do
+    if target~=resting then target.components.trader:AcceptGift(nil,gift('dragon_scales'))end
+    target:PushEvent('ondeconstructstructure')
+    check(target.refunds.dragon_scales==1,'deconstruction returns exactly one installed scale')
+    check(target.refunds.shroom_skin==(target==resting and 1 or nil),'deconstruction returns only installed mushroom skin')
+    target:PushEvent('ondeconstructstructure')
+    check(target.refunds.dragon_scales==1 and not target.eyeturretfire2hm and not target:HasTag('eyeturretsporeproof2hm'),'repeat event cannot duplicate refund')
+    target:Remove()
+end
+local unmodified=tower(2800);unmodified:PushEvent('ondeconstructstructure');check(not unmodified.refunds,'no free upgrade materials without upgrades')
+local packed=portable();packed.components.trader:AcceptGift(nil,gift('shroom_skin'))
+local before=#entities;packed:PushEvent('ondeconstructstructure')
+check(#entities==before+1 and entities[#entities].prefab=='shroom_skin','upgraded portable item also refunds its material')
+local failingstaff=entity('greenstaff');failingstaff.components.spellcaster={canuseondead=false,CanCast=function()error('injected cast error')end}
+apply('greenstaff',failingstaff)
+unmodified.components.health:SetVal(0,'test')
+check(not pcall(failingstaff.components.spellcaster.CanCast,failingstaff.components.spellcaster,actiongiver,unmodified),'native casting error remains visible')
+check(not failingstaff.components.spellcaster.canuseondead,'casting error restores staff flags')
+unmodified:Remove();packed:Remove();otherdead:Remove()
+
+-- Cosmetic transitions preserve tint and do not restart on duplicate death,
+-- replay on load, or leave a stale fade-in running after another defeat.
+local fading=tower(2900);fading.AnimState:SetMultColour(.8,.7,.6,.9)
+fading.components.health:SetVal(0,'test')
+near(fading.colour[4],.9,'fade-out starts at original alpha')
+tick(.25)
+local partial=fading.colour[4]
+check(partial>0 and partial<.9,'fade-out has an intermediate opacity')
+graph.states.death.onenter(fading)
+near(fading.colour[4],partial,'duplicate death does not snap or restart fade')
+local fadeSave={};fading:OnSave(fadeSave);fadeSave.timer=fading.components.timer:OnSave()
+local midload=tower(3000);midload:OnPreLoad(fadeSave);midload.components.timer:OnLoad(fadeSave.timer);midload:OnLoad(fadeSave)
+check(midload.colour[4]==0 and not midload.eyeturretfadetask2hm,'loading during fade-out shows resting state without a flash')
+midload:Remove();tick(.4)
+near(fading.colour[4],0,'fade-out reaches zero')
+near(fading.colour[1],.8,'fade preserves original colour channels')
+fading.components.timer:LongUpdate(fading.components.timer:GetTimeLeft('eyeturret_recovery2hm'));tick(0)
+tick(.35)
+partial=fading.colour[4]
+check(partial>0 and partial<.9 and fading.components.health.currenthealth==2000,'fade-in progresses while gameplay has recovered')
+local awakeSave={};fading:OnSave(awakeSave)
+local awakeLoad=tower(3100);awakeLoad:OnPreLoad(awakeSave);awakeLoad:OnLoad(awakeSave)
+check(not awakeLoad.eyeturretrecovering2hm and awakeLoad.colour[4]==1 and not awakeLoad.eyeturretfadetask2hm,'loading during fade-in shows normal live state')
+awakeLoad:Remove()
+local oldfade=fading.eyeturretfadetask2hm
+fading.components.health:SetVal(0,'defeated during fade-in')
+check(oldfade.cancelled,'new defeat cancels the previous fade-in task')
+near(fading.colour[4],partial,'new defeat fades from current partial opacity')
+tick(.65);near(fading.colour[4],0,'interrupted fade-in cannot make resting eye reappear')
+fading.components.timer:LongUpdate(fading.components.timer:GetTimeLeft('eyeturret_recovery2hm'));tick(0);tick(.85)
+near(fading.colour[4],.9,'fade-in restores original target alpha')
+check(not fading.eyeturretfadetask2hm and not fading.eyeturretcolour2hm,'completed fade-in releases transition state')
+fading.components.health:SetVal(0,'test');local pending=fading.eyeturretfadetask2hm
+fading:PushEvent('ondeconstructstructure');fading:Remove()
+check(pending.cancelled and not fading.eyeturretfadetask2hm,'removal during transition cancels the fade task')
+
 TheWorld.ismastersim=false
-local preview=entity('eyeturret');apply('eyeturret',preview)
+local preview=entity('eyeturret');preview:AddTag('companion');apply('eyeturret',preview)
 check(preview:HasTag('trader')and not preview.eyeturretenhanced2hm,'client receives action tag without server components')
 check(preview:HasTag('alltrader'),'client offers material GIVE action')
+local basepreview=entity('eyeturret_base');local replicationcalled=false
+basepreview.entity.GetParent=function()return preview end
+basepreview.OnEntityReplicated=function()replicationcalled=true end
+apply('eyeturret_base',basepreview);basepreview:OnEntityReplicated()
+check(replicationcalled and basepreview.client_forward_target==preview,'client base preserves replication callback and forwards clicks to friendly tower')
+for _,spec in ipairs({{'eyeturret',{'hostile','companion'}},{'shadoweyeturret',{'shadoweyeturret','hostile'}}})do
+    local enemy=entity(spec[1]);for _,tag in ipairs(spec[2])do enemy:AddTag(tag)end
+    apply('eyeturret',enemy)
+    check(not enemy:HasTag('trader')and not enemy:HasTag('alltrader'),'enemy client has no fake upgrade action')
+end
 local itempreview=entity('eyeturret_item');apply('eyeturret_item',itempreview)
 check(itempreview:HasTag('alltrader')and itempreview.components.trader==nil,'client portable preview only adds native action tags')
 local pc=entity('eye_charge');apply('eye_charge',pc);check(pc.components.projectile==nil,'client projectile is safe')

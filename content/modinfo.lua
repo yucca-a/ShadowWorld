@@ -1,4 +1,4 @@
-version = "2.8.14.96.1"
+version = "2.8.14.97"
 -- Original authors: 繁花丶海棠 | 胜天一猫 | 小蓝鲸 | leo468
 author = "Yucca（维护）"
 forumthread = ""
@@ -399,8 +399,8 @@ configuration_options = {
         i18n({"晾好的菜仅有0.25菜/果度,回3%血上限,晾肉架不可燃,可放入冰箱/钓具容器",
             "=0.25 Vegetable/Fruit. Heal 3% maxhealth.non-flammable.Can put in icebox/Tackle Receptacle"})),
     item("eyeturret", i18n({"眼球炮塔加强", "Enhanced Houndius Shootius"}),
-        i18n({"配方+2羊角；2000血/每秒回50；200基础电击，额外连锁4目标，每跳衰减20%；龙鳞升级隔离火焰，蘑菇皮免疫孢子云；秒杀妥测冰川座狼；保留双护盾",
-            "Recipe +2 goat horns;2000 HP,50 HP/s;200 electric base,4 extra chain targets(-20%/hop);scales:contained flames;shroom skin:spore immunity;execute UM glacial hounds;dual shields"}), true),
+        i18n({"仅友方炮塔;配方+2羊角；2000血/每秒回50；200基础电击，额外连锁4目标，每跳衰减20%；龙鳞升级隔离火焰，蘑菇皮免疫孢子云；秒杀妥测冰川座狼；保留双护盾；归零不掉落，休养5天满血恢复；拆解返还升级材料",
+            "Friendly turrets only;recipe +2 goat horns;2000 HP,50 HP/s;200 electric base,4 extra chain targets(-20%/hop);scales:contained flames;shroom skin:spore immunity;execute UM glacial hounds;dual shields;revives after 5 days without death loot;deconstruction refunds upgrades"}), true),
     headeritem(i18n({"机制改动", "Settings"})),
     item("Sleep In Tent Even Danger", i18n({"危险入睡/帐篷升级", "Sleep In Tent Even Danger"}),
         i18n({"毛皮铺盖帐篷等可以睡袋升级自愈无视白天等限制", "Use Napsack Upgrade Tent/Fur Roll... then auto repair self"}), true, nil,
@@ -704,8 +704,8 @@ configuration_options = {
             i18n({"蛛网恐惧:右键自己读蛛网魔法书", "Spider fear: right self read web book"}),
             i18n({"蜘蛛容器:右键自己打开3×3蜘蛛窝,只能放各种蜘蛛", "Spider bag: right self open 3x3 bag, only spiders"})
         }, nil, {i18n("禁用"), i18n("启用"), i18n("启用")}),
-    item("Webber Night Version", i18n({"韦伯微光夜视", "Webber Has Night Version"}),
-        i18n({"黑暗/洞穴中微光视觉,夜晚不掉理智", "dim vision in dark/cave, no night sanity drain"})),
+    item("Webber Night Version", i18n({"韦伯稳定夜视", "Webber Stable Night Vision"}),
+        i18n({"黄昏/夜晚/洞穴中稳定夜视,夜晚不掉理智;仅漫漫长夜危险经典档附带微光", "stable dusk/night/cave vision, no night sanity drain; dim light only in dangerous Long Night"})),
     item("Webber Uprade SpiderDen SpiderQueen", i18n({"韦伯升级三级蜘蛛巢为女王", "Webber Uprade SpiderDen SpiderQueen"}),
         i18n({"但困难模式蜘蛛巢改为需要给食物升级了", "Hard mode spider den replace give food to upgrade"})),
     --     item("spider_healer", i18n({"护士蜘蛛溢出回血", "Healer Spider Protect Health"}), i18n({
@@ -817,8 +817,8 @@ configuration_options = {
     item("Wurt can eat any", i18n({"鱼妹沃特可以吃肉，但收益只有30%", "Wurt can eat meat, but the profit is only 30%"})),
     item("Wurt Can Craft Book Fish", i18n({"鱼妹可制作鱼类之书", "Wurt Can Craft Book Fish"}),
         i18n({"鱼妹可以制作鱼类之书", "Wurt can craft the book of fish"})),
-    item("Wurt Night Version", i18n({"鱼妹微光夜视", "Wurt Has Night Version"}),
-        i18n({"黑暗/洞穴中微光视觉,夜晚不掉理智", "dim vision in dark/cave, no night sanity drain"})),
+    item("Wurt Night Version", i18n({"鱼妹稳定夜视", "Wurt Stable Night Vision"}),
+        i18n({"黄昏/夜晚/洞穴中稳定夜视,夜晚不掉理智;仅漫漫长夜危险经典档附带微光", "stable dusk/night/cave vision, no night sanity drain; dim light only in dangerous Long Night"})),
     item("wanda_easy", i18n({"------------------------- 󰀱 旺达总开关", "󰀱 Wanda Master Switch"})),
     item("Wanda Don't Auto Drop Age", i18n({"旺达不再持续衰老", "Wanda Don't Auto Drop Age"}), false),
     item("Ageless Watch Help Temperature", i18n({"不老表恢复温度", "Ageless Watch Temperature Help"})),
@@ -860,7 +860,9 @@ configuration_options = {
     item("Wonkey Run Wait Time", i18n({"芜猴助跑时间缩短", "Wonkey Run Wait Shorter Time"}),
         i18n({"默认步行0.5秒后奔跑,且奔跑无额外饥饿消耗", "Run Wait N Seconds,and run no extra consume hunger"}), 1, 0.5, 5, 0.5),
     item("Wonkey Right Self summon the powder_monkey", i18n({"芜猴右键自身召唤海棠小分队作战", "Wonkey Right Self Action"})),
-    item("Wonkey Night Version", i18n({"芜猴夜视微光", "Wonkey Has Night Version"})),
+    item("Wonkey Night Version", i18n({"芜猴稳定夜视", "Wonkey Stable Night Vision"}),
+        i18n({"黄昏/夜晚/洞穴中稳定夜视,夜晚不掉理智;仅漫漫长夜危险经典档附带微光",
+            "stable dusk/night/cave vision, no night sanity drain; dim light only in dangerous Long Night"})),
     item("Wonkey Attack Steal item", i18n({"芜猴攻击偷取物品", "Wonkey Attack Steal item"})),
     item("Wonkey Toss Poop", i18n({"芜猴投掷便便", "Wonkey Toss Poop"})),
     item("Wonkey Remove Curse", i18n({"芜猴吃香蕉消除诅咒饰品", "Wonkey Eat Banana Remove Curse"}),
@@ -875,8 +877,12 @@ configuration_options = {
             i18n({"伤害2x 承伤1.6x", "2x dmg,1.6x taken"}),
             i18n({"伤害4x 承伤2.5x", "4x dmg,2.5x taken"})
         }, i18n({"禁用" .. filldesc(4), "Disable" .. filldesc(7)}), false),
-    item("wathom nightvision", i18n({"沃托姆夜视优化", "wathom nightvision better"}),
-        i18n({"永久夜视，锁定春天滤镜(建议再开个滤镜)", "always nightvision, better filter"})),
+    item("Monster Night Vision", i18n({"怪物角色夜视（独立开关）", "Monster Player Night Vision"}),
+        i18n({"带monster标签的玩家获得稳定夜视，排除沃拓克斯；兼容模组角色，不依赖模式或角色总开关",
+            "Stable night vision for monster-tagged players except Wortox; independent of mode/character switches"})),
+    item("wathom nightvision", i18n({"沃托姆夜视优化（独立开关）", "Wathom Stable Night Vision"}),
+        i18n({"正式/测试版稳定夜视，移除回声黑雾与心跳；怪物角色夜视开启时也会生效",
+            "Stable/Beta: steady night vision without sonar fog/heartbeat; also enabled by Monster Player Night Vision"})),
     item("All Right Dodge", i18n({"全员右键冲刺", "All Right Dodge"}),
         i18n({"娱乐选项;需关闭其他角色的右键动作否则无效;默认1秒CD", "FOR FUN;Default 1s cd"}), false, 0.5, 6, 0.5),
     item("Role Gym", i18n({"全员健身房健身", "All Mighty Gym"}), i18n({" ", " Only Mighty Gym can update mightyness"}), true,
@@ -1047,7 +1053,7 @@ configuration_options = {
     }), -1, -1, -2, -1, {"-240,5~65", "-480,10~60"}),
     item("dusk_change", i18n({"漫漫长夜", "Long Night"}), nil, true, nil, nil, -2, {
             i18n({"黄昏的大部分时间变成了黑夜", "Dusk will be shorter"}),
-            i18n({"黄昏使用夜间光照,夜视不再安全,官方夜视增加照明", "dusk no light and danger night version"}),
+            i18n({"黄昏使用夜间光照,夜视不再安全,官方夜视及已开启的韦伯/沃特/芜猴夜视增加照明", "Dark dusk; night vision alone is unsafe; native abilities and enabled Webber/Wurt/Wonkey vision receive light"}),
             i18n({"黄昏使用夜间光照", "dusk no light"})
         }, nil,
         {enabletext, i18n({filldesc(4) .. "经典", filldesc(9) .. "Classical"}), i18n({filldesc(4) .. "经典", filldesc(9) ..

@@ -13,7 +13,8 @@ modimport("common/food_util.lua")
 modimport("common/newstate.lua")
 modimport("common/bugfix.lua")
 modimport("init/hover")
-modimport("common/wathom_nightvision_client.lua")
+modimport("common/monster_nightvision.lua")
+modimport("common/role_nightvision.lua")
 require("debugcommands2hm")
 TUNING.HAPPYPATCHMOD = true -- 供其他模组访问
 TUNING.HappyPatchTest = modname == "HappyPatch"

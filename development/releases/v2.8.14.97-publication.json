@@ -1,0 +1,33 @@
+{
+  "workshop_id": "3832182265",
+  "version": "2.8.14.97",
+  "tag": "v2.8.14.97",
+  "published_at_utc": "2026-11-03T10:41:15.000Z",
+  "published_at_local": "2026-11-03 18:41:15 Asia/Shanghai",
+  "uploader": "Official Klei ModUploader.exe",
+  "uploader_status": "Update completed",
+  "title": "为爽而虐/暗影世界 淬炼之季",
+  "visibility": "Public",
+  "version_tag_verified": true,
+  "published_notes_match_approved_text": true,
+  "notes_comparison": "HTML decoded; line endings normalized; trailing newline ignored",
+  "patch_notes_file": "workshop/update-notes-2.8.14.97.txt",
+  "patch_notes_sha256": "ab167e4537aabd33fbaeba833624dd3696727c8dd9b59df6ef238beeb3ba92bc",
+  "content_directory": "content",
+  "content_file_count": 453,
+  "content_bytes": 22422539,
+  "server_data_bytes": 22422627,
+  "server_data_source": "Official ModUploader refreshed server details",
+  "source_manifest": "development/releases/v2.8.14.97-content-manifest.json",
+  "content_archive_sha256": "9161a11940d7e6aed4209958ecb854b57a25cd56ec483fa379f263424fe176fc",
+  "checks": {
+    "regression_assertions": 1818,
+    "lua51_syntax_files": 372,
+    "source_hashes_verified_before_and_after_upload": true
+  },
+  "update_data": true,
+  "upload_redundant_files": true,
+  "update_details": false,
+  "update_preview_image": false,
+  "validation_limit": "No real client graphical acceptance test; automated Lua tests and isolated native dedicated-server checks completed before release."
+}

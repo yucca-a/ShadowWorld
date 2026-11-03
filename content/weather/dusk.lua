@@ -151,6 +151,44 @@ if dusk_mode ~= true then
     end)
     -- 是否让夜视能力变地危险
     if dangerversion then
+        -- These existing role abilities keep their small physical safety light
+        -- only while dangerous Long Night is actually loaded. Other nightvision
+        -- sources (including the generic monster bonus) do not grant this light.
+        local ROLE_LIGHTS = {webber = true, wurt = true, wonkey = true}
+        local function RemoveRoleLight(inst)
+            if inst._rolevisionlight2hm ~= nil then
+                if inst._rolevisionlight2hm:IsValid() then inst._rolevisionlight2hm:Remove() end
+                inst._rolevisionlight2hm = nil
+            end
+        end
+        local function UpdateRoleLight(inst)
+            local state = inst._rolevisionstate2hm
+            if state == nil or not state.active or inst:HasTag("playerghost") or
+                (inst.components.health ~= nil and inst.components.health:IsDead()) then
+                RemoveRoleLight(inst)
+                return
+            end
+            if inst._rolevisionlight2hm == nil or not inst._rolevisionlight2hm:IsValid() then
+                local light = SpawnPrefab("deathcurselight2hm")
+                if light == nil then return end
+                inst._rolevisionlight2hm = light
+                light.entity:SetCanSleep(false)
+                light.entity:SetParent(inst.entity)
+                light.Light:SetFalloff(0.4)
+                light.Light:SetIntensity(.7)
+                light.Light:SetRadius(0.5)
+                light.Light:SetColour(180 / 255, 195 / 255, 150 / 255)
+                light.Light:Enable(true)
+            end
+        end
+        AddPlayerPostInit(function(inst)
+            if not TheWorld.ismastersim or not ROLE_LIGHTS[inst.prefab] then return end
+            inst:ListenForEvent("rolenightvision2hmchanged", UpdateRoleLight)
+            inst:ListenForEvent("death", RemoveRoleLight)
+            inst:ListenForEvent("onremove", RemoveRoleLight)
+            -- Spawn/load callers position the player after prefab postinit.
+            inst:DoTaskInTime(0, UpdateRoleLight)
+        end)
         AddComponentPostInit("playervision", function(self)
             local oldHasNightVision = self.HasNightVision
             self.HasNightVision = function(self, ...)
@@ -249,15 +287,14 @@ if dusk_mode ~= true then
                     inst._weremodelight2hm.Light:SetRadius(2.5)
                     inst._weremodelight2hm.Light:SetColour(180 / 255, 195 / 255, 150 / 255)
                     inst._weremodelight2hm.Light:Enable(true)
-                    inst.components.playervision:ForceNightVision(true)
-                    inst.components.playervision:SetCustomCCTable(nil)
+                    -- Woodie's native SetWereVision owns the transformation
+                    -- source and palette on both client and server. This
+                    -- dangerous-mode compensation only supplies actual light.
                 else
                     if inst._weremodelight2hm and inst._weremodelight2hm:IsValid() then
                         inst._weremodelight2hm:Remove()
                         inst._weremodelight2hm = nil
                     end
-                    inst.components.playervision:ForceNightVision(false)
-                    inst.components.playervision:SetCustomCCTable(nil)
                 end
             end)
         end

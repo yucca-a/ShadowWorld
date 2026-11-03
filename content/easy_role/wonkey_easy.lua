@@ -378,48 +378,12 @@ AddStategraphPostInit("primemate", function(sg)
         end
     end
 end)
--- 芜猴夜视微光
+-- 芜猴夜视附带的夜晚理智效果
 if GetModConfigData("Wonkey Night Version") then
-    local function enableplayervision(inst)
-        inst:DoTaskInTime(0.25, function()
-            if TheWorld:HasTag("cave") or TheWorld.state.isnight or TheWorld.state.isdusk then
-                if TheWorld.ismastersim then
-                    if not (inst._wonkeylight2hm and inst._wonkeylight2hm:IsValid()) then
-                        inst._wonkeylight2hm = SpawnPrefab("deathcurselight2hm")
-                    end
-                    inst._wonkeylight2hm.entity:SetParent(inst.entity)
-                    inst._wonkeylight2hm.Light:SetFalloff(0.4)
-                    inst._wonkeylight2hm.Light:SetIntensity(.7)
-                    inst._wonkeylight2hm.Light:SetRadius(0.5)
-                    inst._wonkeylight2hm.Light:SetColour(180 / 255, 195 / 255, 150 / 255)
-                    inst._wonkeylight2hm.Light:Enable(true)
-                end
-                inst.components.playervision:ForceNightVision(true)
-                inst.components.playervision:SetCustomCCTable(nil)
-            else
-                inst.components.playervision:ForceNightVision(false)
-                inst.components.playervision:SetCustomCCTable(nil)
-            end
-        end)
-    end
+    -- 夜视由 common/role_nightvision.lua 管理；这里只保留原有理智效果。
     AddPrefabPostInit("wonkey", function(inst)
-        inst:AddTag("nightvision")
-        if not inst.components.playervision then inst:AddComponent("playervision") end
-        local oldOnLoad = inst.OnLoad or nilfn
-        inst.OnLoad = function(...)
-            oldOnLoad(...)
-            enableplayervision(...)
-        end
-        local oldOnNewSpawn = inst.OnNewSpawn or nilfn
-        inst.OnNewSpawn = function(...)
-            oldOnNewSpawn(...)
-            enableplayervision(...)
-        end
-        enableplayervision(inst)
-        inst:WatchWorldState("phase", enableplayervision)
-        inst:ListenForEvent("ms_respawnedfromghost", enableplayervision)
         if not TheWorld.ismastersim then return end
-        inst.components.sanity.night_drain_mult = 0
+        if inst.components.sanity then inst.components.sanity.night_drain_mult = 0 end
     end)
 end
 

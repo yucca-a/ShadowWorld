@@ -490,46 +490,10 @@ if GetModConfigData("Hat Trick") then
     end)
 end
 
--- 韦伯微光夜视:蜘蛛在黑暗中也拥有微光视觉
+-- 韦伯夜视附带的夜晚理智效果
 if GetModConfigData("Webber Night Version") then
-    local function enableplayervision(inst)
-        inst:DoTaskInTime(0.25, function()
-            if TheWorld:HasTag("cave") or TheWorld.state.isnight or TheWorld.state.isdusk then
-                if TheWorld.ismastersim then
-                    if not (inst._webberlight2hm and inst._webberlight2hm:IsValid()) then
-                        inst._webberlight2hm = SpawnPrefab("deathcurselight2hm")
-                    end
-                    inst._webberlight2hm.entity:SetParent(inst.entity)
-                    inst._webberlight2hm.Light:SetFalloff(0.4)
-                    inst._webberlight2hm.Light:SetIntensity(.7)
-                    inst._webberlight2hm.Light:SetRadius(0.5)
-                    inst._webberlight2hm.Light:SetColour(180 / 255, 195 / 255, 150 / 255)
-                    inst._webberlight2hm.Light:Enable(true)
-                end
-                inst.components.playervision:ForceNightVision(true)
-                inst.components.playervision:SetCustomCCTable(nil)
-            else
-                inst.components.playervision:ForceNightVision(false)
-                inst.components.playervision:SetCustomCCTable(nil)
-            end
-        end)
-    end
+    -- 夜视由 common/role_nightvision.lua 管理；这里只保留原有理智效果。
     AddPrefabPostInit("webber", function(inst)
-        inst:AddTag("nightvision")
-        if not inst.components.playervision then inst:AddComponent("playervision") end
-        local oldOnLoad = inst.OnLoad or nilfn
-        inst.OnLoad = function(...)
-            oldOnLoad(...)
-            enableplayervision(...)
-        end
-        local oldOnNewSpawn = inst.OnNewSpawn or nilfn
-        inst.OnNewSpawn = function(...)
-            oldOnNewSpawn(...)
-            enableplayervision(...)
-        end
-        enableplayervision(inst)
-        inst:WatchWorldState("phase", enableplayervision)
-        inst:ListenForEvent("ms_respawnedfromghost", enableplayervision)
         if not TheWorld.ismastersim then return end
         if inst.components.sanity then inst.components.sanity.night_drain_mult = 0 end
     end)

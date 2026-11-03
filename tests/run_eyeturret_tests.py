@@ -11,16 +11,19 @@ lua = LuaRuntime(unpack_returned_tuples=True)
 native = {}
 with ZipFile(sys.argv[1] if len(sys.argv) > 1 else
              "D:/SteamLibrary/steamapps/common/Don't Starve Together/data/databundles/scripts.zip") as z:
-    for name in ["combat", "projectile", "health", "trader"]:
+    for name in ["combat", "projectile", "health", "trader", "spellcaster"]:
         source = z.read(f"scripts/components/{name}.lua").decode("utf-8-sig")
         methods = {"combat": ["DoAttack"], "projectile": ["Hit"],
-                   "health": ["SetVal", "DoFireDamage"], "trader": ["AcceptGift", "AbleToAccept", "WantsToAccept"]}[name]
+                   "health": ["SetVal", "DoFireDamage"], "trader": ["AcceptGift", "AbleToAccept", "WantsToAccept"],
+                   "spellcaster": ["CanCast"]}[name]
         for method in methods:
-            start = source.index(f"function {name.capitalize()}:{method}(")
+            classname = "SpellCaster" if name == "spellcaster" else name.capitalize()
+            start = source.index(f"function {classname}:{method}(")
             native[name + "_" + method] = source[start:source.index("\nend", start) + 4]
     source = z.read("scripts/componentactions.lua").decode("utf-8-sig")
     start = source.index("inventoryitem = function", source.index("USEITEM =")) + len("inventoryitem = ")
     lua.globals().give_action_source = "return " + source[start:source.index("\n        end,", start) + len("\n        end")]
+    lua.globals().timer_source = z.read("scripts/components/timer.lua").decode("utf-8-sig")
 lua.globals().native = lua.table_from(native)
 lua.globals().turret_source = (ROOT / "content/easy_other/eyeturret2hm.lua").read_text(encoding="utf-8-sig")
 lua.globals().fire_source = (ROOT / "content/scripts/prefabs/eyeturret_safefire2hm.lua").read_text(encoding="utf-8-sig")

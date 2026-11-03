@@ -33,9 +33,12 @@ local function Attach(inst, target, attacker)
     inst.Transform:SetPosition(0, 0, 0)
     local scale = math.max(0.5, math.min(2, target:GetPhysicsRadius(0.5)))
     inst.Transform:SetScale(scale, scale, scale)
-    inst:ListenForEvent("death", inst.Remove, target)
-    inst:ListenForEvent("onremove", inst.Remove, target)
-    inst:ListenForEvent("onextinguish", inst.Remove, target)
+    -- Cross-entity event callbacks receive the SOURCE (target), not this FX.
+    -- Passing inst.Remove directly would remove the victim and recurse onremove.
+    local function RemoveFire() inst:Remove() end
+    inst:ListenForEvent("death", RemoveFire, target)
+    inst:ListenForEvent("onremove", RemoveFire, target)
+    inst:ListenForEvent("onextinguish", RemoveFire, target)
     Refresh(inst, attacker)
     inst:DoPeriodicTask(PERIOD, OnTick)
 end

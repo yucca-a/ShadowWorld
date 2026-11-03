@@ -17,15 +17,52 @@
       "tag": "v2.8.14.96.1",
       "files": 439,
       "bytes": 22295801
+    },
+    {
+      "tag": "v2.8.14.97",
+      "files": 453,
+      "bytes": 22422539
     }
   ],
   "archive_sha256": {
     "backups/HappyPatch-2.8.14.95-original.zip": "0a9b6ae5ef4b23e8d8033383ab573f276d8eeed08592ab73ac323141fd468478",
-    "work/release-2.8.14.96/ShadowWorld-2.8.14.96-source.zip": "9af3d06fa0bc232becb39935cbdd0585b812217c7ceb148ef316058e6a37ebaa"
+    "work/release-2.8.14.96/ShadowWorld-2.8.14.96-source.zip": "9af3d06fa0bc232becb39935cbdd0585b812217c7ceb148ef316058e6a37ebaa",
+    "work/release-2.8.14.97/ShadowWorld-2.8.14.97-content.zip": "9161a11940d7e6aed4209958ecb854b57a25cd56ec483fa379f263424fe176fc"
   },
   "current_matches_published_manifest": true,
   "current_changes_from_v2_8_14_96": [
-    "modinfo.lua"
+    "common/monster_nightvision.lua",
+    "common/role_nightvision.lua",
+    "common/temp.lua",
+    "common/wathom_nightvision_client.lua",
+    "easy_other/containersort.lua",
+    "easy_other/easy_structures.lua",
+    "easy_other/eyeturret2hm.lua",
+    "easy_other/ui.lua",
+    "easy_other/um_patch.lua",
+    "easy_other/worldexchange.lua",
+    "easy_other/worldexchangefast.lua",
+    "easy_role/wathom_easy.lua",
+    "easy_role/webber_easy.lua",
+    "easy_role/wixie_easy.lua",
+    "easy_role/wonkey_easy.lua",
+    "easy_role/wurt_easy.lua",
+    "modinfo.lua",
+    "modmain.lua",
+    "modservercreationmain.lua",
+    "role/walter.lua",
+    "scripts/components/worldexchange2hm.lua",
+    "scripts/prefabs/eyeturret_safefire2hm.lua",
+    "scripts/prefabs2hm.lua",
+    "scripts/wixieconfig2hm.lua",
+    "scripts/worldexchangecheckpoint2hm.lua",
+    "scripts/worldexchangeengine2hm.lua",
+    "scripts/worldexchangeinstant2hm.lua",
+    "scripts/worldexchangeprotocol2hm.lua",
+    "scripts/worldexchangerpc2hm.lua",
+    "scripts/worldexchangestore2hm.lua",
+    "weather/dusk.lua"
   ],
-  "history_kind": "Imported version snapshots; not original development commit history"
+  "history_kind": "Imported version snapshots; not original development commit history",
+  "current_tag": "v2.8.14.97"
 }
