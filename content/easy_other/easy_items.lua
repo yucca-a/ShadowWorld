@@ -1417,6 +1417,41 @@ AddPrefabPostInit("phonograph", function(inst)
     if inst.components.workable then inst.components.workable:SetWorkable(nil) end
 end)
 
+-- 普通陷阱必中：复用原生捕获流程，在合拢开始时结算。
+local guaranteedtrap = GetModConfigData("Trap Guaranteed Catch")
+if guaranteedtrap then
+    AddStategraphPostInit("trap", function(sg)
+        local onenter = sg.states.sprung.onenter
+        sg.states.sprung.onenter = function(inst, ...)
+            onenter(inst, ...)
+            if inst.trapguaranteed2hm then inst.components.trap:DoSpring() end
+        end
+    end)
+end
+
+local function guaranteetrapcatch(inst)
+    local trap = inst.components.trap
+    if not trap then return end
+    inst.trapguaranteed2hm = true
+    local DoSpring = trap.DoSpring
+    trap.DoSpring = function(self, ...)
+        -- Native animover still closes the trap, but must not settle a second
+        -- time and erase its loot. Keep the upstream shadow immunity wrapper.
+        if self.issprung then return end
+        return DoSpring(self, ...)
+    end
+    local Harvest = trap.Harvest
+    trap.Harvest = function(self, ...)
+        -- Another player/auto-collector may harvest before the animation ends.
+        -- Finish the native close state immediately before Harvest rearms it;
+        -- PushEvent alone queues the event and is too late for this ordering.
+        if self.issprung and inst.sg and inst.sg.currentstate.name == "sprung" then
+            inst.sg:HandleEvent("animover")
+        end
+        return Harvest(self, ...)
+    end
+end
+
 -- 陷阱可以直接右键丢弃
 local function dropactionfn2hm(inst, doer, target, pos, act)
     if act.invobject ~= nil and
@@ -1464,6 +1499,7 @@ AddPrefabPostInit("trap", function(inst)
     if not TheWorld.ismastersim then return end
     inst:AddComponent("action2hm")
     inst.components.action2hm.actionfn = dropactionfn2hm
+    if guaranteedtrap then guaranteetrapcatch(inst) end
 end)
 
 -- 瓶中信配方:橙色宝石 + 海盗地图 + 绳子

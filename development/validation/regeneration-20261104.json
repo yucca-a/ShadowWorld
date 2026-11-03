@@ -1,0 +1,179 @@
+{
+  "date": "2026-11-04",
+  "published": false,
+  "version": "2.8.14.97.3",
+  "source_sha256": {
+    "content/scripts/worldexchangecheckpoint2hm.lua": "ff665dca1d2f3226b719e399d34b0be80b1b19e754a490bf91d4705756a686b4",
+    "content/scripts/worldexchangeinstant2hm.lua": "973601d590ed947f0aba46b213d530e60415d1c801b088acdfceac3ad7c32956",
+    "content/scripts/components/worldexchange2hm.lua": "f2d44bb8fafac1cca69131ff77bf81cdbb9623b7c2ae7ee19b915629b7157693",
+    "content/scripts/worldexchangeengine2hm.lua": "25197be35a840a4ffdcd2cc0bdf484f173d073d025ee95a1d3f5e0165a15d82f",
+    "content/scripts/worldexchangestore2hm.lua": "e8dbb04c72219fb1a068069e6dfc8bb6e81944dae21a9ba2c9df663ad326e7e9",
+    "tests/native/regeneration_probe.lua": "486e2054d4bb73b397d4ef77a37d50050c7b64ffea878127c73cb1651c4bccc8",
+    "tests/run_native_performance_probe.py": "594883cfd43876410d3ef5e125c92cddc3e2dc6219c484d4ab908b46859ccbe5"
+  },
+  "runs": {
+    "working-regen-baseline": {
+      "Master": {
+        "log": "work/performance-audit/working-regen-baseline/Master.log",
+        "sha256": "07e7e3aae059749a3db218c408d92705aed5cdbe3324141b73fe7c954ad0fe61",
+        "markers": [
+          "[00:00:19]: [REGEN_PROBE] WORLD\t6FF467B4B0ADCB7E\tloaded_cut\tnil\t",
+          "[00:00:19]: [REGEN_PROBE] STAGE\toriginal\t6FF467B4B0ADCB7E\t",
+          "[00:00:21]: [REGEN_PROBE] STATE\toriginal\t0.10000000521541\tjoining/hold=false/paused=false/control=true\t",
+          "[00:00:22]: [REGEN_PROBE] STATE\toriginal\t0.50000002607703\tdraining/hold=false/paused=false/control=true\t",
+          "[00:00:22]: [REGEN_PROBE] STATE\toriginal\t0.60000003129244\tfrozen/hold=false/paused=false/control=true\t",
+          "[00:00:22]: [REGEN_PROBE] SAVE_BEGIN\toriginal\t0.63333336636424\t",
+          "[00:00:22]: [REGEN_PROBE] SAVE_END\toriginal\tcpu_ms\t369\t",
+          "[00:00:22]: [REGEN_PROBE] STATE\toriginal\t0.70000003650784\tprepared/hold=false/paused=false/control=true\t",
+          "[00:00:23]: [REGEN_PROBE] STATE\toriginal\t1.4000000730157\tsealed/hold=false/paused=false/control=true\t",
+          "[00:00:23]: [REGEN_PROBE] STATE\toriginal\t1.5000000782311\tactivating/hold=false/paused=false/control=true\t",
+          "[00:00:23]: [REGEN_PROBE] STATE\toriginal\t1.6000000834465\tready/hold=false/paused=false/control=true\t",
+          "[00:00:36]: [REGEN_PROBE] RESET_REQUEST\t",
+          "[00:00:48]: [REGEN_PROBE] WORLD\t53E73062BA252B97\tloaded_cut\tnil\t",
+          "[00:00:48]: [REGEN_PROBE] STAGE\tregenerated\t53E73062BA252B97\t",
+          "[00:00:50]: [REGEN_PROBE] STATE\tregenerated\t0.10000000521541\tjoining/hold=false/paused=false/control=true\t",
+          "[00:00:51]: [REGEN_PROBE] STATE\tregenerated\t0.30000001564622\tdraining/hold=false/paused=false/control=true\t",
+          "[00:00:51]: [REGEN_PROBE] STATE\tregenerated\t0.40000002086163\tfrozen/hold=false/paused=false/control=true\t",
+          "[00:00:51]: [REGEN_PROBE] SAVE_BEGIN\tregenerated\t0.50000002607703\t",
+          "[00:00:51]: [REGEN_PROBE] SAVE_END\tregenerated\tcpu_ms\t441\t",
+          "[00:00:52]: [REGEN_PROBE] STATE\tregenerated\t0.60000003129244\tprepared/hold=false/paused=false/control=true\t",
+          "[00:00:52]: [REGEN_PROBE] STATE\tregenerated\t0.70000003650784\tsealed/hold=false/paused=false/control=true\t",
+          "[00:00:53]: [REGEN_PROBE] STATE\tregenerated\t1.2000000625849\tready/hold=false/paused=false/control=true\t",
+          "[00:00:53]: [REGEN_PROBE] READY_AFTER_REGEN\t1.2000000625849\t53E73062BA252B97\t",
+          "[00:01:08]: [REGEN_PROBE] VERIFIED\t53E73062BA252B97\tholding\tfalse\tcontrol\ttrue\t"
+        ]
+      },
+      "Caves": {
+        "log": "work/performance-audit/working-regen-baseline/Caves.log",
+        "sha256": "89b53e43915640b09da76a7a0ee15859f55de9abe6d9f62b11cc3e663feeaf3a",
+        "markers": [
+          "[00:00:19]: [REGEN_PROBE] WORLD\t6FF467B4B0ADCB7E\tloaded_cut\tnil\t",
+          "[00:00:19]: [REGEN_PROBE] STAGE\toriginal\t6FF467B4B0ADCB7E\t",
+          "[00:00:21]: [REGEN_PROBE] STATE\toriginal\t0.10000000521541\tjoining/hold=false/paused=false/control=true\t",
+          "[00:00:22]: [REGEN_PROBE] STATE\toriginal\t0.50000002607703\tdraining/hold=false/paused=false/control=true\t",
+          "[00:00:22]: [REGEN_PROBE] STATE\toriginal\t0.60000003129244\tfrozen/hold=false/paused=false/control=true\t",
+          "[00:00:22]: [REGEN_PROBE] SAVE_BEGIN\toriginal\t1.1000000573695\t",
+          "[00:00:23]: [REGEN_PROBE] SAVE_END\toriginal\tcpu_ms\t370\t",
+          "[00:00:23]: [REGEN_PROBE] STATE\toriginal\t1.1000000573695\tprepared/hold=false/paused=false/control=true\t",
+          "[00:00:23]: [REGEN_PROBE] STATE\toriginal\t1.3000000678003\tsealed/hold=false/paused=false/control=true\t",
+          "[00:00:23]: [REGEN_PROBE] STATE\toriginal\t1.4000000730157\tactivating/hold=false/paused=false/control=true\t",
+          "[00:00:23]: [REGEN_PROBE] STATE\toriginal\t1.6000000834465\tready/hold=false/paused=false/control=true\t",
+          "[00:00:47]: [REGEN_PROBE] WORLD\t37417AA80C34B528\tloaded_cut\tnil\t",
+          "[00:00:47]: [REGEN_PROBE] STAGE\tregenerated\t37417AA80C34B528\t",
+          "[00:00:48]: [REGEN_PROBE] STATE\tregenerated\t0.10000000521541\tjoining/hold=false/paused=false/control=true\t",
+          "[00:00:51]: [REGEN_PROBE] STATE\tregenerated\t1.9000000990927\tfrozen/hold=false/paused=false/control=true\t",
+          "[00:00:52]: [REGEN_PROBE] SAVE_BEGIN\tregenerated\t2.5000001303852\t",
+          "[00:00:52]: [REGEN_PROBE] SAVE_END\tregenerated\tcpu_ms\t368\t",
+          "[00:00:52]: [REGEN_PROBE] STATE\tregenerated\t2.5000001303852\tprepared/hold=false/paused=false/control=true\t",
+          "[00:00:53]: [REGEN_PROBE] STATE\tregenerated\t2.700000140816\tactivating/hold=false/paused=false/control=true\t",
+          "[00:00:53]: [REGEN_PROBE] STATE\tregenerated\t2.9000001512468\tready/hold=false/paused=false/control=true\t",
+          "[00:00:53]: [REGEN_PROBE] READY_AFTER_REGEN\t2.9000001512468\t37417AA80C34B528\t",
+          "[00:01:08]: [REGEN_PROBE] VERIFIED\t37417AA80C34B528\tholding\tfalse\tcontrol\ttrue\t"
+        ]
+      }
+    },
+    "working-regen-final": {
+      "Master": {
+        "log": "work/performance-audit/working-regen-final/Master.log",
+        "sha256": "743639c74243ac8098a33aa0073e0886eb34df8ebc19be9a43743a0d2f90a854",
+        "markers": [
+          "[00:00:19]: [REGEN_PROBE] WORLD\t6FF467B4B0ADCB7E\tloaded_cut\tnil\t",
+          "[00:00:19]: [REGEN_PROBE] STAGE\toriginal\t6FF467B4B0ADCB7E\t",
+          "[00:00:21]: [REGEN_PROBE] STATE\toriginal\t0.10000000521541\tjoining/hold=false/paused=false/control=true\t",
+          "[00:00:22]: [REGEN_PROBE] STATE\toriginal\t0.40000002086163\tready/hold=false/paused=false/control=true\t",
+          "[00:00:26]: [REGEN_PROBE] STATE\toriginal\t5.1000002659857\tfrozen/hold=false/paused=false/control=true\t",
+          "[00:00:26]: [REGEN_PROBE] SAVE_BEGIN\toriginal\t5.1333336010575\t",
+          "[00:00:27]: [REGEN_PROBE] SAVE_END\toriginal\tcpu_ms\t361\t",
+          "[00:00:27]: [REGEN_PROBE] STATE\toriginal\t5.2000002712011\tprepared/hold=false/paused=false/control=true\t",
+          "[00:00:27]: [REGEN_PROBE] STATE\toriginal\t5.900000307709\tsealed/hold=false/paused=false/control=true\t",
+          "[00:00:27]: [REGEN_PROBE] STATE\toriginal\t6.0000003129244\tactivating/hold=false/paused=false/control=true\t",
+          "[00:00:28]: [REGEN_PROBE] STATE\toriginal\t6.1000003181398\tready/hold=false/paused=false/control=true\t",
+          "[00:00:36]: [REGEN_PROBE] RESET_REQUEST\t",
+          "[00:00:48]: [REGEN_PROBE] WORLD\t5D3015151A8D9A14\tloaded_cut\tnil\t",
+          "[00:00:48]: [REGEN_PROBE] STAGE\tregenerated\t5D3015151A8D9A14\t",
+          "[00:00:50]: [REGEN_PROBE] STATE\tregenerated\t0.10000000521541\tjoining/hold=false/paused=false/control=true\t",
+          "[00:00:52]: [REGEN_PROBE] STATE\tregenerated\t0.30000001564622\tready/hold=false/paused=false/control=true\t",
+          "[00:00:52]: [REGEN_PROBE] READY_AFTER_REGEN\t0.30000001564622\t5D3015151A8D9A14\t",
+          "[00:00:57]: [REGEN_PROBE] IDLE_SAVES\t0\t",
+          "[00:00:57]: [REGEN_PROBE] FIRST_EXCHANGE_CLICK\t",
+          "[00:00:57]: [REGEN_PROBE] STATE\tregenerated\t5.4000002816319\tfrozen/hold=false/paused=false/control=true\t",
+          "[00:00:57]: [REGEN_PROBE] SAVE_BEGIN\tregenerated\t5.4333336167037\t",
+          "[00:00:57]: [REGEN_PROBE] SAVE_END\tregenerated\tcpu_ms\t418\t",
+          "[00:00:57]: [REGEN_PROBE] STATE\tregenerated\t5.5000002868474\tprepared/hold=false/paused=false/control=true\t",
+          "[00:00:58]: [REGEN_PROBE] STATE\tregenerated\t6.1000003181398\tsealed/hold=false/paused=false/control=true\t",
+          "[00:00:58]: [REGEN_PROBE] STATE\tregenerated\t6.2000003233552\tactivating/hold=false/paused=false/control=true\t",
+          "[00:00:58]: [REGEN_PROBE] STATE\tregenerated\t6.3000003285706\tready/hold=false/paused=false/control=true\t",
+          "[00:00:59]: [REGEN_PROBE] FIRST_EXCHANGE_DONE\t1\t",
+          "[00:00:59]: [REGEN_PROBE] VERIFIED\t5D3015151A8D9A14\tholding\tfalse\tcontrol\ttrue\t"
+        ]
+      },
+      "Caves": {
+        "log": "work/performance-audit/working-regen-final/Caves.log",
+        "sha256": "2842246b5608da0745fe9079daf0b4c90141ac5080f06ccea7c44347fb5ce6a7",
+        "markers": [
+          "[00:00:19]: [REGEN_PROBE] WORLD\t6FF467B4B0ADCB7E\tloaded_cut\tnil\t",
+          "[00:00:19]: [REGEN_PROBE] STAGE\toriginal\t6FF467B4B0ADCB7E\t",
+          "[00:00:21]: [REGEN_PROBE] STATE\toriginal\t0.10000000521541\tjoining/hold=false/paused=false/control=true\t",
+          "[00:00:22]: [REGEN_PROBE] STATE\toriginal\t0.50000002607703\tready/hold=false/paused=false/control=true\t",
+          "[00:00:26]: [REGEN_PROBE] STATE\toriginal\t5.1000002659857\tfrozen/hold=false/paused=false/control=true\t",
+          "[00:00:27]: [REGEN_PROBE] STATE\toriginal\t5.6000002920628\tcapture_wait/hold=false/paused=false/control=true\t",
+          "[00:00:27]: [REGEN_PROBE] SAVE_BEGIN\toriginal\t5.6333336271346\t",
+          "[00:00:27]: [REGEN_PROBE] SAVE_END\toriginal\tcpu_ms\t385\t",
+          "[00:00:27]: [REGEN_PROBE] STATE\toriginal\t5.7000002972782\tprepared/hold=false/paused=false/control=true\t",
+          "[00:00:27]: [REGEN_PROBE] STATE\toriginal\t5.900000307709\tactivating/hold=false/paused=false/control=true\t",
+          "[00:00:28]: [REGEN_PROBE] STATE\toriginal\t6.1000003181398\tready/hold=false/paused=false/control=true\t",
+          "[00:00:47]: [REGEN_PROBE] WORLD\t57FD121DAF6D51E7\tloaded_cut\tnil\t",
+          "[00:00:47]: [REGEN_PROBE] STAGE\tregenerated\t57FD121DAF6D51E7\t",
+          "[00:00:48]: [REGEN_PROBE] STATE\tregenerated\t0.10000000521541\tjoining/hold=false/paused=false/control=true\t",
+          "[00:00:51]: [REGEN_PROBE] STATE\tregenerated\t2.3000001199543\tready/hold=false/paused=false/control=true\t",
+          "[00:00:51]: [REGEN_PROBE] READY_AFTER_REGEN\t2.3000001199543\t57FD121DAF6D51E7\t",
+          "[00:00:56]: [REGEN_PROBE] IDLE_SAVES\t0\t",
+          "[00:00:57]: [REGEN_PROBE] STATE\tregenerated\t8.1000004224479\tdraining/hold=false/paused=false/control=true\t",
+          "[00:00:57]: [REGEN_PROBE] STATE\tregenerated\t8.2000004276633\tfrozen/hold=false/paused=false/control=true\t",
+          "[00:00:58]: [REGEN_PROBE] SAVE_BEGIN\tregenerated\t8.7000004537404\t",
+          "[00:00:58]: [REGEN_PROBE] SAVE_END\tregenerated\tcpu_ms\t355\t",
+          "[00:00:58]: [REGEN_PROBE] STATE\tregenerated\t8.7000004537404\tprepared/hold=false/paused=false/control=true\t",
+          "[00:00:58]: [REGEN_PROBE] STATE\tregenerated\t8.9000004641712\tsealed/hold=false/paused=false/control=true\t",
+          "[00:00:58]: [REGEN_PROBE] STATE\tregenerated\t9.0000004693866\tactivating/hold=false/paused=false/control=true\t",
+          "[00:00:58]: [REGEN_PROBE] STATE\tregenerated\t9.100000474602\tready/hold=false/paused=false/control=true\t",
+          "[00:00:59]: [REGEN_PROBE] FIRST_EXCHANGE_DONE\t1\t",
+          "[00:00:59]: [REGEN_PROBE] VERIFIED\t57FD121DAF6D51E7\tholding\tfalse\tcontrol\ttrue\t"
+        ]
+      }
+    },
+    "working-regen-old-recovery": {
+      "Master": {
+        "log": "work/performance-audit/working-regen-old-recovery/Master.log",
+        "sha256": "a5793e31674dfce9d37547d2da214b1371ca9d833fa08c5bc7a8750f9ab069ff",
+        "markers": [
+          "[00:00:22]: [FAST_RECOVERY] VERIFIED\t1\tcrash\t1/1793724435:16000:259465954/2\t"
+        ]
+      },
+      "Caves": {
+        "log": "work/performance-audit/working-regen-old-recovery/Caves.log",
+        "sha256": "d96e0016846e6c71db9616d219f30432f0d2780697d9e03fae17344c90844861",
+        "markers": [
+          "[00:00:22]: [FAST_RECOVERY] VERIFIED\t2\tcrash\t1/1793724435:16000:259465954/2\t"
+        ]
+      }
+    }
+  },
+  "tests": {
+    "fast_checkpoint": 209,
+    "rollback": 40,
+    "maps": 9,
+    "storage": 298,
+    "protocol": 518,
+    "adapter": 86,
+    "modes": 968,
+    "feedback": 31,
+    "trap": 276,
+    "lua_syntax_files": 366
+  },
+  "limits": [
+    "Disposable native shard pair uses forest fixtures, not a real cave layout.",
+    "Native spawned player/controller; no remote client latency or rendering measurement.",
+    "elapsed values are simulation time, not movement freeze duration.",
+    "Only redundant initial save is removed; native generation/load costs remain."
+  ]
+}

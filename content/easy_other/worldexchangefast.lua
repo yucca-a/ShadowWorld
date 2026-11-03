@@ -1,7 +1,9 @@
 -- Install recovery before ShardIndex loads the world. All fast-world saves use
 -- one paired checkpoint; the container protocol itself never asks for a save.
 local Engine = require("worldexchangeengine2hm")
-Engine.enabled = (GetModConfigData("Container Sort") or GetModConfigData("Items collect")) and true or false
+local mode = GetModConfigData("World Exchange")
+Engine.enabled = mode ~= false and mode ~= "traditional" and
+    (GetModConfigData("Container Sort") or GetModConfigData("Items collect")) and true or false
 local function engine()
     local service = TheWorld and TheWorld.ismastersim and TheWorld.components.worldexchange2hm
     if service then service:Initialize() end

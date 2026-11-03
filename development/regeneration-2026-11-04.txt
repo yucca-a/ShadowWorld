@@ -1,0 +1,50 @@
+重新生成世界后的进入开销（本地待发布，2026-11-04）
+
+原生实现与定位
+游戏 scripts.zip 的 networking.lua:WorldResetFromSim 调用 ShardIndex:Delete(DoReset, true)。
+shardindex.lua:Delete 删除旧 session 并保留生成设置；新世界使用新的 session 标识。
+隔离双服实际执行 c_regenerateworld 后，两层 session 都改变，Engine.boot.loaded 均为空。
+未复现“新世界沿用旧恢复锁”：采样中 holding=false、server paused=false、原生 playercontroller 始终可用。
+但原先 Checkpoint:Choose 在两层刚连通时会主动 Begin，立即完整序列化两个世界并建立首个保护快照。
+优化前重建后两层各额外保存一次；原生保存回调累计 CPU 约 Master 441 ms、Caves 368 ms，
+尚未包含后续备份写入/校验等待。这是可确认的额外开销，不能据此断言用户所有卡顿均来自这一处。
+
+实际改动
+1. 两层都没有保护历史时，握手后可进入正常游玩；首次共同快照改由正常保存或首次穿越请求触发。
+2. 首次穿越复用原有 Request/Save/Open 流程；保留一次点击，准备完成后自动继续。
+   重复点击不会重复准备；关闭箱子或玩家失效时取消待执行交换。
+3. 全新世界在另一层断线/启动时不冻结角色；跨层操作仍受连接状态约束。
+   有历史快照的恢复仍需双方确认，存储错误锁不能因重新连接被解除。
+4. 丢失首轮 INFO 可重试；没有共同快照的 v2 交换消息被拒绝，不能绕过首次保护。
+5. 没有新增设置、轮询任务或另一套存档协议。不会修改原生世界生成流程。
+
+验证
+tests/run_fast_exchange_tests.py：209 快速协议/检查点、40 原生回档、9 地图、298 存储检查。
+tests/run_world_exchange_tests.py：518 协议、86 适配检查。
+tests/run_exchange_modes_tests.py：968 检查。
+tests/run_multiplayer_feedback_tests.py：31 检查，全部 366 个发布 Lua 文件通过语法检查。
+tests/run_trap_tests.py：276 检查。
+新增覆盖：新世界无自动保存、首次 INFO 丢包、新世界断线/重连/对端重启、
+首次保护快照前的玩家下洞穴、从副世界发起首个存档、旧快照恢复、空检查点消息拒绝、
+存储失败后仍保持保护锁、首次点击自动继续与关闭容器取消。
+
+原生重建对照
+work/performance-audit/working-regen-baseline：优化前，原生两服重新生成成功，进入时各额外保存 1 次。
+work/performance-audit/working-regen-final：最终代码，原生两服先手动建立旧快照再实际重新生成。
+新世界进入后空闲期间额外保存均为 0；首次点击后各建立 1 个共同快照，并完成黄金/石头互换。
+两层均输出 VERIFIED，holding=false、control=true，无 LUA ERROR；测试驱动随后只结束这两个子进程。
+work/performance-audit/working-regen-old-recovery：最终代码恢复 published-crash 的旧格式双服崩溃存档，
+两层均输出 FAST_RECOVERY VERIFIED，恢复同一检查点，原生世界/容器/玩家物品及晚加入玩家墓碑检查通过，正常退出。
+日志时间、代码散列与结果索引见 validation/regeneration-20261104.json。
+
+测试边界
+用独立运行目录和复制的森林测试世界作为两服；生成后的两个世界均为森林，覆盖真实分片通信但不是实地洞穴布局。
+测试玩家由原生 wilson + 原生 playercontroller 创建，不含真实远程客户端、渲染或输入延迟测量。
+状态采样的 elapsed 是模拟时间，不是玩家被卡住的秒数；不能把握手完成耗时当作移动锁时长。
+初版测试夹具遗漏 playercontroller；后续另一次把角色放在随机新地图原点，原点可能是海面，
+出现 holding=false 但 control=false。最终夹具改为原生出生门位置并防伤害后通过，失败运行不计成功结果。
+另一次结束测试时主服先退出、副服按保护规则等待，已改成两边均验证后由驱动结束子进程。
+本次不据隔离测试声称所有多人实际卡顿均已消失。
+
+发布
+当前仍是本地未发布修改，modinfo 版本保持 2.8.14.97.3；测试脚本只在 tests/work，不进入 content。

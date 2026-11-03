@@ -1,0 +1,205 @@
+{
+  "date": "2026-11-04",
+  "native": {
+    "upstream-isolated": {
+      "Master": {
+        "working": 1889.63,
+        "private": 1966.16,
+        "lua_live_kb": [
+          370090.24023438,
+          370273.8515625,
+          370292.29492188,
+          370287.15820313,
+          370242.28320313
+        ],
+        "save_cpu_ms": []
+      },
+      "Caves": {
+        "working": 1882.77,
+        "private": 1959.9,
+        "lua_live_kb": [
+          370102.40820313,
+          370213.79589844,
+          370230.55566406,
+          370228.28710938,
+          370220.36132813
+        ],
+        "save_cpu_ms": []
+      }
+    },
+    "published-isolated": {
+      "Master": {
+        "working": 1927.98,
+        "private": 2005.67,
+        "lua_live_kb": [
+          374143.4921875,
+          373922.78222656,
+          373926.11914063,
+          373930.84863281,
+          373717.55761719
+        ],
+        "save_cpu_ms": []
+      },
+      "Caves": {
+        "working": 1924.33,
+        "private": 2003.11,
+        "lua_live_kb": [
+          374044.79589844,
+          373995.38574219,
+          373982.921875,
+          373973.10546875,
+          373773.11425781
+        ],
+        "save_cpu_ms": []
+      }
+    },
+    "published-cpu": {
+      "Master": {
+        "working": 1928.64,
+        "private": 2006.84,
+        "lua_live_kb": [
+          374266.00585938,
+          373977.68066406,
+          373976.44921875,
+          373968.56152344,
+          373750.71972656
+        ],
+        "save_cpu_ms": [
+          1545.0,
+          1473.0,
+          1442.0
+        ]
+      },
+      "Caves": {
+        "working": 1925.43,
+        "private": 2003.99,
+        "lua_live_kb": [
+          374116.56054688,
+          373974.31640625,
+          373959.01171875,
+          373979.29785156,
+          373776.94238281
+        ],
+        "save_cpu_ms": []
+      }
+    },
+    "working-isolated": {
+      "Master": {
+        "working": 1926.37,
+        "private": 2004.03,
+        "lua_live_kb": [
+          374149.34082031,
+          373991.68066406,
+          373978.41308594,
+          373968.04882813,
+          373767.57226563
+        ],
+        "save_cpu_ms": [
+          1219.0,
+          1230.0,
+          1191.0
+        ]
+      },
+      "Caves": {
+        "working": 1918.35,
+        "private": 1996.72,
+        "lua_live_kb": [
+          374340.98925781,
+          373992.03320313,
+          373984.81933594,
+          373977.35839844,
+          373773.78222656
+        ],
+        "save_cpu_ms": []
+      }
+    }
+  },
+  "synthetic_256kb": [
+    {
+      "variant": "published",
+      "seconds": 2.4306,
+      "resident_kb": 9235.66,
+      "sampled_peak_kb": 59985.94,
+      "journal_bytes": 8391971,
+      "written": 75529485,
+      "read": 75529613,
+      "writes": 40
+    },
+    {
+      "variant": "working",
+      "seconds": 0.31,
+      "resident_kb": 135.79,
+      "sampled_peak_kb": 6664.2,
+      "journal_bytes": 1987,
+      "written": 8410295,
+      "read": 16801143,
+      "writes": 48
+    }
+  ],
+  "synthetic_1024kb": [
+    {
+      "variant": "published",
+      "seconds": 9.3422,
+      "resident_kb": 36883.66,
+      "sampled_peak_kb": 317335.63,
+      "journal_bytes": 33557795,
+      "written": 302021913,
+      "read": 302022041,
+      "writes": 40
+    },
+    {
+      "variant": "working",
+      "seconds": 1.0443,
+      "resident_kb": 519.79,
+      "sampled_peak_kb": 28770.77,
+      "journal_bytes": 1987,
+      "written": 33576119,
+      "read": 67132791,
+      "writes": 48
+    }
+  ],
+  "notes": [
+    "Native runs use two copies of the same isolated forest fixture, identical settings, no real players, 40-90 second memory medians.",
+    "Forced Lua GC at phase markers; process working/private memory is not equal to Lua live bytes.",
+    "GetTimeReal is coarse on this build: CPU-ms values use os.clock, max_gap_ms must not be used as frame hitch measurements.",
+    "Synthetic workload: 4 unique player records per checkpoint, 8 checkpoints; IO uses temporary filesystem; sampled Lua peak is not process RAM.",
+    "Native working-isolated run predates the final removal of Engine.live, but includes external checkpoint profiles and digest optimization."
+  ],
+  "packaging": {
+    "published_bytes": 22433390,
+    "upstream_bytes": 22259648,
+    "archive_cleanup_files": 27,
+    "archive_cleanup_bytes": 1198065,
+    "published_subscription_match": "all content hashes match except Steam-generated mod.manifest; no extra files"
+  },
+  "recovery": {
+    "Master": {
+      "log": "work/performance-audit/working-crashrecovery/Master.log",
+      "sha256": "6e9234514524c02a8ad90c3762c66e344b360100ce30307f696b7cd64fd29743",
+      "verified": true,
+      "clean_shutdown": true
+    },
+    "Caves": {
+      "log": "work/performance-audit/working-crashrecovery/Caves.log",
+      "sha256": "5c21e749f5b81483b87d664195094ffda3ac6d7099a119dd4b1cc56456852ed4",
+      "verified": true,
+      "clean_shutdown": true
+    }
+  },
+  "changed_runtime_sha256": {
+    "content/scripts/worldexchangestore2hm.lua": "e8dbb04c72219fb1a068069e6dfc8bb6e81944dae21a9ba2c9df663ad326e7e9",
+    "content/scripts/worldexchangeengine2hm.lua": "25197be35a840a4ffdcd2cc0bdf484f173d073d025ee95a1d3f5e0165a15d82f"
+  },
+  "checks": {
+    "fast_checkpoint": 196,
+    "rollback_adapter": 40,
+    "maps": 9,
+    "checkpoint_storage": 298,
+    "protocol": 518,
+    "adapter": 81,
+    "exchange_modes": 968,
+    "feedback": 31,
+    "trap": 276,
+    "lua_syntax_files": 366
+  }
+}

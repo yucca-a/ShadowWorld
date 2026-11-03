@@ -1,0 +1,140 @@
+{
+  "archive": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\backups\\nonruntime-20261104",
+  "files": [
+    {
+      "path": "_damage.txt",
+      "size": 629,
+      "sha256": "df7892707f0f51f9bf62bf70be72e68828e08fb9abcb2ff5f0e0a36c0e124da1"
+    },
+    {
+      "path": "_doc.txt",
+      "size": 186,
+      "sha256": "f21bf7772444fa115c0959a4461d89a312056dc2df7879c89c0644a8bb52a91e"
+    },
+    {
+      "path": "_idea.lua",
+      "size": 17244,
+      "sha256": "29ef0041a9a446fbe6622a79d11436b5b647c790689b3c8fff4a7750fe2e6516"
+    },
+    {
+      "path": "_modservercreationmain.lua",
+      "size": 3737,
+      "sha256": "b83a4602e1c9f24503dd0fcb9110a70ae90885d1e230294b5dc351a665bcc92b"
+    },
+    {
+      "path": "_todo.lua",
+      "size": 2741,
+      "sha256": "29287504e9d4abd488a9e4c34bef8ac47ebe04792dfa939f7c8ee8ef021ad2f4"
+    },
+    {
+      "path": "common/curse.lua.bak-20261028e",
+      "size": 8354,
+      "sha256": "48aa226c23e678c47a48299b0e4a67e9751dc4983ce2f91962f9e90deed70d63"
+    },
+    {
+      "path": "common/patch.lua.bak-20261029a",
+      "size": 25535,
+      "sha256": "992504c4ea20949eee6b14f015b59b7aaf0e1416c1a13ce9e43d6ea7df0a3156"
+    },
+    {
+      "path": "easy_other/easy_mechanics.lua.bak-20261027",
+      "size": 34587,
+      "sha256": "8268f530b27aabc433960ce81db2b880e21afbcc1842de03a994bc4aa7cae7d0"
+    },
+    {
+      "path": "easy_other/easy_structures.lua.bak-20261028f",
+      "size": 203928,
+      "sha256": "e531118cbf7619786e174b6fbef757d31a22f8da37111092ec5251c68288bb90"
+    },
+    {
+      "path": "easy_role/rightaction.lua.bak-20261028",
+      "size": 59591,
+      "sha256": "2597de61a93ae2f9d1078c22ba695f705a5ca29385373ad603c55f5beca8c79a"
+    },
+    {
+      "path": "easy_role/rightaction.lua.bak-20261028b",
+      "size": 60012,
+      "sha256": "682f3b65889b961978fec02622396b6e0ffeedacda45811a62bf698498f0e60c"
+    },
+    {
+      "path": "easy_role/rightaction.lua.bak-20261029b",
+      "size": 60895,
+      "sha256": "817a138e81dadffdd90789a4d35f86ce56c66e32941312c90db561dc5d402047"
+    },
+    {
+      "path": "easy_role/wigfrid_easy.lua.bak-20261029c",
+      "size": 73578,
+      "sha256": "4e1995a802be88d525b0522f3bfce4d5f0bf0632ba662c91a1c85a5638d65f32"
+    },
+    {
+      "path": "easy_role/wx78_easy.lua.bak-20261029b",
+      "size": 64792,
+      "sha256": "20bda4468e0a5bb1f486ec2b56ea24f97619ed0dfe76366c84052847ebe0e589"
+    },
+    {
+      "path": "easy_role/wx78_easy.lua.bak-20261030a",
+      "size": 65220,
+      "sha256": "0ac3e19e8df61079c887c86b3983575ab3c88452e903f0179f7dde4afbbd7f16"
+    },
+    {
+      "path": "easy_role/wx78_easy.lua.bak-20261030b",
+      "size": 65330,
+      "sha256": "d2c8d6de62c57b725b18c198fb168a78ff86ec80b1515e66811bf5c78515fda1"
+    },
+    {
+      "path": "easy_role/wx78_easy.lua.bak-20261030c",
+      "size": 65614,
+      "sha256": "4c24804e260aa879dfe63f868fed3e514b475c305eb124bce666e6492350c8a6"
+    },
+    {
+      "path": "epic/alterguardian_phase4_lunarrift.lua.bak-20261028c",
+      "size": 35589,
+      "sha256": "5db06fa8477f21c5dc53b1d44c74a6c0fecaa390feb1facedcf32b5639b5faac"
+    },
+    {
+      "path": "modinfo.lua.bak-20261027",
+      "size": 132193,
+      "sha256": "f459d47f070081d41ef34893a59c75e4ad674469f6b8c9162029d97855c9e921"
+    },
+    {
+      "path": "modinfo.lua.bak-20261028",
+      "size": 132193,
+      "sha256": "1b20ae2698f4868f67c61e268a1ff136d97f7d87d64583796859198d80437087"
+    },
+    {
+      "path": "test/crossgame.lua",
+      "size": 867,
+      "sha256": "8bdf99788cfb7d8ebbc4b56f61124337e67bc7478ee004570b8587ba7315d4ce"
+    },
+    {
+      "path": "test/otherrightaction.lua",
+      "size": 21745,
+      "sha256": "aa252cf5365c1f407703dd84db8aedcf66b8d3e06b3934caf9235742088cb3fc"
+    },
+    {
+      "path": "test/prefabskins.lua",
+      "size": 7094,
+      "sha256": "f5e70c3d51c662df44c163371969331870f5b3d8ddc3e7c32e18346c99eb6d4d"
+    },
+    {
+      "path": "test/rideaction.lua",
+      "size": 7665,
+      "sha256": "64db5cc6c93833e8ccb5c76d287b0925a71f7e50061501b4b079b6e99d131851"
+    },
+    {
+      "path": "test/sw.lua",
+      "size": 11485,
+      "sha256": "04f761ba6f3faa98e2a1e3754747f834ba762daac621bdfac7307a15d067d7a9"
+    },
+    {
+      "path": "test/upvaluehacker.lua",
+      "size": 5239,
+      "sha256": "b49322426c940427ad4abc5d87622fdbd0fdff7ba43092aad0b2ee8263a7571f"
+    },
+    {
+      "path": "weather/seasons.lua.bak-20261029a",
+      "size": 32022,
+      "sha256": "a78b42cd725c775843f48c70b3b33aced38b9177bdbbcfad63d806c7bef4f15e"
+    }
+  ]
+}

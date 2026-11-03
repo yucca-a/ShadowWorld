@@ -121,6 +121,8 @@ equal(d:GetAvailableSkillPoints("wx78"), 0, "zero-point config")
 install(false, true)
 equal(hooks.skilltreedata, nil, "disabled feature")
 install(false, false)
+equal(hooks.skilltreedata, nil, "disabled feature also respected without hard mode")
+install(true, false)
 d = data(); d.skillxp.wx78 = 160; TheWorld.state.cycles = 0
 equal(d:GetAvailableSkillPoints("wx78"), 15, "easy mode starts with 15")
 TheWorld.state.cycles = 1000

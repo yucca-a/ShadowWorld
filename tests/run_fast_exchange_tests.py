@@ -24,3 +24,4 @@ for name in ["worldexchangeprotocol2hm", "worldexchangestore2hm", "worldexchange
 lua.execute((ROOT / "tests/fast_exchange_regression.lua").read_text(encoding="utf-8"))
 lua.execute((ROOT / "tests/fast_rollback_regression.lua").read_text(encoding="utf-8"))
 lua.execute((ROOT / "tests/world_exchange_maps_regression.lua").read_text(encoding="utf-8"))
+lua.execute((ROOT / "tests/checkpoint_storage_regression.lua").read_text(encoding="utf-8"))

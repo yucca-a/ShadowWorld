@@ -72,7 +72,9 @@ local function simulation()
     end
     function s:ready() return self.nodes["1"].core and self.nodes["2"].core and self.nodes["1"].core:IsReady() and self.nodes["2"].core:IsReady() end
     function s:start()
-        self:node("1");self:node("2");self:until_(function() return self:ready() end,"initial cut")
+        self:node("1");self:node("2");self:until_(function() return self:ready() end,"initial connection")
+        self.nodes["1"].core:Request()
+        self:until_(function() return self:ready() and self.nodes["1"].core.generation ~= nil end,"initial cut")
     end
     function s:trade()
         check(self.nodes["1"].protocol:Start("chest","2","u"),"fast start")
@@ -80,6 +82,52 @@ local function simulation()
     end
     return s
 end
+
+-- Fresh/regenerated sessions wait without saving or disabling movement.
+-- A lost initial INFO must not strand the secondary after the master is ready.
+local fresh=simulation();fresh:node("1");fresh:node("2")
+local lostinfo=false
+fresh.filter=function(p)
+    if p.from=="1" and p.m.op=="INFO" and not lostinfo then lostinfo=true;return false end
+    return true
+end
+fresh:until_(function()return fresh:ready()end,"fresh discovery after lost INFO")
+for _=1,200 do fresh:step()end
+check(lostinfo and fresh.saves==0,"new world entry does not add a full paired save")
+local fa,fb=fresh.nodes["1"],fresh.nodes["2"]
+check(not fa.core.generation and not fb.core.generation,"discovery does not invent a shared checkpoint")
+check(not fa.protocol:Start("chest","2","u"),"exchange still requires a durable first cut")
+fa.protocol:Receive("2",{v=2,kind="PREPARE",checkpoint=nil})
+check(not fa.protocol.active,"nil checkpoint packets cannot bypass first-cut protection")
+fresh.disconnected=true;fa.core:Disconnected("2");fb.core:Disconnected("1")
+check(not fa.hold and not fb.hold,"fresh worlds do not freeze movement while peer is absent")
+check(not fa.core:IsReady() and not fb.core:IsReady(),"disconnect still blocks cross-world operations")
+fresh.disconnected=false
+fresh:until_(function()return fresh:ready()end,"fresh reconnect")
+fresh:node("2")
+fresh:until_(function()return fresh:ready()end,"fresh peer reboot")
+fb=fresh.nodes["2"]
+check(not fa.hold and not fb.hold and fresh.saves==0,"peer startup does not impose a fresh-world control lock")
+fa.core:Register("early-traveller","1",false)
+fresh:until_(function()return not fa.core.regbusy end,"new player before first cut")
+check(fa.core:CanMigrate("early-traveller"),"native cave travel need not wait for a first exchange")
+local earlytoken=fa.core:Depart("early-traveller")
+fb.core:Register("early-traveller","2",false,function()fb.core:Arrived("early-traveller",earlytoken,"1")end)
+fresh:until_(function()return not fa.core.outbound["early-traveller"] and not fb.core.inbound["early-traveller"]end,"arrival before first cut")
+check(fa.core.owners["early-traveller"]=="2" and fb.core.owners["early-traveller"]=="2" and fresh.saves==0,
+    "early cave travel reconciles ownership before the first requested save")
+local requested=0
+fb.core:Request(function()requested=requested+1 end)
+fresh:until_(function()return fresh:ready() and requested==1 end,"secondary requests first cut")
+check(fresh.saves==2 and fa.core.generation==fb.core.generation,"first real request commits one matching pair")
+fresh:trade()
+check(fresh.saves==2,"first use keeps subsequent exchanges save-free")
+local failedfresh=simulation();failedfresh:node("1");failedfresh:node("2")
+failedfresh:until_(function()return failedfresh:ready()end,"fresh failure test")
+local ff=failedfresh.nodes["1"]
+ff.core:Fail("injected_registration_failure")
+ff.core:Disconnected("2");ff.core:Connected("2","rebooted")
+check(ff.hold and ff.core.phase=="error","pristine reconnect never releases a storage/error protection lock")
 
 local s=simulation();s:start()
 check(s.saves==2,"one initial paired cut")
@@ -210,7 +258,7 @@ check(ok and world.ents.goldnugget[1].data.stackable.stack==9,"world sections ro
 -- Native player writes may occur while asynchronous offline reads/copy writes
 -- are pending. They may not change a cut after its world was serialized.
 local capture={players={},owners={}}
-local e=setmetatable({service={id="1"},live={},revisions={},capture=capture},Engine)
+local e=setmetatable({service={id="1"},revisions={},capture=capture},Engine)
 e.RegisterPlayer=function(_,uid,baseline,cb) cb() end
 local written
 TheNet={SerializeUserSession=function(_,uid,raw)written=raw end,DeleteUserSession=function()end}
@@ -218,6 +266,26 @@ e:PlayerWrite("u","before",false,nil,"meta")
 e:WorldSerialized(sections)
 e:PlayerWrite("u","after",false,nil,"meta")
 check(capture.players.u=="before" and written=="after","later player write cannot mutate completed checkpoint")
+check(e.live==nil,"ordinary writes do not retain every past user's full profile")
+
+-- A logout/new save can finish while Capture waits for an offline read. The
+-- existing snapshot is the only necessary race buffer, including tombstones.
+local oldSave=Engine.nativeSave
+for _,deleting in ipairs({false,true}) do
+    local pending,complete
+    local racing=setmetatable({service={id="1"},revisions={},core={Saved=function(_,snapshot)complete=snapshot end}},Engine)
+    racing.ReadPlayer=function(_,uid,cb)pending=cb end
+    racing.RegisterPlayer=function(_,uid,raw,cb)cb()end
+    TheNet.GetCurrentSnapshot=function()return 3 end
+    Engine.nativeSave=function(_,cb)racing:WorldSerialized(sections);cb()end
+    racing:Capture({id="race",serial=3},{u="1"})
+    local latest=not deleting and "latest" or false
+    racing:PlayerWrite("u",latest,false,nil,nil,deleting)
+    pending("stale-read")
+    check(complete and complete.players.u==latest,"in-flight write wins over stale offline read")
+    check(not racing.live and not racing.capture,"completed capture retains no extra live-profile cache")
+end
+Engine.nativeSave=oldSave
 
 -- Native tombstones are empty files; truncate future snapshots before verifying
 -- them. Failed verification stays closed without a SimPostInit mod-disable throw.
@@ -229,6 +297,8 @@ TheNet={TruncateSnapshots=function()truncated=true end,DeleteUserSession=functio
     DeserializeUserSession=function(_,uid,cb)cb(true,uid=="old" and Engine.boot.players.old or "")end}
 Engine.RestorePlayers()
 check(Engine.boot.ready,"verified native player boot")
+check(Engine.boot.players == nil,"verified boot releases cached player/map records")
+Engine.boot={session="TEST",players={new=false,old="return {prefab='wilson'}"}}
 TheNet.DeserializeUserSession=function(_,uid,cb)cb(true,"return {prefab='wrong'}")end
 Engine.RestorePlayers()
 check(not Engine.boot.ready and Engine.boot.error,"failed restore remains blocked")

@@ -146,6 +146,8 @@ recovering.Hold=function()end
 recovering:RebaseNative({snapshot=13,token="delayed-timeline"})
 check(recovering.pending_rebase and not delayed.state.rebase,"in-flight body write delays native rebase")
 release()
+check(recovering:Writing() and not delayed.state.cuts["cut/1"],"player body also finishes before checkpoint commit")
+release()
 check(not recovering:Writing() and delayed.state.cuts["cut/1"],"pending body and journal finish before recovery")
 local invoked, wakes=0,0
 local draining=setmetatable({store={busy=true,queue={}},service={session="DRAIN",Wake=function()wakes=wakes+1 end}},Engine)

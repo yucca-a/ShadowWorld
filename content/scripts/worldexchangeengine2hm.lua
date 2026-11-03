@@ -161,6 +161,7 @@ function Engine.RestorePlayers()
         pending = pending - 1
         if pending == 0 then
             boot.ready = not failed
+            if not failed then boot.players = nil end -- Verified profiles need not stay pinned for the whole server session.
             if failed then boot.error = "player_restore_verification_failed"; print("[WorldExchange2hm]", boot.error) end
         end
     end
@@ -227,7 +228,7 @@ function Engine.Attach(service)
     if boot and boot.session ~= service.session then boot = nil end
     local store = boot and boot.session == service.session and boot.store or Store.new(Engine.IO(ShardGameIndex), service.session)
     local function attach()
-        local self = setmetatable({service = service, store = store, live = {}, revisions = {}, actions = {}, holding = false}, Engine)
+        local self = setmetatable({service = service, store = store, revisions = {}, actions = {}, holding = false}, Engine)
         service.engine, service.engine_loading = self, nil
         self.core = Checkpoint.new({
             id = service.id, boot = service.boot, master = TheShard:IsMaster(),
@@ -403,6 +404,12 @@ end
 
 function Engine:Idle()
     if self.service.protocol.active or self:Writing() then return false end
+    -- A world switched to traditional exchange can still need paired recovery
+    -- for its older fast checkpoints. Never capture the traditional protocol's
+    -- temporary empty containers before it completes or restores them.
+    for _, container in pairs(self.service.inst.PocketDimensionContainers or {}) do
+        if container.containersendtask2hm or container.containerreceivetask2hm or container.exchangeconfirmtask2hm then return false end
+    end
     for _, player in ipairs(AllPlayers) do if player._despawning then return false end end
     local native = self.service.inst.components.shardtransactionsteps
     if native then
@@ -462,10 +469,9 @@ function Engine:RegisterPlayer(uid, baseline, callback)
 end
 
 function Engine:PlayerWrite(uid, raw, isnew, player, metadata, deleting)
-    self.live[uid] = deleting and false or raw
     self.revisions[uid] = (self.revisions[uid] or 0) + 1
     if self.capture and not self.capture.serialized then
-        self.capture.players[uid] = deleting and false or raw
+        self.capture.players[uid] = not deleting and raw or false
         self.capture.owners[uid] = self.service.id
     end
     self:RegisterPlayer(uid, nil, function()
@@ -506,7 +512,10 @@ function Engine:Capture(cut, owners)
             else
                 local revision = self.revisions[uid]
                 self:ReadPlayer(uid, function(raw)
-                    snapshot.players[uid] = revision == self.revisions[uid] and raw or self.live[uid]
+                    -- PlayerWrite already updates this in-flight snapshot. Do
+                    -- not keep another full profile/map for every user who has
+                    -- ever logged in just to handle this short read/write race.
+                    if revision == self.revisions[uid] then snapshot.players[uid] = raw end
                     nextplayer()
                 end)
             end

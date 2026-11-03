@@ -4,7 +4,7 @@ local skilltreedefs = require "prefabs/skilltree_defs"
 
 -- 威尔逊更多技能点且快速加点且防止onload失败
 local skillpointsopt = GetModConfigData("More Skill Points")
-if not hardmode then skillpointsopt = -16 end -- 2025.7.17 melon:关闭困难模式时开局15点
+if skillpointsopt and not hardmode then skillpointsopt = -16 end -- 扩展开启且关闭困难模式时开局15点；不覆盖明确禁用。
 local no_more_point = skillpointsopt == -1 -- 2025.9.19 melon:选择0时永不获得技能点
 if skillpointsopt then
     TUNING.SKILL_THRESHOLDS = {4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 3, 1, 1, 1, 1, 1}

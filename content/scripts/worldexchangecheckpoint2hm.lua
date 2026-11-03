@@ -45,11 +45,12 @@ function Checkpoint:Info()
         ready = self.io.bootready(), generation = self.generation}
 end
 function Checkpoint:Connected(peer, boot)
+    if self.phase == "error" then return end
     local changed = self.peer ~= peer or self.peerboot ~= boot
     if self.peer and self.peer ~= peer then self:Fail("only_two_shards_supported"); return end
     if self.peerboot and self.peerboot ~= boot then
         self.phase, self.remote = "joining", nil
-        self.io.hold(true)
+        self.io.hold(self.generation ~= nil or next(self.store.state.cuts) ~= nil)
     elseif self.suspended then self.io.hold(false)
     end
     self.suspended = nil
@@ -61,9 +62,11 @@ function Checkpoint:Connected(peer, boot)
     end
 end
 function Checkpoint:Disconnected(peer)
-    if peer ~= self.peer then return end
+    if peer ~= self.peer or self.phase == "error" then return end
     self.suspended, self.remote = true, nil
-    self.io.hold(true)
+    -- A pristine/newly regenerated world has no exchange history to restore.
+    -- Only cross-world operations need to wait for its peer, not movement.
+    self.io.hold(self.generation ~= nil or next(self.store.state.cuts) ~= nil)
     -- Either side may close immediately after the shared cut is sealed. An
     -- exit already waiting on that proven cut must not wait forever for OPEN.
     if self.exiting and self.phase == "activating" and
@@ -156,10 +159,11 @@ function Checkpoint:Choose()
     if not chosen then
         if next(self.store.state.cuts) or next(remote.cuts) then self:Fail("no_common_checkpoint"); return end
         if not self.io.idle() then return end
-        -- Before the first fast exchange, native worlds can establish a cut.
+        -- New worlds already have a native save. Establish the first shared
+        -- cut on a real save/exchange request, not during world entry.
         self.phase, self.generation = "ready", nil
         self.io.hold(false)
-        self:Begin()
+        if self.want then self:Begin() end
         return
     end
     self.selection = {id = chosen, manual = cap ~= nil}
@@ -222,6 +226,11 @@ function Checkpoint:Receive(peer, m)
         if type(m.cuts) ~= "table" or type(m.boot) ~= "string" or m.boot ~= self.peerboot then return end
         self.remote = m
         if self.io.master and self.phase == "joining" then self:Choose() end
+        if not self.io.master and self.phase == "joining" and m.ready and self.io.bootready() and
+            not next(self.store.state.cuts) and not next(m.cuts) then
+            self.phase, self.lastsend = "ready", -100
+            self.io.hold(false)
+        end
     elseif op == "SELECT" and not self.io.master and type(m.id) == "string" then
         self:Select(m.id, m.manual == true)
     elseif op == "LOADED" and self.io.master and self.selection and m.id == self.selection.id then
@@ -346,7 +355,8 @@ function Checkpoint:Tick()
     if self.phase == "joining" then self:Send("INFO", self:Info())
     elseif self.phase == "ready" then
         if self.want then self:Send("REQUEST") end
-        self:Send("OPEN", {id = self.generation})
+        if self.generation then self:Send("OPEN", {id = self.generation})
+        else self:Send("INFO", self:Info()) end
     elseif self.phase == "draining" or self.phase == "frozen" then
         if self.io.master then self:Send("FREEZE", self.pending)
         elseif self.phase == "frozen" then self:Send("DRAINED", {id = self.pending.id, owners = self.owners}) end

@@ -45,7 +45,8 @@ function Instant.new(io, saved, checkpoint)
     end
 
     function self:Receive(peer, message)
-        if type(message) ~= "table" or message.v ~= 2 or message.checkpoint ~= checkpoint:Generation() then return end
+        if type(message) ~= "table" or message.v ~= 2 or checkpoint:Generation() == nil or
+            message.checkpoint ~= checkpoint:Generation() then return end
         if checkpoint:IsFrozen() then
             if #self.inbound < 64 then table.insert(self.inbound, {peer, message}) end
             return

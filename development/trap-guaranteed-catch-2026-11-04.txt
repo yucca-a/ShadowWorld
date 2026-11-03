@@ -1,0 +1,56 @@
+陷阱必中（2026-11-04；本地待发布）
+
+玩家可见变化
+道具改动新增“陷阱必中”，默认开启，可单独关闭，受简单模式总开关控制。
+普通陷阱在开始合拢时捕获有效目标，继续播放原有合拢动画。
+只作用于 trap；不更改捕鸟器、犬牙陷阱、荆棘陷阱或其他陷阱。
+
+资料对照
+1. 饥荒 Wiki：Trap/DST 与中文 Trap 页的检索摘要确认普通陷阱用于兔子、青蛙、蜘蛛等小型生物，
+   无需诱饵也可触发，原有 8 次使用。直接打开网页返回 403，未将单机版的脱逃描述当作联机源码结论。
+   https://dontstarve.wiki.gg/wiki/Trap/DST
+   https://dontstarve.wiki.gg/zh/wiki/Trap
+2. 直接读取本机当前安装的游戏脚本：
+   D:/SteamLibrary/steamapps/common/Don't Starve Together/data/databundles/scripts.zip
+   scripts/prefabs/trap.lua：普通陷阱的 canbetrapped 目标标签、finiteuses 和收取扣一次耐久。
+   scripts/components/trap.lua：原生探测范围 1.5、周期 0.75 秒，DoTriggerOn 选择目标；DoSpring 结算。
+   scripts/stategraphs/SGtrap.lua：清醒陷阱先播放 trap_pre，animover 时才调用 DoSpring；休眠陷阱原本直接结算。
+   scripts/entityscript.lua 与 scripts/stategraph.lua：PushEvent 将状态机事件排队，不能误当成同步回调。
+   scripts/prefabs/rabbit.lua、frog.lua、spider.lua、mole.lua：目标资格与兔子的额外捕获数据。
+3. 为爽 upstream-v2.8.14.95、订阅目录 2886753796 及当前仓库：
+   easy_other/easy_items.lua 已有普通陷阱右键放置入口，直接在该 prefab 后处理内接入功能，不重复注册动作。
+   shadowworld.lua 已封装 DoSpring，分身 swc2hm 免疫陷阱；本次包装并调用这一已有方法。
+   trap_teeth 设置处理犬牙/荆棘陷阱的重置和耐久，与普通捕兽陷阱功能不同。
+   刮地皮头盔的自动捕捉会直接操作生物和掉落，不适合作为普通陷阱的新结算入口；保留原功能。
+
+定位与实现
+原生 DoSpring 没有再次检查目标与陷阱的距离；仅仅在合拢前跑出范围仍可被捕获。
+实际会令本次捕获失效的条件包括目标已无效、进入 INLIMBO 或死亡。
+本次消除的是“开始合拢至动画结束”的结算空窗，没有把服务器网络延迟认定为唯一根因。
+
+沿用原生 OnUpdate、DoTriggerOn 和状态机事件队列，在 sprung.onenter 播放原动画后调用既有 DoSpring。
+只有普通陷阱实例设置启用标记，使用同一 SGtrap 的捕鸟器不受影响。
+已经 issprung 的实例跳过第二次 DoSpring，避免 animover 重复结算清空战利品。
+若自动收集或另一玩家提前 Harvest，先通过原生状态机 HandleEvent 完成关闭状态，再执行原有 Harvest，
+避免把排队中的 animover 留到陷阱重置之后处理。
+没有新建捕获组件、RPC、持续扫描、掉落生成系统、存档格式或目标冻结机制。
+
+行为边界
+仍然使用原有范围、探测周期、捕获资格、诱饵消耗、掉落、灵魂、饥饿计时、特殊兔子数据和收取耐久。
+仍然遵守为爽分身免疫，鼹鼠等原本不可捕获的目标不会被强制变为可捕获。
+高速穿过探测间隔、目标在状态机开始处理前已死亡/消失，不属于“合拢动画期间抓空”。
+多只陷阱同一帧锁定同一生物时只允许其中一只获得战利品，不能把同一生物复制到多只陷阱。
+关闭开关不丢失已捕获且已保存的战利品。
+
+验证
+tests/run_trap_tests.py：276 项断言通过。
+直接执行游戏原有 trap 组件、trap prefab、SGtrap、StateGraphInstance、EntityScript 事件分发、finiteuses、FindEntity。
+模拟引擎实体、动画完成时刻、空间搜索、掉落目标与渲染；不是简单用同步回调假设状态机立即处理事件。
+覆盖开关、服务端/客户端、清醒/休眠、兔子/青蛙/蜘蛛、原生延迟对照、同时竞争目标、动画结束不重复结算、
+两名收集者同帧收取、提前收取后再次捕获、全部 8 次使用及损毁、动画中保存与关闭功能后读档、
+诱饵、饥饿、剩余新鲜度、兔子特殊数据、灵魂、影分身免疫、鼹鼠拒捕、超距/死亡/隐藏/标签过滤及捕鸟器不受影响。
+tests/run_multiplayer_feedback_tests.py：31 项既有检查及全部 content Lua 5.1 语法通过。
+tests/run_exchange_modes_tests.py：968 项（新增选项增加了中英文名称唯一性检查），穿越设置回归通过。
+git diff --check（CRLF 配置）通过。
+
+尚未在真实多人服务器完成实机验证；没有修改已发布版本号或上传工坊。

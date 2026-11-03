@@ -3,6 +3,7 @@ local Engine = require("worldexchangeengine2hm")
 local CHUNK, MAX_CHUNKS = 8192, 64
 local LIMIT = CHUNK * MAX_CHUNKS
 local TEXT = {
+    disabled = {"双界协同穿越未在模组设置中启用。", "Coordinated exchange is not enabled in mod settings."},
     preparing = {"正在连接另一世界并准备交换……", "Preparing the world exchange..."},
     finishing = {"地面与洞穴服务器正在自动确认交换，无需其他玩家同意。", "Shards are confirming automatically; no player approval is needed."},
     done = {"穿越完成，双方物品已交换。", "World exchange completed."},
@@ -103,6 +104,11 @@ function WorldExchange:Container(name)
 end
 
 function WorldExchange:Lock(name)
+    -- Reject new local/remote exchanges when disabled, but let a saved
+    -- transaction reacquire its lock and finish recovery without losing goods.
+    if Engine.enabled == false and not (self.protocol and self.protocol.active and self.protocol.active.name == name) then
+        return false, "disabled"
+    end
     local inst = self:Container(name)
     if not inst then return false, "container_missing" end
     if self.locks[name] then return true end
@@ -469,6 +475,7 @@ function WorldExchange:Flush()
 end
 
 function WorldExchange:Request(player, inst)
+    if Engine.enabled == false then return self:Notify(player.userid, "disabled") end
     if not self.protocol then return self:Notify(player.userid, "connecting") end
     local name
     for key, container in pairs(self.inst.PocketDimensionContainers) do if container == inst then name = key; break end end
@@ -481,6 +488,19 @@ function WorldExchange:Request(player, inst)
     table.sort(choices)
     if #choices == 0 then return self:Notify(player.userid, "unavailable") end
     local index = ((self.lastchoice or 0) % #choices) + 1
+    local core = self.engine and not self.legacy and self.engine.core
+    if core and core.generation == nil and core:IsReady() and core.peer == choices[index] then
+        -- Reuse the coordinated save, once, on first use. Keep the original
+        -- click pending so players need not click again after preparation.
+        if self.firstexchange then return self:Notify(player.userid, "busy") end
+        self.firstexchange = true
+        core:Request(function()
+            self.firstexchange = nil
+            if player:IsValid() and inst:IsValid() and inst.components.container and
+                inst.components.container:IsOpenedBy(player) then self:Request(player, inst) end
+        end)
+        return self:Notify(player.userid, "checkpoint_pending")
+    end
     local ok, reason = self.protocol:Start(name, choices[index], player.userid)
     if ok then self.lastchoice = index; self:Wake() else self:Notify(player.userid, reason) end
 end

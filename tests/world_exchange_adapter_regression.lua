@@ -162,6 +162,17 @@ check(snapshot.items[1].data.count == 17, "journal snapshots do not alias mutabl
 service:Unlock("shadow")
 check(not container.readonlycontainer and not box.dcs2hm, "unlock restores normal container behavior")
 check(box.components.preserver.perish_rate_multiplier == .5 and box.components.preserver.temperature_rate_multiplier == .25, "unlock restores prior preservers")
+local modeengine = require("worldexchangeengine2hm")
+modeengine.enabled = false
+local locked, reason = service:Lock("shadow")
+check(not locked and reason == "disabled" and not container.readonlycontainer, "disabled coordinated mode rejects new incoming locks")
+local beforewire = #wire
+service:Request({userid = "mode-test"}, box)
+check(protocol.active == nil and #wire == beforewire, "disabled coordinated mode rejects local requests")
+protocol.active = {name = "shadow"}
+check(service:Lock("shadow") and container.readonlycontainer, "saved active transaction can reacquire lock after mode switch")
+service:Unlock("shadow"); protocol.active = nil; modeengine.enabled = nil
+check(not container.readonlycontainer and not box.dcs2hm, "mode-switch recovery can release its lock")
 original.persists = false
 check(service:Snapshot("shadow") == nil, "nonpersistent items cannot silently disappear in transfer")
 original.persists = true; original.references = {123}
@@ -272,4 +283,28 @@ check(discovering.nexthello==now+.25,"recovery discovery does not wait five seco
 discovering.peers["2"]={boot="peer",lastseen=now}
 discovering.nexthello=nil;discovering:Update()
 check(discovering.nexthello==now+5,"normal play returns to low-rate heartbeat")
+-- First-use preparation keeps exactly one click; closing the box cancels it.
+local ondemand=WorldExchange(world());ondemand:Initialize()
+local activeplayer={userid="first",IsValid=function()return true end}
+local opened=true
+local activebox={IsValid=function()return true end,components={container={IsOpenedBy=function(_,p)return opened and p==activeplayer end}}}
+ondemand.inst.PocketDimensionContainers={shadow=activebox}
+ShardList={["2"]=true}
+local prepared,requests,exchanges=nil,0,0
+local guard={peer="2",ready=true,IsReady=function(self)return self.ready end}
+guard.Request=function(self,cb)requests=requests+1;prepared=cb;self.ready=false end
+ondemand.engine={core=guard}
+ondemand.protocol.Start=function(_,name,peer,uid)
+    if not guard.generation then return false,"checkpoint_pending" end
+    check(name=="shadow" and peer=="2" and uid=="first","pending first click preserves its player and container")
+    exchanges=exchanges+1;return true
+end
+ondemand:Request(activeplayer,activebox);ondemand:Request(activeplayer,activebox)
+check(requests==1 and exchanges==0 and ondemand.firstexchange,"repeated first clicks create one preparation")
+guard.generation="first-cut";guard.ready=true;prepared()
+check(exchanges==1 and not ondemand.firstexchange,"first exchange resumes once without another user click")
+guard.generation=nil;guard.ready=true;opened=true
+ondemand:Request(activeplayer,activebox)
+opened=false;guard.generation="second-cut";guard.ready=true;prepared()
+check(exchanges==1 and not ondemand.firstexchange,"closing a container cancels the pending exchange")
 print("World exchange adapter: " .. assertions .. " assertions passed")

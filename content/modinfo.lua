@@ -1,4 +1,4 @@
-version = "2.8.14.97.3"
+version = "2.8.14.97.4"
 -- Original authors: 繁花丶海棠 | 胜天一猫 | 小蓝鲸 | leo468
 author = "Yucca（维护）"
 forumthread = ""
@@ -248,14 +248,28 @@ configuration_options = {
             i18n({"无额外按钮且禁用整理按钮", "No Extra Button and Disable Sort Button"}),
             i18n({"(无提示文字)额外锁定道具按钮", "(No help message)Extra Lock/Unlock Button"})
         }, nil, enabletext),
+    {
+        name = "World Exchange",
+        label = i18n({"穿越机制", "World Exchange Mode"}),
+        hover = i18n({"独立选择穿越方式，不影响整理收集；需开启容器按钮，地面与洞穴使用相同档位。切换后仍保留已有存档的恢复保护",
+            "Choose the exchange mode independently of sorting/collection. Requires container buttons and matching shard settings. Existing saves retain recovery protection after switching"}),
+        default = "coordinated",
+        options = {
+            {description = i18n({"关闭", "Off"}), data = false},
+            {description = i18n({"传统", "Traditional"}), data = "traditional",
+                hover = i18n({"沿用为爽原有整箱交换和辅助暂停按钮", "Upstream whole-container exchange with its optional pause button"})},
+            {description = i18n({"双界协同（默认）", "Coordinated (default)"}), data = "coordinated",
+                hover = i18n({"地面与洞穴自动协调交换，无需其他玩家同意；穿越不逐次存档", "Automatic shard coordination; no player approval or per-exchange world save"})},
+        },
+    },
     item("Items collect", i18n({"道具快捷收集存放", "Items Collect/Store"}),
         i18n({"Ctrl[Alt]右键道具,制作栏/智能锅收集道具", "Press Ctrl+Mouse Right Store Items;Craft menu Collcect Items"}), -3, -1, -3,
         -1,
         {i18n({"禁用收集", "Disable Collect"}), i18n({"禁用存放", "Disable Store"}), ""}),
     item("enable easy mode", i18n({"󰀜 简单模式总开关", "Enable 󰀜 Easy Mode"})),
     item("enable hard mode", i18n({"󰀕 困难模式总开关", "Enable 󰀕 Hard Mode"}),
-        i18n({"可关闭所有难度.不包含Ray的开关,关闭时暗影世界仅宠物,技能点开局15点",
-            "Can disable all difficulty.It not close Ray. Only pets have shadows, skillpoints=15"})),  -- 和暗影世界内容/Shadow World
+        i18n({"可关闭所有难度.不包含Ray的开关,关闭时暗影世界仅宠物;技能点扩展开启时开局15点",
+            "Can disable all difficulty except Ray. Only pets have shadows; enabled skill-point expansion starts with 15 points"})),  -- 和暗影世界内容/Shadow World
     --     item("simple chatbot", i18n({"千影小助手", "little QianYing"}), i18n({"召唤小助手来帮你吧", "call bot for help"})),
     --     spaceitem(),
     --     item("Server Paused", i18n({"服务器暂停/继续投票", "Vote for pause / resume"}, i18n({"投票暂停或继续", "Vote for pause / resume"}))),
@@ -517,6 +531,9 @@ configuration_options = {
         i18n({"保险杠血量翻倍、缓慢回复损失的生命值、没血时脱落变破损状态，期间可用石头材料修复",
             "doubles health, slowly recovers lost health,falls off and becomes damaged when there is no health, stone materials can be used to repair it"})),
     item("trap_teeth", i18n({"陷阱5秒重置,耐久翻倍", "trap auto reset 5s,use*2"})),
+    item("Trap Guaranteed Catch", i18n({"陷阱必中", "Guaranteed Trap Catch"}),
+        i18n({"普通陷阱触发后立即捕获有效目标，保留合拢动画；捕获范围、耐久和掉落不变",
+            "Ordinary traps catch valid targets immediately on triggering while keeping the closing animation; range, durability and loot are unchanged"}), true),
     item("Minotaurhorn Enchant", i18n({"守卫者角附魔", "Guardian's Horn can enchant"}),
         i18n({"远古守卫者的角可以附魔手杖、懒人杖以及妥协模组的查尔斯滑行杖获得冲锋加速能力",
             "Guardian's Horn be enchanted on Lazy Explorer, Walking Cane, and the Charles_t_horse of UM module to obtain the ability to accelerate the charge"})),
@@ -537,7 +554,7 @@ configuration_options = {
     headeritem(i18n({"角色改动", "Charaters"})),
     item("role_easy", i18n({"简单模式角色改动总开关", "Switch for Charaters of Easy Mode"})),
     item("More Skill Points", i18n({"技能点继续增加", "More Skill Points"}),
-        i18n({"全部经验时可以点满技能", "Can activate all skills finally"}), -6, nil, nil, -16,
+        i18n({"全部经验时可以点满技能;禁用时保留游戏原有技能点规则", "Can activate all skills finally; disabling preserves native skill-point rules"}), -6, nil, nil, -16,
         {"", i18n({"开荒时最多可有部分技能点,选0时永不获得", "New Game Start with x skill points.Never obtain when select 0."})}, nil,
         {enabletext, 0}),
     item("wilson_easy", i18n({"---------------------- 󰀰 威尔逊总开关", "󰀰 Wilson Master Switch"})),

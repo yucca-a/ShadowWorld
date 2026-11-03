@@ -8,6 +8,9 @@ local cooking = require("cooking")
 local IngredientCollectionNeeded = require("ingredientcollect2hm")
 require "widgets/widgetutil"
 local containercfg = GetModConfigData("Container Sort")
+local worldexchangemode = GetModConfigData("World Exchange")
+local worldexchangecfg = worldexchangemode ~= false
+local traditionalexchange = worldexchangemode == "traditional"
 local itemscfg = GetModConfigData("Items collect")
 local hasmultisortbtn = containercfg == -2 or containercfg == true
 local haslockbutton = containercfg == -3 or containercfg == -6 -- 2025.7.9 melon:新增无提示文字版
@@ -620,20 +623,266 @@ end
 
 -- 末影箱穿越：持久化事务服务，整箱交换与双层同步存档。
 local function canexchange(player, inst)
-    return TheWorld.ismastersim and player and player:IsValid() and inst and inst:IsValid() and
+    return worldexchangecfg and TheWorld.ismastersim and player and player:IsValid() and inst and inst:IsValid() and
         inst:HasTag("pocketdimension_container") and inst.components.container and
         inst.components.container.openlist[player] ~= nil
 end
+-- The traditional tier reuses upstream-v2.8.14.95's three-message exchange
+-- and optional pause button. Register its names in every mode; entry guards
+-- prevent packets or clients from activating a different configured tier.
+local function traditionalready(peer)
+    local service = TheWorld.components.worldexchange2hm
+    if not service then return true end
+    service:Initialize()
+    if service.protocol and service.protocol.active then return false end
+    if service.engine then
+        local core = service.engine.core
+        return core and (peer and core:CanExchange(tostring(peer)) or (not peer and core:IsReady())) or false
+    end
+    return true
+end
+local function MakeTraditionalExchange()
+    local function exchangedestroydata(inst)
+        if inst.components.container then
+            local container = inst.components.container
+            for i = 1, container.numslots do
+                local item = container.slots[i]
+                if item ~= nil and item:IsValid() then item:PushEvent("player_despawn") end
+            end
+            container:DestroyContents()
+        end
+    end
+    local function exchangesenddata(inst, rpcname, world_id, name, confirm)
+        if inst.components.container and world_id and name then
+            local rpc = GetShardModRPC("MOD_HARDMODE", rpcname)
+            if confirm then
+                SendModRPCToShard(rpc, nil, world_id, name)
+            else
+                local containerdata = inst.components.container:OnSave()
+                containerdata.time2hm = os.time()
+                inst.exchangetmpdata2hm = containerdata
+                exchangedestroydata(inst)
+                SendModRPCToShard(rpc, nil, world_id, name, DataDumper(containerdata, nil, true))
+            end
+        end
+    end
+    local function exchangeapplydata(inst, containerdata)
+        if inst.components.container and containerdata then
+            exchangedestroydata(inst)
+            inst.components.container:OnLoad(containerdata)
+        end
+    end
+    local function exchangetaskend(inst)
+        if inst:HasTag("exchangeloading2hm") then inst:RemoveTag("exchangeloading2hm") end
+        if inst.containersendtask2hm then inst.containersendtask2hm = nil end
+        if inst.containerreceivetask2hm then inst.containerreceivetask2hm = nil end
+        if inst.exchangeconfirmtask2hm then inst.exchangeconfirmtask2hm = nil end
+        if inst.sendcontainerproxyplayer2hm then
+            local player = inst.sendcontainerproxyplayer2hm
+            if player and player:IsValid() and player.components.talker then
+                player.components.talker:Say((TUNING.isCh2hm and ("穿越世界超时中止(可暂停穿越=25秒)") or
+                    ("Exchange timeout invalid~(Pause game then exchange wait 25s)")))
+            end
+            inst.sendcontainerproxyplayer2hm = nil
+        end
+        if inst.sendcontainerproxydata2hm then inst.sendcontainerproxydata2hm = nil end
+        if inst.exchangetmpdata2hm then
+            exchangeapplydata(inst, inst.exchangetmpdata2hm)
+            inst.exchangetmpdata2hm = nil
+        end
+    end
+    AddShardModRPCHandler("MOD_HARDMODE", "exchangeconfirm2hm", function(shard_id, world_id, name)
+        if not traditionalexchange then return end
+        if TheShard and tostring(TheShard:GetShardId()) ~= tostring(shard_id) and tostring(TheShard:GetShardId()) == tostring(world_id) then
+            local container = TheWorld:GetPocketDimensionContainer(name)
+            if container and container:IsValid() and container.components.container and container.exchangetmpdata2hm and not container.containersendtask2hm and
+                not container.exchangeconfirmtask2hm and container.containerreceivetask2hm and container.sendcontainerproxydata2hm then
+                container.exchangetmpdata2hm = nil
+                container.containerreceivetask2hm:Cancel()
+                container.containerreceivetask2hm = nil
+                exchangeapplydata(container, container.sendcontainerproxydata2hm)
+                container.sendcontainerproxydata2hm = nil
+                if container:HasTag("exchangeloading2hm") then container:RemoveTag("exchangeloading2hm") end
+            end
+        end
+    end)
+    AddShardModRPCHandler("MOD_HARDMODE", "exchangeconfirmdata2hm", function(shard_id, world_id, name, containerdata)
+        if not traditionalexchange then return end
+        if TheShard and tostring(TheShard:GetShardId()) ~= tostring(shard_id) and tostring(TheShard:GetShardId()) == tostring(world_id) then
+            if TheNet:IsServerPaused() then
+                TheNet:SetServerPaused(false)
+                TheNet:Announce(TUNING.isCh2hm and "服务器已停止暂停" or "The server has stopped pausing")
+            end
+            local container = TheWorld:GetPocketDimensionContainer(name)
+            if container and container.cancelpausetask2hm then
+                container.cancelpausetask2hm:Cancel()
+                container.cancelpausetask2hm = nil
+            end
+            if container and container:IsValid() and container.components.container and container.exchangetmpdata2hm and container.containersendtask2hm and
+                not container.containerreceivetask2hm and not container.exchangeconfirmtask2hm and container.sendcontainerproxyplayer2hm and containerdata then
+                local success, data = RunInSandboxSafe(containerdata)
+                if success and data and data.time2hm and os.time() - data.time2hm < 400 then
+                    container:DoStaticTaskInTime(FRAMES * 1.5, exchangesenddata, "exchangeconfirm2hm", shard_id, name, true)
+                    container.exchangetmpdata2hm = nil
+                    container.containersendtask2hm:Cancel()
+                    container.containersendtask2hm = nil
+                    container.exchangeconfirmtask2hm = container:DoTaskInTime(0.25, exchangetaskend)
+                    exchangeapplydata(container, data)
+                    local player = container.sendcontainerproxyplayer2hm
+                    if player and player:IsValid() and player.components.talker then
+                        player.components.talker:Say((TUNING.isCh2hm and ("成功穿越世界" .. shard_id .. "啦") or
+                            ("SUCCESS to exchange with world " .. shard_id .. "~")))
+                    end
+                    container.sendcontainerproxyplayer2hm = nil
+                end
+            end
+        end
+    end)
+    AddShardModRPCHandler("MOD_HARDMODE", "exchangesenddata2hm", function(shard_id, world_id, name, containerdata)
+        if not traditionalexchange then return end
+        if TheShard and tostring(TheShard:GetShardId()) ~= tostring(shard_id) and tostring(TheShard:GetShardId()) == tostring(world_id) then
+            local container = TheWorld:GetPocketDimensionContainer(name)
+            if traditionalready(shard_id) and container and container:IsValid() and container.components.container and
+                not container.components.container.readonlycontainer and not container.dcs2hm and container.virtchest == nil and not container.containersendtask2hm and
+                not container.containerreceivetask2hm and not container.exchangeconfirmtask2hm and containerdata then
+                local success, data = RunInSandboxSafe(containerdata)
+                if success and data and data.time2hm and os.time() - data.time2hm < 350 then
+                    if not container:HasTag("exchangeloading2hm") then container:AddTag("exchangeloading2hm") end
+                    container.containerreceivetask2hm = container:DoTaskInTime(3, exchangetaskend)
+                    container.sendcontainerproxydata2hm = data
+                    container:DoStaticTaskInTime(FRAMES * 1.5, exchangesenddata, "exchangeconfirmdata2hm", shard_id, name)
+                end
+            end
+        end
+    end)
+    local function findcontainerproxyname(inst)
+        if TheWorld.PocketDimensionContainers then
+            for name, container in pairs(TheWorld.PocketDimensionContainers) do if container == inst then return name end end
+        end
+    end
+    local function findanotherworldid(inst)
+        if ShardList then
+            local shardids = {}
+            for world_id, v in pairs(ShardList) do
+                if TheShard and world_id ~= TheShard:GetShardId() and Shard_IsWorldAvailable(world_id) then
+                    table.insert(
+                        shardids, world_id)
+                end
+            end
+            local total = #shardids
+            if total == 1 then
+                return shardids[1]
+            elseif total > 1 then
+                inst.lastexchangeidx2hm = (inst.lastexchangeidx2hm or 0) + 1
+                if inst.lastexchangeidx2hm > total then inst.lastexchangeidx2hm = 1 end
+                return shardids[inst.lastexchangeidx2hm]
+            end
+        end
+    end
+    local function exchangefn(player, inst)
+        if not traditionalexchange or not canexchange(player, inst) then return end
+        if TheWorld.ismastersim and inst.components.container and not inst.components.container.readonlycontainer and not inst.dcs2hm and
+            not inst.containersendtask2hm and not inst.containerreceivetask2hm and
+            not inst.exchangeconfirmtask2hm and inst.virtchest == nil and player then
+            local name = findcontainerproxyname(inst)
+            local world_id = findanotherworldid(inst)
+            if world_id and name then
+                if not traditionalready(world_id) then return end
+                inst.sendcontainerproxyplayer2hm = player
+                inst.containersendtask2hm = inst:DoTaskInTime(1.5, exchangetaskend)
+                if not inst:HasTag("exchangeloading2hm") then inst:AddTag("exchangeloading2hm") end
+                exchangesenddata(inst, "exchangesenddata2hm", world_id, name)
+            elseif player and player:IsValid() and player.components.talker then
+                player.components.talker:Say((TUNING.isCh2hm and "找不到世界和容器穿越哎" or "Can't find another world's container to exchange."))
+            end
+        end
+    end
+    local function exchangevalidfn(inst)
+        return defaultbtnvalidfn(inst) and inst:HasTag("pocketdimension_container") and
+            not inst:HasTag("exchangeloading2hm")
+    end
+    local function checkbtnstatus(_inst, inst, btn)
+        if not (inst and inst:IsValid() and not exchangevalidfn(inst)) then
+            _inst.checkdisabletask2hm:Cancel()
+            _inst.checkdisabletask2hm = nil
+            if btn and btn.Enable then btn:Enable() end
+        end
+    end
+    local function exchangebtnfn(inst, doer, btn)
+        if btn and btn.Disable and btn.inst and not btn.inst.checkdisabletask2hm then
+            btn:Disable()
+            btn.inst.checkdisabletask2hm = btn.inst:DoPeriodicTask(0.1, checkbtnstatus, 0.5, inst, btn)
+        end
+        if inst.components.container and TheWorld.ismastersim then
+            exchangefn(doer, inst)
+        elseif inst.replica.container ~= nil then
+            SendModRPCToServer(GetModRPC("MOD_HARDMODE", "exchangebtn2hm"), inst)
+        end
+    end
+
+    local function checkpausebtnstatus(_inst, inst, btn)
+        _inst.checkdisabletask2hm:Cancel()
+        _inst.checkdisabletask2hm = nil
+        if btn and btn.Enable then btn:Enable() end
+    end
+    local function pausefn(player, inst)
+        if not traditionalexchange or not canexchange(player, inst) or not traditionalready() then return end
+        if TheWorld.ismastersim then
+            if TheNet:IsServerPaused() then
+                if inst.cancelpausetask2hm then
+                    inst.cancelpausetask2hm:Cancel()
+                    inst.cancelpausetask2hm = nil
+                end
+                TheNet:SetServerPaused(false)
+                TheNet:Announce(TUNING.isCh2hm and "服务器已停止暂停" or "The server has stopped pausing")
+            elseif not TheNet:IsServerPaused() then
+                if player and player:IsValid() then
+                    TheNet:Announce(TUNING.isCh2hm and "玩家 " .. (player.name or player.userid) .. " 使用了容器暂停按钮" or "Player " .. (player.name or player.userid) .. "use pause button in container")
+                end
+                TheNet:Announce(TUNING.isCh2hm and "服务器已暂停，30秒后超时自动解除" or "The server is paused, auto cancel pause after timeout 30 seconds")
+                SetServerPaused()
+                if inst.cancelpausetask2hm then
+                    inst.cancelpausetask2hm:Cancel()
+                    inst.cancelpausetask2hm = nil
+                end
+                inst.cancelpausetask2hm = inst:DoStaticTaskInTime(30, function(inst)
+                    if TheNet:IsServerPaused() then
+                        TheNet:SetServerPaused(false)
+                        TheNet:Announce(TUNING.isCh2hm and "服务器暂停超时已自动解除" or "The server pause has been lifted automatically")
+                    end
+                end)
+            end
+        end
+    end
+    AddModRPCHandler("MOD_HARDMODE", "pausebtn2hm", pausefn)
+    local function pausebtnfn(inst, doer, btn)
+        if btn and btn.Disable and btn.inst and not btn.inst.checkdisabletask2hm then
+            btn:Disable()
+            btn.inst.checkdisabletask2hm = btn.inst:DoPeriodicTask(0.2, checkpausebtnstatus, 1, inst, btn)
+        end
+        if TheWorld.ismastersim then
+            pausefn(doer, inst)
+        elseif not TheWorld.ismastersim then
+            SendModRPCToServer(GetModRPC("MOD_HARDMODE", "pausebtn2hm"), inst)
+        end
+    end
+
+    return {Request = exchangefn, Button = exchangebtnfn, PauseButton = pausebtnfn}
+end
+local traditional = MakeTraditionalExchange()
+
 local function exchangefn(player, inst)
+    if traditionalexchange then return traditional.Request(player, inst) end
     if canexchange(player, inst) and TheWorld.components.worldexchange2hm then
         TheWorld.components.worldexchange2hm:Request(player, inst)
     end
 end
 AddModRPCHandler("MOD_HARDMODE", "exchangebtn2hm", exchangefn)
 local function exchangevalidfn(inst)
-    return defaultbtnvalidfn(inst) and inst:HasTag("pocketdimension_container") and not inst:HasTag("exchangeloading2hm")
+    return worldexchangecfg and defaultbtnvalidfn(inst) and inst:HasTag("pocketdimension_container") and not inst:HasTag("exchangeloading2hm")
 end
-local function exchangebtnfn(inst, doer)
+local function exchangebtnfn(inst, doer, btn)
+    if traditionalexchange then return traditional.Button(inst, doer, btn) end
     if TheWorld.ismastersim then exchangefn(doer, inst)
     else SendModRPCToServer(GetModRPC("MOD_HARDMODE", "exchangebtn2hm"), inst) end
 end
@@ -643,12 +892,13 @@ local function exchangestatusfn(player, inst)
     end
 end
 AddModRPCHandler("MOD_HARDMODE", "exchangestatus2hm", exchangestatusfn)
-local function exchangestatusbtnfn(inst, doer)
+local function exchangestatusbtnfn(inst, doer, btn)
+    if traditionalexchange then return traditional.PauseButton(inst, doer, btn) end
     if TheWorld.ismastersim then exchangestatusfn(doer, inst)
     else SendModRPCToServer(GetModRPC("MOD_HARDMODE", "exchangestatus2hm"), inst) end
 end
 local function exchangestatusvalidfn(inst)
-    return inst and inst:HasTag("pocketdimension_container")
+    return worldexchangecfg and inst and inst:HasTag("pocketdimension_container")
 end
 
 -- 容器收集
@@ -2283,15 +2533,19 @@ Use Orange Amulet will Picktop Near Same Items]],
         },
         exchangebtn = {
             text = TUNING.isCh2hm and "穿越" or "PassW",
-            helptext = TUNING.isCh2hm and [[与另一世界整箱互换；双方确认后解锁，无需每次保存世界]] or
-                [[Swap whole containers; unlock after both worlds confirm, without saving on each exchange]],
+            helptext = traditionalexchange and (TUNING.isCh2hm and "传统穿越：沿用为爽原有整箱交换，可配合暂停按钮" or
+                "Traditional upstream exchange; optional pause button") or
+                (TUNING.isCh2hm and "双界协同：地面与洞穴自动确认，无需其他玩家同意，无需每次保存世界" or
+                "Coordinated exchange: automatic shard confirmation; no player consent or save on each exchange"),
             fn = exchangebtnfn,
             validfn = exchangevalidfn
         },
         pausebtn = {
-            text = TUNING.isCh2hm and "状态" or "Status",
-            helptext = TUNING.isCh2hm and [[查看交换进度并重试通信；无需暂停服务器]] or
-                [[Check exchange progress and retry communication]],
+            text = traditionalexchange and (TUNING.isCh2hm and "暂停" or "Pause") or (TUNING.isCh2hm and "状态" or "Status"),
+            helptext = traditionalexchange and (TUNING.isCh2hm and "传统穿越辅助暂停，30秒后自动解除" or
+                "Optional pause for traditional exchange; resumes automatically after 30 seconds") or
+                (TUNING.isCh2hm and "查看交换进度并重试通信；无需暂停服务器" or
+                "Check exchange progress and retry communication"),
             fn = exchangestatusbtnfn,
             validfn = exchangestatusvalidfn
         },
@@ -2569,7 +2823,7 @@ Use Orange Amulet will Picktop Near Same Items]],
                             nil, pos1)
                     end
                     if overflow.inst:HasTag("pocketdimension_container") then
-                        if not TUNING.DSA_ONE_PLAYER_MODE then
+                        if worldexchangecfg and not TUNING.DSA_ONE_PLAYER_MODE then
                             addbutton(self.bottomrow, overflow.inst, widget, self.owner, "exchangebutton2hm",
                                 btnlist.exchangebtn, nil,
                                 TUNING.DATA2HM.opensort and pos2 or pos1)
@@ -2624,10 +2878,12 @@ Use Orange Amulet will Picktop Near Same Items]],
                 end
                 if container:HasTag("pocketdimension_container") then
                     if not TUNING.DSA_ONE_PLAYER_MODE then
-                        addbutton(self, container, widget, doer, "exchangebutton2hm", btnlist.exchangebtn,
-                            TUNING.DATA2HM.opensort and 2 or 1)
-                        addbutton(self, container, widget, doer, "pause2hm", btnlist.pausebtn,
-                            TUNING.DATA2HM.opensort and 3 or 2)
+                        if worldexchangecfg then
+                            addbutton(self, container, widget, doer, "exchangebutton2hm", btnlist.exchangebtn,
+                                TUNING.DATA2HM.opensort and 2 or 1)
+                            addbutton(self, container, widget, doer, "pause2hm", btnlist.pausebtn,
+                                TUNING.DATA2HM.opensort and 3 or 2)
+                        end
                         if container.prefab == "tacklestation2hm" and sharkboiupdate then
                             addbutton(self, container, widget, doer, "upgrade2hm", btnlist.upgradebtn,
                             TUNING.DATA2HM.opensort and 4 or 3)
