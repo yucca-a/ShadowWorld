@@ -497,6 +497,47 @@ local function cansharetargettoparent(inst, data)
 end
 
 local cantfollow = {"chester", "shadowhutch2hm"}
+local function bindpigshadowform(parent, child)
+    local werebeast = child.components.werebeast
+    if not (werebeast and parent.components.werebeast) then return end
+
+    local setwere, setnormal = werebeast.SetWere, werebeast.SetNormal
+    -- 本体完成变身时同步，分身自己的月相和复原计时不再单独变身。
+    werebeast.SetWere = nilfn
+    werebeast.SetNormal = nilfn
+    local health, combat = child.components.health, child.components.combat
+    local basehealth, basedamage, baseperiod = health.maxhealth, combat.defaultdamage, combat.min_attack_period
+
+    local function sync()
+        if child.toremove2hm or health:IsDead() then return end
+        local iswere = parent:HasTag("werepig")
+        if iswere == child:HasTag("werepig") then return end
+        local percent = health:GetPercent()
+        local healthmult = health.maxhealth / basehealth
+        local damagemult = combat.defaultdamage / basedamage
+        local periodmult = combat.min_attack_period / baseperiod
+        local shadowretarget = combat.targetfn == retargetfn_nightmarecreature
+        local retargetperiod = combat.retargetperiod
+        if iswere then setwere(werebeast) else setnormal(werebeast) end
+        basehealth, basedamage, baseperiod = health.maxhealth, combat.defaultdamage, combat.min_attack_period
+        health:SetMaxHealth(basehealth * healthmult)
+        health:SetPercent(percent)
+        combat:SetDefaultDamage(basedamage * damagemult)
+        combat:SetAttackPeriod(baseperiod * periodmult)
+        if shadownotindependent then
+            combat:SetRetargetFunction()
+            combat:SetKeepTargetFunction()
+        elseif shadowretarget then
+            child.swc2hmtargetfn = combat.targetfn
+            combat:SetRetargetFunction(retargetperiod, retargetfn_nightmarecreature)
+        end
+    end
+
+    child:ListenForEvent("transformwere", sync, parent)
+    child:ListenForEvent("transformnormal", sync, parent)
+    sync()
+end
+
 -- 暗影世界机制:分身额外构造函数
 local function onspawnchild(inst, child)
     if maxshadownum and not inst:HasTag("epic") and not table.contains(whitenamelist, inst.prefab) then
@@ -507,6 +548,24 @@ local function onspawnchild(inst, child)
     child.swp2hm = inst
     child:AddTag("swc2hm")
     child:AddTag("crazy")
+    child.persists = false
+    -- 骨架和腐化手杖会把合格目标替换成有正常掉落的新实体。
+    -- 仅撤销分身的这种变身资格，其他使用同一标签的原生效果不受影响。
+    local sgmem = child.sg and child.sg.mem
+    if (sgmem and sgmem.canstalkercorrupt) or child.CanStalkerCorrupt then
+        if sgmem then sgmem.canstalkercorrupt = nil end
+        child.CanStalkerCorrupt = nil
+        child:RemoveTag("nightmarecorruptable")
+    end
+    -- 妥协测试版会在生成后按地形替换蠕虫；分身直接沿用本体的种类。
+    if TUNING.DSTU and (child.prefab == "worm" or child.prefab == "shockworm" or child.prefab == "viperworm") then
+        child.checked_area_worm = true
+    end
+    local OnSave = child.OnSave
+    child.OnSave = function(child, data, ...)
+        data.shadowworld_clone2hm = true
+        if OnSave then return OnSave(child, data, ...) end
+    end
     if child.components.halloweenmoonmutable then child:RemoveComponent("halloweenmoonmutable") end
     if child.components.eater then child.components.eater.CanEat = falsefn end
     -- 随机生物大小兼容
@@ -815,6 +874,12 @@ local function onspawnchild(inst, child)
         end
     end
     if child.prefab == "tallbird" then child.CanMakeNewHome = nilfn end
+    -- 幼鸟长大时会生成新实体，分身应保持本体生成时的阶段。
+    if (child.prefab == "smallbird" or child.prefab == "teenbird") and child.components.growable then
+        child.components.growable:StopGrowing()
+    end
+    -- 洞穴只会从休眠的成年石虾里选首领，分身不能作为候选。
+    if child.prefab == "rocky" then child.IsMaxSize = falsefn end
     if child.prefab == "mole" then child.make_home_delay = 10000 end
     if child.prefab == "spiderqueen" and child.GetTimeAlive then
         if not child.GetTimeAlive2hm then
@@ -864,6 +929,10 @@ local function onspawnchild(inst, child)
     if child.components.ndnr_pluckable ~= nil then child.components.ndnr_pluckable:SetChance(0) end
     -- 禁止骑乘
     if child.components.rideable then child.components.rideable:SetCustomRiderTest(falsefn) end
+    -- 牛铃会单独保存绑定的牛，影子也不能被阴郁牛铃绑定。
+    if child.prefab == "beefalo" then
+        child.SetBeefBellOwner = function() return false, "INVALID_TARGET" end
+    end
     -- 禁止作祟
     if child.components.hauntable then child:AddTag("haunted") end
     -- 色彩和仇恨伤害补丁
@@ -916,6 +985,7 @@ local function onspawnchild(inst, child)
     elseif inst.swc2hmfn then
         inst.swc2hmfn(child)
     end
+    if child.prefab == "pigman" or child.prefab == "pigguard" then bindpigshadowform(inst, child) end
     if child.shadowcantout2hm then
         -- child:ListenForEvent("newcombattarget", cansharetargettoparent)
         -- child:ListenForEvent("blocked", cansharetargettoparent)

@@ -1,0 +1,22 @@
+{
+  "workshop_id": "3832182265",
+  "version": "2.8.14.98.1",
+  "tag": "v2.8.14.98.1",
+  "published_at_utc": "2026-11-05T01:48:36+00:00",
+  "uploader_status": "Update completed",
+  "visibility": "Public",
+  "version_tag_verified": true,
+  "published_notes_match_prepared_text": true,
+  "steam_changelog_entry": "1793843316",
+  "patch_notes_file": "workshop/update-notes-2.8.14.98.1.txt",
+  "patch_notes_sha256": "935cbb17796187d3b0c128925d7f02e0417897c68f13c461e78ba2dd08ee48cc",
+  "content_file_count": 432,
+  "content_bytes": 21418286,
+  "steam_content_bytes": 21418290,
+  "checks": {
+    "monster_nightvision": 423,
+    "wixie": 634,
+    "multiplayer_feedback": 31,
+    "lua51_syntax": "passed"
+  }
+}

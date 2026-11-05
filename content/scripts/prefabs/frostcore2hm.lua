@@ -1,8 +1,7 @@
 local assets = {
-    -- Asset("ANIM", "anim/bootleg.zip"),
-    -- Asset("ANIM", "anim/swap_bootleg.zip"),
-    -- Asset("ATLAS", "images/inventoryimages/frostcore2hm.xml"),
-	-- Asset("IMAGE", "images/inventoryimages/frostcore2hm.tex"),
+    Asset("ANIM", "anim/frostcore2hm.zip"),
+    Asset("ATLAS", "images/inventoryimages/frostcore2hm.xml"),
+    Asset("IMAGE", "images/inventoryimages/frostcore2hm.tex"),
 }
 local prefabs = {
     "oceanwhirlportal",
@@ -147,9 +146,9 @@ local function fn()
 
     MakeInventoryPhysics(inst)
 
-    inst.AnimState:SetBank("winter_ornaments2023")
-    inst.AnimState:SetBuild("winter_ornaments2023")
-    inst.AnimState:PlayAnimation("boss_mutateddeerclops")
+    inst.AnimState:SetBank("frostcore2hm")
+    inst.AnimState:SetBuild("frostcore2hm")
+    inst.AnimState:PlayAnimation("idle")
 
     MakeInventoryFloatable(inst, nil, .075, 0.8)
 

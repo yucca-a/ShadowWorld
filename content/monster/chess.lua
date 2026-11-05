@@ -7,7 +7,7 @@ local UpvalueHacker = require("upvaluehacker2hm")
 -- 损坏发条自动修复
 local changetime = GetModConfigData("chess") == -1 and TUNING.TOTAL_DAY_TIME * 35 or TUNING.TOTAL_DAY_TIME * 10
 local function autorepairself(inst)
-    if not inst.components.timer:TimerExists("mod_hardmode_timechange") then
+    if not inst:HasTag("swc2hm") and not inst.components.timer:TimerExists("mod_hardmode_timechange") then
         inst.components.timer:StartTimer("mod_hardmode_timechange", changetime + math.random(30))
     end
 end
@@ -372,7 +372,7 @@ for monster, junk in pairs(nightmarechessmonsters) do
         if not inst.components.timer then inst:AddComponent("timer") end
         inst:DoTaskInTime(0, autorepairself)
         inst:ListenForEvent("timerdone", function(inst, data)
-            if data and data.name == "mod_hardmode_timechange" then
+            if data and data.name == "mod_hardmode_timechange" and not inst:HasTag("swc2hm") then
                 local newchess = SpawnPrefab(nightmarechessmonsters_change[inst.prefab])
                 if newchess then
                     newchess.components.knownlocations:RememberLocation("home", inst.components.knownlocations:GetLocation("home") or inst:GetPosition())

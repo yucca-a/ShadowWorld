@@ -14,7 +14,6 @@ modimport("common/newstate.lua")
 modimport("common/bugfix.lua")
 modimport("init/hover")
 modimport("common/monster_nightvision.lua")
-modimport("common/role_nightvision.lua")
 modimport("common/walter_wixie_slingshot.lua")
 require("debugcommands2hm")
 TUNING.HAPPYPATCHMOD = true -- 供其他模组访问
@@ -36,7 +35,6 @@ if TUNING.easymode2hm then
     modimport("easy_other/easy_mechanics.lua") -- 机制
     modimport("easy_other/easy_structures.lua") -- 建筑
     if GetModConfigData("lunar shadow items") then modimport("easy_other/lunar_shadow_items.lua") end -- 2025.5.3 melon
-    if GetModConfigData("um_patch") then modimport("easy_other/um_patch.lua") end -- 2025.5.19 melon
     -- 简单模式角色改动-------------------------------------------------
     if GetModConfigData("role_easy") then
         -- if GetModConfigData("Walter Throw Slingshot First Attack") == -1 then modimport("easy_role/attackaction.lua") end
@@ -76,9 +74,14 @@ if TUNING.easymode2hm then
     end
 end
 
+if TUNING.DSTU and GetModConfigData("um_patch") then modimport("easy_other/um_patch.lua") end
+
 -- 模组相关-----------------------------------------------------------------------------
 if ((TUNING.TEMP2HM.openmods == nil and GetModConfigData("Show Mod Icon In Game")) or TUNING.TEMP2HM.openmods) and
     not TheNet:IsDedicated() then modimport("easy_other/ui.lua") end
+if not TheNet:IsDedicated() then
+    AddClassPostConstruct("screens/consolescreen", require("seasonwiki2hm").InstallConsole)
+end
 if GetModConfigData("Disable Outdate Tip") then modimport("easy_other/mod.lua") end
 -- 快捷存取和额外容器按钮
 -- Recovery must remain installed when the container buttons are later disabled.
@@ -88,6 +91,12 @@ if GetModConfigData("Container Sort") or GetModConfigData("Items collect") then
 end
 -- if GetModConfigData("simple chatbot") then modimport("easy_other/simplechatbot.lua") end
 -- 暗影世界
+-- 关闭影子生成后，仍需拦截先前被道具保存的临时分身记录。
+local oldSpawnSaveRecord = GLOBAL.SpawnSaveRecord
+GLOBAL.SpawnSaveRecord = function(record, ...)
+    if record and record.data and record.data.shadowworld_clone2hm then return end
+    return oldSpawnSaveRecord(record, ...)
+end
 if GetModConfigData("Shadow World") then
     modimport("shadowworld.lua")
     if GetModConfigData("shadow_nerf") then modimport("shadow_nerf.lua") end-- 2025.7.17 melon

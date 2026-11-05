@@ -151,9 +151,8 @@ if dusk_mode ~= true then
     end)
     -- 是否让夜视能力变地危险
     if dangerversion then
-        -- These existing role abilities keep their small physical safety light
-        -- only while dangerous Long Night is actually loaded. Other nightvision
-        -- sources (including the generic monster bonus) do not grant this light.
+        -- Keep the original safety light for these three easy-mode perks.
+        -- The shared option gives vision to other monster players without this light.
         local ROLE_LIGHTS = {webber = true, wurt = true, wonkey = true}
         local function RemoveRoleLight(inst)
             if inst._rolevisionlight2hm ~= nil then
@@ -162,8 +161,10 @@ if dusk_mode ~= true then
             end
         end
         local function UpdateRoleLight(inst)
-            local state = inst._rolevisionstate2hm
-            if state == nil or not state.active or inst:HasTag("playerghost") or
+            local phase = TheWorld.state.phase
+            local state = inst._monstervisionstate2hm
+            if not (TheWorld:HasTag("cave") or phase == "dusk" or phase == "night") or not state or not state.active or
+                inst:HasTag("playerghost") or
                 (inst.components.health ~= nil and inst.components.health:IsDead()) then
                 RemoveRoleLight(inst)
                 return
@@ -181,14 +182,19 @@ if dusk_mode ~= true then
                 light.Light:Enable(true)
             end
         end
-        AddPlayerPostInit(function(inst)
-            if not TheWorld.ismastersim or not ROLE_LIGHTS[inst.prefab] then return end
-            inst:ListenForEvent("rolenightvision2hmchanged", UpdateRoleLight)
-            inst:ListenForEvent("death", RemoveRoleLight)
-            inst:ListenForEvent("onremove", RemoveRoleLight)
-            -- Spawn/load callers position the player after prefab postinit.
-            inst:DoTaskInTime(0, UpdateRoleLight)
-        end)
+        if TUNING.easymode2hm and GetModConfigData("role_easy") and GetModConfigData("Monster Night Vision") then
+            AddPlayerPostInit(function(inst)
+                if not TheWorld.ismastersim or not ROLE_LIGHTS[inst.prefab] or not GetModConfigData(inst.prefab .. "_easy") then return end
+                inst:WatchWorldState("phase", UpdateRoleLight)
+                inst:ListenForEvent("monsternightvision2hmchanged", UpdateRoleLight)
+                inst:ListenForEvent("ghostvision", UpdateRoleLight)
+                inst:ListenForEvent("ms_respawnedfromghost", function() inst:DoTaskInTime(0, UpdateRoleLight) end)
+                inst:ListenForEvent("death", RemoveRoleLight)
+                inst:ListenForEvent("onremove", RemoveRoleLight)
+                -- Spawn/load callers position the player after prefab postinit.
+                inst:DoTaskInTime(0, UpdateRoleLight)
+            end)
+        end
         AddComponentPostInit("playervision", function(self)
             local oldHasNightVision = self.HasNightVision
             self.HasNightVision = function(self, ...)

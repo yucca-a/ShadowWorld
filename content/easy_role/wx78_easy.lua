@@ -1181,15 +1181,11 @@ AddPrefabPostInit("wx78", function(inst)
     if not TheWorld.ismastersim then return end
     -- 延迟执行，确保芯片融合系统已经初始化
     inst:DoTaskInTime(0.1, function(inst)
-        if not inst.components.upgrademoduleowner then return end
-        -- Hook UpdateActivatedModules来追踪饥饿芯片数量
-        local original_UpdateActivatedModules = inst.components.upgrademoduleowner.UpdateActivatedModules
-        inst.components.upgrademoduleowner.UpdateActivatedModules = function(self, ...)
-            -- 先调用原版函数（兼容《永不妥协》的activate逻辑）
-            local result = original_UpdateActivatedModules(self, ...)
-            -- 然后重新计算并覆盖饥饿芯片总数
+        local owner = inst.components.upgrademoduleowner
+        if not owner then return end
+        local function UpdateHungerChipCount()
             local total_hunger_chips = 0
-            for bartype, modules in pairs(self.module_bars) do
+            for _, modules in pairs(owner.module_bars) do
                 for _, module in ipairs(modules) do
                     if module and (module.prefab == "wx78module_maxhunger" or module.prefab == "wx78module_maxhunger1") then
                         -- 超级胃增益电路是 2 槽，普通胃增益电路是 1 槽。
@@ -1203,8 +1199,16 @@ AddPrefabPostInit("wx78", function(inst)
             -- 覆盖计数（兼容《永不妥协》）
             inst._hunger_chips = total_hunger_chips
             inst._hunger_chips2hm = total_hunger_chips
+        end
+        local original_UpdateActivatedModules = owner.UpdateActivatedModules
+        owner.UpdateActivatedModules = function(self, ...)
+            -- 先调用原版函数（兼容《永不妥协》的activate逻辑）
+            local result = original_UpdateActivatedModules(self, ...)
+            UpdateHungerChipCount()
             return result
         end
+        -- 读档时电路可能已经恢复，只补算等级，避免再次刷新激活状态。
+        UpdateHungerChipCount()
     end)
 end)
 -- 2025.11.26 YeFeng:饥饿芯片负面反转系统（参考《永不妥协》模组）

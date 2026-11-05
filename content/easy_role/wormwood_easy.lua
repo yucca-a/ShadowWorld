@@ -43,34 +43,91 @@ end
 
 -- 沃姆伍德生长中安抚植物减少生长时间
 if GetModConfigData("Wormwood TendTo Farm Plant Reduce Grow Time") then
-    AddComponentPostInit("farmplanttendable", function(self)
-        local oldTendTo = self.TendTo
-        function self:TendTo(doer)
-            local ans = oldTendTo(self, doer)
-            if ans and doer and doer.prefab == "wormwood" then
-                if doer.components.bloomness then
-                    if self.inst.components.growable and self.wormwoodtendto2hm ~= self.inst.components.growable:GetStage() then
-                        self.wormwoodtendto2hm = self.inst.components.growable:GetStage()
-                        if self.inst.components.growable:IsGrowing() then
-                            self.inst.components.growable:StartGrowing((self.inst.components.growable.targettime - GetTime()) * (1 - 0.09 * (doer.components.bloomness.level + 1)))
-                        else
-                            if self.inst.components.growable.pausedremaining then
-                                self.inst.components.growable.pausedremaining = self.inst.components.growable.pausedremaining * (1 - 0.09 * (doer.components.bloomness.level + 1))
-                            end
-                        end
-                        local level = doer.components.bloomness.level + 1
-                        if level > 3 then
-                            level = 3
-                        elseif level < 3 then
-                            level = 1
-                        end
-                        SpawnPrefab("halloween_firepuff_cold_" .. level).Transform:SetPosition(self.inst.Transform:GetWorldPosition())
-                    end
-                end
+    -- A stage number can repeat after regrowth, so each visit has its own record.
+    local function GetTendPhase(tendable, growable)
+        local stage = growable:GetStage()
+        local phase = tendable.wormwoodtendphase2hm
+        if phase == nil or phase.stage ~= stage then
+            phase = {stage = stage}
+            tendable.wormwoodtendphase2hm = phase
+        end
+        return phase
+    end
+
+    local function BoostGrowth(tendable, doer, growable, phase)
+        local bloomness = doer.components.bloomness
+        if bloomness == nil then return end
+        if phase.boosted then return true end
+
+        local remaining = growable.pausedremaining or (growable.targettime and growable.targettime - GetTime())
+        if remaining == nil or remaining <= 0 then return end
+        local level = bloomness.level + 1
+        growable:ExtendGrowTime(-remaining * 0.09 * level)
+        phase.boosted = true
+        SpawnPrefab("halloween_firepuff_cold_" .. (level >= 3 and 3 or 1)).Transform:SetPosition(tendable.inst.Transform:GetWorldPosition())
+        return true
+    end
+
+    AddComponentPostInit("growable", function(self)
+        local tendable = self.inst.components.farmplanttendable
+        if tendable == nil then return end
+        local SetStage = self.SetStage
+        function self:SetStage(stage, ...)
+            local phase = tendable.wormwoodtendphase2hm
+            SetStage(self, stage, ...)
+            if phase and tendable.wormwoodtendphase2hm == phase and phase.stage ~= self:GetStage() then
+                tendable.wormwoodtendphase2hm = nil
             end
-            return ans
         end
     end)
+
+    local function RememberTendPhase(plant, doer)
+        if doer == nil or doer.prefab ~= "wormwood" then return end
+        local act = doer:GetBufferedAction()
+        local tendable, growable = plant.components.farmplanttendable, plant.components.growable
+        if act and act.action == ACTIONS.INTERACT_WITH and act.target == plant and tendable and tendable.tendable and growable then
+            act.wormwoodtendphase2hm = GetTendPhase(tendable, growable)
+        end
+    end
+
+    AddComponentPostInit("farmplanttendable", function(self)
+        self.inst:ListenForEvent("startlongaction", RememberTendPhase)
+        local oldTendTo = self.TendTo
+        function self:TendTo(doer, ...)
+            local tended = oldTendTo(self, doer, ...)
+            if not tended or not self.inst:IsValid() then return tended end
+
+            local phase = self.wormwoodtendphase2hm
+            if phase then phase.tended = true end
+            local growable = self.inst.components.growable
+            if growable and doer and doer.prefab == "wormwood" then
+                BoostGrowth(self, doer, growable, GetTendPhase(self, growable))
+            end
+            return tended
+        end
+    end)
+
+    local InteractWith = ACTIONS.INTERACT_WITH.fn
+    ACTIONS.INTERACT_WITH.fn = function(act, ...)
+        local phase, plant = act.wormwoodtendphase2hm, act.target
+        act.wormwoodtendphase2hm = nil
+        local result, reason = InteractWith(act, ...)
+        if result or phase == nil or not phase.tended or plant == nil or not plant:IsValid() or plant:HasAnyTag("fire", "smolder") then
+            return result, reason
+        end
+
+        -- Finish a dialogue started before someone else tended this growth stage.
+        local tendable, growable = plant.components.farmplanttendable, plant.components.growable
+        if tendable and not tendable.tendable and growable and phase == GetTendPhase(tendable, growable) and
+            BoostGrowth(tendable, act.doer, growable, phase) then
+            if act.doer.components.talker then
+                act.doer.sg:AddStateTag("idle")
+                act.doer.components.talker:Say(GetString(act.doer, "ANNOUNCE_TALK_TO_PLANTS"))
+            end
+            return true
+        end
+        return result, reason
+    end
 end
 
 if GetModConfigData("Wormwood Soul Heal Soil") then

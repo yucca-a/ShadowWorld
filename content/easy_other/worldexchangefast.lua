@@ -2,7 +2,7 @@
 -- one paired checkpoint; the container protocol itself never asks for a save.
 local Engine = require("worldexchangeengine2hm")
 local mode = GetModConfigData("World Exchange")
-Engine.enabled = mode ~= false and mode ~= "traditional" and
+Engine.enabled = mode == "coordinated" and
     (GetModConfigData("Container Sort") or GetModConfigData("Items collect")) and true or false
 local function engine()
     local service = TheWorld and TheWorld.ismastersim and TheWorld.components.worldexchange2hm

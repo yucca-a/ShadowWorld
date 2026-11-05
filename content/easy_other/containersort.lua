@@ -10,7 +10,7 @@ require "widgets/widgetutil"
 local containercfg = GetModConfigData("Container Sort")
 local worldexchangemode = GetModConfigData("World Exchange")
 local worldexchangecfg = worldexchangemode ~= false
-local traditionalexchange = worldexchangemode == "traditional"
+local traditionalexchange = worldexchangemode == nil or worldexchangemode == "traditional"
 local itemscfg = GetModConfigData("Items collect")
 local hasmultisortbtn = containercfg == -2 or containercfg == true
 local haslockbutton = containercfg == -3 or containercfg == -6 -- 2025.7.9 melon:新增无提示文字版
@@ -122,7 +122,6 @@ local PICKUP_CANT_TAGS = {
     "mineactive",
     "catchable",
     "fire",
-    "light",
     -- "spider",
     "cursed",
     "paired",
@@ -142,6 +141,14 @@ local PICKUP_CANT_TAGS = {
     "donotautopick",
     -- 暗影世界模式标签
     "swc2hm",
+}
+local PICKUP_GLOWING_FRUITS = {
+    wormlight = true,
+    wormlight_lesser = true,
+    zaspberry = true,
+    zaspberry_lesser = true,
+    viperfruit = true,
+    viperfruit_lesser = true,
 }
 
 -- 容器无效道具拦截补丁
@@ -1290,6 +1297,20 @@ local function collectfn(player, inst)
         docollect(inst, player)
     end
 end
+local function canpickupglowingfruit(item, player)
+    if not PICKUP_GLOWING_FRUITS[item.prefab] then return false end
+
+    local x, y, z = item.Transform:GetWorldPosition()
+    -- Keep fruit lighting in place for nearby players, with room to move at the edge of the light.
+    local radius = (item.Light and item.Light:GetRadius() or 0.5) + 2
+    for _, other in ipairs(AllPlayers) do
+        if other ~= player and other:IsValid() and not IsEntityDeadOrGhost(other) and other:GetDistanceSqToPoint(x, y, z) <= radius * radius then
+            return false
+        end
+    end
+    return true
+end
+
 local function dopickup(inst, player)
     if not (player.components.inventory and (inst.components.inventory or (inst.components.container))) then return end
     -- 检测是否装备懒人护符
@@ -1330,7 +1351,8 @@ local function dopickup(inst, player)
     for i = #nearents, 1, -1 do
         local v = nearents[i]
         if v:IsValid() and table.contains(data.prefabs, v.prefab) and v ~= inst and not v:IsInLimbo() and not iscontainerchild(inst, v) and
-            container:CanTakeItemInSlot(v) and not v.components.inventoryitem.owner and v.components.inventoryitem.canbepickedup and
+            v.components.inventoryitem and container:CanTakeItemInSlot(v) and not v.components.inventoryitem.owner and
+            v.components.inventoryitem.canbepickedup and (not v:HasTag("light") or canpickupglowingfruit(v, player)) and
             not ((v:HasTag("fire") and not v:HasTag("lighter")) or v:HasTag("smolder")) and not v:HasTag("heavy") and
             not (v.components.container ~= nil and v.components.equippable == nil) and
             not ((v.components.burnable ~= nil and v.components.burnable:IsBurning() and v.components.lighter == nil) or

@@ -3,6 +3,7 @@
 local monster_enabled = GetModConfigData("Monster Night Vision")
 local wathom_enabled = GetModConfigData("wathom nightvision")
 local BLACKLIST = {wortox = true}
+local EXTRA_ROLES = {wurt = true, wonkey = true}
 local SOURCE = "monster_nightvision2hm"
 local DIRTY = "monsternightvision2hmdirty"
 local CHANGED = "monsternightvision2hmchanged"
@@ -13,7 +14,7 @@ end
 
 local function GetServerMode(inst)
     if BLACKLIST[inst.prefab] then return 0 end
-    local monster = monster_enabled and inst:HasTag("monster")
+    local monster = monster_enabled and (EXTRA_ROLES[inst.prefab] or inst:HasTag("monster"))
     if inst.prefab == "wathom" and (monster or wathom_enabled) then return 2 end
     return monster and 1 or 0
 end

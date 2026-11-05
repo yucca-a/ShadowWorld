@@ -5,16 +5,15 @@
 -- 引用
 local UpvalueHacker = require("upvaluehacker2hm")
 -----------------------------------------------------------------------------------
-local select_um_patch = GetModConfigData("um_patch")
-select_um_patch = select_um_patch == true and 1 or select_um_patch -- 1部分改动 2全部改动 3测试内容
 --[[修改列表:
-选1/2/3时开启:
 将妥协的瓶中信出宝藏概率34%改回60%
 修复雪球砸亮茄崩溃
 妥协厨师袋也可以移动中打开
 熊皮衣格子
+修复测试版黄油蝴蝶的自然生成
+修复沃托克斯编织暗影重载后恢复掉落
+修复修补工具包互修和零收益扣次
 
-选2/3开启:
 滑行手杖(马头杖)加移速减cd
 输出老鼠分时输出扣分物品名字和分数(根据TUNING.isCh2hm判断中英文输出)
 月龙、时令龙不再传送至玩家附近
@@ -23,15 +22,141 @@ select_um_patch = select_um_patch == true and 1 or select_um_patch -- 1部分改
 修复温蒂灵魂万灵药不能双倍的问题，但概率减半
 熊大脱加载不再动
 
-选3才开启:(测试内容，可能有bug或者兼容性不好)
 开启鼠潮时自动打开老鼠分宣告
-修复开启独行长路时过冷/过热扣血上限时造成的卡顿
-(实际是去掉了一些tag判断，可能导致人物mod小巨鹿无法抵御过冷扣上限等相关问题)。
+合并过冷和过热的血量上限扣减
 --]]
 --------------------------------------------------------------------------------------------------------
 if TUNING.DSTU then
-    -- 部分改动 选1/2开启------------------------------------------------------------------------------
-    if select_um_patch == 1 or select_um_patch == 2 or select_um_patch == 3 then
+    do
+        -- 临时兼容测试版汉化 20260926.1。汉化改读 UM_CONFIG 后删除此块。
+        local translation = ModManager:GetMod("workshop-3597225156")
+        local config = GLOBAL.UM_CONFIG
+        if translation and translation.modinfo.version == "20260926.1" and config and
+            TUNING.DSTU.SLEEPINGBUFF == nil and type(config.SLEEPINGBUFF) == "number" then
+            local modimport = translation.modimport
+            translation.modimport = function(path)
+                if path ~= "init/init_strings/init_tooltips" then return modimport(path) end
+
+                -- 旧字段仅对汉化提示文件可见，避免改动游戏的全局设置。
+                translation.modimport = modimport
+                local previous_tuning = rawget(translation, "TUNING")
+                local tuning = previous_tuning or TUNING
+                local sleep_settings = setmetatable({
+                    SLEEPINGBUFF = config.SLEEPINGBUFF,
+                    GOTOBED = config.GOTOBED
+                }, {__index = tuning.DSTU})
+                translation.TUNING = setmetatable({DSTU = sleep_settings}, {__index = tuning})
+                modimport(path)
+                translation.TUNING = previous_tuning
+            end
+        end
+    end
+
+    local gem_repair_values = TUNING.DSTU.GEM_REPAIRER_REPAIR_VALUE
+    if ACTIONS.UM_GEM_REPAIR and gem_repair_values then
+        AddPrefabPostInitAny(function(inst)
+            if inst.prefab ~= "um_gem_repair_kit" or not TheWorld.ismastersim then return end
+            local repairer = inst.components.gemrepairer
+            if not repairer then return end
+
+            -- UM's earlier PrefabPostInitAny enables repairs for every finite-use item.
+            if inst.um_cangemrepair then inst.um_cangemrepair:set(false) end
+
+            local OnUsed = repairer.OnUsed
+            repairer.OnUsed = function(self, target, doer, ...)
+                if target.prefab == "um_gem_repair_kit" then return false, "NO_REPAIR_NEEDED" end
+
+                local repair_count = target.um_repaircount or 1
+                local repair_value = gem_repair_values[math.clamp(repair_count, 1, #gem_repair_values)]
+                if repair_value <= repair_count / 10 then
+                    -- UM counts a zero-point enchantment repair as success. At this tier
+                    -- the kit should only be spent if it can restore the item itself.
+                    local finiteuses = target.components.finiteuses
+                    local armor = target.components.armor
+                    local uses_worn = finiteuses and finiteuses:GetPercent() < 1
+                    local armor_worn = armor and not armor:IsIndestructible() and armor:GetPercent() < 1
+                    if not uses_worn and not armor_worn then return false, "NO_REPAIR_NEEDED" end
+                end
+                return OnUsed(self, target, doer, ...)
+            end
+        end)
+    end
+
+    do
+        if TUNING.DSTU.BUTTERFLYWINGS_NERF == "unique" then
+            local function SkipButterflyLoadRoll() end
+            AddPrefabPostInit("butterfly", function(inst)
+                if not TheWorld.ismastersim or inst.UMSlipAway == nil then return end
+
+                -- UM rolls on load, but wild butterflies do not persist. Leave captured butterflies intact.
+                if inst.OnLoad then
+                    local roll = UpvalueHacker.GetUpvalue(inst.OnLoad, "RollForButtery")
+                    if roll and roll ~= SkipButterflyLoadRoll then
+                        UpvalueHacker.SetUpvalue(inst.OnLoad, SkipButterflyLoadRoll, "RollForButtery")
+                    end
+                end
+
+                -- The spawner assigns the flower and moves the butterfly after SpawnPrefab returns.
+                inst:DoTaskInTime(0, function(inst)
+                    local seeker = inst.components.homeseeker
+                    local home = seeker and seeker:GetHome()
+                    if not (home and home:IsValid()) or inst:IsInLimbo() then return end
+
+                    inst.buttery = math.random(1, 100)
+                    if inst.buttery < 98 then return end
+
+                    local butterfly = SpawnPrefab("um_buttery_fly")
+                    if butterfly == nil then return end
+                    if butterfly.components.homeseeker then butterfly.components.homeseeker:SetHome(home) end
+                    if butterfly.components.pollinator then butterfly.components.pollinator:Pollinate(home) end
+                    butterfly.Physics:Teleport(inst.Transform:GetWorldPosition())
+                    inst:Remove()
+                end)
+            end)
+        end
+
+        if UPGRADETYPES.SOUL_SHADOW then
+            local function IsWovenShadow(inst)
+                return inst.wortox_minion or inst.wortox_woven2hm
+            end
+
+            local function PreserveWovenShadow(inst)
+                if not TheWorld.ismastersim then return end
+
+                -- World saves and boat bottles both use the prefab's save record.
+                local OnSave, OnLoad = inst.OnSave, inst.OnLoad
+                inst.OnSave = function(inst, data, ...)
+                    if IsWovenShadow(inst) then data.wortox_woven2hm = true end
+                    if OnSave then return OnSave(inst, data, ...) end
+                end
+                inst.OnLoad = function(inst, data, ...)
+                    if data and data.wortox_woven2hm == true then inst.wortox_woven2hm = true end
+                    if OnLoad then return OnLoad(inst, data, ...) end
+                end
+
+                local lootdropper = inst.components.lootdropper
+                if lootdropper == nil then return end
+
+                -- Loot tables can change after loading, and DropLoot can add seasonal loot.
+                local GenerateLoot, DropLoot = lootdropper.GenerateLoot, lootdropper.DropLoot
+                function lootdropper:GenerateLoot(...)
+                    if IsWovenShadow(self.inst) then return {} end
+                    return GenerateLoot(self, ...)
+                end
+                function lootdropper:DropLoot(...)
+                    if IsWovenShadow(self.inst) then return end
+                    return DropLoot(self, ...)
+                end
+            end
+
+            for _, prefab in ipairs({
+                "stalker_minion", "stalker_minion1", "stalker_minion2",
+                "crawlingnightmare", "nightmarebeak", "ruinsnightmare", "shadowthrall_mouth"
+            }) do
+                AddPrefabPostInit(prefab, PreserveWovenShadow)
+            end
+        end
+
         -- 2025.8.22 melon:将妥协的瓶中信出宝藏概率34%改回60%
         if TUNING.MESSAGEBOTTLE_NOTE_CHANCE > 0.4 then TUNING.MESSAGEBOTTLE_NOTE_CHANCE = 0.4 end
         -- 2025.5.3 melon:修复雪球砸亮茄崩溃-------------------------------------------
@@ -127,8 +252,7 @@ if TUNING.DSTU then
         end
     end
 
-    -- 选2时才开启的--------------------------------------------------------------------------------
-    if select_um_patch == 2 or select_um_patch == 3 then
+    do
         -- 滑行手杖(马头杖)加移速-------------------------------------------------------
         AddPrefabPostInit("the_real_charles_t_horse", function(inst)
             if not TheWorld.ismastersim then return end
@@ -506,116 +630,18 @@ if TUNING.DSTU then
         -- end)
     end
 
-    -- 选3开启---------------------------------------------------------------------------------------
-    if select_um_patch == 3 then
-        -- 2025.5.3 melon:开启鼠潮时自动打开老鼠分宣告------------------------------------
-        AddPrefabPostInit("charcoal", function(inst)
-            if not TheWorld.ismastersim then return end
-            if TUNING.DSTU.ANNOUNCE_BASESTATUS then return end
-            inst.open_task2hm = inst:DoTaskInTime(0, function(inst)
-                if inst:HasTag("NORATCHECK") then -- 木炭有NORATCHECK标签说明开启了鼠潮
-                    TUNING.DSTU.ANNOUNCE_BASESTATUS = true -- 开启老鼠分宣告
-                end
-            end)
-        end)
-        -- 2025.10.24 melon:修复开启独行长路时过冷/过热扣血上限时造成的卡顿。----------------------
-        -- (实际是去掉了一些tag判断，可能导致人物mod小巨鹿无法抵御过冷扣上限等相关问题)。
-        local function CheckAndApplyTempDamage(inst, data)
-            if data ~= nil and data.amount ~= nil and data.amount < 0 and data.cause ~= nil and inst.components.health ~= nil then
-                if TUNING.DSTU.MAXTEMPDAMAGE and (data.cause == "cold" or data.cause == "hot") then
-                    local worldtemperature = inst.um_world_temperature ~= nil and math.abs(inst.um_world_temperature - 35) / 20 or 0
-                    local temp_buffer = 7 - worldtemperature
-        
-                    if inst.um_temp_healthdelta ~= nil and inst.um_temp_healthdelta >= temp_buffer then
-                        -- melon:remove tag check
-                        -- if (data.cause == "hot" and not inst:HasTag("heatresistant")) or (data.cause == "cold" and not inst:HasTag("coldresistant") and not inst:HasTag("weerclops")) then
-                            inst.components.health:DeltaPenalty(math.abs(data.amount / inst.components.health.maxhealth))
-                        -- end
-                    else
-                        if inst.um_temp_healthdelta == nil then
-                            inst.um_temp_healthdelta = 0
-                        end
-        
-                        inst.um_temp_healthdelta = inst.um_temp_healthdelta + FRAMES
-                    end
-        
-                    if inst.um_temp_healthdelta_task ~= nil then
-                        inst.um_temp_healthdelta_task:Cancel()
-                    end
-        
-                    inst.um_temp_healthdelta_task = inst:DoPeriodicTask(1, function()
-                        inst.um_temp_healthdelta = inst.um_temp_healthdelta - 1
-        
-                        if inst.um_temp_healthdelta <= 0 then
-                            inst.um_temp_healthdelta = 0
-        
-                            if inst.um_temp_healthdelta_task ~= nil then
-                                inst.um_temp_healthdelta_task:Cancel()
-                            end
-        
-                            inst.um_temp_healthdelta_task = nil
-                        end
-                    end)
-                elseif TUNING.DSTU.MAXHUNGERDAMAGE and data.cause == "hunger" then
-                    if inst.um_temp_hungerdelta ~= nil and inst.um_temp_hungerdelta >= 1 then
-                        inst.components.health:DeltaPenalty(math.abs(data.amount / inst.components.health.maxhealth))
-                    else
-                        if inst.um_temp_hungerdelta == nil then
-                            inst.um_temp_hungerdelta = 0
-                        else
-                            inst.um_temp_hungerdelta = inst.um_temp_hungerdelta + .5
-                        end
-                    end
-        
-                    if inst.um_temp_hungerdelta_task ~= nil then
-                        inst.um_temp_hungerdelta_task:Cancel()
-                        inst.um_temp_hungerdelta_task = nil
-                    end
-        
-                    inst.um_temp_hungerdelta_task = inst:DoTaskInTime(1.5, function()
-                        inst.um_temp_hungerdelta = inst.um_temp_hungerdelta - 1
-        
-                        if inst.um_temp_hungerdelta <= 0 then
-                            inst.um_temp_hungerdelta = nil
-        
-                            if inst.um_temp_hungerdelta_task ~= nil then
-                                inst.um_temp_hungerdelta_task:Cancel()
-                            end
-        
-                            inst.um_temp_hungerdelta_task = nil
-                        end
-                    end)
-                    --inst.components.health:DeltaPenalty(0.01)
-                end
+    -- 2025.5.3 melon:开启鼠潮时自动打开老鼠分宣告------------------------------------
+    AddPrefabPostInit("charcoal", function(inst)
+        if not TheWorld.ismastersim then return end
+        if TUNING.DSTU.ANNOUNCE_BASESTATUS then return end
+        inst.open_task2hm = inst:DoTaskInTime(0, function(inst)
+            if inst:HasTag("NORATCHECK") then -- 木炭有NORATCHECK标签说明开启了鼠潮
+                TUNING.DSTU.ANNOUNCE_BASESTATUS = true -- 开启老鼠分宣告
             end
-        end
-        if TUNING.DSTU.MAXTEMPDAMAGE or TUNING.DSTU.MAXHUNGERDAMAGE then
-            AddPlayerPostInit(function(inst)
-                if not TheWorld.ismastersim then return end
-                local src = "../mods/workshop-2039181790/postinit/player.lua"
-                local count = 0
-                local _CheckAndApplyTempDamage = nil
-                for i, func in ipairs(inst.event_listeners["healthdelta"][inst]) do
-                    -- print2hm(debug.getinfo(func, "S").source) -- test
-                    if debug.getinfo(func, "S").source == src then
-                        _CheckAndApplyTempDamage = func
-                        count = count + 1
-                    end
-                end
-                if _CheckAndApplyTempDamage ~= nil and count == 1 then
-                    inst:RemoveEventCallback("healthdelta", _CheckAndApplyTempDamage)
-                    inst:ListenForEvent("healthdelta", CheckAndApplyTempDamage)
-                    inst.CheckAndApplyTempDamage2hm = CheckAndApplyTempDamage -- 记录
-                end
-            end)
-        end
-    end
+        end)
+    end)
+    if TUNING.DSTU.MAXTEMPDAMAGE then modimport("easy_other/um_temperature_penalty.lua") end
 end -- if TUNING.DSTU
-----------------------------------------------------------------------------------------------------
--- 临时修复bug
-if TUNING.DSTU and select_um_patch ~= 1 then
-
-end
 ----------------------------------------------------------------------------------------------------
 -- 测试用  金斧子攻击生成老鼠分检查点
 -- if TUNING.DSTU then

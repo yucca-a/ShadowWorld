@@ -89,7 +89,8 @@ local collect=ModConfigurationScreen.CollectSettings
 local class={_ctor=assert(loadstring(native_config_ctor))()}
 local all={{name='walter',default=true,saved=false,options={}},{name='wixie',default=true,saved=false,options={}},
     {name='Wixie No Claustrophobia',default=true,saved=false,options={}},
-    {name='Walter Use Wixie Slingshot',default=false,saved=false,options={}}}
+    {name='Walter Use Wixie Slingshot',default=true,saved=false,options={}},
+    {name='wathom nightvision',default=true,saved=false,options={}}}
 local enabled={}
 KnownModIndex={GetModsToLoad=function()return enabled end,GetModInfo=function(_,n)return {name=n}end,
     LoadModConfigurationOptions=function()return all end}
@@ -99,16 +100,16 @@ config.Install({KnownModIndex=KnownModIndex,require=function()return class end,T
 local function screen(name)
     local s={CollectSettings=collect};class._ctor(s,name or 'ours',false);return s
 end
-local s=screen();check(#s.options==1,'no UM: Wixie options hidden')
+local s=screen();check(#s.options==1,'no UM: Wixie and Wathom options hidden')
 check(KnownModIndex.LoadModConfigurationOptions==originalLoad,'GUI config loader restored')
-check(#all==4,'underlying runtime options never removed')
+check(#all==5,'underlying runtime options never removed')
 s.options[1].value=true;local saved=s:CollectSettings()
-check(#saved==4,'hidden settings included when saving')
+check(#saved==5,'hidden settings included when saving')
 for _,o in ipairs(saved)do if o.name~='walter'then check(o.saved==false,'hidden saved preference retained')end end
 for _,id in ipairs({'workshop-2039181790','workshop-3193922031','2039181790','Uncompromising Mode: Public Beta'})do
-    enabled={id};s=screen();check(#s.options==4,'enabled stable/Beta/local exposes Wixie options '..id)
+    enabled={id};s=screen();check(#s.options==5,'enabled stable/Beta/local exposes Wixie and Wathom options '..id)
 end
-enabled={};check(#screen('other').options==4,'other mods never filtered')
+enabled={};check(#screen('other').options==5,'other mods never filtered')
 local failing=function()error('injected GUI constructor failure')end
 KnownModIndex.LoadModConfigurationOptions=failing
 check(not pcall(screen),'constructor error propagated')
@@ -119,6 +120,22 @@ config.Install({require=function()return class end},'second_copy');check(class._
 check(#screen('second_copy').options==1,'multiple mod copies supported')
 local dedicated=false;config.Install({TheNet={IsDedicated=function()return true end},require=function()dedicated=true end},'dedicated')
 check(not dedicated,'dedicated server never loads GUI')
+local umoption={name='um_patch',default=true,options={{data=false},{data=true}}}
+table.insert(all,umoption)
+for _,mods in ipairs({{}, {'workshop-2039181790'}, {'workshop-3193922031'}}) do
+    enabled=mods
+    for _,legacy in ipairs({1,2,3,true,false}) do
+        umoption.saved=legacy
+        local configured=screen():CollectSettings()
+        local saved
+        for _,option in ipairs(configured) do
+            if option.name=='um_patch' then saved=option.saved end
+        end
+        check(saved==(legacy~=false),'UM patch settings keep legacy levels on and explicit off off')
+        check(umoption.saved==legacy,'UM patch GUI migration does not mutate the runtime options')
+    end
+end
+table.remove(all)
 
 -- Native speed helpers exercise real timeline mutation, with both independent switches.
 local function runrole(source,w,wix)
@@ -216,9 +233,22 @@ for _,master in ipairs({false,true})do for _,enabled in ipairs({false,true})do
     e.TheWorld={ismastersim=master}
     e.ModManager={GetPostInitFns=function()return {} end}
     e.GetModConfigData=function(n)return n=='Walter Use Wixie Slingshot'and enabled or false end
-    e.AddPrefabPostInit=function(n,f)hooks[n]=f end
+    e.AddPrefabPostInit=function(n,f)
+        local previous=hooks[n]
+        hooks[n]=previous and function(inst)previous(inst);f(inst)end or f
+    end
     e.AddComponentPostInit=function(n,f)components[n]=f end
     e.AddStategraphPostInit=function(n,f)graphs[n]=f end
+    local rock,firecrackers,coconut=actor('slingshotammo_rock'),actor('slingshotammo_firecrackers'),actor('coconut')
+    coconut:AddTag('slingshotammo')
+    local recipes={native={product=rock.prefab},exclusive={product=firecrackers.prefab,builder_tag='pebblemaker'},
+        coconut={product=coconut.prefab}}
+    e.AllRecipes=recipes
+    e.GetValidRecipe=function(name)return recipes[name]end
+    local containers={widgetsetup=function(container)
+        container.itemtestfn=function(_,_,slot)return slot==1 end
+    end}
+    e.require=function(name)assert(name=='containers');return containers end
     assert(setfenv(assert(loadstring(access_patch)),e))()
     do
         local graph=master and 'wilson' or 'wilson_client'
@@ -255,8 +285,33 @@ for _,master in ipairs({false,true})do for _,enabled in ipairs({false,true})do
         end
         check(#e.ModManager:GetPostInitFns('StategraphPostInit','spider')==0,'unrelated graph hooks unchanged')
     end
-    local w=actor('walter');w:AddTag('player');hooks.walter(w)
+    local w=actor('walter');w:AddTag('player')
+    local built=0
+    if master then w.components.builder={DoBuild=function()built=built+1;return true end} end
+    hooks.walter(w)
     check(w:HasTag('troublemaker')==enabled,'only exclusive permission follows switch')
+    check(w:HasTag(recipes.exclusive.no_builder_tag),'exclusive ammo recipes reject Walter in crafting')
+    check(not actor('wixie'):HasTag(recipes.exclusive.no_builder_tag) and recipes.exclusive.builder_tag=='pebblemaker',
+        'Wixie retains her recipe requirement')
+    check(recipes.native.no_builder_tag==nil and recipes.coconut.no_builder_tag==nil,'native ammo and ordinary items keep their recipes')
+    if master then
+        check(not w.components.builder:DoBuild('exclusive') and built==0,'server rejects direct exclusive ammo crafting')
+        check(w.components.builder:DoBuild('native') and built==1,'server still crafts native ammo')
+    end
+    for _,widget in ipairs({'slingshot','slingshot2ex','matilda','jessie'}) do
+        local owner=w
+        local gun=actor(widget)
+        if master then gun.components.inventoryitem={GetGrandOwner=function()return owner end} end
+        local container={inst=gun,IsOpenedBy=function(_,player)return player==owner end}
+        e.ThePlayer=owner
+        containers.widgetsetup(container,widget)
+        check(not container:itemtestfn(firecrackers,1),'Walter cannot load UM ammo in '..widget)
+        check(not container:itemtestfn(coconut,1),'Walter cannot use a coconut as UM ammo in '..widget)
+        check(container:itemtestfn(rock,1) and not container:itemtestfn(rock,2),'slot rules preserved in '..widget)
+        owner=actor('wixie')
+        e.ThePlayer=owner
+        check(container:itemtestfn(firecrackers,1),'Wixie can load UM ammo in '..widget)
+    end
     for _,tag in ipairs({'troublemaker','slingshot_sharpshooter','pebblemaker'})do
         local weapon={components={},replica={inventoryitem={GetEquipRestrictedTag=function()return tag end}}}
         local restricted=assert(loadstring(master and server_restricted or client_restricted))()
@@ -290,6 +345,22 @@ for _,master in ipairs({false,true})do for _,enabled in ipairs({false,true})do
         w.dead=false;w.components.health.IsDead=function()return false end
     end
     if master then
+        local contents={firecrackers,rock,firecrackers}
+        local dropped=0
+        local container={
+            GetNumSlots=function()return 3 end,
+            GetItemInSlot=function(_,slot)return contents[slot]end,
+            DropItemBySlot=function(_,slot,_,keepstack)assert(keepstack);dropped=dropped+1;contents[slot]=nil end,
+        }
+        w.GetPosition=function()return {} end
+        local equip={SetOnEquip=function(self,fn)self.onequipfn=fn end,
+            onequipfn=function(_,owner)check(dropped==(owner==w and 2 or 0),'unload before original equip callback')end}
+        local matilda={components={container=container,equippable=equip}}
+        hooks.slingshot_matilda(matilda)
+        equip.onequipfn(matilda,actor('wixie'))
+        check(contents[1]==firecrackers and contents[3]==firecrackers,'Wixie keeps preloaded UM ammo')
+        equip.onequipfn(matilda,w)
+        check(contents[1]==nil and contents[2]==rock and contents[3]==nil,'Walter ejects only preloaded UM ammo')
         local called=0
         local equip={restrictedtag='troublemaker',onequipfn=function()called=called+1 end,onunequipfn=function()called=called+1 end}
         function equip:SetOnEquip(f)self.onequipfn=f end
@@ -323,4 +394,8 @@ locale='zh';assert(loadstring(modinfo_source))()
 local found={};for _,v in ipairs(configuration_options)do found[v.name]=v end
 check(found.wixie and found.wixie.default==true,'independent hard option defaults on')
 check(found['Wixie No Claustrophobia']and found['Wixie No Claustrophobia'].default==true,'independent fear removal defaults on')
+check(found['Walter Use Wixie Slingshot'].default==true,'Walter can equip Wixie slingshots by default')
+local patchOption=found.um_patch
+check(patchOption.default==true and #patchOption.options==2,'UM patch has two choices and defaults on')
+check(patchOption.options[1].data==false and patchOption.options[2].data==true,'UM patch choices use booleans')
 print('WIXIE_CHECKS_PASS '..checks)

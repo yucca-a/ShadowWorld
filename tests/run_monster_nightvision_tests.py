@@ -38,7 +38,6 @@ for version, mod in [("stable", "2039181790"), ("beta", "3193922031")]:
     lua.globals()[version + "_path"] = "@" + path.as_posix()
     lua.globals()[version + "_widget"] = (root / "widgets/wathom_sonar.lua").read_text(encoding="utf-8-sig")
 lua.globals().patch_source = (ROOT / "content/common/monster_nightvision.lua").read_text(encoding="utf-8-sig")
-lua.globals().role_source = (ROOT / "content/common/role_nightvision.lua").read_text(encoding="utf-8-sig")
 lua.globals().config_source = (ROOT / "content/modinfo.lua").read_text(encoding="utf-8-sig")
 lua.globals().dusk_source = (ROOT / "content/weather/dusk.lua").read_text(encoding="utf-8-sig")
 lua.globals().fenghua_source = Path(

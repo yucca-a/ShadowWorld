@@ -1,6 +1,19 @@
 require("componentactions")
 -- 动作组件检测防止崩溃
 if EntityScript then
+    local component_actions = getupvalue2hm(EntityScript.CollectActions, "COMPONENT_ACTIONS")
+    local scene_actions = component_actions and component_actions.SCENE
+    local collect_construction = scene_actions and scene_actions.constructionsite
+    if collect_construction then
+        scene_actions.constructionsite = function(inst, ...)
+            -- 建造动作可能已注册，但客户端还读不到建造点副本。
+            -- 仅跳过本次建造动作收集，副本可用后仍由原生逻辑判断。
+            if inst.replica.constructionsite ~= nil then
+                return collect_construction(inst, ...)
+            end
+        end
+    end
+
     local UnregisterComponentActions = EntityScript.UnregisterComponentActions
     local HasActionComponent = EntityScript.HasActionComponent
     local MOD_ACTION_COMPONENT_IDS = getupvalue2hm(EntityScript.RegisterComponentActions, "MOD_ACTION_COMPONENT_IDS")

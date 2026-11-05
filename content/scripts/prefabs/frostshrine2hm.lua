@@ -1,6 +1,9 @@
+local FrostFX = require("frostshrinefx2hm")
+
 local assets =
 {
-    Asset("ANIM", "anim/chesspiece.zip"),
+    Asset("ANIM", "anim/frostshrine2hm.zip"),
+    Asset("ANIM", "anim/coldfire_fire.zip"),
     Asset("ATLAS", "images/frostshrine2hm.xml"),
     Asset("IMAGE", "images/frostshrine2hm.tex"),
 }
@@ -13,21 +16,65 @@ local prefabs =
     "splash_green",
 }
 
+local SOUNDS = {
+    wake = "hookline_2/common/moon_alter/idol/prox_pre",
+    sleep = "hookline_2/common/moon_alter/idol/prox_pst",
+    use = "hookline_2/common/moon_alter/idol/use",
+    place = "hookline_2/common/moon_alter/idol/place1",
+    loop = "dontstarve_DLC001/common/coldfire",
+}
+
+local function Jiggle(inst)
+    inst.AnimState:PlayAnimation("jiggle")
+    inst.AnimState:PushAnimation("idle", true)
+end
+
+local function OnDayState(inst)
+    if inst.SoundEmitter:PlayingSound("frost_idle") then
+        inst.SoundEmitter:SetParameter("frost_idle", "daytime", TheWorld.state.isday and 1 or 2)
+    end
+end
+
+local function OnPlayerNear(inst)
+    FrostFX.SetActive(inst, true)
+    inst.SoundEmitter:PlaySound(SOUNDS.wake, nil, .45)
+    if not inst.SoundEmitter:PlayingSound("frost_idle") then
+        inst.SoundEmitter:PlaySound(SOUNDS.loop, "frost_idle", .12)
+        inst.SoundEmitter:SetParameter("frost_idle", "intensity", .1)
+        OnDayState(inst)
+    end
+end
+
+local function OnPlayerFar(inst)
+    FrostFX.SetActive(inst, false)
+    inst.SoundEmitter:KillSound("frost_idle")
+    inst.SoundEmitter:PlaySound(SOUNDS.sleep, nil, .35)
+end
+
 local function stormtaskfn(inst)
-    local fx = SpawnPrefab("sharkboi_icefx2hm")
-    fx.entity:SetParent(inst.entity)
-    -- local parent = fx.entity:GetParent()
-    -- if parent ~= nil and parent:HasTag("littlefencefx2hm") then
-    --     fx.AnimState:SetScale(5,4)
-    -- elseif parent ~= nil and parent:HasTag("FX") then
-    --     fx.AnimState:SetScale(5,2)
-    -- elseif parent ~= nil and parent:HasTag("sharkboi") and not parent:HasTag("littlefencefx2hm") then
-    --     fx.AnimState:SetScale(8, 6)
-    -- end
+    -- Successful exchanges/upgrades get the same short feedback as station use.
+    -- Keep one pulse and one sound when several items are accepted together.
+    local now = GetTime()
+    if now < (inst._frostnextuse or 0) then return end
+    inst._frostnextuse = now + .25
+    FrostFX.Pulse(inst)
+    Jiggle(inst)
+    inst.SoundEmitter:KillSound("frost_use")
+    inst.SoundEmitter:PlaySound(SOUNDS.use, "frost_use", .55)
+end
+
+local function OnBuilt(inst)
+    Jiggle(inst)
+    inst.SoundEmitter:PlaySound(SOUNDS.place, nil, .6)
+end
+
+local function OnRemove(inst)
+    inst.SoundEmitter:KillSound("frost_idle")
+    inst.SoundEmitter:KillSound("frost_use")
 end
 
 local function OnRefuseItem(inst, giver, item)
-    inst.AnimState:PlayAnimation("jiggle")
+    Jiggle(inst)
     inst.SoundEmitter:PlaySound("ancientguardian_rework/environment/pillar_break")
 end
 
@@ -121,10 +168,7 @@ local function AbleToAcceptTest(inst, item, giver, count)
 end
 
 local function onworkded(inst, worker, workleft, numworks)
-    inst.AnimState:PlayAnimation("jiggle")
-end
-
-local function test()
+    Jiggle(inst)
 end
 
 local function onhammered(inst, worker)
@@ -149,10 +193,9 @@ local function fn()
 
     MakeObstaclePhysics(inst, 1)
 
-    inst.AnimState:SetBank("chesspiece")
-    inst.AnimState:SetBuild("swap_chesspiece_sharkboi_marble")
+    inst.AnimState:SetBank("frostshrine2hm")
+    inst.AnimState:SetBuild("frostshrine2hm")
     inst.AnimState:PlayAnimation("idle")
-    inst.AnimState:SetMultColour(0.68, 0.85, 0.90, 1)	
 
     inst:AddTag("frostshrine2hm")
     inst:AddTag("structure")
@@ -160,11 +203,23 @@ local function fn()
     inst.displaynamefn = function() 
         return (TUNING.isCh2hm and "寒霜之祠") or "Frost Shrine"
     end
+    FrostFX.Init(inst)
     inst.entity:SetPristine()
 
     if not TheWorld.ismastersim then
         return inst
     end
+
+    -- This prefab currently exposes trader/upgrade actions, not a tech tree.
+    -- Use the normal research distance without adding or stealing recipe unlocks.
+    inst:AddComponent("playerprox")
+    inst.components.playerprox:SetDist(TUNING.RESEARCH_MACHINE_DIST, TUNING.RESEARCH_MACHINE_DIST + .5)
+    inst.components.playerprox:SetPlayerAliveMode(true)
+    inst.components.playerprox:SetOnPlayerNear(OnPlayerNear)
+    inst.components.playerprox:SetOnPlayerFar(OnPlayerFar)
+    inst:WatchWorldState("isday", OnDayState)
+    inst:ListenForEvent("onbuilt", OnBuilt)
+    inst:ListenForEvent("onremove", OnRemove)
 
     inst:AddComponent("inspectable")
     local GetDescription = inst.components.inspectable.GetDescription
@@ -198,4 +253,4 @@ local function fn()
 end
 
 return Prefab("frostshrine2hm", fn, assets, prefabs),
-    MakePlacer("frostshrine2hm_placer", "chesspiece", "swap_chesspiece_sharkboi_marble", "idle")
+    MakePlacer("frostshrine2hm_placer", "frostshrine2hm", "frostshrine2hm", "idle")

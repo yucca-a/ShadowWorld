@@ -378,9 +378,8 @@ AddStategraphPostInit("primemate", function(sg)
         end
     end
 end)
--- 芜猴夜视附带的夜晚理智效果
-if GetModConfigData("Wonkey Night Version") then
-    -- 夜视由 common/role_nightvision.lua 管理；这里只保留原有理智效果。
+-- 怪物角色夜视开启时，保留芜猴的夜晚理智效果。
+if GetModConfigData("Monster Night Vision") then
     AddPrefabPostInit("wonkey", function(inst)
         if not TheWorld.ismastersim then return end
         if inst.components.sanity then inst.components.sanity.night_drain_mult = 0 end

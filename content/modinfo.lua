@@ -1,4 +1,4 @@
-version = "2.8.14.97.4"
+version = "2.8.14.98.1"
 -- Original authors: 繁花丶海棠 | 胜天一猫 | 小蓝鲸 | leo468
 author = "Yucca（维护）"
 forumthread = ""
@@ -253,13 +253,14 @@ configuration_options = {
         label = i18n({"穿越机制", "World Exchange Mode"}),
         hover = i18n({"独立选择穿越方式，不影响整理收集；需开启容器按钮，地面与洞穴使用相同档位。切换后仍保留已有存档的恢复保护",
             "Choose the exchange mode independently of sorting/collection. Requires container buttons and matching shard settings. Existing saves retain recovery protection after switching"}),
-        default = "coordinated",
+        default = "traditional",
         options = {
             {description = i18n({"关闭", "Off"}), data = false},
-            {description = i18n({"传统", "Traditional"}), data = "traditional",
+            {description = i18n({"传统（默认）", "Traditional (default)"}), data = "traditional",
                 hover = i18n({"沿用为爽原有整箱交换和辅助暂停按钮", "Upstream whole-container exchange with its optional pause button"})},
-            {description = i18n({"双界协同（默认）", "Coordinated (default)"}), data = "coordinated",
-                hover = i18n({"地面与洞穴自动协调交换，无需其他玩家同意；穿越不逐次存档", "Automatic shard coordination; no player approval or per-exchange world save"})},
+            {description = i18n({"双界协同（实验性）", "Coordinated (experimental)"}), data = "coordinated",
+                hover = i18n({"仅建议在配置较高的主机或服务器上启用，可解决旧版穿越因两层存档不同步导致的问题。",
+                    "Recommended only for higher-spec hosts or servers. Addresses old exchange issues caused by out-of-sync shard saves."})},
         },
     },
     item("Items collect", i18n({"道具快捷收集存放", "Items Collect/Store"}),
@@ -438,19 +439,8 @@ configuration_options = {
     item("pickup irreplaceable item", i18n({"上线自动捡眼骨", "Auto Pickup Irreplaceable Item"}),
         i18n({"上线时自动捡起眼骨类道具", "Auto Pickup Irreplaceable Item When Connect"})),
     item("Terra Easter egg", i18n({"泰拉箱子彩蛋", "Terra Easter egg"})),
-    item("um_patch", i18n({"永不妥协补丁", "um_patch"}),
-        i18n({"对永不妥协的一些修改。当选择后面选项时，前面选项都起效。",
-            "uncompromising mod patch.Selection of a later option applies all preceding options."}), 2, 1, 3, 1, {
-            i18n({"恶液箱不算老鼠分,厨师袋移动开,修雪球砸亮茄,熊皮衣格子",
-                "notcheck gelblob_storage,snowball hit lunarthrall_plant,wathom_staff dmg/2,beargervest backpack"}),
-            i18n({"输出扣分物品名称,滑行手杖加移速,月龙时令龙不传送,熊大脱加载不动",
-                "print ratscore item,charles_t_horse + speed,moon dragonfly no tele,bearger not move out load"}),
-            i18n({"自动开宣告。修复开启独行长路mod时过冷过热卡顿", "auto ratscore. Fix the lag when opening 'Don't Starve Alone' mod."})
-        }, i18n({"禁用", "Disable"}), {
-            i18n({"部分", "some"}),
-            i18n({"全部", "all"}),
-            i18n({"更多", "more"})
-        }, i18n({"禁用" .. filldesc(4), "Disable" .. filldesc(7)}), false),
+    item("um_patch", i18n({"永不妥协补丁", "Uncompromising Mode Patch"}),
+        i18n({"启用全部永不妥协兼容修复与调整。", "Enable all Uncompromising Mode fixes and adjustments."})),
     item("luck value", i18n({"幸运值机制改动", "Luck value adjustment"}),
         i18n({"幸运值效能削弱,无法达到100概率", "Luck effect diminished, cannot reach 100% probability"})),
     headeritem(i18n({"装备改动", "Equips"})),
@@ -721,8 +711,6 @@ configuration_options = {
             i18n({"蛛网恐惧:右键自己读蛛网魔法书", "Spider fear: right self read web book"}),
             i18n({"蜘蛛容器:右键自己打开3×3蜘蛛窝,只能放各种蜘蛛", "Spider bag: right self open 3x3 bag, only spiders"})
         }, nil, {i18n("禁用"), i18n("启用"), i18n("启用")}),
-    item("Webber Night Version", i18n({"韦伯稳定夜视", "Webber Stable Night Vision"}),
-        i18n({"黄昏/夜晚/洞穴中稳定夜视,夜晚不掉理智;仅漫漫长夜危险经典档附带微光", "stable dusk/night/cave vision, no night sanity drain; dim light only in dangerous Long Night"})),
     item("Webber Uprade SpiderDen SpiderQueen", i18n({"韦伯升级三级蜘蛛巢为女王", "Webber Uprade SpiderDen SpiderQueen"}),
         i18n({"但困难模式蜘蛛巢改为需要给食物升级了", "Hard mode spider den replace give food to upgrade"})),
     --     item("spider_healer", i18n({"护士蜘蛛溢出回血", "Healer Spider Protect Health"}), i18n({
@@ -779,9 +767,9 @@ configuration_options = {
     item("Walter press Ctrl can't Dodge", i18n({"沃尔特按ctrl禁止滑铲", "Walter press Ctrl can't Dodge"}),
         i18n({"骑乘按ctrl+右键冲刺, 开启妥协改动时装备弹弓无法冲刺",
             "Walter press Ctrl can't Dodge, equipment slingshot cannot sprint when weixi and walter(Uncompromising) is enabled"})),
-    item("Walter Use Wixie Slingshot", i18n({"沃尔特可使用wixie弹弓", "Walter Use Wixie Slingshot"}),
-         i18n({"仅控制沃尔特能否使用维希专属弹弓；原版及改装弹弓始终可用。默认关闭",
-               "Only controls Walter's access to Wixie's exclusive slingshots. Native and modified slingshots are always available. Disabled by default"}), false),
+    item("Walter Use Wixie Slingshot", i18n({"沃尔特可使用维希弹弓", "Walter Use Wixie Slingshot"}),
+         i18n({"仅在启用永不妥协时显示，默认开启。沃尔特可用原版弹药操作维希专属弹弓，专属弹药由维希制作和使用。",
+               "Shown only with Uncompromising Mode enabled. On by default. Walter uses native ammo in Wixie's slingshots. Special ammo is exclusive to Wixie."}), true),
     item("Wixie No Claustrophobia", i18n({"维希：移除幽闭恐惧", "Wixie: No Claustrophobia"}),
         i18n({"独立于沃尔特和永不妥协补丁；兼容正式版及测试版，清除幽闭积累、恐慌与视觉效果",
             "Independent of Walter and UM patch; supports stable/Beta fear, panic and overlay removal"}), true),
@@ -834,8 +822,6 @@ configuration_options = {
     item("Wurt can eat any", i18n({"鱼妹沃特可以吃肉，但收益只有30%", "Wurt can eat meat, but the profit is only 30%"})),
     item("Wurt Can Craft Book Fish", i18n({"鱼妹可制作鱼类之书", "Wurt Can Craft Book Fish"}),
         i18n({"鱼妹可以制作鱼类之书", "Wurt can craft the book of fish"})),
-    item("Wurt Night Version", i18n({"鱼妹稳定夜视", "Wurt Stable Night Vision"}),
-        i18n({"黄昏/夜晚/洞穴中稳定夜视,夜晚不掉理智;仅漫漫长夜危险经典档附带微光", "stable dusk/night/cave vision, no night sanity drain; dim light only in dangerous Long Night"})),
     item("wanda_easy", i18n({"------------------------- 󰀱 旺达总开关", "󰀱 Wanda Master Switch"})),
     item("Wanda Don't Auto Drop Age", i18n({"旺达不再持续衰老", "Wanda Don't Auto Drop Age"}), false),
     item("Ageless Watch Help Temperature", i18n({"不老表恢复温度", "Ageless Watch Temperature Help"})),
@@ -877,9 +863,6 @@ configuration_options = {
     item("Wonkey Run Wait Time", i18n({"芜猴助跑时间缩短", "Wonkey Run Wait Shorter Time"}),
         i18n({"默认步行0.5秒后奔跑,且奔跑无额外饥饿消耗", "Run Wait N Seconds,and run no extra consume hunger"}), 1, 0.5, 5, 0.5),
     item("Wonkey Right Self summon the powder_monkey", i18n({"芜猴右键自身召唤海棠小分队作战", "Wonkey Right Self Action"})),
-    item("Wonkey Night Version", i18n({"芜猴稳定夜视", "Wonkey Stable Night Vision"}),
-        i18n({"黄昏/夜晚/洞穴中稳定夜视,夜晚不掉理智;仅漫漫长夜危险经典档附带微光",
-            "stable dusk/night/cave vision, no night sanity drain; dim light only in dangerous Long Night"})),
     item("Wonkey Attack Steal item", i18n({"芜猴攻击偷取物品", "Wonkey Attack Steal item"})),
     item("Wonkey Toss Poop", i18n({"芜猴投掷便便", "Wonkey Toss Poop"})),
     item("Wonkey Remove Curse", i18n({"芜猴吃香蕉消除诅咒饰品", "Wonkey Eat Banana Remove Curse"}),
@@ -895,11 +878,11 @@ configuration_options = {
             i18n({"伤害4x 承伤2.5x", "4x dmg,2.5x taken"})
         }, i18n({"禁用" .. filldesc(4), "Disable" .. filldesc(7)}), false),
     item("Monster Night Vision", i18n({"怪物角色夜视（独立开关）", "Monster Player Night Vision"}),
-        i18n({"带monster标签的玩家获得稳定夜视，排除沃拓克斯；兼容模组角色，不依赖模式或角色总开关",
-            "Stable night vision for monster-tagged players except Wortox; independent of mode/character switches"})),
+        i18n({"韦伯、鱼妹、芜猴及带monster标签的玩家获得稳定夜视（排除沃托克斯）；夜视不依赖模式。开启简单模式和对应角色强化后，前三位夜晚不掉理智",
+            "Stable night vision for Webber, Wurt, Wonkey, and monster-tagged players except Wortox, regardless of mode. The first three also avoid night sanity drain with their Easy Mode character perks enabled"})),
     item("wathom nightvision", i18n({"沃托姆夜视优化（独立开关）", "Wathom Stable Night Vision"}),
-        i18n({"正式/测试版稳定夜视，移除回声黑雾与心跳；怪物角色夜视开启时也会生效",
-            "Stable/Beta: steady night vision without sonar fog/heartbeat; also enabled by Monster Player Night Vision"})),
+        i18n({"仅在启用永不妥协正式版或测试版时显示。提供稳定夜视并移除回声黑雾与心跳，开启怪物角色夜视也会生效。",
+            "Shown with Uncompromising Mode stable or beta enabled. Steady night vision without sonar fog or heartbeat. Also enabled by Monster Player Night Vision."})),
     item("All Right Dodge", i18n({"全员右键冲刺", "All Right Dodge"}),
         i18n({"娱乐选项;需关闭其他角色的右键动作否则无效;默认1秒CD", "FOR FUN;Default 1s cd"}), false, 0.5, 6, 0.5),
     item("Role Gym", i18n({"全员健身房健身", "All Mighty Gym"}), i18n({" ", " Only Mighty Gym can update mightyness"}), true,
@@ -1070,7 +1053,8 @@ configuration_options = {
     }), -1, -1, -2, -1, {"-240,5~65", "-480,10~60"}),
     item("dusk_change", i18n({"漫漫长夜", "Long Night"}), nil, true, nil, nil, -2, {
             i18n({"黄昏的大部分时间变成了黑夜", "Dusk will be shorter"}),
-            i18n({"黄昏使用夜间光照,夜视不再安全,官方夜视及已开启的韦伯/沃特/芜猴夜视增加照明", "Dark dusk; night vision alone is unsafe; native abilities and enabled Webber/Wurt/Wonkey vision receive light"}),
+            i18n({"黄昏使用夜间光照，夜视不再安全；官方夜视及简单模式下启用夜视强化的韦伯、鱼妹、芜猴附带微光",
+                "Dark dusk; night vision alone is unsafe. Native abilities and enabled Webber, Wurt, and Wonkey vision perks in Easy Mode provide dim light"}),
             i18n({"黄昏使用夜间光照", "dusk no light"})
         }, nil,
         {enabletext, i18n({filldesc(4) .. "经典", filldesc(9) .. "Classical"}), i18n({filldesc(4) .. "经典", filldesc(9) ..

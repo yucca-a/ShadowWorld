@@ -3,6 +3,76 @@
 if not (TUNING.DSTU and TUNING.WIXIE_HEALTH) then return end
 local wixieWeapons = GetModConfigData("Walter Use Wixie Slingshot")
 local nativeSlingshots = {slingshot = true, slingshotex = true, slingshot999ex = true, slingshot2 = true, slingshot2ex = true}
+local wixieSlingshots = {slingshot_gnasher = true, slingshot_matilda = true, slingshot_claire = true, slingshot_jessie = true, slingshot_sling = true}
+-- UM replaces the honey and moonglass ammo prefabs as well as adding new ones.
+local wixieAmmo = {
+    firecrackers_slingshot = true,
+    slingshotammo_firecrackers = true,
+    slingshotammo_flare = true,
+    slingshotammo_goop = true,
+    slingshotammo_honey = true,
+    slingshotammo_insanity = true,
+    slingshotammo_lazy = true,
+    slingshotammo_limestone = true,
+    slingshotammo_lunarvine = true,
+    slingshotammo_moonglass = true,
+    slingshotammo_moonrock = true,
+    slingshotammo_obsidian = true,
+    slingshotammo_rubber = true,
+    slingshotammo_salt = true,
+    slingshotammo_shadow = true,
+    slingshotammo_slime = true,
+    slingshotammo_tar = true,
+    slingshotammo_tremor = true,
+    um_smolder_spore = true,
+}
+local walterAmmoRestriction = "walter_wixie_ammo_restricted2hm"
+for _, recipe in pairs(AllRecipes) do
+    if wixieAmmo[recipe.product] then recipe.no_builder_tag = walterAmmoRestriction end
+end
+
+local function IsWixieAmmo(item)
+    -- UM also lets some worlds use an ordinary coconut as ammo.
+    return wixieAmmo[item.prefab] or (item.prefab == "coconut" and item:HasTag("slingshotammo"))
+end
+
+-- Keep each weapon's slot rules on the server and the predicting client.
+local containers = require("containers")
+local widgetsetup = containers.widgetsetup
+function containers.widgetsetup(container, prefab, data, ...)
+    widgetsetup(container, prefab, data, ...)
+    local widget = prefab or container.inst.prefab
+    if not (nativeSlingshots[widget] or widget == "matilda" or widget == "jessie") then return end
+    local itemtestfn = container.itemtestfn
+    container.itemtestfn = function(self, item, slot)
+        if IsWixieAmmo(item) then
+            local inventoryitem = self.inst.components.inventoryitem
+            local owner = inventoryitem and inventoryitem:GetGrandOwner() or (not TheWorld.ismastersim and
+                ThePlayer and self:IsOpenedBy(ThePlayer) and ThePlayer)
+            if owner and owner.prefab == "walter" then return false end
+        end
+        return itemtestfn == nil or itemtestfn(self, item, slot)
+    end
+end
+
+-- Old saves and other players can hand Walter an already loaded weapon.
+local function UnloadWixieAmmoOnEquip(inst)
+    if not TheWorld.ismastersim then return end
+    local container, equip = inst.components.container, inst.components.equippable
+    if container == nil or equip == nil then return end
+    local onequip = equip.onequipfn
+    equip:SetOnEquip(function(inst, owner, ...)
+        if owner.prefab == "walter" then
+            for slot = 1, container:GetNumSlots() do
+                local ammo = container:GetItemInSlot(slot)
+                if ammo and IsWixieAmmo(ammo) then container:DropItemBySlot(slot, owner:GetPosition(), true) end
+            end
+        end
+        if onequip then return onequip(inst, owner, ...) end
+    end)
+end
+for prefab in pairs(nativeSlingshots) do AddPrefabPostInit(prefab, UnloadWixieAmmoOnEquip) end
+for prefab in pairs(wixieSlingshots) do AddPrefabPostInit(prefab, UnloadWixieAmmoOnEquip) end
 
 -- UM replaces slingshot_charge on both graphs. Save the engine's State before
 -- post-inits run so its charging owner, release events and prediction survive.
@@ -48,7 +118,17 @@ AddPrefabPostInit("walter", function(inst)
     inst:AddTag("pebblemaker")
     inst:AddTag("slingshot_sharpshooter")
     inst:AddTag("allow_special_point_action_on_impassable")
+    inst:AddTag(walterAmmoRestriction)
     if wixieWeapons then inst:AddTag("troublemaker") end
+    local builder = inst.components.builder
+    if builder then
+        local DoBuild = builder.DoBuild
+        builder.DoBuild = function(self, name, ...)
+            local recipe = GetValidRecipe(name)
+            if recipe and wixieAmmo[recipe.product] then return false end
+            return DoBuild(self, name, ...)
+        end
+    end
 end)
 
 AddPrefabPostInit("slingshot", function(inst)

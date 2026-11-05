@@ -57,11 +57,6 @@ net_tinybyte=function(id, name, dirty)
     return {value=function()return value end,set=function(_,v)value=v end,
         deliver=function(_,v)value=v;entities[id]:PushEvent(dirty)end}
 end
-net_bool=function(id,name,dirty)
-    local value=false
-    return {value=function()return value end,set=function(_,v)value=v end,
-        deliver=function(_,v)value=v;entities[id]:PushEvent(dirty)end}
-end
 local hooks, widgethooks, configs
 local function setup(master, monster, wathom, dedicated, options)
     tasks, entities, clock = {}, {}, 0
@@ -70,6 +65,7 @@ local function setup(master, monster, wathom, dedicated, options)
     TheNet={IsDedicated=function()return dedicated end,IsServerPaused=function()return false end}
     TheSim={GetLightAtPoint=function()return TheWorld.light or 0 end,GetAmbientColour=function()return 0,0,0 end}
     TUNING={DSTU={WATHOM_NIGHTVISON_CC="test"}}
+    UM_CLIENT_CONFIG={WATHOM_UNDEATH="test"}
     configs={["Monster Night Vision"]=monster,["wathom nightvision"]=wathom}
     for k,value in pairs(options or {})do configs[k]=value end
     TUNING.easymode2hm=configs["enable easy mode"]
@@ -79,7 +75,6 @@ local function setup(master, monster, wathom, dedicated, options)
     AddPlayerPostInit=function(fn)table.insert(hooks,fn)end
     AddClassPostConstruct=function(n,fn)widgethooks[n]=fn end
     run(patch_source, "@content/common/monster_nightvision.lua")
-    run(role_source, "@content/common/role_nightvision.lua")
 end
 local Vision=run(vision_source,"@scripts/components/playervision.lua")
 local Grue=run(grue_source,"@scripts/components/grue.lua")
@@ -357,10 +352,9 @@ check(p._weremodelight2hm==nil and v:HasNightVision() and v:GetCCTable()==woodie
 weremode=0;SetWereVision(p,0);p:PushEvent("transform_person");tick(.3)
 check(not v:HasNightVision() and v:GetCCTable()==nil,"returning human cleanly releases native vision")
 
--- Migrate the three legacy role abilities without relying on monster tags.
+-- The three roles share the monster option, while their micro-light still follows Easy Mode.
 local function role_options(overrides)
     local opts={["enable easy mode"]=true,role_easy=true,webber_easy=true,wurt_easy=true,wonkey_easy=true,
-        ["Webber Night Version"]=true,["Wurt Night Version"]=true,["Wonkey Night Version"]=true,
         ["enable hard mode"]=true,weather_change=true,dusk_change=true}
     for key,value in pairs(overrides or {})do opts[key]=value end
     return opts
@@ -372,11 +366,6 @@ local function phase(value)
     end
     TheWorld.state.isday=value=="day";TheWorld.state.isdusk=value=="dusk";TheWorld.state.isnight=value=="night"
     tick(0)
-end
-local function rolecount(vision)
-    local n=0
-    for _,entry in ipairs(vision.forcednightvisionstack)do if entry.source=="role_nightvision2hm"then n=n+1 end end
-    return n
 end
 local lights
 local function install_dusk()
@@ -399,12 +388,16 @@ local function install_dusk()
     return componenthooks
 end
 for _,name in ipairs({"webber","wurt","wonkey"})do
+    local native_monster=name=="webber"
+    local function has_source(v)
+        return sourcecount(v)==1 and #v.forcednightvisionstack==1
+    end
     for _,mode in ipairs({false,true,-2,-1})do
-        setup(true,false,false,true,role_options({dusk_change=mode}))
+        setup(true,true,false,true,role_options({dusk_change=mode}))
         local ch=install_dusk()
-        p,v=make(name,false,function(i)if ch.playervision then ch.playervision(i.components.playervision)end end)
+        p,v=make(name,native_monster,function(i)if ch.playervision then ch.playervision(i.components.playervision)end end)
         grue=Grue(p);p.components.grue=grue;if ch.grue then ch.grue(grue)end;tick(0)
-        check(v:HasNightVision() and rolecount(v)==1,name.." role option works without monster bonus")
+        check(v:HasNightVision() and has_source(v) and p:HasTag("monster")==native_monster,name.." gets one source and keeps native tags")
         check(v.nonightvisioncc and v:GetCCTable()==nil,"role keeps normal palette")
         local light=p._rolevisionlight2hm
         check((light~=nil)==(mode==-1),"physical role light only in dangerous classic")
@@ -416,70 +409,77 @@ for _,name in ipairs({"webber","wurt","wonkey"})do
         end
         local settings,controls,toggle=load_fenghua(p)
         controls.state(false);settings.state=true;toggle();settings.ori=true;controls.ori(false)
-        check(v:HasNightVision() and rolecount(v)==1,"Fenghua toggles cannot erase role source")
+        check(v:HasNightVision() and has_source(v),"Fenghua toggles cannot erase vision")
         local eventcount=p.vision_events
         phase("night");tick(2)
         check(eventcount==p.vision_events and p._rolevisionlight2hm==light,"repeat refresh never flickers or duplicates light")
         local cc={night="temporary_skill"}
         v:PushForcedNightVision("temporary_skill",2,cc)
         phase("day")
-        check(rolecount(v)==0 and v:HasNightVision() and v:GetCCTable()==cc,"dawn releases only the role ability")
+        check(sourcecount(v)==1 and v:HasNightVision() and v:GetCCTable()==cc,"dawn leaves shared and skill sources")
         check(p._rolevisionlight2hm==nil and (not light or not light:IsValid()),"dawn removes physical compensation")
         v:PopForcedNightVision("temporary_skill")
-        check(not v:HasNightVision(),"day has no leftover legacy forced vision")
+        check(v:HasNightVision() and has_source(v),"only shared vision persists during the day")
         phase("dusk")
-        check(v:HasNightVision() and rolecount(v)==1,"dusk restores role source")
+        check(v:HasNightVision() and has_source(v),"dusk has the correct vision source")
         p.dead=true;p:PushEvent("death")
-        check(rolecount(v)==0 and p._rolevisionlight2hm==nil,"death immediately clears role and light")
+        check(p._rolevisionlight2hm==nil,"death immediately removes the light")
         p:AddTag("playerghost");v:SetGhostVision(true);p.dead=false
-        check(v:HasGhostVision() and not v:HasNightVision(),"ghost visuals remain authoritative")
+        check(v:HasGhostVision() and not v:HasNightVision() and sourcecount(v)==0,"ghost visuals remain authoritative")
         p:RemoveTag("playerghost");v:SetGhostVision(false);p:PushEvent("ms_respawnedfromghost");tick(0)
-        check(rolecount(v)==1 and v:HasNightVision(),"respawn restores role vision")
+        check(has_source(v) and v:HasNightVision() and (p._rolevisionlight2hm~=nil)==(mode==-1),"respawn restores vision and light")
         local oldlight=p._rolevisionlight2hm
         p:Remove()
         check(not oldlight or not oldlight:IsValid(),"entity removal releases child light")
-        p,v=make(name,false);check(rolecount(v)==1,"new entity after reconnect/character change initializes")
+        p,v=make(name,native_monster);check(has_source(v),"new entity after reconnect/character change initializes")
         phase("day");TheWorld.cave=true;phase("day")
-        check(rolecount(v)==1 and v:HasNightVision(),"cave daytime keeps role ability")
+        check(has_source(v) and v:HasNightVision(),"cave daytime keeps vision")
         check((p._rolevisionlight2hm~=nil)==(mode==-1),"cave light obeys dangerous mode")
     end
-    for _,gate in ipairs({"enable easy mode","role_easy",name.."_easy",name:sub(1,1):upper()..name:sub(2).." Night Version"})do
-        setup(true,false,false,true,role_options({[gate]=false,dusk_change=-1}))
-        install_dusk();p,v=make(name,false)
-        check(not v:HasNightVision() and p._rolevisionlight2hm==nil,"disabled parent/role option grants neither vision nor light: "..gate)
+    local easy_gates={"enable easy mode","role_easy",name.."_easy"}
+    for _,gate in ipairs(easy_gates)do
+        setup(true,true,false,true,role_options({[gate]=false,dusk_change=-1}))
+        install_dusk();p,v=make(name,native_monster)
+        check(v:HasNightVision() and p._rolevisionlight2hm==nil,"shared vision is independent of easy gates; light is not: "..gate)
+    end
+    local old_key=name:sub(1,1):upper()..name:sub(2).." Night Version"
+    for _,enabled in ipairs({false,true})do
+        setup(true,enabled,false,true,role_options({[old_key]=not enabled,dusk_change=-1}))
+        install_dusk();p,v=make(name,native_monster)
+        check(v:HasNightVision()==enabled and (p._rolevisionlight2hm~=nil)==enabled,
+            "only shared option controls "..name.."; old saves cannot override it")
     end
     for _,gate in ipairs({"enable hard mode","weather_change"})do
-        setup(true,false,false,true,role_options({[gate]=false,dusk_change=-1}))
-        install_dusk();p,v=make(name,false)
+        setup(true,true,false,true,role_options({[gate]=false,dusk_change=-1}))
+        install_dusk();p,v=make(name,native_monster)
         check(v:HasNightVision() and p._rolevisionlight2hm==nil,"inactive dangerous parent leaves pure NV: "..gate)
     end
     setup(false,false,false,false,role_options({dusk_change=-1}))
-    install_dusk();p,v=make(name,false);tick(25)
+    install_dusk();p,v=make(name,native_monster);tick(25)
     check(not v:HasNightVision(),"client does not grant ability from local settings")
-    p._rolenightvision2hm:deliver(true)
+    local net=p._monsternightvision2hm
+    net:deliver(1)
     local settings,controls=load_fenghua(p);controls.state(false)
     check(v:HasNightVision() and v.nonightvisioncc and #lights==0,"late server role grant survives actual Fenghua client callback; client spawns no light")
-    p._rolenightvision2hm:deliver(false)
-    check(not v:HasNightVision() and rolecount(v)==0,"server revoke removes client role source")
+    net:deliver(0)
+    check(not v:HasNightVision() and sourcecount(v)==0,"server revoke removes client vision")
 end
 setup(true,true,true,true,role_options({dusk_change=-1}))
 install_dusk();p,v=make("webber",true)
-check(rolecount(v)==1 and sourcecount(v)==1,"Webber has two independent sources")
-phase("day")
-check(rolecount(v)==0 and sourcecount(v)==1 and v:HasNightVision() and not p._rolevisionlight2hm,"role dawn cannot erase generic monster vision or leave its light")
-phase("night");p:RemoveTag("monster");tick(1)
-check(sourcecount(v)==0 and rolecount(v)==1 and v:HasNightVision(),"loss of monster tag cannot erase role vision")
+p:RemoveTag("monster");tick(1)
+check(not v:HasNightVision() and not p._rolevisionlight2hm,"dynamic Webber revoke also clears the light")
+p:AddTag("monster");tick(1)
+check(v:HasNightVision() and p._rolevisionlight2hm,"dynamic Webber grant also restores the light")
 for _,name in ipairs({"wortox","wathom","modded_monster"})do
     local other,ov=make(name,true)
-    check(other._rolevisionlight2hm==nil and rolecount(ov)==0,"tiny light whitelist excludes "..name)
+    check(other._rolevisionlight2hm==nil,"tiny light whitelist excludes "..name)
 end
-setup(true,true,true,true,role_options({["Webber Night Version"]=false,dusk_change=-1}))
-install_dusk();p,v=make("webber",true)
-check(v:HasNightVision() and rolecount(v)==0 and not p._rolevisionlight2hm,"generic bonus alone never grants compensating light")
 
 -- Load the real modinfo rather than mirroring defaults in the test.
 locale="zh";folder_name="ShadowWorld";ChooseTranslationTable=function(t)return t[1]end
 run(config_source,"@content/modinfo.lua")
 local defaults={};for _,c in ipairs(configuration_options)do defaults[c.name]=c.default end
 check(defaults["Monster Night Vision"]==true and defaults["wathom nightvision"]==true,"both options default on")
+check(defaults["Wurt Night Version"]==nil and defaults["Wonkey Night Version"]==nil and
+    defaults["Webber Night Version"]==nil,"no dedicated options remain")
 print("Monster nightvision: "..checks.." checks passed (native vision/grue, stable/Beta UM, client/server).")

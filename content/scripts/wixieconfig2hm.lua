@@ -1,5 +1,10 @@
 local M = {}
-local options = {wixie = true, ["Wixie No Claustrophobia"] = true, ["Walter Use Wixie Slingshot"] = true}
+local umOptions = {
+    wixie = true,
+    ["Wixie No Claustrophobia"] = true,
+    ["Walter Use Wixie Slingshot"] = true,
+    ["wathom nightvision"] = true,
+}
 local ids = {["workshop-2039181790"] = true, ["workshop-3193922031"] = true,
              ["2039181790"] = true, ["3193922031"] = true}
 
@@ -26,11 +31,11 @@ function M.Install(G, modname)
     local constructor = class._ctor
     class._ctor = function(self, name, ...)
         local index = G.KnownModIndex
-        if not class.wixieconfigmods2hm[name] or index == nil or M.IsUMEnabled(index) then
+        if not class.wixieconfigmods2hm[name] or index == nil then
             return constructor(self, name, ...)
         end
-        -- Filter only this screen's constructor. Keep complete modinfo/defaults
-        -- available to runtime configuration and to every other mod.
+        local hideUMOptions = not M.IsUMEnabled(index)
+        -- Keep the runtime configuration intact while translating the displayed settings.
         local load = index.LoadModConfigurationOptions
         local hidden = {}
         index.LoadModConfigurationOptions = function(index, target, ...)
@@ -38,7 +43,12 @@ function M.Install(G, modname)
             if target ~= name or type(config) ~= "table" then return config end
             local visible = {}
             for _, option in ipairs(config) do
-                if options[option.name] then
+                if option.name == "um_patch" and (option.saved == 1 or option.saved == 2 or option.saved == 3) then
+                    local migrated = {}
+                    for key, value in pairs(option) do migrated[key] = value end
+                    migrated.saved = true
+                    table.insert(visible, migrated)
+                elseif hideUMOptions and umOptions[option.name] then
                     local value = option.saved
                     if value == nil then value = option.default end
                     table.insert(hidden, {name = option.name, label = option.label, options = option.options,
@@ -52,6 +62,7 @@ function M.Install(G, modname)
         local function finish(ok, ...)
             index.LoadModConfigurationOptions = load
             if not ok then error((...), 0) end
+            if #hidden == 0 then return ... end
             -- Saving another visible option must not erase hidden preferences.
             local collect = self.CollectSettings
             self.CollectSettings = function(screen, ...)
