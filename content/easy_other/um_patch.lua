@@ -10,9 +10,11 @@ local UpvalueHacker = require("upvaluehacker2hm")
 修复雪球砸亮茄崩溃
 妥协厨师袋也可以移动中打开
 熊皮衣格子
+修复动态料理属性及多模组锅具兼容
 修复测试版黄油蝴蝶的自然生成
 修复沃托克斯编织暗影重载后恢复掉落
 修复修补工具包互修和零收益扣次
+佩戴巧手勋章时可使用电能转换套件
 
 滑行手杖(马头杖)加移速减cd
 输出老鼠分时输出扣分物品名字和分数(根据TUNING.isCh2hm判断中英文输出)
@@ -27,29 +29,39 @@ local UpvalueHacker = require("upvaluehacker2hm")
 --]]
 --------------------------------------------------------------------------------------------------------
 if TUNING.DSTU then
-    do
-        -- 临时兼容测试版汉化 20260926.1。汉化改读 UM_CONFIG 后删除此块。
-        local translation = ModManager:GetMod("workshop-3597225156")
-        local config = GLOBAL.UM_CONFIG
-        if translation and translation.modinfo.version == "20260926.1" and config and
-            TUNING.DSTU.SLEEPINGBUFF == nil and type(config.SLEEPINGBUFF) == "number" then
-            local modimport = translation.modimport
-            translation.modimport = function(path)
-                if path ~= "init/init_strings/init_tooltips" then return modimport(path) end
+    if UM_CONFIG and UM_CONFIG.FOOD_STATS then
+        modimport("easy_other/um_food_stats.lua")
+    end
 
-                -- 旧字段仅对汉化提示文件可见，避免改动游戏的全局设置。
-                translation.modimport = modimport
-                local previous_tuning = rawget(translation, "TUNING")
-                local tuning = previous_tuning or TUNING
-                local sleep_settings = setmetatable({
-                    SLEEPINGBUFF = config.SLEEPINGBUFF,
-                    GOTOBED = config.GOTOBED
-                }, {__index = tuning.DSTU})
-                translation.TUNING = setmetatable({DSTU = sleep_settings}, {__index = tuning})
-                modimport(path)
-                translation.TUNING = previous_tuning
+    local electrical_type = UPGRADETYPES.ELECTRICAL
+    if electrical_type and ModManager:GetMod("workshop-1909182187") then
+        local kit_prefab = "winona_upgradekit_electrical"
+        local upgrader_tag = electrical_type .. "_upgrader"
+        local upgradeable_tag = electrical_type .. "_upgradeable"
+        local upgradeuser_tag = electrical_type .. "_upgradeuser"
+
+        -- 巧手考验勋章不授予 has_handy_medal。沿用原版升级动作。
+        table.insert(TUNING.USEITEMFNS2HM, function(inst, doer, target, actions)
+            if inst.prefab == kit_prefab and target and target:HasTag(upgradeable_tag) and inst:HasTag(upgrader_tag) and
+                doer:HasTag("has_handy_medal") and not doer:HasTag(upgradeuser_tag) then
+                table.insert(actions, ACTIONS.UPGRADE)
             end
-        end
+        end)
+
+        AddPrefabPostInit(kit_prefab, function(inst)
+            if not TheWorld.ismastersim then return end
+            local upgrader = inst.components.upgrader
+            if not upgrader then return end
+
+            local CanUpgrade = upgrader.CanUpgrade
+            function upgrader:CanUpgrade(target, doer, ...)
+                if self.upgradetype == electrical_type and target.components.upgradeable.upgradetype == electrical_type and
+                    doer and doer:HasTag("has_handy_medal") then
+                    return true
+                end
+                return CanUpgrade(self, target, doer, ...)
+            end
+        end)
     end
 
     local gem_repair_values = TUNING.DSTU.GEM_REPAIRER_REPAIR_VALUE
@@ -180,7 +192,7 @@ if TUNING.DSTU then
             if not TheWorld.ismastersim then return end
             if inst.components.container.droponopen then inst.components.container.droponopen = nil end
         end)
-        -- 2025.9.19 melon:熊皮衣格子移动到这里------------------------------------------------
+        -- 熊皮大衣的六格口袋
         local containers = require("containers")
         containers.params.pack2hm2p3 =
         {
@@ -202,19 +214,24 @@ if TUNING.DSTU then
             if inst.components.container:IsEmpty() then inst.components.inventoryitem.cangoincontainer = true
             else inst.components.inventoryitem.cangoincontainer = false end
         end
-        local function addpack(inst, widget) -- 加背包
-            if inst == nil or inst:HasTag("pocketbackpack") then return end -- 加过背包了，不重复加
+        local function SetBeargerVestPockets(inst)
             inst:AddTag("pocketbackpack")
             if not TheWorld.ismastersim then
-                inst.OnEntityReplicated = function(inst) inst.replica.container:WidgetSetup(widget) end
-                return inst
+                local OnEntityReplicated = inst.OnEntityReplicated
+                inst.OnEntityReplicated = function(inst, ...)
+                    if OnEntityReplicated then OnEntityReplicated(inst, ...) end
+                    inst.replica.container:WidgetSetup("pack2hm2p3")
+                end
+                return
             end
-            if inst.components.container == nil then
-                inst:AddComponent("container")
-                inst.components.container.itemtestfn = function(container, item) return true end -- 可放所有物品
-                inst.components.container:WidgetSetup(widget) -- 设置样式
+            if inst.components.container then
+                -- 测试版已经接好了穿脱和耐久耗尽逻辑，只覆盖它的四格布局。
+                inst.components.container:WidgetSetup("pack2hm2p3")
+                return
             end
-            -- 修改装备和脱下函数
+            inst:AddComponent("container")
+            inst.components.container.itemtestfn = function() return true end
+            inst.components.container:WidgetSetup("pack2hm2p3")
             if inst.components.equippable ~= nil then
                 local _onequipfn = inst.components.equippable.onequipfn
                 inst.components.equippable.onequipfn = function(inst, owner)
@@ -231,24 +248,19 @@ if TUNING.DSTU then
             if inst.components.fueled ~= nil then
                 local _depleted = inst.components.fueled.depleted
                 inst.components.fueled:SetDepletedFn(function(inst)
-                    if inst.components.container ~= nil then -- 骨甲不掉
+                    if inst.components.container ~= nil then
                         inst.components.container:DropEverything()
                     end
                     if _depleted ~= nil then _depleted(inst) end
                 end)
             end
-            -- 若有背包栏，则设置背包。兼容多格 护甲类不设置 2025.7.25
-            -- if EQUIPSLOTS["BACK"] ~= nil then
-            --     if inst.components.equippable ~= nil then
-            --         inst.components.equippable.equipslot = EQUIPSLOTS.BACK
-            --     end
-            -- end
             -- 监听事件
             inst:ListenForEvent("itemget", OnContainerChanged)
             inst:ListenForEvent("itemlose", OnContainerChanged)
         end
-        if TUNING.DSTU.POCKET_POWERTRIP then -- 开衣物改动才加
-            AddPrefabPostInit("beargervest", function(inst) addpack(inst, "pack2hm2p3") end) -- 熊皮衣
+        -- 正式版从 DSTU 读取设置，测试版已迁移到 UM_CONFIG。
+        if TUNING.DSTU.POCKET_POWERTRIP or (UM_CONFIG and UM_CONFIG.POCKET_POWERTRIP) then
+            AddPrefabPostInit("beargervest", SetBeargerVestPockets)
         end
     end
 
@@ -630,15 +642,16 @@ if TUNING.DSTU then
         -- end)
     end
 
-    -- 2025.5.3 melon:开启鼠潮时自动打开老鼠分宣告------------------------------------
-    AddPrefabPostInit("charcoal", function(inst)
+    -- 等鼠潮组件挂载后，再按妥协的实际配置设置播报。
+    AddSimPostInit(function()
         if not TheWorld.ismastersim then return end
-        if TUNING.DSTU.ANNOUNCE_BASESTATUS then return end
-        inst.open_task2hm = inst:DoTaskInTime(0, function(inst)
-            if inst:HasTag("NORATCHECK") then -- 木炭有NORATCHECK标签说明开启了鼠潮
-                TUNING.DSTU.ANNOUNCE_BASESTATUS = true -- 开启老鼠分宣告
-            end
-        end)
+        local beta = ModManager:GetMod("workshop-3193922031")
+        local um = beta or ModManager:GetMod("workshop-2039181790")
+        if not um then return end
+
+        local announce = um.GetModConfigData("rat_raids") == true and TheWorld.components.ratcheck ~= nil
+        TUNING.DSTU.ANNOUNCE_BASESTATUS = announce
+        if beta and UM_CONFIG then UM_CONFIG.ANNOUNCE_BASESTATUS = announce end
     end)
     if TUNING.DSTU.MAXTEMPDAMAGE then modimport("easy_other/um_temperature_penalty.lua") end
 end -- if TUNING.DSTU

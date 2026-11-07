@@ -1,5 +1,6 @@
 -- 本模组需要的一些设定的通用补充
 modimport("common/common.lua")
+GetModConfigData = require("combatconfig2hm").Wrap(GetModConfigData)
 require("wixieconfig2hm").Install(GLOBAL, modname)
 modimport("common/language2hm.lua")
 modimport("common/replica.lua")
@@ -12,6 +13,8 @@ modimport("common/recipe_util.lua")
 modimport("common/food_util.lua")
 modimport("common/newstate.lua")
 modimport("common/bugfix.lua")
+require("gemstaffcompat2hm").Install(GLOBAL.ModManager)
+modimport("common/equip_slot_fix.lua")
 modimport("init/hover")
 modimport("common/monster_nightvision.lua")
 modimport("common/walter_wixie_slingshot.lua")
@@ -74,6 +77,9 @@ if TUNING.easymode2hm then
     end
 end
 
+-- 即使关闭增强，也要能读取旧存档中的工具箱。
+modimport("easy_role/winona_toolbox.lua")
+
 if TUNING.DSTU and GetModConfigData("um_patch") then modimport("easy_other/um_patch.lua") end
 
 -- 模组相关-----------------------------------------------------------------------------
@@ -84,8 +90,9 @@ if not TheNet:IsDedicated() then
 end
 if GetModConfigData("Disable Outdate Tip") then modimport("easy_other/mod.lua") end
 -- 快捷存取和额外容器按钮
--- Recovery must remain installed when the container buttons are later disabled.
-modimport("easy_other/worldexchange.lua")
+-- Keep Shadow Nexus custody readable when container buttons are disabled.
+modimport("easy_other/exchangemodes2hm.lua")
+modimport("easy_other/shadowvault.lua")
 if GetModConfigData("Container Sort") or GetModConfigData("Items collect") then
     modimport("easy_other/containersort.lua")
 end
@@ -301,3 +308,8 @@ if GetModConfigData("epic_ruin") then modimport("epic/epic_ruin.lua") end
 end
 
 -----------------------------------------------------------------------------------------
+
+-- Optional upstream survival modes; independent of Easy/Hard Mode.
+if GetModConfigData("贝爷求生") then modimport("ray/beye.lua") end
+if GetModConfigData("德爷生存") then modimport("ray/deyeshengcun.lua") end
+modimport("common/difficulty.lua") -- Private, on-demand /nd only.

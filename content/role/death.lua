@@ -1,4 +1,5 @@
 local mode = GetModConfigData("death_curse")
+local RPCGuard = require("rpcguard2hm")
 -- 帐篷内休息可以4倍速度消除诅咒
 AddComponentPostInit("sleepingbaguser", function(self)
     local DoSleep = self.DoSleep
@@ -89,6 +90,8 @@ local function checkdeathrollback(inst)
 end
 -- 死亡信息同步到其他世界
 AddShardModRPCHandler("MOD_HARDMODE", "deathsync2hm", function(shard_id, userid, cycles, time_of_day)
+    if type(userid) ~= "string" or userid == "" or not RPCGuard.IsFinite(cycles) or not RPCGuard.IsFinite(time_of_day) then return end
+    if not (TheWorld and TheWorld.components.persistent2hm and TheWorld.components.persistent2hm.data) then return end
     if TheShard and tostring(TheShard:GetShardId()) ~= tostring(shard_id) and userid and cycles and TUNING.TEMP2HM and
         TheWorld.components.persistent2hm.data.worldinit then
         -- if TUNING.TEMP2HM.cycles then

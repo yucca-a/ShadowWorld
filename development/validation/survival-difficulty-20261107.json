@@ -1,0 +1,358 @@
+{
+  "date": "2026-11-07",
+  "state": "local_pending_release",
+  "workshop_uploaded": false,
+  "upstream": {
+    "upstream_version": "2.8.14.112",
+    "upstream_workshop": "2886753796",
+    "files": {
+      "modinfo.lua": "0ff37587f5e7e63f2952038e6c9bf3517bbd2ebf36c054d47f6b21a3e9647c8b",
+      "modmain.lua": "f2127334a2ddb4b0ef832e5900a835c65e5e5e140ad4ab44eb06e0dc51014b90",
+      "AI_dafeiyu.lua": "aab3f6b6d97cbe4811a2230f6abc3e7094d1ba90a093d318d34854d5c84567ae",
+      "AI_zhizao_shichang.lua": "b7f1d1749bb5c997d18acd2a3f41482009c405a2dc720c231408166b40a8eddb",
+      "ray/deyeshengcun.lua": "32ecff79b0b0d14a842bcd4870ed32ee55a882e4866ddb8260869fb8249a49fc",
+      "ray/weishuanghexin.lua": "8e00067156909562f5650cf7b855f99757656df26b0c263a6c8b2c235032faf7"
+    }
+  },
+  "runtime_files": {
+    "modinfo.lua": "3d6fad884526c84b01876e7e74511bedaa319ef8d6df8b6a399fe2dd05d37c00",
+    "modmain.lua": "6604709d3e113de6ebb3b1ec1d4972b52c3434ac358007ac2e4fcf4639487473",
+    "ARCHIVE_SOURCE.txt": "f76bed5ab3b32748d4137732608256eeb65c026a9ac59186a248495b4ca30fd9",
+    "ray/beye.lua": "dff8c80aaa1eb3b464225eb86239c9eedbb22b25a9f1c4542822856173b30d6c",
+    "ray/beye_actions.lua": "c3a4230deb8905f16462343db189b4dc49838224c46dce92748d2cdbffbbd044",
+    "ray/beye_crafting.lua": "897a4332c0a211f54661650a0a8aa95b5ae38a20ff19f2d0d1926081c2ec91eb",
+    "ray/deyeshengcun.lua": "b33c925563bcbc5b5faad1c0c9feb810f9e2861ae700ab7f8d6b4b28e3e7e250",
+    "common/difficulty.lua": "574bc7f454f2ad6291b1e66ac1810c3a54589f72cbf60b5b48386cffddbd0291",
+    "scripts/difficultyrating2hm.lua": "b69648a7bbbd86756a1c0996f19e173d4ab26ea0b46f2a515c2727f17267c8dd"
+  },
+  "compile": {
+    "runtime": "Lua 5.1 (Lupa)",
+    "files": 394,
+    "passed": true
+  },
+  "unit": {
+    "runner": "tests/run_survival_difficulty_tests.py",
+    "checks": 6996,
+    "passed": true
+  },
+  "existing_regressions": {
+    "progressive_combat": 129,
+    "dynamic_armor": 190,
+    "wixie": 705,
+    "passed": true
+  },
+  "native_cases": [
+    {
+      "variant": "default",
+      "status": "passed",
+      "final_source_match": true,
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-ahzhtzqb",
+      "checks": 17,
+      "rows": [
+        {
+          "name": "crafted_durability",
+          "passed": true
+        },
+        {
+          "name": "proficiency_and_durability_cap",
+          "passed": true
+        },
+        {
+          "name": "sharpen_weapon",
+          "passed": true
+        },
+        {
+          "name": "recipe_ingredients",
+          "passed": true
+        },
+        {
+          "name": "slow_build_state",
+          "passed": true
+        },
+        {
+          "name": "resource_drop_halving",
+          "passed": true
+        },
+        {
+          "name": "pigking_gold_trade",
+          "passed": true
+        },
+        {
+          "name": "cookbook_durability",
+          "passed": true
+        },
+        {
+          "name": "food_stack_and_old_save_count",
+          "passed": true
+        },
+        {
+          "name": "armor_invalid",
+          "passed": true
+        },
+        {
+          "name": "shadow_protection",
+          "passed": true
+        },
+        {
+          "name": "freeze_cooldown",
+          "passed": true
+        },
+        {
+          "name": "rain_fire_and_shelter",
+          "passed": true
+        },
+        {
+          "name": "torch_heat",
+          "passed": true
+        },
+        {
+          "name": "attack_in_place",
+          "passed": true
+        },
+        {
+          "name": "private_native_query",
+          "passed": true
+        },
+        {
+          "name": "native_slash_command_registration",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "variant": "base",
+      "status": "passed",
+      "final_source_match": true,
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-5j242gls",
+      "checks": 17,
+      "rows": [
+        {
+          "name": "crafted_durability",
+          "passed": true
+        },
+        {
+          "name": "proficiency_and_durability_cap",
+          "passed": true
+        },
+        {
+          "name": "sharpen_weapon",
+          "passed": true
+        },
+        {
+          "name": "recipe_ingredients",
+          "passed": true
+        },
+        {
+          "name": "slow_build_state",
+          "passed": true
+        },
+        {
+          "name": "resource_drop_halving",
+          "passed": true
+        },
+        {
+          "name": "pigking_gold_trade",
+          "passed": true
+        },
+        {
+          "name": "cookbook_durability",
+          "passed": true
+        },
+        {
+          "name": "food_stack_and_old_save_count",
+          "passed": true
+        },
+        {
+          "name": "armor_invalid",
+          "passed": true
+        },
+        {
+          "name": "shadow_protection",
+          "passed": true
+        },
+        {
+          "name": "freeze_cooldown",
+          "passed": true
+        },
+        {
+          "name": "rain_fire_and_shelter",
+          "passed": true
+        },
+        {
+          "name": "torch_heat",
+          "passed": true
+        },
+        {
+          "name": "attack_in_place",
+          "passed": true
+        },
+        {
+          "name": "private_native_query",
+          "passed": true
+        },
+        {
+          "name": "native_slash_command_registration",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "variant": "all",
+      "status": "passed",
+      "final_source_match": true,
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-e3tp9c5f",
+      "checks": 17,
+      "rows": [
+        {
+          "name": "crafted_durability",
+          "passed": true
+        },
+        {
+          "name": "proficiency_and_durability_cap",
+          "passed": true
+        },
+        {
+          "name": "sharpen_weapon",
+          "passed": true
+        },
+        {
+          "name": "recipe_ingredients",
+          "passed": true
+        },
+        {
+          "name": "slow_build_state",
+          "passed": true
+        },
+        {
+          "name": "resource_drop_halving",
+          "passed": true
+        },
+        {
+          "name": "pigking_gold_trade",
+          "passed": true
+        },
+        {
+          "name": "cookbook_durability",
+          "passed": true
+        },
+        {
+          "name": "food_stack_and_old_save_count",
+          "passed": true
+        },
+        {
+          "name": "armor_invalid",
+          "passed": true
+        },
+        {
+          "name": "shadow_protection",
+          "passed": true
+        },
+        {
+          "name": "freeze_cooldown",
+          "passed": true
+        },
+        {
+          "name": "rain_fire_and_shelter",
+          "passed": true
+        },
+        {
+          "name": "torch_heat",
+          "passed": true
+        },
+        {
+          "name": "attack_in_place",
+          "passed": true
+        },
+        {
+          "name": "private_native_query",
+          "passed": true
+        },
+        {
+          "name": "native_slash_command_registration",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "variant": "um",
+      "status": "passed",
+      "final_source_match": true,
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-tlarl941",
+      "checks": 17,
+      "rows": [
+        {
+          "name": "crafted_durability",
+          "passed": true
+        },
+        {
+          "name": "proficiency_and_durability_cap",
+          "passed": true
+        },
+        {
+          "name": "sharpen_weapon",
+          "passed": true
+        },
+        {
+          "name": "recipe_ingredients",
+          "passed": true
+        },
+        {
+          "name": "slow_build_state",
+          "passed": true
+        },
+        {
+          "name": "resource_drop_halving",
+          "passed": true
+        },
+        {
+          "name": "pigking_gold_trade",
+          "passed": true
+        },
+        {
+          "name": "cookbook_durability",
+          "passed": true
+        },
+        {
+          "name": "food_stack_and_old_save_count",
+          "passed": true
+        },
+        {
+          "name": "armor_invalid",
+          "passed": true
+        },
+        {
+          "name": "shadow_protection",
+          "passed": true
+        },
+        {
+          "name": "freeze_cooldown",
+          "passed": true
+        },
+        {
+          "name": "rain_fire_and_shelter",
+          "passed": true
+        },
+        {
+          "name": "torch_heat",
+          "passed": true
+        },
+        {
+          "name": "attack_in_place",
+          "passed": true
+        },
+        {
+          "name": "private_native_query",
+          "passed": true
+        },
+        {
+          "name": "native_slash_command_registration",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Native server RPC recipients were intercepted in the disposable test process; physical client UI and real network delivery were not exercised."
+  ],
+  "native_total_checks": 68
+}

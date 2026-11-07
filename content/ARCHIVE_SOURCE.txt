@@ -13,3 +13,22 @@ Maintained release 2.8.14.96 adds combat/armor balancing, skill-tree fixes, Wand
 Maintainer: Yucca
 Workshop branch: https://steamcommunity.com/sharedfiles/filedetails/?id=3832182265
 Visibility: Public
+
+2026-11-07 selective merge: original Workshop 2886753796 v2.8.14.112
+Bear Grylls and Ed Stafford survival modes were merged into ray/beye.lua,
+ray/beye_actions.lua, ray/beye_crafting.lua and ray/deyeshengcun.lua.
+Both mode master switches default to disabled in this maintained branch.
+Only required food-stacking and shadow-protection behavior was extracted from
+the upstream always-on kernel. Original copyright notices and LICENSE remain.
+The maintained branch uses its own on-demand private /nd difficulty rating.
+
+2026-11-07 local three-mechanism integration (not published):
+easy_other/exchangeclassic2hm.lua retains the native container exchange protocol
+from Original Workshop 2886753796 v2.8.14.112, with mode/readiness and input guards.
+The Xianyu shadowbank component, transfer, view and two prefabs originate from
+the user-supplied Downloads/test.zip (v2.8.14.98.6). Its two surface-owned hat
+spaces and remote-view interactions are retained. The obsolete coordinated
+engine hook is omitted; mode isolation and persistence are maintained locally.
+Shadow Nexus remains the third mechanism. Legacy configuration values now map
+to Original; old Nexus inventories are recovered and handed to native storage
+on their home shards before the new native save opens them for use.

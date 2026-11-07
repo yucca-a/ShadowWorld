@@ -1,3 +1,5 @@
+local UpvalueHacker = require("upvaluehacker2hm")
+local RPCGuard = require("rpcguard2hm")
 ----------------------------[建筑(可放置到地上的)]-------------------------------
 --------------------------------------------------------------------------------
 local hardmode = TUNING.hardmode2hm
@@ -222,7 +224,7 @@ if GetModConfigData("Science Machine Refine Materials") then
                 end
             end
         elseif (AllRecipes[item.prefab] or (giver.prefab == "wendy" and (item.prefab == "butterfly" or item.prefab == "moonbutterfly"))) and giver and giver.components.builder then -- 温蒂配方兼容
-            recipe = AllRecipes[item.prefab]
+            local recipe = AllRecipes[item.prefab]
 			if item.prefab == "butterfly" then
 			recipe = AllRecipes["wendy_butterfly"] 
 			elseif item.prefab == "moonbutterfly" then
@@ -1419,12 +1421,14 @@ if GetModConfigData("Tackle Receptacle Use Fish Redeem") then
                            item:HasTag("treeseed")) and 0 or
                            ((item:HasTag("preparedfood") or ismeatdried2hm(item)) and preserverrate)) or 1
         end
-        AddPrefabPostInit("tacklestation2hm", function(inst)
+        local function AddTacklePreserver(inst)
             if not TheWorld.ismastersim then return end
             if TUNING.FUNCTIONAL_MEDAL_IS_OPEN then preserverrate = 0 end
             inst:AddComponent("preserver")
             inst.components.preserver:SetPerishRateMultiplier(perish_rate_multiplier)
-        end)
+        end
+        AddPrefabPostInit("tacklestation2hm", AddTacklePreserver)
+        AddPrefabPostInit("shadowvaulttacklepage2hm", AddTacklePreserver)
         local function onopen(inst)
             if not inst:HasTag("burnt") and inst.components.prototyper and inst.SoundEmitter then
                 inst.components.prototyper.onactivate(inst, nil)
@@ -2202,13 +2206,115 @@ if mannequinmode then
     end)
 end
 
--- 龙鳞火锅烹批量饪
+-- 龙鳞火炉批量烹饪。旧档位 true 和 -1 都按开启处理。
 local dragonflyfurnace = GetModConfigData("dragonfly furnace stewer")
-if dragonflyfurnace and not ModManager:GetMod("workshop-3193922031") then
+if dragonflyfurnace then
     local cooking = require("cooking")
     local containers = require("containers")
     local ImageButton = require "widgets/imagebutton"
     local Text = require "widgets/text"
+    local protected_items = {
+        celestial_orb = true, chester_eyebone = true, hutch_fishbowl = true,
+        redgem = true, shadowheart = true, shadowheart_infused = true, atrium_key = true, fossil_piece = true, minotaurhorn = true,
+        opalpreciousgem = true, moonrockseed = true, alterguardianhat = true, alterguardianhatshard = true,
+        purebrilliance = true, horrorfuel = true, dreadstone = true, voidcloth = true, lunarplant_husk = true,
+        dragon_scales = true, deerclops_eyeball = true, bearger_fur = true, shroom_skin = true,
+        malbatross_feather = true, walrus_tusk = true, heatrock = true, winter_food4 = true,
+    }
+    local protected_tags = {"irreplaceable", "cursed", "curse2hm", "gem", "shadowheart", "unwrappable",
+        "preparedfood", "spicedfood", "spice", "blueprint", "sketch", "questitem", "nosteal", "medal", "moontreasure_l"}
+
+    local function CanDestroyFurnaceItem(item)
+        return item ~= nil and item:IsValid() and not protected_items[item.prefab] and not item:HasOneOfTags(protected_tags) and
+            not item.replica.container and (item.prefab == "log" or item.prefab == "twigs" or not cooking.IsCookingIngredient(item.prefab))
+    end
+
+    local function HasFurnaceTrash(container, incinerator)
+        for slot = 2, 5 do
+            local item = container:GetItemInSlot(slot)
+            if item and (incinerator and incinerator:ShouldIncinerateItem(item) or
+                not incinerator and CanDestroyFurnaceItem(item)) then return true end
+        end
+        return false
+    end
+
+    local component_actions = getupvalue2hm(EntityScript.CollectActions, "COMPONENT_ACTIONS")
+    local scene_actions = component_actions and component_actions.SCENE
+    local CollectIncinerate = scene_actions and scene_actions.incinerator
+    if CollectIncinerate then
+        scene_actions.incinerator = function(inst, ...)
+            if inst.prefab ~= "dragonflyfurnace" or (inst.replica.container and HasFurnaceTrash(inst.replica.container)) then
+                return CollectIncinerate(inst, ...)
+            end
+        end
+    end
+
+    local function DropFurnaceAsh(inst)
+        local count = inst.cleanupash2hm or 0
+        inst.cleanupash2hm = nil
+        local lootdropper = inst.components.lootdropper
+        while count > 0 do
+            local ash = SpawnPrefab("ash")
+            local size = math.min(count, ash.components.stackable.maxsize)
+            ash.components.stackable:SetStackSize(size)
+            lootdropper:FlingItem(ash)
+            count = count - size
+        end
+    end
+
+    local function InstallFurnaceCleanup(inst, container, incinerator)
+        local ShouldIncinerateItem = incinerator.shouldincinerateitemfn
+        incinerator:SetShouldIncinerateItemFn(function(inst, item)
+            local slot = container:GetItemSlot(item)
+            return slot and slot >= 2 and slot <= 5 and CanDestroyFurnaceItem(item) and
+                (not ShouldIncinerateItem or ShouldIncinerateItem(inst, item))
+        end)
+
+        local Incinerate = incinerator.Incinerate
+        local OnPreDestroyItem = incinerator.OnPreDestroyItemCallbackFn
+        incinerator.OnPreDestroyItemCallbackFn = function(furnace, item)
+            local prefab, slot = item.prefab, item.prevslot
+            local stack = item.components.stackable
+            local count = stack and stack:StackSize() or 1
+            OnPreDestroyItem(furnace, item)
+            if incinerator.destroyed2hm then
+                if prefab == "log" then
+                    local charcoal = SpawnPrefab("charcoal")
+                    charcoal.components.stackable:SetStackSize(count)
+                    if not container:GiveItem(charcoal, slot, nil, false) and charcoal:IsValid() then
+                        furnace.components.lootdropper:FlingItem(charcoal)
+                    end
+                else
+                    incinerator.destroyed2hm = incinerator.destroyed2hm + count
+                end
+            end
+        end
+        function incinerator:Incinerate(doer)
+            if self.destroyed2hm or inst.cleanupash2hm or not container.canbeopened or container.readonlycontainer or
+                (inst.components.stewer and inst.components.stewer:IsCooking()) or not HasFurnaceTrash(container, self) then
+                return false
+            end
+            self.destroyed2hm = 0
+            local ok, result = pcall(Incinerate, self, doer)
+            local ash = math.floor(self.destroyed2hm / 2)
+            self.destroyed2hm = nil
+            self.incinerate_doer = nil
+            if ash > 0 then
+                inst.cleanupash2hm = ash
+                local delay = inst.AnimState:GetCurrentAnimationLength() - inst.AnimState:GetCurrentAnimationTime() + FRAMES
+                inst:DoTaskInTime(math.max(0, delay), DropFurnaceAsh)
+            end
+            if not ok then error(result, 0) end
+            return result
+        end
+
+        local OnHammered = inst.components.workable.onfinish
+        inst.components.workable:SetOnFinishCallback(function(inst, ...)
+            DropFurnaceAsh(inst)
+            return OnHammered(inst, ...)
+        end)
+    end
+
     cooking.recipes.dragonflyfurnace = cooking.recipes.portablecookpot
     -- 新UI
     containers.params.dragonflyfurnace.widget.animbank = "ui_dragonflyfurnace2hm"
@@ -2224,7 +2330,7 @@ if dragonflyfurnace and not ModManager:GetMod("workshop-3193922031") then
             local GetSpecificSlotForItem = inst.components.container.GetSpecificSlotForItem
             inst.components.container.GetSpecificSlotForItem = function(self, item, ...)
                 local result = GetSpecificSlotForItem(self, item, ...)
-                if result >= 2 then
+                if result and result >= 2 then
                     for i = self.numslots, 2, -1 do
                         local item = self.slots[i]
                         if not item then return i end
@@ -2235,41 +2341,8 @@ if dragonflyfurnace and not ModManager:GetMod("workshop-3193922031") then
                 end
                 return result
             end
-            local olddestroyfn = inst.components.container.DestroyContentsConditionally
-            if olddestroyfn then
-                inst.components.container.DestroyContentsConditionally = function(self, ...)
-                    local itemdata = {}
-                    for k = 1, self.numslots do
-                        local item = self:GetItemInSlot(k)
-                        if item then 
-                            itemdata[k] = {
-                                itemprefab = item.prefab,
-                                itemstack = item.components.stackable and item.components.stackable:StackSize()
-                            } 
-                        end
-                    end
-                    olddestroyfn(self, ...)
-                    for i, v in pairs(itemdata) do
-                        if self:GetItemInSlot(i) == nil and v and v.itemprefab == "log" then
-                            local charcoal = SpawnPrefab("charcoal")
-                            if not charcoal then return end
-                            if v.itemstack and charcoal.components.stackable then charcoal.components.stackable:SetStackSize(v.itemstack) end
-                            local result = self:GiveItem(charcoal, i)
-                            if not result then charcoal:Remove() end
-                        end
-                    end
-                end
-            end
-        end
-        if inst.components.incinerator then
-            local oldfn = inst.components.incinerator.shouldincinerateitemfn
-            inst.components.incinerator.shouldincinerateitemfn = function(inst, item, ...)
-                local slotnum = item.components.inventoryitem and item.components.inventoryitem:GetSlotNum()
-                if slotnum == 1 then
-                    return false
-                else
-                    return oldfn(inst, item, ...)
-                end
+            if inst.components.incinerator then
+                InstallFurnaceCleanup(inst, inst.components.container, inst.components.incinerator)
             end
         end
     end)
@@ -2278,8 +2351,9 @@ if dragonflyfurnace and not ModManager:GetMod("workshop-3193922031") then
         local oldOpen = self.Open
         self.Open = function(self, container, doer, ...)
             local result = oldOpen(self, container, doer, ...)
-            if container and container.prefab ~= "dragonflyfurnace" then return result end
-            local image = self:AddChild(Image("images/inventoryimages2.xml", "portablecookpot_item.tex"))
+            if not container or container.prefab ~= "dragonflyfurnace" then return result end
+            local pot_icon = "portablecookpot_item.tex"
+            local image = self:AddChild(Image(GetInventoryItemAtlas(pot_icon), pot_icon))
             image:SetSize(75,75)
             image:SetPosition(-72, 127, 0)
             local text = self:AddChild(Text(NUMBERFONT, 42))
@@ -2287,12 +2361,11 @@ if dragonflyfurnace and not ModManager:GetMod("workshop-3193922031") then
             text:SetString((TUNING.isCh2hm and "剩：" or "Uses：") .. tostring(container.redgem2hm:value()))
             self.portablecookpot_item2hm = image
             self.text2hm =text
-            for k, v in pairs(self.inv) do
-                if k == 1 then
-                    v:SetBGImage2("images/inventoryimages2.xml", "redgem.tex", {1, 1, 1, 0.5})
-                    local w, h = v.bgimage:GetSize()
-                    v.bgimage2:SetSize(w, h)
-                end
+            local slot = self.inv[1]
+            if slot then
+                local gem_icon = "redgem.tex"
+                slot:SetBGImage2(GetInventoryItemAtlas(gem_icon), gem_icon, {1, 1, 1, 0.5})
+                slot.bgimage2:SetSize(slot.bgimage:GetSize())
             end
             return result
         end
@@ -2371,56 +2444,64 @@ if dragonflyfurnace and not ModManager:GetMod("workshop-3193922031") then
             inst.components.container:Open(harvester)
         end
     end
-    -- 如果是烹饪时进行的检测,需要判断是否是全食材;如果不是主厨，则不支持主厨食谱
-    local itemtestfn = containers.params.cookpot.itemtestfn
-    local function resetdragonflyfurnacerecipes(inst) cooking.recipes.dragonflyfurnace = cooking.recipes.portablecookpot end
-    local function startcookfntest(inst, doer)
-        if inst.components.stewer.targettime ~= nil then return false end
-        local foods = 0
-        for k, v in pairs(inst.components.container.slots) do
-            if k ~= 1 and itemtestfn(inst.components.container, v, k) then 
-                foods = foods + 1
-            end 
+    -- 只有第 2 至第 5 格参与食材检查。
+    local function IsFurnaceIngredient(container, item, slot)
+        local accepts = containers.params.cookpot.itemtestfn
+        return item ~= nil and cooking.IsCookingIngredient(item.prefab) and
+            (accepts == nil or accepts(container, item, slot - 1))
+    end
+    local function HasFurnaceIngredients(container, allow_empty)
+        if not container then return false end
+        for slot = 2, 5 do
+            local item = container:GetItemInSlot(slot)
+            if (item or not allow_empty) and not IsFurnaceIngredient(container, item, slot) then return false end
         end
-        if foods < 4 then return false end
-        -- if dragonflyfurnace == -1 and doer and doer:IsValid() then
-        --     cooking.recipes.dragonflyfurnace = doer:HasTag("masterchef") and cooking.recipes.portablecookpot or cooking.recipes.cookpot
-        --     inst:DoTaskInTime(0, resetdragonflyfurnacerecipes)
-        -- end
-        local redgem = inst.components.container:GetItemInSlot(1)
-        cooking.recipes.dragonflyfurnace = ((doer and doer:IsValid() and doer:HasTag("masterchef")) or 
-        (inst.redgem2hm ~= nil and inst.redgem2hm:value() > 0) or (redgem and redgem.prefab == "redgem")) and cooking.recipes.portablecookpot or cooking.recipes.cookpot
         return true
     end
     local function cancook(self)
-        if self.inst.components.container == nil then return false end
-        local foods = 0
-        for k, v in pairs(self.inst.components.container.slots) do
-            if k ~= 1 and itemtestfn(self.inst.components.container, v, k) then 
-                foods = foods + 1
-            end 
+        return self.targettime == nil and not self.done and HasFurnaceIngredients(self.inst.components.container)
+    end
+    local function UpdateFurnaceReady(inst)
+        local container, stewer = inst.components.container, inst.components.stewer
+        if container and stewer and not container:IsOpen() and cancook(stewer) then
+            inst:AddTag("readytocook")
+        else
+            inst:RemoveTag("readytocook")
         end
-        if foods < 4 then return false end
-        return true
     end
     -- 红锅次数保存和加载
     local function saveandload(inst)
+        local OnPreLoad = inst.OnPreLoad
+        inst.OnPreLoad = function(inst, data, ...)
+            -- 旧四格火炉没有充能字段。食材顺移一格，腾出独立的红宝石格。
+            if data and data.redgem2hm == nil and data.container and data.container.items then
+                local items = data.container.items
+                if items[5] == nil then
+                    for slot = 4, 1, -1 do items[slot + 1] = items[slot] end
+                    items[1] = nil
+                end
+                data.redgem2hm = 0
+            end
+            if OnPreLoad then return OnPreLoad(inst, data, ...) end
+        end
         local oldOnSave = inst.OnSave
-        inst.OnSave = function(inst, data)
-            if oldOnSave then oldOnSave(inst, data) end
+        inst.OnSave = function(inst, data, ...)
             data.redgem2hm = inst.redgem2hm and inst.redgem2hm:value() or 0
+            data.cleanupash2hm = inst.cleanupash2hm
+            if oldOnSave then return oldOnSave(inst, data, ...) end
         end
         local oldOnLoad = inst.OnLoad
-        inst.OnLoad = function(inst, data)
-            if oldOnLoad then oldOnLoad(inst, data) end
+        inst.OnLoad = function(inst, data, ...)
             if data ~= nil and data.redgem2hm ~= nil then
                 inst.redgem2hm:set(data.redgem2hm)
             end
+            if data and data.cleanupash2hm and data.cleanupash2hm > 0 then
+                inst.cleanupash2hm = data.cleanupash2hm
+                inst:DoTaskInTime(0, DropFurnaceAsh)
+            end
+            if oldOnLoad then return oldOnLoad(inst, data, ...) end
         end
     end
-    -- 兼容智能锅
-    COOKINGPOTS = COOKINGPOTS or {}
-    COOKINGPOTS.dragonflyfurnace = COOKINGPOTS.dragonflyfurnace or {}
     local function perish_rate_multiplier(inst, item) return inst.components.stewer:IsCooking() and 0 or 1 end
     AddPrefabPostInit("dragonflyfurnace", function(inst)
         inst:AddTag("stewer")
@@ -2432,14 +2513,16 @@ if dragonflyfurnace and not ModManager:GetMod("workshop-3193922031") then
         inst:AddComponent("stewer")
         local self = inst.components.stewer
         self.multi2hm = true
-        -- self.autoharvest2hm = true
-        self.startcookfntest2hm = startcookfntest
         self.onstartcooking = startcookfn
         self.oncontinuecooking = startcookfn
         self.ondonecooking = donecookfn
         self.onharvest = onharvest
         self.CanCook = cancook
         self.cooktimemult = 0.8
+        -- 原版按整锅装满判断右键烹饪。红宝石格可以留空。
+        inst:ListenForEvent("itemget", UpdateFurnaceReady)
+        inst:ListenForEvent("itemlose", UpdateFurnaceReady)
+        inst:ListenForEvent("onclose", UpdateFurnaceReady)
         if not inst.components.preserver then
             inst:AddComponent("preserver")
             inst.components.preserver:SetPerishRateMultiplier(perish_rate_multiplier)
@@ -2451,6 +2534,7 @@ if dragonflyfurnace and not ModManager:GetMod("workshop-3193922031") then
     local monstermeats = {cookedmonstermeat = "cookedmeat", cookedmonstersmallmeat = "cookedsmallmeat", um_monsteregg_cooked = "bird_egg_cooked"}
     local transformitems = {boards = "charcoal"}
     local function cookfn(doer, inst)
+        if not RPCGuard.CanUseFurnace(doer, inst) then return end
         local docook
         if inst.components.stewer and not inst.components.stewer:IsCooking() and inst.components.container and not inst.components.container:IsEmpty() then
             local replacelist = {}
@@ -2459,48 +2543,52 @@ if dragonflyfurnace and not ModManager:GetMod("workshop-3193922031") then
                     if transformitems[v.prefab] then
                         local size = v.components.stackable and v.components.stackable.stacksize or 1
                         local newitem = SpawnPrefab(transformitems[v.prefab])
-                        v:Remove()
-                        if newitem.components.stackable then newitem.components.stackable.stacksize = size end
-                        inst.components.container:GiveItem(newitem, i)
-                        if not docook then docook = true end
+                        if newitem then
+                            v:Remove()
+                            if newitem.components.stackable then newitem.components.stackable.stacksize = size end
+                            inst.components.container:GiveItem(newitem, i)
+                            if not docook then docook = true end
+                        end
                     elseif v.components.cookable then
                         local size = v.components.stackable and v.components.stackable.stacksize or 1
                         local newitem = v.components.cookable:Cook(inst, doer)
-                        v:Remove()
-                        local replace = inst.updatecookitem2hm ~= nil and monstermeats[newitem.prefab]
-                        local replacesize
-                        if replace then
-                            local replacesizechance = size * 0.15
-                            replacesize = math.floor(replacesizechance)
-                            local replacechance = replacesizechance - replacesize
-                            if replacechance > 0 then replacesize = replacesize + (math.random() < replacechance and 1 or 0) end
-                            if replacesize >= 1 then
-                                size = size - replacesize
+                        if newitem then
+                            v:Remove()
+                            local replace = inst.updatecookitem2hm ~= nil and monstermeats[newitem.prefab]
+                            local replacesize
+                            if replace then
+                                local replacesizechance = size * 0.15
+                                replacesize = math.floor(replacesizechance)
+                                local replacechance = replacesizechance - replacesize
+                                if replacechance > 0 then replacesize = replacesize + (math.random() < replacechance and 1 or 0) end
+                                if replacesize >= 1 then
+                                    size = size - replacesize
+                                else
+                                    replace = nil
+                                end
+                            end
+                            if size > 0 then
+                                if newitem.components.stackable then newitem.components.stackable.stacksize = size end
+                                inst.components.container:GiveItem(newitem, i)
+                                if replace then
+                                    local item = SpawnPrefab(replace)
+                                    if item and item.components.stackable and replacesize then
+                                        item.components.stackable.stacksize = replacesize
+                                    end
+                                    if item then table.insert(replacelist, item) end
+                                end
                             else
-                                replace = nil
-                            end
-                        end
-                        if size > 0 then
-                            if newitem.components.stackable then newitem.components.stackable.stacksize = size end
-                            inst.components.container:GiveItem(newitem, i)
-                            if replace then
-                                local item = SpawnPrefab(replace)
-                                if item.components.stackable and replacesize then
-                                    item.components.stackable.stacksize = replacesize
+                                newitem:Remove()
+                                if replace then
+                                    local item = SpawnPrefab(replace)
+                                    if item and item.components.stackable and replacesize then
+                                        item.components.stackable.stacksize = replacesize
+                                    end
+                                    if item then inst.components.container:GiveItem(item, i) end
                                 end
-                                table.insert(replacelist, item)
                             end
-                        else
-                            newitem:Remove()
-                            if replace then
-                                local item = SpawnPrefab(replace)
-                                if item.components.stackable and replacesize then
-                                    item.components.stackable.stacksize = replacesize
-                                end
-                                inst.components.container:GiveItem(item, i)
-                            end
+                            if not docook then docook = true end
                         end
-                        if not docook then docook = true end
                     end
                 end
             end
@@ -2522,32 +2610,146 @@ if dragonflyfurnace and not ModManager:GetMod("workshop-3193922031") then
     end
     -- 添加一个做饭按钮和一个烤熟按钮，且做饭按钮替代原来的摧毁按钮作为主要按钮
     local cookpotbtnfn = containers.params.cookpot.widget.buttoninfo.fn
-    local olddestroyfn = containers.params.dragonflyfurnace.widget.buttoninfo.fn
-    local oldslotpos = containers.params.dragonflyfurnace.widget.slotpos
-    local oldslotbg = containers.params.dragonflyfurnace.widget.slotbg
-    for i ,v in pairs(oldslotpos) do
-        local oldpos = v
-        v = Vector3(oldpos.x, oldpos.y - 34, oldpos.z)
-    end
-    table.insert(oldslotpos, 1, Vector3(0, 4+102,  0))
-    table.insert(oldslotbg,{ image = "inv_slot_dragonflyfurnace.tex", atlas = "images/hud2.xml" })
+    table.insert(containers.params.dragonflyfurnace.widget.slotpos, 1, Vector3(0, 106, 0))
+    table.insert(containers.params.dragonflyfurnace.widget.slotbg, {image = "inv_slot_dragonflyfurnace.tex", atlas = "images/hud2.xml"})
     containers.params.dragonflyfurnace.widget.buttoninfo.fn = cookpotbtnfn
-    local function destroyfn(doer, inst) if inst.components.container then olddestroyfn(inst, doer) end end
+    local function destroyfn(doer, inst)
+        if not RPCGuard.CanUseFurnace(doer, inst) then return end
+        local container = inst.components.container
+        local controller = doer.components.playercontroller
+        if container and container:IsOpenedBy(doer) and inst:IsNear(doer, 4) and controller and controller:IsEnabled() and
+            not doer.sg:HasStateTag("busy") then
+            return BufferedAction(doer, inst, ACTIONS.INCINERATE):Do()
+        end
+    end
     AddModRPCHandler("MOD_HARDMODE", "destroybtn2hm", destroyfn)
     local function destroybtnfn(inst, doer)
-        if inst.components.container then
-            olddestroyfn(inst, doer)
-        elseif inst.replica.container ~= nil and inst:HasTag("stewer") then
+        if TheWorld.ismastersim then
+            destroyfn(doer, inst)
+        elseif inst.replica.container and not inst.replica.container:IsBusy() then
             SendModRPCToServer(GetModRPC("MOD_HARDMODE", "destroybtn2hm"), inst)
         end
     end
+
+    local function FurnaceRecipeCooker(inst, doer)
+        local gem = inst.replica.container:GetItemInSlot(1)
+        local masterchef = doer:HasTag("masterchef") or (inst.redgem2hm and inst.redgem2hm:value() > 0) or
+            (gem and gem.prefab == "redgem")
+        return masterchef and "portablecookpot" or "cookpot"
+    end
+
+    local function GetFurnacePreviewItems(container)
+        local items = {}
+        for slot = 2, 5 do
+            local item = container:GetItemInSlot(slot)
+            -- 每锅每格只取一份，堆叠数量只影响批次数量。
+            if IsFurnaceIngredient(container, item, slot) then
+                items[slot - 1] = {prefab = item.prefab, components = {}}
+            end
+        end
+        return items
+    end
+
+    local furnace_preview_events = {"itemget", "itemlose", "refresh", "masterchef2hm"}
+    local function OpenClassicFurnacePreview(widget, inst, doer, preview)
+        -- Craft Pot 和使用同一套预告接口的分支只读取此食材视图。
+        local container = inst.replica.container
+        local cooker = {
+            inst = inst,
+            prefab = FurnaceRecipeCooker(inst, doer),
+            GetItems = function() return GetFurnacePreviewItems(container) end,
+        }
+        local function Refresh()
+            if preview._cooker ~= cooker then return end
+            if not HasFurnaceIngredients(container, true) then
+                if preview:IsOpen() then preview:Close(inst) end
+                return
+            end
+            cooker.prefab = FurnaceRecipeCooker(inst, doer)
+            if preview:IsOpen() then
+                preview._cookerName = cooker.prefab
+                preview:SortFoods()
+            else
+                preview:Open(cooker)
+            end
+        end
+        local refresh_task
+        local function QueueRefresh()
+            -- 客户端先发物品事件，再更新本地预测槽位，下一帧才能读取新状态。
+            if not refresh_task then
+                refresh_task = widget.inst:DoStaticTaskInTime(0, function()
+                    refresh_task = nil
+                    Refresh()
+                end)
+            end
+        end
+        for _, event in ipairs(furnace_preview_events) do widget.inst:ListenForEvent(event, QueueRefresh, inst) end
+        widget.closefurnacepreview2hm = function()
+            if refresh_task then refresh_task:Cancel() end
+            for _, event in ipairs(furnace_preview_events) do widget.inst:RemoveEventCallback(event, QueueRefresh, inst) end
+            if preview._cooker == cooker then preview:Close(inst) end
+        end
+        preview._cooker = cooker
+        Refresh()
+    end
+
+    local function OpenRefreshFurnacePreview(widget, inst, preview, recipes)
+        local Update, ControllerScroll = preview.Update, preview.ControllerScroll
+        local function UpdateFurnace(self, ...)
+            if self.container ~= inst then return Update(self, ...) end
+            local container = inst.replica.container
+            if not HasFurnaceIngredients(container, true) then
+                self:ClearFocus()
+                self.popup.entry = nil
+                self.popup:Hide()
+                self:Hide()
+                return
+            end
+            local cooker = recipes.GetCookerKey(FurnaceRecipeCooker(inst, self.owner))
+            if cooker ~= self.cooker then self.popup.entry = nil end
+            self.cooker = cooker
+            self.visible = recipes.Refresh(cooker, GetFurnacePreviewItems(container), 4)
+            self:Show()
+            self:RefreshSlots()
+        end
+        local function ScrollFurnace(self, ...)
+            if self.container == inst and not self.shown then return false end
+            return ControllerScroll(self, ...)
+        end
+        preview.Update = UpdateFurnace
+        preview.ControllerScroll = ScrollFurnace
+        preview:Open(inst, widget)
+        preview.inst:ListenForEvent("masterchef2hm", preview.onitemchange, inst)
+        widget.closefurnacepreview2hm = function()
+            preview.inst:RemoveEventCallback("masterchef2hm", preview.onitemchange, inst)
+            preview:CloseFor(widget)
+            if preview.Update == UpdateFurnace then preview.Update = Update end
+            if preview.ControllerScroll == ScrollFurnace then preview.ControllerScroll = ControllerScroll end
+        end
+    end
+
+    local function OpenFurnacePreview(widget, inst, doer)
+        local controls = doer.HUD and doer.HUD.controls
+        if not controls then return end
+        local preview = controls.foodcrafting
+        if preview and preview.knownfoods and type(preview._GetEntityIngredients) == "function" and
+            type(preview.Open) == "function" and type(preview.Close) == "function" and
+            type(preview.IsOpen) == "function" and type(preview.SortFoods) == "function" then
+            OpenClassicFurnacePreview(widget, inst, doer, preview)
+            return
+        end
+        local recipes = package.loaded["craftpot/cp_recipes"]
+        preview = controls.craftpot
+        if preview and recipes and type(recipes.GetCookerKey) == "function" and type(recipes.Refresh) == "function" and
+            type(preview.CloseFor) == "function" and type(preview.RefreshSlots) == "function" then
+            OpenRefreshFurnacePreview(widget, inst, preview, recipes)
+        end
+    end
+
     AddClassPostConstruct("widgets/containerwidget", function(self)
         local Open = self.Open
         self.Open = function(self, container, doer, ...)
-            if container and container.prefab == "dragonflyfurnace" and doer and doer:IsValid() then
-                local redgem = container.replica.container:GetItemInSlot(1)
-                container.masterchef2hm = doer:HasTag("masterchef") or (container.redgem2hm ~= nil and container.redgem2hm:value() > 0) or (redgem and redgem.prefab == "redgem")
-            end
+            local furnace = container and container.prefab == "dragonflyfurnace" and doer and doer:IsValid()
             Open(self, container, doer, ...)
             if container and container.prefab == "dragonflyfurnace" and self.button then
                 local widget = container.replica.container and container.replica.container:GetWidget()
@@ -2601,9 +2803,15 @@ if dragonflyfurnace and not ModManager:GetMod("workshop-3193922031") then
                     end
                 end
             end
+            if furnace and doer == ThePlayer and self.isopen then OpenFurnacePreview(self, container, doer) end
         end
         local Close = self.Close
         self.Close = function(self, ...)
+            local CloseFurnacePreview = self.closefurnacepreview2hm
+            if CloseFurnacePreview then
+                self.closefurnacepreview2hm = nil
+                CloseFurnacePreview()
+            end
             if self.container and self.container.destroybtn2hm then self.container.destroybtn2hm = nil end
             if self.container and self.container.cookbtn2hm then self.container.cookbtn2hm = nil end
             if self.isopen then
@@ -2619,49 +2827,10 @@ if dragonflyfurnace and not ModManager:GetMod("workshop-3193922031") then
             Close(self, ...)
         end
     end)
-    -- 智能锅智能兼容火炉模式
-    if isModuleAvailable("widgets/foodcrafting") then
-        AddClassPostConstruct("widgets/foodcrafting", function(self, ...)
-            local Open = self.Open
-            self.Open = function(self, cooker_inst, ...)
-                local container
-                if cooker_inst.prefab then
-                    container = cooker_inst
-                elseif cooker_inst.inst.prefab then
-                    container = cooker_inst.inst
-                end
-                if container.prefab == "dragonflyfurnace" then
-                    container.prefab = container.masterchef2hm and "portablecookpot" or "cookpot"
-                else
-                    container = nil
-                end
-                Open(self, cooker_inst, ...)
-                if container then container.prefab = "dragonflyfurnace" end
-            end
-            local _UpdateFoodStats = self._UpdateFoodStats
-            self._UpdateFoodStats = function(self, ingdata, num_ing, inv_ings, ...)
-                if self._cooker.prefab ~= "dragonflyfurnace"  then _UpdateFoodStats(self, ingdata, num_ing, inv_ings, ...) end
-                if self._cooker.replica and self._cooker.replica.container then
-                    local redgem = self._cooker.replica.container:GetItemInSlot(1)
-                    if redgem and redgem.prefab == "redgem" then
-                        num_ing = num_ing - 1
-                    end
-                elseif self._cooker.inst.replica and self._cooker.inst.replica.container then
-                    local redgem = self._cooker.inst.replica.container:GetItemInSlot(1)
-                    if redgem and redgem.prefab == "redgem" then
-                        num_ing = num_ing - 1
-                    end
-                end
-                _UpdateFoodStats(self, ingdata, num_ing, inv_ings, ...)
-            end
-        end)
-    end
     -- 校验摧毁，烤熟和主要的做饭按钮
-    local destroyvalidfn = containers.params.dragonflyfurnace.widget.buttoninfo.validfn
-    local cookpotvalidfn = containers.params.cookpot.widget.buttoninfo.validfn
     containers.params.dragonflyfurnace.widget.buttoninfo.validfn = function(inst, ...)
         if inst.destroybtn2hm then
-            if destroyvalidfn(inst, ...) then
+            if inst.replica.container and HasFurnaceTrash(inst.replica.container) then
                 inst.destroybtn2hm:Enable()
             else
                 inst.destroybtn2hm:Disable()
@@ -2683,16 +2852,7 @@ if dragonflyfurnace and not ModManager:GetMod("workshop-3193922031") then
                 inst.cookbtn2hm:Disable()
             end
         end
-        if inst.replica.container ~= nil then
-            local foods = 0
-            for k, v in pairs(inst.replica.container:GetItems()) do
-                if k ~= 1 and itemtestfn(inst.replica.container, v, k) then
-                    foods = foods + 1
-                end
-            end
-            if foods == 4 then return true end
-            return false
-        end
+        return HasFurnaceIngredients(inst.replica.container)
     end
 
     local portablespicer = GetModConfigData("Portable Crock Pot Multi")
@@ -2706,613 +2866,145 @@ if dragonflyfurnace and not ModManager:GetMod("workshop-3193922031") then
     end
 
     local portable_foods = require("preparedfoods_warly")
-    if dragonflyfurnace or portablespicer then
-        local cooking = require("cooking")
-        local function givecontaineritem(container, item, src_pos)
-            if item.components.stackable and not container.infinitestacksize then
-                local slotsize = item.components.stackable.originalmaxsize or item.components.stackable.maxsize
-                if slotsize and item.components.stackable.stacksize > slotsize then
-                    local size = item.components.stackable.stacksize
-                    local totalsize = size + slotsize
-                    for i = slotsize, totalsize, slotsize do
-                        local giveitem = item.components.stackable:Get(slotsize)
-                        container:GiveItem(giveitem, nil, i > size and src_pos or nil)
-                        if giveitem and giveitem:IsValid() then giveitem.currplayer2hm = nil end
-                    end
-                    return
-                end
+    local charge_number = hardmode and 5 or 10
+
+    local function givecontaineritem(container, item, src_pos)
+        local stack = item.components.stackable
+        local maxsize = stack and (stack.originalmaxsize or stack.maxsize)
+        if maxsize and not container.infinitestacksize then
+            while stack:StackSize() > maxsize do
+                local portion = stack:Get(maxsize)
+                container:GiveItem(portion, nil, src_pos)
+                if portion:IsValid() then portion.currplayer2hm = nil end
             end
-            container:GiveItem(item, nil, src_pos)
         end
-        -- 红宝石一个充能三次
-        local charge_number = hardmode and 5 or 10
-        AddComponentPostInit("stewer", function(self)
-            local StartCooking = self.StartCooking
-            function self:StartCooking(doer)
-                -- 防止右键火炉烹饪从而让火炉无视食材限制制作东西
-                if self.startcookfntest2hm and not self.startcookfntest2hm(self.inst, doer) then return end
-                -- 消耗食材时变为批量消耗食材
-                local DestroyContents
-                if self.multi2hm then
-                    DestroyContents = self.inst.components.container.DestroyContents
-                    self.inst.components.container.DestroyContents = function(container, ...)
-                        local allredgem2hm
-                        -- 检测是否是大厨料理
-                        if self.product then
-                            for i, v in pairs(portable_foods) do
-                                if self.product == v.name then
-                                    self.isportable_foods = true
-                                end
-                            end
-                        end
-                        if self.isportable_foods then
-                            for k, v in pairs(container.slots) do
-                                if k == 1 and v and v.prefab == "redgem" then 
-                                    if v.components.stackable then
-                                        allredgem2hm = (v.components.stackable:StackSize() or 0) * charge_number
-                                    end
-                                end
-                            end
-                            allredgem2hm = allredgem2hm or 0 + (self.inst.redgem2hm and self.inst.redgem2hm:value() or 0) -- 2025.10.22:or 0
-                            if doer and doer:IsValid() and doer:HasTag("masterchef") then allredgem2hm = 99999 end
-                            if allredgem2hm ~= nil then self.allredgem2hm = allredgem2hm end
-                        end
-                        local stacksize2hm = nil
-                        for k, v in pairs(container.slots) do
-                            -- 2025.7.30 melon:修批量调味不消耗料理bug
-                            if v.components.stackable and (container.inst.prefab ~= "dragonflyfurnace" or k ~= 1) then
-                                if container.inst.prefab == "dragonflyfurnace" then
-                                    stacksize2hm = stacksize2hm and math.min(not self.isportable_foods and stacksize2hm or math.min(allredgem2hm, stacksize2hm), v.components.stackable.stacksize) or v.components.stackable.stacksize
-                                else
-                                    stacksize2hm = stacksize2hm and math.min(stacksize2hm, v.components.stackable.stacksize) or v.components.stackable.stacksize
-                                end
-                            elseif container.inst.prefab ~= "dragonflyfurnace" or k ~= 1 then -- 2025.7.30
-                                stacksize2hm = 1
-                                break
-                            end
-                        end
-                        self.stacksize2hm = stacksize2hm
-                        if not stacksize2hm then return DestroyContents(container, ...) end
-                        for k, v in pairs(container.slots) do
-                            if v.components.stackable and (container.inst.prefab ~= "dragonflyfurnace" or k ~= 1) then -- 2025.7.30
-                                v.components.stackable:Get(stacksize2hm):Remove()
-                            elseif container.inst.prefab ~= "dragonflyfurnace" or k ~= 1 then -- 2025.7.30
-                                v:Remove()
-                            end
-                        end
-                        -- 做饭时间翻倍
-                        if not self.inst:HasTag("spicer") then
-                            local cooktime = self.targettime - GetTime()
-                            cooktime = cooktime * self.stacksize2hm
-                            self.targettime = GetTime() + cooktime
-                            if self.task ~= nil then
-                                local fn = self.task.fn
-                                self.task:Cancel()
-                                self.task = self.inst:DoTaskInTime(cooktime, fn, self)
-                            end
-                        end
+        container:GiveItem(item, nil, src_pos)
+    end
+
+    AddComponentPostInit("stewer", function(self)
+        local StartCooking = self.StartCooking
+        function self:StartCooking(doer)
+            if not self.multi2hm then return StartCooking(self, doer) end
+
+            local inst = self.inst
+            local container = inst.components.container
+            if not container then return end
+            local furnace = inst.prefab == "dragonflyfurnace"
+            if furnace and not self:CanCook() then return end
+
+            local slots = container.slots
+            local DestroyContents = container.DestroyContents
+            local recipes = cooking.recipes.dragonflyfurnace
+            local gem, stored, available
+            local masterchef = doer and doer:IsValid() and doer:HasTag("masterchef")
+            if furnace then
+                gem = slots[1]
+                local gem_stack = gem and gem.components.stackable
+                stored = inst.redgem2hm:value()
+                local gems = gem_stack and gem_stack:StackSize() or (gem and 1 or 0)
+                available = stored + gems * charge_number
+                if not masterchef and available == 0 then
+                    cooking.recipes.dragonflyfurnace = cooking.recipes.cookpot
+                end
+                -- 原版食谱、菜谱记录和妥协的动态料理属性都只读取四份食材。
+                container.slots = {slots[2], slots[3], slots[4], slots[5]}
+            end
+            container.DestroyContents = function(container, ...)
+                -- 扣除材料前恢复真实槽位，让容器同步、保存和物品事件使用原槽位。
+                container.slots = slots
+                local first_slot = furnace and 2 or 1
+                local use_charge = furnace and not masterchef and available > 0 and portable_foods[self.product] ~= nil
+                local batches = use_charge and available or math.huge
+                for slot, item in pairs(slots) do
+                    if slot >= first_slot then
+                        local stack = item.components.stackable
+                        batches = math.min(batches, stack and stack:StackSize() or 1)
                     end
                 end
-                StartCooking(self, doer)
-                -- 大厨料理结算次数
-                if self.isportable_foods and doer and doer:IsValid() and not doer:HasTag("masterchef") then
-                    local consume = math.min(self.allredgem2hm or 1, self.stacksize2hm or 1)
-                    local redgem_needs = math.ceil(consume / charge_number)
-                    local remaining = redgem_needs * charge_number - consume
-                    if self.inst.redgem2hm ~= nil and self.inst.redgem2hm:value() <= 0 then
-                        for k, v in ipairs(self.inst.components.container.slots) do
-                            if k == 1 and v and v.prefab == "redgem" then 
-                                if v.components.stackable then
-                                    v.components.stackable:Get(redgem_needs):Remove()
-                                else
-                                    v:Remove()
-                                end
-                            end
-                        end
-                        self.inst.redgem2hm:set(remaining)
-                    elseif self.inst.redgem2hm ~= nil and self.inst.redgem2hm:value() > 0 then
-                        if self.inst.redgem2hm:value() < consume then
-                            consume = consume - self.inst.redgem2hm:value()
-                            redgem_needs = math.ceil(consume / charge_number)
-                            remaining = redgem_needs * charge_number - consume
-                            for k, v in ipairs(self.inst.components.container.slots) do
-                                if k == 1 and v and v.prefab == "redgem" then 
-                                    if v.components.stackable then
-                                        v.components.stackable:Get(redgem_needs):Remove()
-                                    else
-                                        v:Remove()
-                                    end
-                                end
-                            end
-                            self.inst.redgem2hm:set(remaining)
-                        else
-                            self.inst.redgem2hm:set(self.inst.redgem2hm:value() - consume)
-                        end
+                if batches == math.huge then return DestroyContents(container, ...) end
+                self.stacksize2hm = batches
+                for slot, item in pairs(slots) do
+                    if slot >= first_slot then
+                        local stack = item.components.stackable
+                        if stack then stack:Get(batches):Remove() else item:Remove() end
                     end
                 end
-                self.isportable_foods = nil
-                self.allredgem2hm = nil
-                if DestroyContents then self.inst.components.container.DestroyContents = DestroyContents end
-            end
-            local OnSave = self.OnSave
-            function self:OnSave()
-                local data = OnSave(self)
-                data.stacksize2hm = self.stacksize2hm
-                data.isportable_foods = self.isportable_foods
-                data.allredgem2hm = self.allredgem2hm
-                return data
-            end
-            local OnLoad = self.OnLoad
-            function self:OnLoad(data)
-                if data ~= nil then
-                    if data.stacksize2hm then self.stacksize2hm = data.stacksize2hm end
-                    if data.isportable_foods then self.isportable_foods = data.isportable_foods end
-                    if data.allredgem2hm then self.allredgem2hm = data.isportable_foods end
-                end
-                OnLoad(self, data)
-            end
-            -- 收获时变为批量收获;自动采收则全部收完,非自动采收则只收取部分,再调用一次收取接口
-            local Harvest = self.Harvest
-            function self:Harvest(harvester)
-                if self.done and self.product and ((self.stacksize2hm and self.stacksize2hm > 1) or self.autoharvest2hm) then
-                    local loot = SpawnPrefab(self.product)
-                    if loot ~= nil then
-                        local recipe = cooking.GetRecipe(self.inst.prefab, self.product)
-                        local stacksize = (recipe and recipe.stacksize or 1) * (self.autoharvest2hm and (self.stacksize2hm or 1) or (self.stacksize2hm - 1))
-                        if stacksize > 1 and loot.components.stackable then loot.components.stackable:SetStackSize(stacksize) end
-                        if self.spoiltime ~= nil and loot.components.perishable ~= nil then
-                            local spoilpercent = self:GetTimeToSpoil() / self.spoiltime
-                            loot.components.perishable:SetPercent(self.product_spoilage * spoilpercent)
-                            loot.components.perishable:StartPerishing()
-                        end
-                        if self.autoharvest2hm and harvester ~= nil and harvester.components.container ~= nil then
-                            givecontaineritem(harvester.components.container, loot)
-                        elseif harvester ~= nil and harvester.components.inventory ~= nil then
-                            givecontaineritem(harvester.components.inventory, loot, self.inst:GetPosition())
-                        elseif self.inst.components.lootdropper then
-                            self.inst.components.lootdropper:FlingItem(loot)
-                        else
-                            loot:Remove()
-                        end
+                if use_charge then
+                    local used_gems = math.max(0, math.ceil((batches - stored) / charge_number))
+                    if used_gems > 0 then
+                        local stack = gem.components.stackable
+                        if stack then stack:Get(used_gems):Remove() else gem:Remove() end
                     end
-                    if self.autoharvest2hm then self.product = nil end
+                    inst.redgem2hm:set(stored + used_gems * charge_number - batches)
                 end
-                return Harvest(self, harvester)
-            end
-        end)
-    end
-elseif dragonflyfurnace then
-    local cooking = require("cooking")
-    local containers = require("containers")
-    local ImageButton = require "widgets/imagebutton"
-    cooking.recipes.dragonflyfurnace = cooking.recipes.portablecookpot
-    -- 做饭期间可以加燃料缩短做饭时间
-    local function clearfuel(inst) if inst.components.fueled then inst.components.fueled.currentfuel = 0 end end
-    local function ontakefuel(inst, fuelvalue)
-        inst.SoundEmitter:PlaySound("dontstarve/common/fireAddFuel")
-        local self = inst.components.stewer
-        if self and self:IsCooking() and self.task and self.targettime and fuelvalue then
-            local dostew = self.task.fn
-            if self.task ~= nil then self.task:Cancel() end
-            self.targettime = math.max(self.targettime - fuelvalue, GetTime())
-            self.task = self.inst:DoTaskInTime(self.targettime - GetTime(), dostew, self)
-        end
-        inst:DoTaskInTime(0, clearfuel)
-    end
-    local function startcookfn(inst)
-        if inst.stewercooktask2hm then
-            inst.stewercooktask2hm:Cancel()
-            inst.SoundEmitter:KillSound("snd")
-            inst.SoundEmitter:PlaySound("dontstarve/common/cookingpot_rattle", "snd")
-        else
-            inst.SoundEmitter:KillSound("loop")
-            inst.SoundEmitter:PlaySound("dontstarve/common/together/dragonfly_furnace/place")
-        end
-        inst.AnimState:PlayAnimation("incinerate")
-        inst.AnimState:PushAnimation("hi", true)
-        local time = inst.AnimState:GetCurrentAnimationLength() - inst.AnimState:GetCurrentAnimationTime() + FRAMES
-        inst.stewercooktask2hm = inst:DoTaskInTime(time, startcookfn)
-        -- 做饭期间可以把东西放火炉上烹饪
-        if not inst:HasTag("burnt") then inst:AddTag("burnt") end
-        if not inst.components.cooker then
-            inst:AddComponent("cooker")
-            if inst.updatecookitem2hm then inst.updatecookitem2hm(inst, 0.15) end
-        end
-        -- 做饭期间可以给燃料缩短做饭时间
-        if not inst.components.fueled then
-            inst:AddComponent("fueled")
-            inst.components.fueled.maxfuel = TUNING.CAMPFIRE_FUEL_MAX
-            inst.components.fueled.currentfuel = 0
-            inst.components.fueled.accepting = true
-            inst.components.fueled:SetTakeFuelFn(ontakefuel)
-        end
-    end
-    -- local function autoHarvest(inst) inst.components.stewer:Harvest(inst) end
-    local function donecookfn(inst)
-        if inst.stewercooktask2hm then
-            inst.stewercooktask2hm:Cancel()
-            inst.stewercooktask2hm = nil
-        end
-        inst.SoundEmitter:KillSound("snd")
-        inst.SoundEmitter:KillSound("loop")
-        -- inst:DoTaskInTime(0, autoHarvest)
-        inst:RemoveTag("burnt")
-        if inst.components.fueled then inst:RemoveComponent("fueled") end
-    end
-    -- 收获后，去除厨师食谱
-    local function onharvest(inst, harvester)
-        inst:RemoveComponent("cooker")
-        if not inst.components.container:IsEmpty() and harvester and harvester:IsValid() and harvester:HasTag("player") then
-            inst.components.container:Open(harvester)
-        end
-    end
-    -- 如果是烹饪时进行的检测,需要判断是否是全食材;如果不是主厨，则不支持主厨食谱
-    local itemtestfn = containers.params.cookpot.itemtestfn
-    local function resetdragonflyfurnacerecipes(inst) cooking.recipes.dragonflyfurnace = cooking.recipes.portablecookpot end
-    local function startcookfntest(inst, doer)
-        if inst.components.stewer.targettime ~= nil then return false end
-        for k, v in pairs(inst.components.container.slots) do if not itemtestfn(inst.components.container, v, k) then return false end end
-        if doer and doer:IsValid() and dragonflyfurnace == true and not ModManager:GetMod("workshop-3193922031") then
-            cooking.recipes.dragonflyfurnace = doer:HasTag("masterchef") and cooking.recipes.portablecookpot or cooking.recipes.cookpot
-            inst:DoTaskInTime(0, resetdragonflyfurnacerecipes)
-        end
-        return true
-    end
-    -- 兼容智能锅
-    COOKINGPOTS = COOKINGPOTS or {}
-    COOKINGPOTS.dragonflyfurnace = COOKINGPOTS.dragonflyfurnace or {}
-    local function perish_rate_multiplier(inst, item) return inst.components.stewer:IsCooking() and 0 or 1 end
-    AddPrefabPostInit("dragonflyfurnace", function(inst)
-        inst:AddTag("stewer")
-        if not TheWorld.ismastersim then return end
-        if not (inst.components.container and inst.components.container.numslots == 4) or inst.components.stewer then return end
-        -- 移除烧烤组件来避免做饭烹饪按钮复用问题
-        inst:RemoveComponent("cooker")
-        inst:AddComponent("stewer")
-        local self = inst.components.stewer
-        self.multi2hm = true
-        -- self.autoharvest2hm = true
-        self.startcookfntest2hm = startcookfntest
-        self.onstartcooking = startcookfn
-        self.oncontinuecooking = startcookfn
-        self.ondonecooking = donecookfn
-        self.onharvest = onharvest
-        self.cooktimemult = 0.8
-        if not inst.components.preserver then
-            inst:AddComponent("preserver")
-            inst.components.preserver:SetPerishRateMultiplier(perish_rate_multiplier)
-        end
-    end)
-    -- 普通的烤熟按钮客户端响应
-    local monstermeats = {cookedmonstermeat = "cookedmeat", cookedmonstersmallmeat = "cookedsmallmeat", um_monsteregg_cooked = "bird_egg_cooked"}
-    local transformitems = {boards = "charcoal"}
-    local function cookfn(doer, inst)
-        local docook
-        if inst.components.stewer and not inst.components.stewer:IsCooking() and inst.components.container and not inst.components.container:IsEmpty() then
-            local replacelist = {}
-            for i, v in pairs(inst.components.container.slots) do
-                if v:IsValid() then
-                    if transformitems[v.prefab] then
-                        local size = v.components.stackable and v.components.stackable.stacksize or 1
-                        local newitem = SpawnPrefab(transformitems[v.prefab])
-                        v:Remove()
-                        if newitem.components.stackable then newitem.components.stackable.stacksize = size end
-                        inst.components.container:GiveItem(newitem, i)
-                        if not docook then docook = true end
-                    elseif v.components.cookable then
-                        local size = v.components.stackable and v.components.stackable.stacksize or 1
-                        local newitem = v.components.cookable:Cook(inst, doer)
-                        v:Remove()
-                        local replace = inst.updatecookitem2hm ~= nil and monstermeats[newitem.prefab]
-                        local replacesize
-                        if replace then
-                            local replacesizechance = size * 0.15
-                            replacesize = math.floor(replacesizechance)
-                            local replacechance = replacesizechance - replacesize
-                            if replacechance > 0 then replacesize = replacesize + (math.random() < replacechance and 1 or 0) end
-                            if replacesize >= 1 then
-                                size = size - replacesize
-                            else
-                                replace = nil
-                            end
-                        end
-                        if size > 0 then
-                            if newitem.components.stackable then newitem.components.stackable.stacksize = size end
-                            inst.components.container:GiveItem(newitem, i)
-                            if replace then
-                                local item = SpawnPrefab(replace)
-                                if item.components.stackable and replacesize then
-                                    item.components.stackable.stacksize = replacesize
-                                end
-                                table.insert(replacelist, item)
-                            end
-                        else
-                            newitem:Remove()
-                            if replace then
-                                local item = SpawnPrefab(replace)
-                                if item.components.stackable and replacesize then
-                                    item.components.stackable.stacksize = replacesize
-                                end
-                                inst.components.container:GiveItem(item, i)
-                            end
-                        end
-                        if not docook then docook = true end
+                if not inst:HasTag("spicer") then
+                    local now = GetTime()
+                    local cooktime = (self.targettime - now) * batches
+                    self.targettime = now + cooktime
+                    if self.task then
+                        local fn = self.task.fn
+                        self.task:Cancel()
+                        self.task = inst:DoTaskInTime(cooktime, fn, self)
                     end
                 end
             end
-            for index, item in ipairs(replacelist) do inst.components.container:GiveItem(item) end
+
+            local ok, result = xpcall(function() return StartCooking(self, doer) end, debug.traceback)
+            container.slots = slots
+            container.DestroyContents = DestroyContents
+            if furnace then cooking.recipes.dragonflyfurnace = recipes end
+            if not ok then error(result, 0) end
+            return result
         end
-        if docook then
-            inst.AnimState:PlayAnimation("hi_hit")
-            inst.SoundEmitter:PlaySound("dontstarve/common/together/dragonfly_furnace/light")
-            inst.SoundEmitter:PlaySound("dontstarve/common/together/dragonfly_furnace/fire_LP", "loop")
+        local OnSave = self.OnSave
+        function self:OnSave()
+            local data = OnSave(self)
+            data.stacksize2hm = self.stacksize2hm
+            return data
         end
-    end
-    AddModRPCHandler("MOD_HARDMODE", "cookbtn2hm", cookfn)
-    local function cookbtnfn(inst, doer)
-        if inst.components.container and inst.components.stewer and TheWorld.ismastersim then
-            cookfn(doer, inst)
-        elseif inst.replica.container ~= nil and inst:HasTag("stewer") then
-            SendModRPCToServer(GetModRPC("MOD_HARDMODE", "cookbtn2hm"), inst)
-        end
-    end
-    -- 添加一个做饭按钮和一个烤熟按钮，且做饭按钮替代原来的摧毁按钮作为主要按钮
-    local cookpotbtnfn = containers.params.cookpot.widget.buttoninfo.fn
-    local olddestroyfn = containers.params.dragonflyfurnace.widget.buttoninfo.fn
-    containers.params.dragonflyfurnace.widget.buttoninfo.fn = cookpotbtnfn
-    local function destroyfn(doer, inst) if inst.components.container then olddestroyfn(inst, doer) end end
-    AddModRPCHandler("MOD_HARDMODE", "destroybtn2hm", destroyfn)
-    local function destroybtnfn(inst, doer)
-        if inst.components.container then
-            olddestroyfn(inst, doer)
-        elseif inst.replica.container ~= nil and inst:HasTag("stewer") then
-            SendModRPCToServer(GetModRPC("MOD_HARDMODE", "destroybtn2hm"), inst)
-        end
-    end
-    AddClassPostConstruct("widgets/containerwidget", function(self)
-        local Open = self.Open
-        self.Open = function(self, container, doer, ...)
-            if container and container.prefab == "dragonflyfurnace" and dragonflyfurnace == true and ModManager:GetMod("workshop-3193922031") and doer and doer:IsValid() then
-                container.masterchef2hm = doer:HasTag("masterchef")
+        local OnLoad = self.OnLoad
+        function self:OnLoad(data)
+            self.stacksize2hm = data and data.stacksize2hm
+            OnLoad(self, data)
+            if self.inst.prefab == "dragonflyfurnace" and self.ingredient_prefabs then
+                local ingredients = {}
+                for _, prefab in ipairs(self.ingredient_prefabs) do
+                    if prefab ~= "redgem" then table.insert(ingredients, prefab) end
+                end
+                self.ingredient_prefabs = ingredients
             end
-            Open(self, container, doer, ...)
-            if container and container.prefab == "dragonflyfurnace" and self.button then
-                local widget = container.replica.container and container.replica.container:GetWidget()
-                if widget and widget.buttoninfo ~= nil and widget.slotpos ~= nil then
-                    local finalslot = (widget.slotpos[3] + widget.slotpos[4]) / 2
-                    local pos1 = Vector3(finalslot.x, finalslot.y - 57, finalslot.z)
-                    local finalslot2 = (widget.slotpos[1] + widget.slotpos[2]) / 2
-                    local pos2 = Vector3(finalslot2.x, finalslot.y + 130, finalslot2.z)
-                    local btnpos = widget.buttoninfo.position
-                    local posmain = Vector3(btnpos.x, finalslot.y - 100, btnpos.z)
-                    -- 原摧毁按钮挪位置
-                    self.button:SetPosition(pos2)
-                    self.button.image:SetScale(1.07, 0.95, 1.07)
-                    -- self.button.image:SetScale(0.77, 1.07, 1.07)
-                    -- 添加一个烤熟按钮
-                    local btn = self:AddChild(ImageButton("images/ui.xml", "button_small.tex", "button_small_over.tex", "button_small_disabled.tex", nil, nil,
-                                                        {1, 1}, {0, 0}))
-                    btn:SetPosition(pos1)
-                    btn.image:SetScale(1.07)
-                    btn.text:SetPosition(2, -2)
-                    btn:SetFont(BUTTONFONT)
-                    btn:SetDisabledFont(BUTTONFONT)
-                    btn:SetTextSize(33)
-                    btn.text:SetVAlign(ANCHOR_MIDDLE)
-                    btn.text:SetColour(0, 0, 0, 1)
-                    btn:SetText(STRINGS.ACTIONS.STORE.COOK)
-                    -- 添加一个做饭按钮
-                    local btn2 = self:AddChild(ImageButton("images/ui.xml", "button_small.tex", "button_small_over.tex", "button_small_disabled.tex", nil, nil,
-                                                        {1, 1}, {0, 0}))
-                    btn2:SetPosition(posmain)
-                    btn2.image:SetScale(1.07)
-                    btn2.text:SetPosition(2, -2)
-                    btn2:SetFont(BUTTONFONT)
-                    btn2:SetDisabledFont(BUTTONFONT)
-                    btn2:SetTextSize(33)
-                    btn2.text:SetVAlign(ANCHOR_MIDDLE)
-                    btn2.text:SetColour(0, 0, 0, 1)
-                    btn2:SetText(STRINGS.NAMES.COOKPOT)
-                    container.destroybtn2hm = self.button
-                    container.cookbtn2hm = btn
-                    self.destroybtn2hm = self.button
-                    self.cookbtn2hm = btn
-                    self.button = btn2
-                    self.destroybtn2hm:SetOnClick(function() destroybtnfn(container, doer) end)
-                    self.cookbtn2hm:SetOnClick(function() cookbtnfn(container, doer) end)
-                    self.button:SetOnClick(function() cookpotbtnfn(container, doer) end)
-                    if widget.buttoninfo.validfn(container) then
-                        self.button:Enable()
+        end
+        -- 收获时变为批量收获;自动采收则全部收完,非自动采收则只收取部分,再调用一次收取接口
+        local Harvest = self.Harvest
+        function self:Harvest(harvester)
+            if self.done and self.product and ((self.stacksize2hm and self.stacksize2hm > 1) or self.autoharvest2hm) then
+                local loot = SpawnPrefab(self.product)
+                if loot ~= nil then
+                    local recipe = cooking.GetRecipe(self.inst.prefab, self.product)
+                    local stacksize = (recipe and recipe.stacksize or 1) * (self.autoharvest2hm and (self.stacksize2hm or 1) or (self.stacksize2hm - 1))
+                    if stacksize > 1 and loot.components.stackable then loot.components.stackable:SetStackSize(stacksize) end
+                    if self.spoiltime ~= nil and loot.components.perishable ~= nil then
+                        local spoilpercent = self:GetTimeToSpoil() / self.spoiltime
+                        loot.components.perishable:SetPercent(self.product_spoilage * spoilpercent)
+                        loot.components.perishable:StartPerishing()
+                    end
+                    if self.autoharvest2hm and harvester ~= nil and harvester.components.container ~= nil then
+                        givecontaineritem(harvester.components.container, loot)
+                    elseif harvester ~= nil and harvester.components.inventory ~= nil then
+                        givecontaineritem(harvester.components.inventory, loot, self.inst:GetPosition())
+                    elseif self.inst.components.lootdropper then
+                        self.inst.components.lootdropper:FlingItem(loot)
                     else
-                        self.button:Disable()
+                        loot:Remove()
                     end
                 end
+                if self.autoharvest2hm then self.product = nil end
             end
-        end
-        local Close = self.Close
-        self.Close = function(self, ...)
-            if self.container and self.container.destroybtn2hm then self.container.destroybtn2hm = nil end
-            if self.container and self.container.cookbtn2hm then self.container.cookbtn2hm = nil end
-            if self.isopen then
-                if self.cookbtn2hm then
-                    self.cookbtn2hm:Kill()
-                    self.cookbtn2hm = nil
-                end
-                if self.destroybtn2hm then
-                    self.destroybtn2hm:Kill()
-                    self.destroybtn2hm = nil
-                end
-            end
-            Close(self, ...)
+            local result = Harvest(self, harvester)
+            if result and self.inst.prefab == "dragonflyfurnace" then UpdateFurnaceReady(self.inst) end
+            return result
         end
     end)
-    -- 智能锅智能兼容火炉模式
-    if dragonflyfurnace == -1 and isModuleAvailable("widgets/foodcrafting") then
-        AddClassPostConstruct("widgets/foodcrafting", function(self, ...)
-            local Open = self.Open
-            self.Open = function(self, cooker_inst, ...)
-                local container
-                if cooker_inst.prefab then
-                    container = cooker_inst
-                elseif cooker_inst.inst.prefab then
-                    container = cooker_inst.inst
-                end
-                if container.prefab == "dragonflyfurnace" then
-                    container.prefab = container.masterchef2hm and "portablecookpot" or "cookpot"
-                else
-                    container = nil
-                end
-                Open(self, cooker_inst, ...)
-                if container then container.prefab = "dragonflyfurnace" end
-            end
-        end)
-    end
-    -- 校验摧毁，烤熟和主要的做饭按钮
-    local destroyvalidfn = containers.params.dragonflyfurnace.widget.buttoninfo.validfn
-    local cookpotvalidfn = containers.params.cookpot.widget.buttoninfo.validfn
-    containers.params.dragonflyfurnace.widget.buttoninfo.validfn = function(inst, ...)
-        if inst.destroybtn2hm then
-            if destroyvalidfn(inst, ...) then
-                inst.destroybtn2hm:Enable()
-            else
-                inst.destroybtn2hm:Disable()
-            end
-        end
-        if inst.cookbtn2hm then
-            local result = false
-            if inst.replica.container ~= nil and not inst.replica.container:IsEmpty() then
-                for k, v in pairs(inst.replica.container:GetItems()) do
-                    if v ~= nil and (v:HasTag("cookable") or transformitems[v.prefab]) then
-                        result = true
-                        break
-                    end
-                end
-            end
-            if result then
-                inst.cookbtn2hm:Enable()
-            else
-                inst.cookbtn2hm:Disable()
-            end
-        end
-        if cookpotvalidfn(inst, ...) then
-            for k, v in pairs(inst.replica.container:GetItems()) do if not itemtestfn(inst.replica.container, v, k) then return false end end
-            return true
-        end
-    end
-
-    local portablespicer = GetModConfigData("Portable Crock Pot Multi")
-    if portablespicer then
-        local containers = require("containers")
-        containers.params.portablespicer.acceptsstacks = true
-        AddPrefabPostInit("portablespicer", function(inst)
-            if not TheWorld.ismastersim then return end
-            if inst.components.stewer then inst.components.stewer.multi2hm = true end
-        end)
-    end
-
-    if dragonflyfurnace or portablespicer then
-        local cooking = require("cooking")
-        local function givecontaineritem(container, item, src_pos)
-            if item.components.stackable and not container.infinitestacksize then
-                local slotsize = item.components.stackable.originalmaxsize or item.components.stackable.maxsize
-                if slotsize and item.components.stackable.stacksize > slotsize then
-                    local size = item.components.stackable.stacksize
-                    local totalsize = size + slotsize
-                    for i = slotsize, totalsize, slotsize do
-                        local giveitem = item.components.stackable:Get(slotsize)
-                        container:GiveItem(giveitem, nil, i > size and src_pos or nil)
-                        if giveitem and giveitem:IsValid() then giveitem.currplayer2hm = nil end
-                    end
-                    return
-                end
-            end
-            container:GiveItem(item, nil, src_pos)
-        end
-        AddComponentPostInit("stewer", function(self)
-            local StartCooking = self.StartCooking
-            function self:StartCooking(doer)
-                -- 防止右键火炉烹饪从而让火炉无视食材限制制作东西
-                if self.startcookfntest2hm and not self.startcookfntest2hm(self.inst, doer) then return end
-                -- 消耗食材时变为批量消耗食材
-                local DestroyContents
-                if self.multi2hm then
-                    DestroyContents = self.inst.components.container.DestroyContents
-                    self.inst.components.container.DestroyContents = function(container, ...)
-                        local stacksize2hm = nil
-                        for k, v in pairs(container.slots) do
-                            if v.components.stackable then
-                                stacksize2hm = stacksize2hm and math.min(stacksize2hm, v.components.stackable.stacksize) or v.components.stackable.stacksize
-                            else
-                                stacksize2hm = 1
-                                break
-                            end
-                        end
-                        self.stacksize2hm = stacksize2hm
-                        if not stacksize2hm then return DestroyContents(container, ...) end
-                        for k, v in pairs(container.slots) do
-                            if v.components.stackable then
-                                v.components.stackable:Get(stacksize2hm):Remove()
-                            else
-                                v:Remove()
-                            end
-                        end
-                        -- 做饭时间翻倍
-                        if not self.inst:HasTag("spicer") then
-                            local cooktime = self.targettime - GetTime()
-                            cooktime = cooktime * self.stacksize2hm
-                            self.targettime = GetTime() + cooktime
-                            if self.task ~= nil then
-                                local fn = self.task.fn
-                                self.task:Cancel()
-                                self.task = self.inst:DoTaskInTime(cooktime, fn, self)
-                            end
-                        end
-                    end
-                end
-                StartCooking(self, doer)
-                if DestroyContents then self.inst.components.container.DestroyContents = DestroyContents end
-            end
-            local OnSave = self.OnSave
-            function self:OnSave()
-                local data = OnSave(self)
-                data.stacksize2hm = self.stacksize2hm
-                return data
-            end
-            local OnLoad = self.OnLoad
-            function self:OnLoad(data)
-                if data and data.stacksize2hm then self.stacksize2hm = data.stacksize2hm end
-                OnLoad(self, data)
-            end
-            -- 收获时变为批量收获;自动采收则全部收完,非自动采收则只收取部分,再调用一次收取接口
-            local Harvest = self.Harvest
-            function self:Harvest(harvester)
-                if self.done and self.product and ((self.stacksize2hm and self.stacksize2hm > 1) or self.autoharvest2hm) then
-                    local loot = SpawnPrefab(self.product)
-                    if loot ~= nil then
-                        local recipe = cooking.GetRecipe(self.inst.prefab, self.product)
-                        local stacksize = (recipe and recipe.stacksize or 1) * (self.autoharvest2hm and (self.stacksize2hm or 1) or (self.stacksize2hm - 1))
-                        if stacksize > 1 and loot.components.stackable then loot.components.stackable:SetStackSize(stacksize) end
-                        if self.spoiltime ~= nil and loot.components.perishable ~= nil then
-                            local spoilpercent = self:GetTimeToSpoil() / self.spoiltime
-                            loot.components.perishable:SetPercent(self.product_spoilage * spoilpercent)
-                            loot.components.perishable:StartPerishing()
-                        end
-                        if self.autoharvest2hm and harvester ~= nil and harvester.components.container ~= nil then
-                            givecontaineritem(harvester.components.container, loot)
-                        elseif harvester ~= nil and harvester.components.inventory ~= nil then
-                            givecontaineritem(harvester.components.inventory, loot, self.inst:GetPosition())
-                        elseif self.inst.components.lootdropper then
-                            self.inst.components.lootdropper:FlingItem(loot)
-                        else
-                            loot:Remove()
-                        end
-                    end
-                    if self.autoharvest2hm then self.product = nil end
-                end
-                return Harvest(self, harvester)
-            end
-        end)
-    end
 end
 
 -- 2025.8.8 melon:晾肉架改动:可晾晒蔬菜变蔬菜干、不可燃。----------

@@ -1071,7 +1071,7 @@ local function SpawnDeerWaveOne(inst)
     end
 end
 
-function GetCurrentPhase(inst)
+local function GetCurrentPhase(inst)
 	local healthPercentage = inst.components.health:GetPercent()
 	if inst:IsUnchained() then
 		if healthPercentage <= 0.1 then

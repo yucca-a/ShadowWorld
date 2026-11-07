@@ -947,13 +947,13 @@ local function randomfrozenfissure(inst)
                         frozenfissuretask(_x, _z, i, inst)
                     end
                 else 
-                    _i = math.max(i, step/2)
+                    local _i = math.max(i, step/2)
                     local angle = 2 * math.asin(step / (2 * _i))
                     local num = 1
                     if angle then num = math.min(math.floor(TWOPI / angle), 20) end
                     for a = 0, num - 1 do
                         local random_radius = math.random(0,4)
-                        random_angle = math.random() * TWOPI
+                        local random_angle = math.random() * TWOPI
                         local _x = start_x + math.cos(a * angle) * _i + math.cos(random_angle) * random_radius
                         local _z = start_z + math.sin(a * angle) * _i + math.sin(random_angle) * random_radius
                         if not TheWorld.Map:IsOceanAtPoint(_x,0,_z, false, true) and #TheSim:FindEntities(_x, 0, _z, step / 2, {"ice_circle2hm", "FX"}) <= 0 then
@@ -1196,14 +1196,14 @@ AddPrefabPostInit("sharkboi", function(inst)
     inst:AddComponent("amphibiouscreature")
     inst.aoethrow2hm = 1
     if inst.OnEntitySleep then
-        oldOnEntitySleep = inst.OnEntitySleep
+        local oldOnEntitySleep = inst.OnEntitySleep
         inst.OnEntitySleep = function(inst, ...)
             oldOnEntitySleep(inst, ...)
             onsleep(inst)
         end
     end
     if inst.OnEntityWake then
-        oldOnEntityWake = inst.OnEntityWake
+        local oldOnEntityWake = inst.OnEntityWake
         inst.OnEntityWake = function(inst, ...)
             oldOnEntityWake(inst, ...)
             onwake(inst)
@@ -1353,7 +1353,7 @@ AddPrefabPostInitAny(function(inst)
                     if inst:HasTag("frostcore2hm") then
                         extra = (TUNING.isCh2hm and "霜冻- " or "Frost- ")
                         if olddisplaynamefn then
-                            _name = olddisplaynamefn(inst)
+                            local _name = olddisplaynamefn(inst)
                             if _name ~= nil then
                                 name = _name 
                                 extra = (TUNING.isCh2hm and "霜冻/" or "Frost/")
@@ -1391,6 +1391,14 @@ AddPrefabPostInit("tacklestation2hm", function(inst)
     inst:ListenForEvent("preserverupadat2hm", inst.onupgrade, TheWorld)
     SetOnSave(inst, onsave)
     SetOnLoad(inst, onload)
+end)
+AddPrefabPostInit("shadowvaulttacklepage2hm", function(inst)
+    if not TheWorld.ismastersim then return end
+    inst:ListenForEvent("preserverupadat2hm", function() onupgrade(inst) end, TheWorld)
+    inst:DoStaticTaskInTime(0, function()
+        local tackle = TheWorld:GetPocketDimensionContainer("tacklestation2hm")
+        if tackle and tackle:HasTag("frostcore2hm") then onupgrade(inst) end
+    end)
 end)
 AddShardModRPCHandler("MOD_HARDMODE", "ms_preserver_update", function(shard_id, islink, data)
     TheWorld:PushEvent("preserverupadat2hm")

@@ -2,13 +2,22 @@
 
 基于《为爽而虐/暗影世界 永恒之季》的独立维护分支，由 Yucca 持续维护与调整。
 
-- 当前工坊版本：**2.8.14.98.1**，已于 2026-11-05 发布。
-- [本次更新日志](workshop/update-notes-2.8.14.98.1.txt)：角色夜视、暗影分身、建造交互与永不妥协兼容修复。[2.8.14.98 更新日志](workshop/update-notes-2.8.14.98.txt)、[2.8.14.97.3 修复日志](workshop/update-notes-2.8.14.97.3.txt)、[2.8.14.97 完整日志](workshop/update-notes-2.8.14.97.txt)。
+- 当前工坊版本为 **2.8.15.0.10**，于 2026-11-07 发布。[更新日志](workshop/update-notes-2.8.15.0.10.txt) · [发布记录](development/releases/v2.8.15.0.10-publication.json)
+- 2.8.15.0.10 已发布：贝爷／德爷默认关闭与 `/nd` 私有难度查询的简短更新说明；玩法源码沿用已发布的 2.8.15.0.9。
+- 2.8.15.0.9 已发布：穿越三档、新旧档默认原版与旧枢纽物品自动迁移。[验证记录](development/validation/exchange-variants-20261107.txt)
+- 2.8.15.0.9 已发布：修复私人离线容器／受保护模组物品拖锁空间，以及回档后钓具入口失效崩溃；独立双层副本通过两轮保存重启和原生回档。[验证记录](development/validation/vault-native-recovery-20261107.txt)
+- 2.8.15.0.9 已发布：Gem Core 绿杖启动兼容及全量崩溃入口排查修复；388 个 Lua 编译、21 组回归和三种服务端环境检查通过。[排查记录](development/validation/crash-audit-20261107.txt)
+- 2.8.15.0.9 已发布：合并贝爷／德爷生存模式，两个总开关默认关闭；新增私有难度查询 `/nd`，按生效设置相对默认的净变化评定简单／默认／困难／地狱。[实装记录](development/survival-difficulty-20261107.txt)
+- 2.8.15.0.8 已发布：修复无名称实体作为血量变化来源时，在生成显示名称过程中触发的崩溃。[验证记录](development/validation/health-cause-20261107.txt)
+- 2.8.15.0.8 已发布：修复影刀／玻璃刀刷新注能图标时误删暂存物品导致的空间锁定，增加存入前检查及安全自动重试。[验证记录](development/validation/vault-capture-recovery-20261107.txt)
+- 本次修复新档位默认迁移、动态减伤、眼球伞与水中木／骑乘树荫切换，并放宽战斗险境倍率压缩。[验证记录](development/validation/combat-shade-defaults-20261107.txt)
+- 2.8.15.0.6 已发布暗影／钓具空间跨层同时使用及平滑淡红微光；本版将动态减伤的 400 点保底衰减延后至停手 1 秒后启用。[共享空间验证](development/validation/nexus-shared-20261107.txt)
+- 2.8.15.0 加入暗影枢纽、开房 60 tick、龙鳞火炉与动态料理兼容、薇诺娜增强及装备修复。[2.8.15.0 更新日志](workshop/update-notes-2.8.15.0.txt)
 - [创意工坊条目](https://steamcommunity.com/sharedfiles/filedetails/?id=3832182265)
 - [私有维护仓库](https://github.com/yucca-a/ShadowWorld)，维护分支为 `codex/maintenance`。
 - 原作者署名及许可证保留在 [来源说明](content/ARCHIVE_SOURCE.txt) 和 [LICENSE](content/LICENSE) 中。
 
-2.8.14.98.1 已发布，线上版本标签及更新日志已核验。发布源码校验信息见 [发布记录](development/releases/v2.8.14.98.1-publication.json)。性能和原生双服验证见 [存档性能优化](development/performance-2026-11-04.txt)、[世界重建优化](development/regeneration-2026-11-04.txt)。远古宝珠仅有设计草案，不包含在发布内容中。
+线上版本标签及更新日志已核验。[2.8.15.0 发布记录](development/releases/v2.8.15.0-publication.json) · [存档性能优化](development/performance-2026-11-04.txt) · [世界重建优化](development/regeneration-2026-11-04.txt)
 
 本次发布的修复与加强：[离线模式模组查看按钮](development/离线模式模组查看修复.md)、[穿越世界快速版](development/穿越世界快速版_实装说明.md)、[科技建筑配方预览崩溃修复](development/科技建筑配方预览崩溃_修复记录.md)、[眼球炮塔加强](development/眼球炮塔加强_实装说明.md)、[维希独立配置与幽闭兼容](development/维希独立配置与幽闭恐惧兼容.md)、[怪物角色夜视与沃托姆兼容](development/怪物角色夜视与沃托姆兼容.md)，均已包含在 2.8.14.97 中。
 
@@ -49,6 +58,7 @@
 - [实装说明](development/战斗险境与巨兽装甲_实装说明.md)
 - [爆炸记忆机制：暂缓](development/爆炸记忆机制_暂缓.md)
 - [测试运行方法](tests/README.md)
+- [三档穿越与旧档自动迁移验证（2.8.15.0.9 已发布）](development/validation/exchange-variants-20261107.txt)
 - [版本快照及校验记录](development/releases/README.md)
 
 ## 工坊维护

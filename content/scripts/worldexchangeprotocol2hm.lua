@@ -148,7 +148,7 @@ function Protocol:Receive(peer, m)
                 return
             end
         end
-        local ok, reason = self.io.lock(m.name)
+        local ok, reason = self.io.lock(m.name, m.payload)
         if not ok then self:Send("REJECT", {reason = reason}, peer, m); return end
         local own, why = self.io.snapshot(m.name)
         local compatible, error

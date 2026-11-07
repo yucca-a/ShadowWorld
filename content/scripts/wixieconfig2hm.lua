@@ -1,4 +1,5 @@
 local M = {}
+local combatconfig = require("combatconfig2hm")
 local umOptions = {
     wixie = true,
     ["Wixie No Claustrophobia"] = true,
@@ -43,10 +44,20 @@ function M.Install(G, modname)
             if target ~= name or type(config) ~= "table" then return config end
             local visible = {}
             for _, option in ipairs(config) do
-                if option.name == "um_patch" and (option.saved == 1 or option.saved == 2 or option.saved == 3) then
+                local saved = combatconfig.MigrateSaved(option.name, option.saved)
+                if option.name == "epic_ruin" and saved == 1 then
+                    saved = option.default
+                elseif option.name == "World Exchange" and (saved == "traditional" or saved == false) then
+                    saved = option.default
+                elseif option.name == "um_patch" and (saved == 1 or saved == 2 or saved == 3) then
+                    saved = true
+                elseif option.name == "dragonfly furnace stewer" and saved == -1 then
+                    saved = true
+                end
+                if saved ~= option.saved then
                     local migrated = {}
                     for key, value in pairs(option) do migrated[key] = value end
-                    migrated.saved = true
+                    migrated.saved = saved
                     table.insert(visible, migrated)
                 elseif hideUMOptions and umOptions[option.name] then
                     local value = option.saved

@@ -1,6 +1,9 @@
 ----------------------------[装备(可装备的)]------------------------------------
 -------------------------------------------------------------------------------
 local hardmode = TUNING.hardmode2hm
+local InfusionView = require("weaponinfusionview2hm")
+local RPCGuard = require("rpcguard2hm")
+AddClassPostConstruct("widgets/itemtile", InfusionView.AttachTile)
 
 -- 启迪之冠养老，保暖隔热防水绝缘冷源热源
 local alterhat = GetModConfigData("Enlightened Crown Benefit From Spore")
@@ -818,6 +821,7 @@ if GetModConfigData("Turf-Raiser Helm Plant Tree Cone") then
                                 if ent and ent.prefab == "bullkelp_plant" and ent:IsValid() and ent:IsOnOcean() then
                                     changeent = ent
                                     ent:AddTag("NOBLOCK")
+                                    local _y
                                     nx, _y, nz = ent.Transform:GetWorldPosition()
                                     break
                                 end
@@ -1540,44 +1544,7 @@ if GlassCutter then
         end
         UpdateStatus(inst)
     end
-    local function resetweaponperishableview(inst)
-        inst.resetviewtask2hm = nil
-        local grandowner = inst.components.inventoryitem:GetGrandOwner()
-        if not (grandowner and grandowner.Transform) then return end
-        local x, y, z = grandowner.Transform:GetWorldPosition()
-        if not TheWorld.Map:IsPassableAtPoint(x, y, z, true) then return end
-        local owner = inst.components.inventoryitem.owner
-        if owner and owner.components.inventory then
-            if inst.components.equippable:IsEquipped() then
-                owner.components.inventory:Unequip(EQUIPSLOTS.HANDS)
-                owner:AddChild(inst)
-                inst:RemoveFromScene()
-                inst:DoTaskInTime(0, function() owner.components.inventory:Equip(inst) end)
-            else
-                if prevslot then
-                local prevslot = owner.components.inventory:GetItemSlot(inst)
-                owner.components.inventory:RemoveItem(inst)
-                owner:AddChild(inst)
-                inst:RemoveFromScene()
-                inst:DoTaskInTime(0, function() 
-                    local result = owner.components.inventory:GiveItem(inst, prevslot)
-                    if not result then inst:Remove() end
-                end)
-                end
-            end
-        elseif owner and owner.components.container then
-            local prevslot = owner.components.container:GetItemSlot(inst)
-            if prevslot then
-                owner.components.container:RemoveItem(inst)
-                owner:AddChild(inst)
-                inst:RemoveFromScene()
-                inst:DoTaskInTime(0, function()
-                    local result = owner.components.container:GiveItem(inst, prevslot) 
-                    if not result then inst:Remove() end
-                end)
-            end
-        end
-    end
+    local resetweaponperishableview = InfusionView.Refresh
     local function onrepaired(inst, repairuse, doer, repair_item, useitems)
         if repair_item.prefab == "moonglass_charged" or repair_item.prefab == "purebrilliance" then
             if inst.components.finiteuses:GetPercent() >= 1 then useitems = useitems + 0.5 end
@@ -1641,6 +1608,7 @@ if GlassCutter then
         if GetModConfigData("Construction Amulet Repair Equip") then inst.repairmaterials2hm.moonglass = TUNING.GLASSCUTTER.USES / 7 end
         inst.displaynamefn = DisplayNameFn
         inst.itemtilefn2hm = itemtiletextfn
+        InfusionView.Install(inst)
         -- inst:AddTag("hide_percentage")
         inst:AddTag("show_spoilage")
         inst:AddTag("allow_action_on_impassable")
@@ -2616,72 +2584,7 @@ end
 
 -- 眼球伞自愈隔热
 if GetModConfigData("Eyebrella Swell Shade") then
-    if hardmode and TUNING.DSTU then TUNING.DSTU.EYEBRELLAREWORK = true end
-    if not FUELTYPE.EYE then FUELTYPE.EYE = "EYE" end
-    local function refreshstatus(inst)
-        inst.refreshstatustask2hm = nil
-        if not inst.components.fueled then return end
-        if (TheWorld.state.israining or TheWorld.state.issnowing) and not TheWorld.state.isacidraining then
-            inst.components.fueled.rate_modifiers:SetModifier(inst, TheWorld.state.issnowing and -3 or -1, "2hm")
-            if (inst.components.equippable and inst.components.equippable:IsEquipped()) or
-                not (inst.components.inventoryitem and inst.components.inventoryitem:IsHeld()) then
-                inst.components.fueled:StartConsuming()
-            else
-                inst.components.fueled:StopConsuming()
-            end
-        else
-            inst.components.fueled.rate_modifiers:RemoveModifier(inst, "2hm")
-            if inst.components.equippable and inst.components.equippable:IsEquipped() then
-                inst.components.fueled:StartConsuming()
-            else
-                inst.components.fueled:StopConsuming()
-            end
-        end
-    end
-    local function delayrefreshstatus(inst) if not inst.refreshstatustask2hm then inst.refreshstatustask2hm = inst:DoTaskInTime(0, refreshstatus) end end
-    AddPrefabPostInit("eyebrellahat", function(inst)
-        if not TheWorld.ismastersim then return end
-        inst:WatchWorldState("isacidraining", delayrefreshstatus)
-        inst:WatchWorldState("israining", delayrefreshstatus)
-        inst:WatchWorldState("issnowing", delayrefreshstatus)
-        inst:ListenForEvent("onputininventory", delayrefreshstatus)
-        inst:ListenForEvent("ondropped", delayrefreshstatus)
-        inst:ListenForEvent("equipped", delayrefreshstatus)
-        inst:ListenForEvent("unequipped", delayrefreshstatus)
-        delayrefreshstatus(inst)
-        if hardmode and not TUNING.DSTU and inst.components.fueled then
-            inst.components.fueled:InitializeFuelLevel(TUNING.EYEBRELLA_PERISHTIME * (12 / 9))
-            inst.components.fueled.no_sewing = true
-            inst.components.fueled.fueltype = FUELTYPE.EYE
-            inst.components.fueled.accepting = true
-        end
-    end)
-    if hardmode then
-        local fuels = {milkywhites = {power = TUNING.MED_FUEL * 13}, goatmilk = {power = TUNING.MED_FUEL * 13}, butter = {power = TUNING.MED_FUEL * 14}}
-        for k, v in pairs(fuels) do
-            AddPrefabPostInit(k, function(inst)
-                if inst.components.fuel == nil then
-                    inst:AddComponent("fuel")
-                    inst.components.fuel.fuelvalue = v.power
-                    inst.components.fuel.fueltype = FUELTYPE.EYE
-                end
-            end)
-        end
-    end
-    AddComponentPostInit("sheltered", function(self)
-        local SetSheltered = self.SetSheltered
-        self.SetSheltered = function(self, issheltered, level, ...)
-            if self.inst.components.inventory and self.inst.components.temperature then
-                self.level2hm = level
-                local equip = self.inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HEAD)
-                if equip and equip:IsValid() and equip.prefab == "eyebrellahat" and equip.components.fueled then
-                    issheltered = true
-                    level = self.inst.components.temperature.current < self.inst.components.temperature.overheattemp - 4 and 2 or math.max(level or 1, 1)
-                end
-            end
-            SetSheltered(self, issheltered, level, ...)
-        end
-    end)
+    require("eyebrellashade2hm").Install(hardmode, AddPrefabPostInit, AddComponentPostInit)
 end
 
 -- 恐怖盾牌增强
@@ -3894,8 +3797,8 @@ end
 if GetModConfigData("Reskin Tool Upgrade") then
     -- 多世界科技变动数据统一
     AddShardModRPCHandler("MOD_HARDMODE", "ms_prototyper_update", function(shard_id, islink, data)
-        local success, data = RunInSandboxSafe(data)
-        if success and TheShard and data then
+        local data = RPCGuard.DecodeTable(data)
+        if TheShard and data and TheWorld and TheWorld.components.persistent2hm and TheWorld.components.persistent2hm.data then
             local worldid = tostring(TheShard:GetShardId())
             shard_id = tostring(shard_id)
             local _data = TheWorld.components.persistent2hm.data
@@ -4813,44 +4716,7 @@ if GetModConfigData("Nightsword Infused") then
             inst:RemoveEventCallback("onremove", inst.removecomponent2hm)
         end
     end
-    local function resetweaponperishableview(inst)
-        inst.resetviewtask2hm = nil
-        local grandowner = inst.components.inventoryitem:GetGrandOwner()
-        if not (grandowner and grandowner.Transform) then return end
-        local x, y, z = grandowner.Transform:GetWorldPosition()
-        if not TheWorld.Map:IsPassableAtPoint(x, y, z, true) then return end
-        local owner = inst.components.inventoryitem.owner
-        if owner and owner.components.inventory then
-            if inst.components.equippable:IsEquipped() then
-                owner.components.inventory:Unequip(EQUIPSLOTS.HANDS)
-                owner:AddChild(inst)
-                inst:RemoveFromScene()
-                inst:DoTaskInTime(0, function() owner.components.inventory:Equip(inst) end)
-            else
-                if prevslot then
-                local prevslot = owner.components.inventory:GetItemSlot(inst)
-                owner.components.inventory:RemoveItem(inst)
-                owner:AddChild(inst)
-                inst:RemoveFromScene()
-                inst:DoTaskInTime(0, function() 
-                    local result = owner.components.inventory:GiveItem(inst, prevslot)
-                    if not result then inst:Remove() end
-                end)
-                end
-            end
-        elseif owner and owner.components.container then
-            local prevslot = owner.components.container:GetItemSlot(inst)
-            if prevslot then
-                owner.components.container:RemoveItem(inst)
-                owner:AddChild(inst)
-                inst:RemoveFromScene()
-                inst:DoTaskInTime(0, function()
-                    local result = owner.components.container:GiveItem(inst, prevslot) 
-                    if not result then inst:Remove() end
-                end)
-            end
-        end
-    end
+    local resetweaponperishableview = InfusionView.Refresh
     local function onrepaired(inst, repairuse, doer, repair_item, useitems)
         if repair_item.prefab == "horrorfuel" or repair_item.prefab == "dreadstone" then
             if inst.components.finiteuses:GetPercent() >= 1 then useitems = useitems + 0.5 end
@@ -4907,6 +4773,7 @@ if GetModConfigData("Nightsword Infused") then
         if GetModConfigData("Construction Amulet Repair Equip") then inst.repairmaterials2hm.nightmarefuel = TUNING.NIGHTSWORD_USES / 11 end
         inst.displaynamefn = DisplayNameFn
         inst.itemtilefn2hm = itemtiletextfn
+        InfusionView.Install(inst)
         inst:AddTag("show_spoilage")
         inst.weaponlevel2hm = net_tinybyte(inst.GUID, "weapon.level2hm", "weaponlevel2hmdirty")
         if not TheWorld.ismastersim then return end
@@ -4919,8 +4786,15 @@ if GetModConfigData("Nightsword Infused") then
         inst:AddComponent("repairable2hm")
         inst.components.repairable2hm.ignoremax = true
         inst.components.repairable2hm.onrepaired = onrepaired
-        if inst.components.equippable then
-            inst.components.equippable.dapperness = TUNING.CRAZINESS_SMALL
+        local equippable = inst.components.equippable
+        if equippable then
+            equippable.dapperness = TUNING.CRAZINESS_SMALL
+            local dapperfn = equippable.dapperfn
+            if dapperfn then
+                -- Scale the existing aura so owner-specific modifiers still apply.
+                local scale = TUNING.CRAZINESS_SMALL / TUNING.CRAZINESS_MED
+                equippable.dapperfn = function(item, owner) return dapperfn(item, owner) * scale end
+            end
             inst:ListenForEvent("equipped", onequip)
             inst:ListenForEvent("unequipped", onunequip)
         end

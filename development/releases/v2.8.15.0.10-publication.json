@@ -1,0 +1,29 @@
+{
+  "workshop_id": "3832182265",
+  "version": "2.8.15.0.10",
+  "published_at_local": "2026-11-07T22:10:06+08:00",
+  "uploader_status": "Update completed",
+  "steam_upload_result": "OK",
+  "visibility": "Public",
+  "version_tag_verified": true,
+  "steam_content_manifest_id": "8404302258151946056",
+  "content_file_count": 470,
+  "content_bytes": 21657520,
+  "server_data_bytes": 21657676,
+  "lua51_syntax_files": 406,
+  "survival_difficulty_checks": 7000,
+  "patch_notes_file": "workshop/update-notes-2.8.15.0.10.txt",
+  "patch_notes_sha256": "8fb8c5fb160b81c741f4659ea343c4687e45428c04273f6746cfe9a0917782f3",
+  "patch_notes_submitted_verified": true,
+  "public_changelog_readback_verified": false,
+  "public_changelog_readback_reason": "HTTP Error 429: Too Many Requests",
+  "downloaded_package_verified": false,
+  "uploader_evidence": "work/release-2.8.15.0.10/uploader-verified.txt",
+  "archive": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\backups\\releases\\v2.8.15.0.10-content.zip",
+  "archive_sha256": "ec16e64c5cea5c8bdbc759cde606b30af70467cb8bba901da3b7778bce29c6e7",
+  "difference_from_previous_release": "Only modinfo.lua version changed; survival modes and /nd were already included in 2.8.15.0.9. This release publishes their short requested notes.",
+  "validation": [
+    "development/validation/survival-difficulty-20261107.json"
+  ],
+  "initial_attempt": "Same-version submission rejected by uploader before upload; incremented to 2.8.15.0.10"
+}

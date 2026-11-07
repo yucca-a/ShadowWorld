@@ -774,10 +774,10 @@ local function oniceattacked2hm(inst, data)
     if data and data.attacker and data.attacker:IsValid() and data.attacker:HasTag("player") then
         local attacker = data.attacker
         inst.shouldremoveice2hm = inst:DoTaskInTime(2, function(inst, attacker)
-            if TheWorld.components.oceanicemanager then
+            inst.shouldremoveice2hm = nil
+            if attacker and attacker:IsValid() and TheWorld.components.oceanicemanager then
                 local pt = attacker:GetPosition()
                 TheWorld.components.oceanicemanager:QueueDestroyForIceAtPoint(pt.x, 0, pt.z)
-                inst.shouldremoveice2hm = nil
             end
         end, attacker)
     end
@@ -800,7 +800,6 @@ AddComponentPostInit("oceanicemanager", function(self)
                 if check_health then
                     local dist = math.sqrt(offset_x^2 + offset_z^2)
                     if dist < 2.5 then
-                        tile_x, tile_y = check_tile_x, check_tile_z
                         x, z = check_x, check_z
                     end
                 end

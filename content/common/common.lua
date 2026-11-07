@@ -195,7 +195,12 @@ function SetComponentLoad(component, fn)
 end
 
 -- 多世界统一季节接口 SendModRPCToShard(GetShardModRPC("MOD_HARDMODE", "ms_setseason_update"), nil, season)
-AddShardModRPCHandler("MOD_HARDMODE", "ms_setseason_update", function(shard_id, season) TheWorld:PushEvent("ms_setseason", season) end)
+AddShardModRPCHandler("MOD_HARDMODE", "ms_setseason_update", function(shard_id, season)
+    if type(season) ~= "string" or not TheWorld then return end
+    local component = TheWorld.net and TheWorld.net.components.seasons
+    local data = component and component:OnSave()
+    if not (data and data.lengths) or data.lengths[season] ~= nil then TheWorld:PushEvent("ms_setseason", season) end
+end)
 
 -- -- 道具设置9999堆叠 MakeUnlimitStackSize
 -- local maxsize = 9999 -- net_shortint

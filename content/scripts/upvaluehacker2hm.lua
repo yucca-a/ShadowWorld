@@ -67,33 +67,42 @@ Example 3: Local variables in components
 Good luck and happy upvalue hacking!
 ]]
 
-UpvalueHacker = {}
+-- Keep this helper private: Gem Core and other mods own their global helpers.
+local UpvalueHacker = {}
+local missing = {}
+local function MissingPath(path)
+	local key = table.concat(path, " -> ")
+	if not missing[key] then
+		missing[key] = true
+		print("[ShadowWorld] Skipped unavailable upvalue patch: " .. key)
+	end
+end
 local function GetUpvalueHelper(fn, name)
 	local i = 1
 	while debug.getupvalue(fn, i) and debug.getupvalue(fn, i) ~= name do
 		i = i + 1
 	end
 	local name, value = debug.getupvalue(fn, i)
-	return value, i
+	return value, name ~= nil and i or nil
 end
 
 function UpvalueHacker.GetUpvalue(fn, ...)
-	local prv, i, prv_var = nil, nil, "(the starting point)"
-	for j, var in ipairs({ ... }) do
-		-- melon:加入本mod提示2886753796
-		assert(type(fn) == "function", "we(2886753796) were looking for " .. var .. ", but the value before it, "
-			.. prv_var .. ", wasn't a function (it was a " .. type(fn)
-			.. "). Here's the full chain: " .. table.concat({ "(the starting point)", ... }, ", "))
+	local prv, i = nil, nil
+	local path = {...}
+	for j, var in ipairs(path) do
+		-- Optional compatibility hooks must tolerate replaced/removed closures.
+		if type(fn) ~= "function" then MissingPath(path); return nil end
 		prv = fn
-		prv_var = var
 		fn, i = GetUpvalueHelper(fn, var)
+		if i == nil then MissingPath(path); return nil end
 	end
 	return fn, i, prv
 end
 
 function UpvalueHacker.SetUpvalue(start_fn, new_fn, ...)
 	local _fn, _fn_i, scope_fn = UpvalueHacker.GetUpvalue(start_fn, ...)
-	debug.setupvalue(scope_fn, _fn_i, new_fn)
+	if type(scope_fn) ~= "function" or _fn_i == nil then return false end
+	return debug.setupvalue(scope_fn, _fn_i, new_fn) ~= nil
 end
 
 return UpvalueHacker

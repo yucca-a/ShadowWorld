@@ -1,3 +1,4 @@
+local UpvalueHacker = require("upvaluehacker2hm")
 ----------------------------[物品(非建筑、非装备，可放入物品栏)]--------------------------------
 ---------------------------------------------------------------------------------
 local hardmode = TUNING.hardmode2hm
@@ -860,7 +861,7 @@ if GetModConfigData("elastispacer upgrade") then
                 if inst:HasTag("superportablestoragePG") then
                     extra = (TUNING.isCh2hm and "无限- " or "Infinite- ")
                     if olddisplaynamefn then
-                        _name = olddisplaynamefn(inst)
+                        local _name = olddisplaynamefn(inst)
                         if _name ~= nil then 
                             name = _name
                             extra = (TUNING.isCh2hm and "无限/" or "Infinite/")

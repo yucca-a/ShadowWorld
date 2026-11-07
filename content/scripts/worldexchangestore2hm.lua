@@ -3,17 +3,28 @@
 local Store = {}
 Store.__index = Store
 local copy = deepcopy
-local function digest(data)
-    local hash = 5381
+local HASH_SLICE_BYTES = 512 * 1024
+local HASH_STEP_BYTES = 32 * 1024
+local HASH_SLICE_SECONDS = .004
+
+local function digestRange(data, hash, first, finish)
     -- Four bytes remain exact in Lua's double (< 2^53), while avoiding a
     -- C string call and modulo for every byte of a multi-MB world snapshot.
-    local last = #data - #data % 4
-    for i = 1, last, 4 do
+    local last = finish - (finish - first + 1) % 4
+    for i = first, last, 4 do
         local a, b, c, d = data:byte(i, i + 3)
         hash = ((((hash * 33 + a) * 33 + b) * 33 + c) * 33 + d) % 4294967296
     end
-    for i = last + 1, #data do hash = (hash * 33 + data:byte(i)) % 4294967296 end
+    for i = last + 1, finish do hash = (hash * 33 + data:byte(i)) % 4294967296 end
+    return hash
+end
+
+local function formatDigest(data, hash)
     return tostring(#data) .. ":" .. string.format("%08x", hash)
+end
+
+local function digest(data)
+    return formatDigest(data, digestRange(data, 5381, 1, #data))
 end
 Store.Copy, Store.Digest = copy, digest
 
@@ -25,8 +36,39 @@ end
 function Store:Write(key, raw, cb)
     self.io.write(key, raw, function(ok)
         if ok == false then cb(false); return end
-        self.io.read(key, function(found, actual) cb(found and actual == raw) end)
+        local function verify()
+            self.io.read(key, function(found, actual) cb(found and actual == raw) end)
+        end
+        -- Native persistence can call back inline. Avoid writing and reading a
+        -- large backup on the same frame while the world is running.
+        if self.io.defer and #raw > HASH_SLICE_BYTES then self.io.defer(verify)
+        else verify() end
     end)
+end
+
+function Store:HashCheckpoint(data, cb)
+    local defer = self.io.defer
+    if not defer or #data <= HASH_STEP_BYTES then cb(digest(data)); return end
+
+    -- Use the static clock so verification can also finish on a paused shard.
+    -- Each slice preserves the exact checksum used by earlier versions.
+    local offset, hash = 1, 5381
+    local function step()
+        local deadline = os.clock() + HASH_SLICE_SECONDS
+        local limit = math.min(offset + HASH_SLICE_BYTES - 1, #data)
+        repeat
+            local finish = math.min(offset + HASH_STEP_BYTES - 1, limit)
+            hash = digestRange(data, hash, offset, finish)
+            offset = finish + 1
+        until offset > limit or os.clock() >= deadline
+        if offset <= #data then
+            defer(step)
+        else
+            local result = formatDigest(data, hash)
+            defer(function() cb(result) end)
+        end
+    end
+    defer(step)
 end
 
 function Store:Load(cb)
@@ -126,17 +168,16 @@ function Store:PutCut(cut, world, cb)
     end
     local record = copy(cut)
     record.world = self.prefix .. "_world_" .. tostring(cut.serial) .. "_" .. digest(cut.id):gsub(":", "_")
-    record.digest = digest(world)
     -- Keep large player/map records on disk, just like the world record.
     -- The live journal contains only metadata and any late-join overlays.
     local included = {}
     for uid in pairs(record.players) do included[uid] = true end
-    local playerdata = self.io.encode(record.players)
+    local players = record.players
+    local playerdata
     record.players = {}
     record.playerfile = record.world .. "_players"
-    record.playerdigest = digest(playerdata)
-    self:Write(record.world, world, function(ok)
-        if not ok then finish(false, "checkpoint_write_failed"); return end
+    local function writePlayers(playerdigest)
+        record.playerdigest = playerdigest
         self:Write(record.playerfile, playerdata, function(saved)
             if not saved then finish(false, "player_checkpoint_write_failed"); return end
             self:Update(function(state)
@@ -152,6 +193,14 @@ function Store:PutCut(cut, world, cb)
                 for uid in pairs(record.owners) do state.registry[uid] = true end
                 state.nextserial = math.max(state.nextserial or 0, record.serial)
             end, finish)
+        end)
+    end
+    self:HashCheckpoint(world, function(worlddigest)
+        record.digest = worlddigest
+        self:Write(record.world, world, function(ok)
+            if not ok then finish(false, "checkpoint_write_failed"); return end
+            playerdata = self.io.encode(players)
+            self:HashCheckpoint(playerdata, writePlayers)
         end)
     end)
 end
@@ -220,9 +269,15 @@ function Store:RebaseNative(rebase, cb)
             state.archives[key] = digest(raw)
             state.cuts, state.registry, state.baselines, state.redirects = {}, {}, {}, {}
             state.current, state.forced = nil, nil
-            state.timeline, state.rebase = rebase.token, copy(rebase)
+            state.timeline, state.rebase, state.rebase_applied = rebase.token, copy(rebase), nil
         end, cb)
     end)
+end
+
+function Store:MarkRebaseApplied(token, cb)
+    self:Update(function(state)
+        if state.rebase and state.rebase.token == token then state.rebase_applied = token end
+    end, cb)
 end
 
 function Store:Seal(id, cb)

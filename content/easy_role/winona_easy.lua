@@ -6,6 +6,86 @@ if GetModConfigData("Winona No Hungry Builder") then
     if TUNING.DSTU and TUNING.DSTU.WINONA_WORKER then TUNING.DSTU.WINONA_WORKER = false end
 end
 
+if GetModConfigData("Winona Generator Ground Charging") then
+    local charge_interval = 0.5 -- 发电机每半秒发送一次供电脉冲
+    local charge_per_pulse = 0.01
+
+    local function GetChargeStorage(inst)
+        local fueled = inst.components.fueled
+        if fueled and FUELTYPE.BATTERYPOWER and fueled.fueltype == FUELTYPE.BATTERYPOWER then return fueled end
+        local batteryuser = inst.components.batteryuser
+        if batteryuser and batteryuser.allowpartialcharge and batteryuser.onbatteryused then
+            return fueled or inst.components.finiteuses
+        end
+    end
+
+    local function NotifyGenerator(_, generator)
+        generator:PushEvent("engineeringcircuitchanged")
+    end
+
+    local function ChargeFromCircuit(inst)
+        if inst:IsInLimbo() or inst.components.inventoryitem:IsHeld() then return end
+        local storage = GetChargeStorage(inst)
+        local charge = storage and storage:GetPercent() or 1
+        local now = GetTime()
+        -- 多台发电机共享负载，同一件电器只充一次。
+        if charge < 1 and (not inst.nextgroundcharge2hm or now >= inst.nextgroundcharge2hm) then
+            inst.nextgroundcharge2hm = now + charge_interval - FRAMES
+            charge = math.min(1, charge + charge_per_pulse)
+            storage:SetPercent(charge)
+        end
+        local powerload = inst.components.powerload
+        local load = charge < 1 and TUNING.WINONA_TELEBRELLA_POWER_LOAD_CHARGING or 0
+        if powerload:GetLoad() ~= load then
+            powerload:SetLoad(load)
+            inst.components.circuitnode:ForEachNode(NotifyGenerator)
+        end
+    end
+
+    local function ConnectToGenerators(inst)
+        if not inst:IsInLimbo() and not inst.components.inventoryitem:IsHeld() then
+            inst.components.circuitnode:ConnectTo("engineeringbattery")
+        end
+    end
+
+    local function DisconnectFromGenerators(inst)
+        inst.components.powerload:SetLoad(0)
+        inst.components.circuitnode:Disconnect()
+    end
+
+    local function EnableGroundCharging(inst)
+        -- 原版便携装置和妥协正式版的转换装备已有自己的电路逻辑。
+        if inst.AddBatteryPower or inst.components.circuitnode or inst.components.powerload or not GetChargeStorage(inst) then return end
+        inst:AddComponent("circuitnode")
+        inst.components.circuitnode:SetRange(TUNING.WINONA_BATTERY_RANGE)
+        inst.components.circuitnode.connectsacrossplatforms = false
+        inst:AddComponent("powerload")
+        inst.components.powerload:SetLoad(0)
+        inst:AddTag("engineeringbatterypowered")
+        inst.AddBatteryPower = ChargeFromCircuit
+        inst:ListenForEvent("on_landed", ConnectToGenerators)
+        inst:ListenForEvent("on_no_longer_landed", DisconnectFromGenerators)
+        inst:ListenForEvent("onputininventory", DisconnectFromGenerators)
+        inst:DoTaskInTime(0, ConnectToGenerators)
+    end
+
+    AddPrefabPostInitAny(function(inst)
+        if not TheWorld.ismastersim or not inst.components.inventoryitem then return end
+        local upgradeable = inst.components.upgradeable
+        if UPGRADETYPES.ELECTRICAL and upgradeable and upgradeable.upgradetype == UPGRADETYPES.ELECTRICAL and upgradeable.onupgradefn then
+            local OnUpgrade = upgradeable.onupgradefn
+            upgradeable:SetOnUpgradeFn(function(inst, ...)
+                OnUpgrade(inst, ...)
+                EnableGroundCharging(inst)
+            end)
+            -- 读档时妥协直接恢复电器状态，不经过升级动作。
+            inst:DoTaskInTime(0, EnableGroundCharging)
+        else
+            EnableGroundCharging(inst)
+        end
+    end)
+end
+
 -- 薇诺娜锤建筑掉落全部材料
 if GetModConfigData("Winona Hammer Drop All Loot") then
     local function delay(inst) inst.winonahammertask = nil end

@@ -1237,7 +1237,7 @@ AddPrefabPostInit("shadow_beef_bell", function(inst)
     inst:DoTaskInTime(0, processpersistent) -- 修改牛铃
 end)
 -- 阴郁牛铃cd时牛尸体也不消失
-function ShouldKeepCorpse(inst)
+local function ShouldKeepCorpse(inst)
     local leader = inst.components.follower:GetLeader()
     return
         leader ~= nil and
