@@ -3,6 +3,7 @@ from pathlib import Path
 import argparse
 import json
 import shutil
+import socket
 import subprocess
 import tempfile
 import time
@@ -13,14 +14,25 @@ GAME = Path("D:/SteamLibrary/steamapps/common/Don't Starve Together")
 WORKSHOP = Path("D:/SteamLibrary/steamapps/workshop/content/322330")
 
 
-def run(edition, disabled=False, *, fixture_path=None, options_extra="", um_options_extra=""):
+def run(edition, disabled=False, *, fixture_path=None, options_extra="", um_options_extra="", source=None):
+    port = None
+    for candidate in range(11008, 11019):
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as probe:
+            try:
+                probe.bind(("0.0.0.0", candidate))
+            except OSError:
+                continue
+            port = candidate
+            break
+    if port is None:
+        raise RuntimeError("No free port in DST's supported test range")
     out = Path(tempfile.mkdtemp(prefix=f"winona-electric-{edition}-", dir=ROOT / "work"))
     runtime = out / "runtime"
     runtime.mkdir()
     _winapi.CreateJunction(str(GAME / "bin64"), str(runtime / "bin64"))
     _winapi.CreateJunction(str(GAME / "data"), str(runtime / "data"))
     mod = runtime / "mods/ShadowWorldLocal"
-    shutil.copytree(ROOT / "content", mod)
+    shutil.copytree(source or ROOT / "content", mod)
     fixture = (fixture_path or ROOT / "tests/native/winona_electrical_fixture.lua").read_text(encoding="utf-8")
     with (mod / "modmain.lua").open("a", encoding="utf-8") as f:
         f.write(f'\nlocal ELECTRICAL_DISABLED = {str(disabled).lower()}\n')
@@ -30,10 +42,10 @@ def run(edition, disabled=False, *, fixture_path=None, options_extra="", um_opti
     shutil.copytree(ROOT / "work/reuse-audit/config/Audit/Master/save", master / "save")
     (cluster / "cluster.ini").write_text(
         "[GAMEPLAY]\ngame_mode=survival\nmax_players=1\npause_when_empty=false\n"
-        "[NETWORK]\ncluster_name=ShadowWorld isolated electrical test\noffline_cluster=true\nlan_only_cluster=true\n"
+        f"[NETWORK]\nserver_port={port}\ncluster_name=ShadowWorld isolated electrical test\noffline_cluster=true\nlan_only_cluster=true\n"
         "[MISC]\nconsole_enabled=true\n[SHARD]\nshard_enabled=false\n", encoding="utf-8")
     (master / "server.ini").write_text(
-        "[NETWORK]\nserver_port=11971\n[SHARD]\nis_master=true\nname=Master\nid=1\n"
+        f"[NETWORK]\nserver_port={port}\n[SHARD]\nis_master=true\nname=Master\nid=1\n"
         "[STEAM]\nmaster_server_port=28971\nauthentication_port=9791\n", encoding="utf-8")
     um = ""
     if edition != "solo":
@@ -48,12 +60,13 @@ def run(edition, disabled=False, *, fixture_path=None, options_extra="", um_opti
     with log.open("wb") as f:
         p = subprocess.Popen([str(runtime / "bin64/dontstarve_dedicated_server_nullrenderer_x64.exe"),
             "-persistent_storage_root", str(out), "-conf_dir", "config", "-cluster", "Audit", "-shard", "Master",
-            "-port", "11971", "-console"], cwd=runtime / "bin64", stdout=f, stderr=subprocess.STDOUT,
+            "-port", str(port), "-console"], cwd=runtime / "bin64", stdout=f, stderr=subprocess.STDOUT,
             creationflags=subprocess.CREATE_NO_WINDOW)
         try:
             deadline = time.monotonic() + 110
             while p.poll() is None and time.monotonic() < deadline:
-                if b"LUA ERROR" in log.read_bytes():
+                output = log.read_bytes()
+                if b"LUA ERROR" in output or b"Server failed to start" in output:
                     break
                 time.sleep(0.3)
         finally:

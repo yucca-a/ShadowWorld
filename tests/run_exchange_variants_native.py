@@ -90,7 +90,7 @@ try:
  c.call('Master','ModeSeed("shadow","log",11)','seeded')
  save();s=boot('exchange_v1_original');check('original mode returns without remigrating manual Nexus',all(r['mode']=='classic' and not r.get('migrated') for r in s.values()))
  row=c.call('Master','ExchangeModeOpen("shadow")','mode_opened');check('original contents survive all mode changes',row['items'].get('1',{}).get('count')==17,row=row)
- save();s=boot('exchange_v1_xianyu');check('Xianyu second space persists',c.call('Master','ModeXiCount()','xi_count')['count']==5)
+ save();s=boot('exchange_v1_xianyu');check('restored Xianyu goods are not replayed into second space',c.call('Master','ModeXiCount()','xi_count')['count']==0)
  save();s=boot('exchange_v1_nexus')
  for _ in range(35):
   s=state()

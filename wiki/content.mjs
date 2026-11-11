@@ -1,4 +1,4 @@
-export const meta = { version: '2.8.15.0.23', date: '2026-11-11', workshop: 'https://steamcommunity.com/sharedfiles/filedetails/?id=3832182265', originalWorkshop: 'https://steamcommunity.com/sharedfiles/filedetails/?id=2886753796' };
+export const meta = { version: '2.8.15.0.25', date: '2026-11-11', workshop: 'https://steamcommunity.com/sharedfiles/filedetails/?id=3832182265', originalWorkshop: 'https://steamcommunity.com/sharedfiles/filedetails/?id=2886753796' };
 export const categories = [
   { id: 'start', name: '开始游玩', symbol: '01', description: '了解模组，找到适合自己的起点。' },
   { id: 'mechanics', name: '核心机制', symbol: '02', description: '战斗、生存与两个世界之间的规则。' },

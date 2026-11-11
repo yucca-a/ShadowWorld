@@ -1,4 +1,4 @@
--- Keep each mechanism's physical inventories separate across configuration changes.
+-- Keep physical inventories referenced; Xianyu -> original also restores goods.
 local Config=require("shadowvaultconfig2hm")
 local Mode=require("exchangemode2hm")
 local function valid(e)return e and e:IsValid()end
@@ -81,8 +81,12 @@ function Variants:Restore(newents,data)
     elseif data and data.shadowbank2hm and data.shadowbank2hm.version then
         previous="xianyu"
         self.second=self.inst.shadowbanksecond2hm
+        self.tacklesecond=self.inst.shadowbanktacklesecond2hm
     end
     previous=previous or self.mode
+    self.xianyu_restore=self.mode~="xianyu" and (saved and saved.xianyu_restore or
+        self.mode=="classic" and (previous=="xianyu" or saved and
+            (saved.banks and saved.banks.xianyu or saved.second or saved.tacklesecond))) and true or nil
     local old=self.banks[previous] or {};self.banks[previous]=old
     for family,e in pairs(self.inst.PocketDimensionContainers or {})do
         if valid(e) and Config.Manageable(family,e) and not old[family] then old[family]=e end
@@ -101,8 +105,10 @@ function Variants:Restore(newents,data)
     local active=self.banks[self.mode] or {};self.banks[self.mode]=active
     for family,base in pairs(old)do
         if not valid(active[family]) then
-            active[family]=self.mode==previous and base or Config.SpawnPage(Config.Page(tostring(TheShard:GetShardId()),family))
+            local reuse=self.mode==previous or previous=="xianyu" and self.mode=="classic"
+            active[family]=reuse and base or Config.SpawnPage(Config.Page(tostring(TheShard:GetShardId()),family))
             if not valid(active[family]) then self.error="mechanism_container_spawn_failed";return end
+            if reuse and self.mode~=previous then old[family]=nil end
         end
     end
     for mode,banks in pairs(self.banks)do
@@ -116,19 +122,30 @@ function Variants:Restore(newents,data)
         local proxy=e.components.container_proxy
         if proxy then
             local master=proxy:GetMaster()
+            if self.mode=="classic" and self.xianyu_restore then
+                if self.second and master==self.second then proxy:SetMaster(active.shadow)
+                elseif self.tacklesecond and master==self.tacklesecond then proxy:SetMaster(active.tacklestation2hm) end
+            end
             for family,base in pairs(old)do
                 if master==base and active[family]~=base then proxy:SetMaster(active[family]);break end
             end
         end
     end
     self.ready=true;self.saved=nil
+    if self.xianyu_restore and self.mode=="classic" then
+        local recovery=require("exchangexianyurecovery2hm")
+        recovery.Drain(self)
+        -- Full original spaces remain usable. Overflow stays frozen and is
+        -- retried after players free space, including after another restart.
+        self.recoverytask=self.inst:DoPeriodicTask(1,function()recovery.Drain(self)end)
+    end
     if self.task then self.task:Cancel();self.task=nil end
 end
 function Variants:OnSave()
     if not self.ready and not self.migrating then return self.saved end
     if not self.migrating or self.migrated then self:Capture() end
     local active=self.migrating and not self.migrated and "hosted" or self.mode
-    local data,refs={version=1,active=active,banks={},migrated=self.migrated,
+    local data,refs={version=1,active=active,banks={},migrated=self.migrated,xianyu_restore=self.xianyu_restore,
         migration_pending=self.migrating and not self.migrated or nil},{}
     for mode,banks in pairs(self.banks)do
         data.banks[mode]={}
@@ -141,6 +158,9 @@ function Variants:OnSave()
     return data,refs
 end
 function Variants:OnLoad(data)self.saved=data end
-function Variants:OnRemoveFromEntity()if self.task then self.task:Cancel()end end
+function Variants:OnRemoveFromEntity()
+    if self.task then self.task:Cancel()end
+    if self.recoverytask then self.recoverytask:Cancel()end
+end
 Variants.OnRemoveEntity=Variants.OnRemoveFromEntity
 return Variants

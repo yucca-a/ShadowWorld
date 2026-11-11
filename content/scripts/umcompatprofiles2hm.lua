@@ -2,6 +2,7 @@
 -- Winona worker beta callbacks reviewed separately on 2026-11-11.
 -- Updating this allowlist requires source review and regression/native validation.
 return {
+    battlesong_attack_filter = {file = "postinit/prefabs/battlesongs.lua", hashes = {["5cf929dc:4fe3ab2e:798"] = true}},
     winona_worker_drain = {file = "init/init_character_changes/winona.lua", hashes = {["52ed8ae8:5e39d605:2185"] = true}},
     winona_worker_update = {file = "init/init_character_changes/winona.lua", hashes = {["4f980ffc:5495bd0f:688"] = true}},
     winona_worker_update_stable = {file = "init/init_character_changes/winona.lua", hashes = {["7bd02c6b:611aed27:963"] = true}},

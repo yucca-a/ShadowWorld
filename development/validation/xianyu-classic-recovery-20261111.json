@@ -1,0 +1,93 @@
+{
+  "status": "passed",
+  "publication": "local pending; not committed, pushed or published",
+  "source_sha256": {
+    "modmain.lua": "982ba82c6c3835edf14f6f69494eb5ffd86fff11152bce3cbe71b8e9689ac997",
+    "easy_other/shadowbank2hm.lua": "b1c55e11e5927e21691fa6beff9b4a7116f2ba310138e777b9dd8178a941c744",
+    "scripts/components/exchangevariants2hm.lua": "e1e716a9528b55bc73a37b95301829bc4b421362aa6c75627b6802831c0d909c",
+    "scripts/components/shadowbank2hm.lua": "4a5eca1ac4aa439560f63ade6452c606f7b03590a6646cdb8667dc48a1512957",
+    "scripts/exchangexianyurecovery2hm.lua": "acbea70f68e695768fb8868fc554767e015a0b36ac9af2f4658273ddd5b4bc84",
+    "scripts/shadowvaultproxy2hm.lua": "19e41b38f53afb96f2e72b222f9108e066b4ea55a97ae097b0c2b839a6fa300f"
+  },
+  "reports": {
+    "before": "work/vault-hardened-hosted-h80r2v5e/xianyu-classic-report.json",
+    "recovery": "work/vault-hardened-hosted-wx3bvv20/xianyu-classic-report.json",
+    "final_reload": "work/vault-hardened-hosted-vmqr4jxz/xianyu-classic-resume-report.json"
+  },
+  "unit_checks": {
+    "xianyu_recovery": 43,
+    "exchange_variants": 48,
+    "manifest": 20,
+    "stale_entrance": 17
+  },
+  "native_checks": {
+    "before": [
+      "real saved tackle entrances open without Lua error",
+      "baseline reproduces hidden Xianyu inventory"
+    ],
+    "recovery": [
+      "lost acknowledgement leaves a received import and pending sender",
+      "real saved tackle entrances open without Lua error",
+      "old outgoing transfer settles by saved receipt",
+      "first bank restored as original",
+      "over-capacity extra banks retained",
+      "initial item conservation",
+      "full overflow survives restart",
+      "freeing capacity resumes both overflow banks",
+      "overflow and imports conserved after taking items",
+      "tool durability survives real entity movement",
+      "all retained records eventually restored",
+      "final conservation",
+      "drained state persists without replay"
+    ],
+    "final_reload": [
+      "final-source two-shard reload ready",
+      "recovered transfers and overflow stay empty",
+      "recovered transfers and overflow stay empty",
+      "completed recovery never replays old goods",
+      "saved native tackle entrance opens Master",
+      "saved native tackle entrance opens Caves",
+      "ordinary coordinated save completes"
+    ]
+  },
+  "native_ledger": {
+    "initial_including_received_import": {
+      "axe": 24,
+      "seeds": 280,
+      "spear": 12,
+      "pinecone": 220,
+      "goldnugget": 9
+    },
+    "intentional_removals": [
+      {
+        "seeds": 140,
+        "axe": 12
+      },
+      {
+        "pinecone": 220,
+        "spear": 12
+      }
+    ],
+    "after_each_removal": [
+      {
+        "axe": 12,
+        "seeds": 140,
+        "spear": 12,
+        "pinecone": 220,
+        "goldnugget": 9
+      },
+      {
+        "axe": 12,
+        "seeds": 140,
+        "goldnugget": 9
+      }
+    ]
+  },
+  "report_note": "The full-run report reused its mutable expected-count dictionary. Counts above were independently rebuilt from seed inventories and native removal events, then checked against each captured actual ledger. Runner now copies expected dictionaries.",
+  "baseline": "Old code hid Xianyu inventories after switching to classic. Saved tackle entrances opened on both shards; no crash reproduced.",
+  "limits": [
+    "Dedicated engine with simulated players; no client visual verification.",
+    "Full overflow/transport run preceded two final changes: force boolean recovery marker; do not rebind unbound unrelated proxies when extra bank absent. Both have unit coverage; final-source dual-shard reload/save and entrance checks passed with exact hashes above.",
+    "Lost acknowledgements were tested with both shards available; no new independent-journal rollback protocol was introduced."
+  ]
+}

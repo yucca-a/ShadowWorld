@@ -1,0 +1,346 @@
+[
+  {
+    "edition": "stable",
+    "disabled": false,
+    "passed": true,
+    "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\winona-electric-stable-vonwbwft\\native.log",
+    "cases": [
+      {
+        "label": "matching_target",
+        "sanity": 1.25,
+        "sanity_song": true,
+        "defaultdamage": 0,
+        "health": 1,
+        "damage": 53.125,
+        "target": "antlion",
+        "stored": "antlion",
+        "health_song": true,
+        "hits": 1
+      },
+      {
+        "label": "no_stored_target",
+        "sanity": 1.25,
+        "sanity_song": true,
+        "defaultdamage": 0,
+        "health": 1,
+        "damage": 53.125,
+        "target": "antlion",
+        "stored": "nil",
+        "health_song": true,
+        "hits": 1
+      },
+      {
+        "label": "stale_passive_target",
+        "sanity": 1.25,
+        "sanity_song": true,
+        "defaultdamage": 0,
+        "health": 1,
+        "damage": 53.125,
+        "target": "antlion",
+        "stored": "rabbit",
+        "health_song": true,
+        "hits": 1
+      },
+      {
+        "label": "matching_target",
+        "sanity": 1.25,
+        "sanity_song": true,
+        "defaultdamage": 175,
+        "health": 1,
+        "damage": 53.125,
+        "target": "bearger",
+        "stored": "bearger",
+        "health_song": true,
+        "hits": 1
+      },
+      {
+        "label": "no_stored_target",
+        "sanity": 1.25,
+        "sanity_song": true,
+        "defaultdamage": 175,
+        "health": 1,
+        "damage": 53.125,
+        "target": "bearger",
+        "stored": "nil",
+        "health_song": true,
+        "hits": 1
+      },
+      {
+        "label": "stale_passive_target",
+        "sanity": 1.25,
+        "sanity_song": true,
+        "defaultdamage": 175,
+        "health": 1,
+        "damage": 53.125,
+        "target": "bearger",
+        "stored": "rabbit",
+        "health_song": true,
+        "hits": 1
+      },
+      {
+        "label": "matching_target",
+        "sanity": 0,
+        "sanity_song": true,
+        "defaultdamage": 150,
+        "health": 0,
+        "damage": 0,
+        "target": "deerclops",
+        "stored": "deerclops",
+        "health_song": true,
+        "hits": 0
+      },
+      {
+        "label": "no_stored_target",
+        "sanity": 0,
+        "sanity_song": true,
+        "defaultdamage": 150,
+        "health": 0,
+        "damage": 0,
+        "target": "deerclops",
+        "stored": "nil",
+        "health_song": true,
+        "hits": 0
+      },
+      {
+        "label": "stale_passive_target",
+        "sanity": 0,
+        "sanity_song": true,
+        "defaultdamage": 150,
+        "health": 0,
+        "damage": 0,
+        "target": "deerclops",
+        "stored": "rabbit",
+        "health_song": true,
+        "hits": 0
+      },
+      {
+        "label": "near_punchingbag",
+        "sanity": 1.25,
+        "sanity_song": true,
+        "defaultdamage": 175,
+        "health": 1,
+        "damage": 53.125,
+        "target": "bearger",
+        "stored": "bearger",
+        "health_song": true,
+        "hits": 1
+      }
+    ],
+    "verified_hit_scenarios": 7,
+    "recovery_verified": true,
+    "excluded_non_hit_scenarios": [
+      {
+        "label": "matching_target",
+        "sanity": 0,
+        "sanity_song": true,
+        "defaultdamage": 150,
+        "health": 0,
+        "damage": 0,
+        "target": "deerclops",
+        "stored": "deerclops",
+        "health_song": true,
+        "hits": 0
+      },
+      {
+        "label": "no_stored_target",
+        "sanity": 0,
+        "sanity_song": true,
+        "defaultdamage": 150,
+        "health": 0,
+        "damage": 0,
+        "target": "deerclops",
+        "stored": "nil",
+        "health_song": true,
+        "hits": 0
+      },
+      {
+        "label": "stale_passive_target",
+        "sanity": 0,
+        "sanity_song": true,
+        "defaultdamage": 150,
+        "health": 0,
+        "damage": 0,
+        "target": "deerclops",
+        "stored": "rabbit",
+        "health_song": true,
+        "hits": 0
+      }
+    ],
+    "source_sha256": {
+      "easy_other/um_patch.lua": "18d69f32058c30d67e83ca32f510c4fab126fa97483e5a08d234280f52688bfe",
+      "scripts/umcompatprofiles2hm.lua": "a6a6150141c82b496e26850a733c63d9ce07ba34ad1542905debde04bc0b9b88"
+    }
+  },
+  {
+    "edition": "beta",
+    "disabled": false,
+    "passed": true,
+    "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\winona-electric-beta-yoq7qbox\\native.log",
+    "cases": [
+      {
+        "label": "matching_target",
+        "sanity": 0,
+        "sanity_song": true,
+        "defaultdamage": 0,
+        "health": 0,
+        "damage": 53.125,
+        "target": "antlion",
+        "stored": "antlion",
+        "health_song": true,
+        "hits": 1
+      },
+      {
+        "label": "no_stored_target",
+        "sanity": 1,
+        "sanity_song": true,
+        "defaultdamage": 0,
+        "health": 0.8,
+        "damage": 53.125,
+        "target": "antlion",
+        "stored": "nil",
+        "health_song": true,
+        "hits": 1
+      },
+      {
+        "label": "stale_passive_target",
+        "sanity": 0,
+        "sanity_song": true,
+        "defaultdamage": 0,
+        "health": 0,
+        "damage": 53.125,
+        "target": "antlion",
+        "stored": "rabbit",
+        "health_song": true,
+        "hits": 1
+      },
+      {
+        "label": "matching_target",
+        "sanity": 1,
+        "sanity_song": true,
+        "defaultdamage": 175,
+        "health": 0.8,
+        "damage": 53.125,
+        "target": "bearger",
+        "stored": "bearger",
+        "health_song": true,
+        "hits": 1
+      },
+      {
+        "label": "no_stored_target",
+        "sanity": 1,
+        "sanity_song": true,
+        "defaultdamage": 175,
+        "health": 0.8,
+        "damage": 53.125,
+        "target": "bearger",
+        "stored": "nil",
+        "health_song": true,
+        "hits": 1
+      },
+      {
+        "label": "stale_passive_target",
+        "sanity": 0,
+        "sanity_song": true,
+        "defaultdamage": 175,
+        "health": 0,
+        "damage": 53.125,
+        "target": "bearger",
+        "stored": "rabbit",
+        "health_song": true,
+        "hits": 1
+      },
+      {
+        "label": "matching_target",
+        "sanity": 0,
+        "sanity_song": true,
+        "defaultdamage": 150,
+        "health": 0,
+        "damage": 0,
+        "target": "deerclops",
+        "stored": "deerclops",
+        "health_song": true,
+        "hits": 0
+      },
+      {
+        "label": "no_stored_target",
+        "sanity": 0,
+        "sanity_song": true,
+        "defaultdamage": 150,
+        "health": 0,
+        "damage": 0,
+        "target": "deerclops",
+        "stored": "nil",
+        "health_song": true,
+        "hits": 0
+      },
+      {
+        "label": "stale_passive_target",
+        "sanity": 0,
+        "sanity_song": true,
+        "defaultdamage": 150,
+        "health": 0,
+        "damage": 0,
+        "target": "deerclops",
+        "stored": "rabbit",
+        "health_song": true,
+        "hits": 0
+      },
+      {
+        "label": "near_punchingbag",
+        "sanity": 0,
+        "sanity_song": true,
+        "defaultdamage": 175,
+        "health": 0,
+        "damage": 53.125,
+        "target": "bearger",
+        "stored": "bearger",
+        "health_song": true,
+        "hits": 1
+      }
+    ],
+    "verified_hit_scenarios": 7,
+    "recovery_verified": false,
+    "excluded_non_hit_scenarios": [
+      {
+        "label": "matching_target",
+        "sanity": 0,
+        "sanity_song": true,
+        "defaultdamage": 150,
+        "health": 0,
+        "damage": 0,
+        "target": "deerclops",
+        "stored": "deerclops",
+        "health_song": true,
+        "hits": 0
+      },
+      {
+        "label": "no_stored_target",
+        "sanity": 0,
+        "sanity_song": true,
+        "defaultdamage": 150,
+        "health": 0,
+        "damage": 0,
+        "target": "deerclops",
+        "stored": "nil",
+        "health_song": true,
+        "hits": 0
+      },
+      {
+        "label": "stale_passive_target",
+        "sanity": 0,
+        "sanity_song": true,
+        "defaultdamage": 150,
+        "health": 0,
+        "damage": 0,
+        "target": "deerclops",
+        "stored": "rabbit",
+        "health_song": true,
+        "hits": 0
+      }
+    ],
+    "source_sha256": {
+      "easy_other/um_patch.lua": "18d69f32058c30d67e83ca32f510c4fab126fa97483e5a08d234280f52688bfe",
+      "scripts/umcompatprofiles2hm.lua": "a6a6150141c82b496e26850a733c63d9ce07ba34ad1542905debde04bc0b9b88"
+    }
+  }
+]

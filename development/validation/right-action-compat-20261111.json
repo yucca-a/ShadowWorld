@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-11",
+  "status": "validated_local_unpublished",
+  "workshop_updated": false,
+  "source_sha256": {
+    "easy_role/rightaction.lua": "e822fc68f28ee6c19b9d00184a24a2c7b989aac5620d4597bf16aaf49ddad833",
+    "easy_other/containersort.lua": "5be82f6b2a9450eb4519b2e84a694ccb8357f2b1a7d517b6ed248833a2ba7a68"
+  },
+  "unit_assertions": 1680,
+  "native_assertions": 51,
+  "content_lua_compiled": 425,
+  "classic_pause_assertions": 155,
+  "manifest_assertions": 15,
+  "native_report": "development/validation/right-action-compat-native-20261111.json",
+  "native_run": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-right-action-nbk58_x7",
+  "medal_version": "1.6.8.2",
+  "limits": [
+    "Headless UI and fixture Ctrl; no rendered remote client",
+    "No particular cross-character skill-tree patch loaded; native enabled-state integration tested"
+  ]
+}

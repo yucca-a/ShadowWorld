@@ -95,6 +95,36 @@ AddPrefabPostInit("beefalo", function(inst)
 end)
 
 -----主代码，用来随机生物大小
+-- Only ordinary meat portions are reduced; horns, trunks, hides and other
+-- special drops keep their original quantities and chance rolls.
+local SMALL_CREATURE_MEAT_LOOT = {
+    meat = true, smallmeat = true, monstermeat = true, drumstick = true,
+    froglegs = true, batwing = true, plantmeat = true, fishmeat = true, fishmeat_small = true,
+    cookedmeat = true, cookedsmallmeat = true, cookedmonstermeat = true,
+    drumstick_cooked = true, froglegs_cooked = true, batwing_cooked = true,
+    plantmeat_cooked = true, fishmeat_cooked = true, fishmeat_small_cooked = true,
+}
+local function ReduceSmallCreatureMeat(loots, amount)
+    local counts = {}
+    for _, prefab in ipairs(loots) do
+        if SMALL_CREATURE_MEAT_LOOT[prefab] then counts[prefab] = (counts[prefab] or 0) + 1 end
+    end
+    local reduce = false
+    for prefab, count in pairs(counts) do
+        counts[prefab] = math.min(amount, count - 1)
+        if counts[prefab] > 0 then reduce = true end
+    end
+    if not reduce then return loots end
+    local result = {}
+    for _, prefab in ipairs(loots) do
+        if counts[prefab] ~= nil and counts[prefab] > 0 then
+            counts[prefab] = counts[prefab] - 1
+        else
+            result[#result + 1] = prefab
+        end
+    end
+    return result
+end
 local function getrandomscale(inst)
     if inst.myscale then return inst.myscale end
     -- 区分有生命值和无生命值实体的概率分布：
@@ -194,10 +224,15 @@ local function qianghua(inst, myscale, loot)
             if loot and not inst:HasTag("structure") and not inst:HasTag("swc2hm") then ----更改目标战利品
                 -- 为爽改动:大于阈值的生物才双倍掉落，便于明显区分
                 if inst.components.lootdropper ~= nil then
-                    local DropLoot = inst.components.lootdropper.DropLoot
-                    inst.components.lootdropper.DropLoot = function(self, ...)
-                        DropLoot(self, ...)
-                        return DropLoot(self, ...)
+                    local GenerateLoot = inst.components.lootdropper.GenerateLoot
+                    inst.components.lootdropper.GenerateLoot = function(self, ...)
+                        -- Traps and inventory murder use GenerateLoot directly.
+                        -- Roll here so those paths share normal death's bonus.
+                        local first = GenerateLoot(self, ...)
+                        local result = {}
+                        for _, prefab in ipairs(first) do result[#result + 1] = prefab end
+                        for _, prefab in ipairs(GenerateLoot(self, ...)) do result[#result + 1] = prefab end
+                        return result
                     end
                     if inst.prefab == "rock_ice" then
                         local SpawnLootPrefab = inst.components.lootdropper.SpawnLootPrefab
@@ -217,6 +252,15 @@ local function qianghua(inst, myscale, loot)
             -- 为爽改动:有trader组件的单位采集倍率不能改变
             if inst.components.pickable and not inst.components.trader then ----更改目标采集组件
                 inst.components.pickable.numtoharvest = inst.components.pickable.numtoharvest * 2
+            end
+        elseif loot and Rand < 0.90 and inst:HasTag("_health") and
+            not inst:HasTag("structure") and not inst:HasTag("swc2hm") and inst.components.lootdropper ~= nil then
+            local amount = Rand <= 0.80 and 2 or 1
+            local GenerateLoot = inst.components.lootdropper.GenerateLoot
+            inst.components.lootdropper.GenerateLoot = function(self, ...)
+                -- Filter after the original rolls, preserving non-meat loot and
+                -- leaving at least one of each meat prefab in the actual result.
+                return ReduceSmallCreatureMeat(GenerateLoot(self, ...), amount)
             end
         end
         inst.myscale = Rand
@@ -256,6 +300,72 @@ local function saveandload(inst) ----保存与载入，主要是保存生物的�
         end
     end
 end
+
+local function RestoreCapturedHealth(inst, state)
+    local health = inst.components.health
+    if health == nil or inst.components.stackable ~= nil or not inst:IsValid() or health:IsDead() then return end
+    health.save_maxhealth = true
+    health:SetMaxHealth(state.maxhealth)
+    health:SetPenalty(state.penalty or 0)
+    health:SetCurrentHealth(state.health)
+    health:ForceUpdateHUD(true)
+end
+local function InstallTrapIdentity(inst)
+    if inst == nil or inst.randomsizetraphooks2hm or inst:HasTag("player") or
+        inst.components.health == nil or inst.components.inventoryitem == nil or
+        not inst.components.inventoryitem.trappable then return end
+    inst.randomsizetraphooks2hm = true
+    local SetTrapData, RestoreDataFromTrap = inst.settrapdata, inst.restoredatafromtrap
+    inst.settrapdata = function(inst, ...)
+        local original
+        if SetTrapData ~= nil then original = SetTrapData(inst, ...) end
+        -- Stack mods deliberately keep their existing live-capture behavior.
+        if inst.components.stackable ~= nil then return original end
+        local health = inst.components.health
+        local data = {}
+        if type(original) == "table" then
+            for key, value in pairs(original) do data[key] = value end
+        end
+        data.randomsizecapture2hm = {
+            version = 1, originalwrapped = type(original) ~= "table",
+            randomsize = inst.ray_suijidaxiao or 0, myscale = inst.myscale, norandom = inst.ray_nars2hm,
+            health = health.currenthealth, maxhealth = health.maxhealth, penalty = health.penalty,
+        }
+        if data.randomsizecapture2hm.originalwrapped then data.randomsizecapture2hm.original = original end
+        return data
+    end
+    inst.restoredatafromtrap = function(inst, data, ...)
+        local state = type(data) == "table" and data.randomsizecapture2hm or nil
+        if type(state) ~= "table" or state.version ~= 1 then state = nil end
+        local original = data
+        if state and state.originalwrapped then original = state.original end
+        local result
+        if RestoreDataFromTrap ~= nil then result = RestoreDataFromTrap(inst, original, ...) end
+        if inst.components.stackable ~= nil or type(state) ~= "table" or state.version ~= 1 or
+            type(state.maxhealth) ~= "number" or state.maxhealth <= 0 or type(state.health) ~= "number" then return result end
+        inst.ray_suijidaxiao, inst.myscale, inst.ray_nars2hm = state.randomsize, state.myscale, state.norandom
+        if state.norandom then inst:AddTag("ray_nars2hm") end
+        inst.myscalehealth2hm = true
+        if state.randomsize == 1 and type(state.myscale) == "number" then qianghua(inst, state.myscale, true) end
+        RestoreCapturedHealth(inst, state)
+        -- Finish after existing prefab/elite restoration tasks, keeping their
+        -- own trap data and avoiding a second random-size or health multiplier.
+        if inst.randomsizecapturetask2hm ~= nil then inst.randomsizecapturetask2hm:Cancel() end
+        inst.randomsizecapturetask2hm = inst:DoTaskInTime(0, function(inst)
+            inst.randomsizecapturetask2hm = nil
+            RestoreCapturedHealth(inst, state)
+        end)
+        return result
+    end
+end
+
+-- entity_spawned runs after every prefab post-init, so existing native/elite
+-- trap handlers have already been installed before we wrap them.
+AddSimPostInit(function()
+    if TheWorld.ismastersim then
+        TheWorld:ListenForEvent("entity_spawned", function(_, inst) InstallTrapIdentity(inst) end)
+    end
+end)
 
 -- 提取判断是否随机缩放的逻辑，方便在其他地方调用
 local function isRandScale(inst, ...)
@@ -321,6 +431,7 @@ AddPrefabPostInitAny(function(inst)
         end
 
         inst:DoTaskInTime(0, function(inst, ...)
+            InstallTrapIdentity(inst)
             if isRandScale(inst, ...) then
                 qianghua(inst, getrandomscale(inst), true)
             end

@@ -14,7 +14,7 @@ with ZipFile("D:/SteamLibrary/steamapps/common/Don't Starve Together/data/databu
  util=z.read('scripts/util.lua').decode('utf-8-sig')
  for name in ['deepcopy','RunInSandboxSafe']:
   start=util.index('function '+name+'(');lua.execute(util[start:util.index('\nend',start)+4])
-for name in ['exchangemode2hm','shadowvaultconfig2hm','rpcguard2hm','exchangeoriginalmigration2hm','components/exchangevariants2hm']:
+for name in ['exchangemode2hm','shadowvaultconfig2hm','rpcguard2hm','exchangeoriginalmigration2hm','exchangexianyurecovery2hm','components/exchangevariants2hm']:
  lua.globals().module=load((ROOT/'content/scripts'/f'{name}.lua').read_text(encoding='utf-8'),name)
  lua.execute(f'package.preload["{name}"]=module')
 lua.globals().classic_source=(ROOT/'content/easy_other/exchangeclassic2hm.lua').read_text(encoding='utf-8')

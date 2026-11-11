@@ -1,9 +1,9 @@
 {
-  "articles": 278,
+  "articles": 281,
   "configs": 439,
   "choices": 3351,
   "targetedRefresh": {
-    "version": "2.8.15.0.23",
+    "version": "2.8.15.0.25",
     "articles": [
       "role-winona",
       "winona-toolbox",
@@ -41,25 +41,33 @@
       "world-ancient-statues",
       "turf-raiser-helm",
       "eyeturret",
-      "um-performance-compatibility"
+      "um-performance-compatibility",
+      "tackle-station",
+      "right-click-actions",
+      "role-wigfrid",
+      "world-random-size",
+      "trap",
+      "world-autumn",
+      "deeply-buried-compatibility"
     ],
-    "count": 37
+    "count": 44
   },
   "sourceAuditVersions": {
-    "2.8.15.0.23": 37,
-    "2.8.14.97.4": 153,
+    "2.8.15.0.25": 12,
+    "2.8.15.0.23": 32,
+    "2.8.14.97.4": 150,
     "2.8.14.98.6": 1
   },
   "groups": 19,
   "images": 482,
   "itemAudit": {
-    "version": "2.8.15.0.23",
+    "version": "2.8.15.0.25",
     "articles": 62,
     "items": 60,
     "missing": []
   },
   "entityAudit": {
-    "version": "2.8.15.0.23",
+    "version": "2.8.15.0.25",
     "articles": 67,
     "characters": 25,
     "buildings": 22,
@@ -67,7 +75,7 @@
     "missing": []
   },
   "lifeAudit": {
-    "version": "2.8.15.0.23",
+    "version": "2.8.15.0.25",
     "articles": 48,
     "food": 15,
     "creatures": 33,

@@ -1,5 +1,23 @@
 # 回归测试
 
+## 薇格弗德乐谱命中回复（2026-11-11，本地待发布）
+
+`python tests/run_wigfrid_recovery_tests.py` 加载两版妥协真实乐谱回调，检查按实际命中目标判定、零普通攻击力的敌对Boss、旧缓存目标、附近拳击袋、非战斗目标／虚拟伤害／反弹弹丸排除，以及正式版数值保持和未知上游退让，35项通过。
+
+`python tests/run_native_wigfrid_recovery.py --edition all --label after` 用独立离线专服、真实技能树（除暗影）、两种生效乐谱和原生DoAttack，验证蚁狮、熊獾在目标缓存正常／空置／过时及附近拳击袋场景的实际命中伤害与回血回理智。两版各7个有效命中场景通过。`--label before` 只记录现象，不要求回复断言通过；修复前记录已冻结。详情见 [修复记录](../development/validation/wigfrid-recovery-20261111.txt)。
+
+## 随机小体型生物肉类掉落（2026-11-11，本地待发布）
+
+`python tests/run_random_size_loot_tests.py` 使用游戏原生LootDropper、MURDER及原生牛／大象掉落定义，核对0.80与0.90边界、肉类减量与保底、其他材料概率、动态掉落表、大体型双次判定，以及活物捕获的数据继承、叠加保护、原有回调、保存和堆叠退让。189项肉类检查与46项捕获／宰杀检查通过；实体与生成掉落物使用替身。规则见 [开发记录](../development/validation/random-size-meat-loot-20261111.txt)。
+
+`python tests/run_native_right_action_compat.py --probe random-trap` 使用独立离线世界加载完整淬炼，实际捕获大／小青蛙、大／小兔子和蜘蛛，核对陷阱保存再读取、活物放入真实背包的即时血量、延迟初始化、活物保存再读取，以及原生右键宰杀。另用测试组件让兔子可堆叠，核对不保留个体属性、按原版血量和单份肉处理。38项通过。未加载具体堆叠模组，没有真实客户端画面验收；详情见 [捕获记录](../development/validation/random-size-capture-20261111.txt)。
+
+## 角色右键能力与专武／勋章兼容（2026-11-11，本地待发布）
+
+`python tests/run_right_action_compat_tests.py` 加载本机原生动作选择器、右键派发、瞄准与蓄力组件，以及能力勋章实际灵魂跳跃回调，核对全部19个原版角色的全员冲刺入口和角色专属公共能力入口。1680项检查覆盖启用／锁定的武器技能、物品点技能、勋章先后加载、Ctrl切换、原有Ctrl设置、冷却、骑乘、变身、健身、动作过滤和光标物品；实体、网络变量与画面使用无头替身。
+
+`python tests/run_native_right_action_compat.py` 在一次性离线专服加载完整淬炼与本机能力勋章1.6.8.2，用实际奔雷矛、噬灵勋章与灵魂验证女工、威尔逊、韦斯、旺达、老麦的动作选择，51项检查。使用独立种子副本和空闲测试端口；测试控制器提供Ctrl状态，技能树补丁以启用原生矛的瞄准组件表示。未加载具体技能树补丁，也不代表真实客户端画面与网络输入验收。摘要见 [兼容记录](../development/validation/right-action-compat-20261111.txt)。
+
 ## 深埋之下兼容（2026-11-11，2.8.15.0.24 已发布）
 
 `python tests/run_bwb_compat_tests.py` 使用本机原版 Hunger、已下载的深埋 0.4.16.6 组件与界面钩子，核对两种加载顺序、死亡惩罚、两份惩罚的一次性恢复、上游兼容标记、保存读取、组件转移、客户端数值、普通与 Combined Status 显示，以及秋季复苏三个宝石档位、双时钟、已同步与旧不同步状态、单层限制。加 `--before` 对照本机冻结的修复前输入，复现恢复与显示缺陷。界面使用无头替身，不代表真实客户端画面验收。
@@ -334,3 +352,4 @@ python tests/run_native_exchange_travel.py newconstant --port 11017
 2026-11-10 性能补丁实装：`run_um_performance_tests.py` 对两版实际源码运行实现指纹、防改版跳过、天气/生成、任务与引用、寻路及空调回归；`run_native_um_performance.py --um stable|beta --mode um|combined` 串行启动一次性原生服务器并保存重载，测试版组合另含真实实体的递归候选、触手任务/引用与蕨叶再生检查。`build_um_compat_profiles.py` 和 `build_um_tornado_adapter.py` 仅供完成源码审查后重建已知实现，运行时不会调用或自动信任更新。检查范围、全部失败分类与最终四组证据见[实装记录](../development/validation/um-performance-installation-20261110.txt)。
 
 2026-11-10 工坊同步与圆形玻璃弹：`run_recipe_permission_tests.py` 检查实际双端科技权限函数的禁止标签/技能规则；`run_wixie_tests.py` 含新配方与既有武器权限回归。`run_native_walter_moonglass.py --um stable|beta --access on|off [--restart]` 串行验证两版实际配方、技能锁、圆/尖两种 build、装填、命中、UM 二级弹丸与身份保存。夹具注入技能并解锁配方，未验收玩家自然加点或祭坛 UI。工坊 .20 的天体改动与本地腿靴保护合并证明见[记录](../development/validation/workshop-sync-moonammo-20261110.txt)。
+2026-11-11 咸鱼切回原版兜底：`run_xianyu_classic_recovery_tests.py` 覆盖真实实体身份、满容量保留、原版穿越期间不插入、旧钓具引用、已有原版库存、此前已切回原版的旧库存和原传输凭据去重。`run_xianyu_classic_recovery_native.py` 使用冻结源码及隔离双层专服，先填满帽子／钓具第一和第二空间，再制造确认消息丢失，保存切回原版，核对物品守恒、腾位续迁、耐久及两轮重启。`--before --source <旧源码目录>` 复现旧空间隐藏；`run_xianyu_classic_resume_native.py <前一完整测试目录>` 用最终源码加载已完成回迁的双层存档，检查无重复恢复、钓具可打开及普通保存。使用专服模拟角色，不代表客户端界面验收；测试只操作自建进程和隔离存档。

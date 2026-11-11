@@ -36,6 +36,13 @@ TheWorld.PocketDimensionContainers.tacklestation2hm=canonical
 check(Proxy.Ensure(p) and p.master==canonical,"later native initialization restores the entrance")
 canonical.userid="KU_Private"
 check(not Proxy.Family(canonical),"private containers cannot be recovered as shared pockets")
+canonical.userid=nil
+local second=entity();second.prefab="shadowbank_tackle2hm";second.exchange_inactive2hm=true
+p.master=second
+check(Proxy.Family(second)=="tacklestation2hm","inactive Xianyu extra tackle space retains its family")
+check(Proxy.Ensure(p) and p.master==canonical,"ready but inactive Xianyu extra space rebinds to the canonical original space")
+second.prefab="shadowbank_container2hm"
+check(Proxy.Family(second)=="shadow","Xianyu extra hat space retains its family")
 TheWorld=before
 -- Rollback replaces an already saved foreign page from its newer journal.
 -- Its entrance must follow the replacement before the old entity is removed.

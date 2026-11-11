@@ -11,6 +11,7 @@ if manifest ~= nil and GLOBAL.IsWorkshopMod(modname) then
         "scripts/umwinonaworker2hm.lua",
         "scripts/winonabuilder2hm.lua",
         "scripts/umcompatprofiles2hm.lua",
+        "scripts/exchangexianyurecovery2hm.lua",
         "scripts/umperformance2hm.lua",
         "scripts/umtornado2hm.lua",
         "scripts/winonaelectrical2hm.lua",

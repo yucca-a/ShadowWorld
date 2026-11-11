@@ -1,5 +1,5 @@
 {
-  "version": "2.8.15.0.23",
+  "version": "2.8.15.0.25",
   "checkedAt": "2026-11-11",
   "targetedRefresh": [
     "role-winona",
@@ -38,7 +38,14 @@
     "world-ancient-statues",
     "turf-raiser-helm",
     "eyeturret",
-    "um-performance-compatibility"
+    "um-performance-compatibility",
+    "tackle-station",
+    "right-click-actions",
+    "role-wigfrid",
+    "world-random-size",
+    "trap",
+    "world-autumn",
+    "deeply-buried-compatibility"
   ],
   "articles": [
     {
@@ -49,7 +56,7 @@
         "content/modinfo.lua"
       ],
       "configKeys": [],
-      "auditedVersion": "2.8.15.0.23"
+      "auditedVersion": "2.8.15.0.25"
     },
     {
       "id": "configuration",
@@ -58,7 +65,9 @@
         "content/scripts/combatconfig2hm.lua",
         "content/scripts/exchangemode2hm.lua",
         "content/scripts/difficultyrating2hm.lua",
-        "content/modservercreationmain.lua"
+        "content/modservercreationmain.lua",
+        "content/scripts/components/exchangevariants2hm.lua",
+        "content/scripts/exchangexianyurecovery2hm.lua"
       ],
       "configKeys": [
         "enable easy mode",
@@ -72,7 +81,7 @@
         "贝爷求生",
         "德爷生存"
       ],
-      "auditedVersion": "2.8.15.0.23"
+      "auditedVersion": "2.8.15.0.25"
     },
     {
       "id": "faq",
@@ -131,14 +140,18 @@
         "content/easy_other/shadowvault.lua",
         "content/scripts/exchangemode2hm.lua",
         "content/scripts/components/exchangevariants2hm.lua",
-        "content/scripts/exchangeoriginalmigration2hm.lua"
+        "content/scripts/exchangeoriginalmigration2hm.lua",
+        "content/easy_other/containersort.lua",
+        "content/scripts/components/shadowbank2hm.lua",
+        "content/scripts/exchangexianyurecovery2hm.lua",
+        "content/scripts/shadowvaultproxy2hm.lua"
       ],
       "configKeys": [
         "Container Sort",
         "Items collect",
         "World Exchange"
       ],
-      "auditedVersion": "2.8.15.0.23"
+      "auditedVersion": "2.8.15.0.25"
     },
     {
       "id": "skill-tree",
@@ -239,12 +252,14 @@
         "content/modmain.lua",
         "DST scripts.zip/scripts/recipes.lua",
         "DST scripts.zip/scripts/prefabs/trap.lua",
-        "DST scripts.zip/scripts/tuning.lua"
+        "DST scripts.zip/scripts/tuning.lua",
+        "content/ray/suijishengwuapi.lua"
       ],
       "configKeys": [
-        "Trap Guaranteed Catch"
+        "Trap Guaranteed Catch",
+        "Random Sized"
       ],
-      "auditedVersion": "2.8.14.97.4"
+      "auditedVersion": "2.8.15.0.25"
     },
     {
       "id": "containers",
@@ -254,7 +269,9 @@
         "content/modmain.lua",
         "content/modinfo.lua",
         "content/easy_other/exchangemodes2hm.lua",
-        "content/scripts/exchangemode2hm.lua"
+        "content/scripts/exchangemode2hm.lua",
+        "content/scripts/exchangexianyurecovery2hm.lua",
+        "content/scripts/shadowvaultproxy2hm.lua"
       ],
       "configKeys": [
         "Container Sort",
@@ -262,7 +279,7 @@
         "Items collect danger",
         "World Exchange"
       ],
-      "auditedVersion": "2.8.15.0.23"
+      "auditedVersion": "2.8.15.0.25"
     },
     {
       "id": "frostjaw",
@@ -822,7 +839,9 @@
         "content/tech/prototyper.lua",
         "content/modmain.lua",
         "原版 scripts.zip：scripts/recipes.lua",
-        "原版 scripts.zip：scripts/tuning.lua"
+        "原版 scripts.zip：scripts/tuning.lua",
+        "content/scripts/exchangexianyurecovery2hm.lua",
+        "content/scripts/shadowvaultproxy2hm.lua"
       ],
       "configKeys": [
         "enable easy mode",
@@ -833,7 +852,7 @@
         "other_change",
         "Harder Prototyper Recipe"
       ],
-      "auditedVersion": "2.8.14.97.4"
+      "auditedVersion": "2.8.15.0.25"
     },
     {
       "id": "cartography-desk",
@@ -2058,7 +2077,9 @@
         "content/role/wigfrid.lua",
         "content/easy_role/rightaction.lua",
         "content/easy_role/rightselfaction.lua",
-        "content/scripts/prefabs/battlesongbuffs.lua"
+        "content/scripts/prefabs/battlesongbuffs.lua",
+        "content/easy_other/um_patch.lua",
+        "content/scripts/umcompatprofiles2hm.lua"
       ],
       "configKeys": [
         "enable easy mode",
@@ -2080,7 +2101,7 @@
         "Wilson Right Dodge",
         "right self need ctrl"
       ],
-      "auditedVersion": "2.8.14.97.4"
+      "auditedVersion": "2.8.15.0.25"
     },
     {
       "id": "role-webber",
@@ -2146,7 +2167,7 @@
         "Winona Electrical Upgrades",
         "um_patch"
       ],
-      "auditedVersion": "2.8.15.0.23"
+      "auditedVersion": "2.8.15.0.25"
     },
     {
       "id": "role-warly",
@@ -2604,7 +2625,8 @@
         "right self need ctrl",
         "All Right Dodge",
         "avoidselfdmg"
-      ]
+      ],
+      "auditedVersion": "2.8.15.0.25"
     },
     {
       "id": "character-mode-switches",
@@ -2720,7 +2742,8 @@
       "configKeys": [
         "Random Sized",
         "Random sized beefalo"
-      ]
+      ],
+      "auditedVersion": "2.8.15.0.25"
     },
     {
       "id": "world-ecosystem",
@@ -2855,7 +2878,8 @@
       ],
       "configKeys": [
         "autumn_change"
-      ]
+      ],
+      "auditedVersion": "2.8.15.0.25"
     },
     {
       "id": "creature-elites",
@@ -4229,6 +4253,31 @@
         "um_weather_particles2hm"
       ],
       "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "deeply-buried-compatibility",
+      "source": [
+        "content/role/hunger.lua",
+        "content/weather/autumn.lua"
+      ],
+      "configKeys": [
+        "autumn_change"
+      ],
+      "auditedVersion": "2.8.15.0.25"
+    },
+    {
+      "id": "update-2-8-15-0-25",
+      "source": [
+        "workshop/update-notes-2.8.15.0.25.txt"
+      ],
+      "configKeys": []
+    },
+    {
+      "id": "update-2-8-15-0-24",
+      "source": [
+        "workshop/update-notes-2.8.15.0.24.txt"
+      ],
+      "configKeys": []
     },
     {
       "id": "update-2-8-15-0-23",

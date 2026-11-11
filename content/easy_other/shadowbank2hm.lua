@@ -44,7 +44,7 @@ end
 AddShardModRPCHandler("MOD_HARDMODE", "shadowbank2hm", function(peer, id, part, total, raw)
     receive(peer, id, part, total, raw, function(data)
         local service = TheWorld and TheWorld.components.shadowbank2hm
-        if service and service.enabled then service:Packet(peer, data) end
+        if service then service:Packet(peer, data) end
     end)
 end)
 

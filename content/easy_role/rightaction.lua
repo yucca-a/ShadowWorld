@@ -170,15 +170,52 @@ AddStategraphState("wilson_client", State {
         -- inst.entity:SetIsPredictingMovement(true)
     end
 })
+local function IsRightActionCtrlPressed(inst)
+    return inst.components.playercontroller ~= nil and
+        inst.components.playercontroller:IsControlPressed(CONTROL_FORCE_STACK)
+end
+local POINT_ABILITY_COMPONENTS = {"aoetargeting", "aoecharging"}
+local function EquippedPointAbilityEnabled(inst)
+    local inventory = inst.replica.inventory
+    local item = inventory ~= nil and inventory:GetEquippedItem(EQUIPSLOTS.HANDS) or nil
+    if item == nil then return false end
+    local rider = inst.replica.rider
+    local riding = rider ~= nil and rider:IsRiding()
+    for _, name in ipairs(POINT_ABILITY_COMPONENTS) do
+        local ability = item.components[name]
+        if ability ~= nil and ability:IsEnabled() and (ability.allowriding or not riding) then return true end
+    end
+    return false
+end
 local function equipaoetargeting(inst)
-	local item = inst.replica.inventory:GetEquippedItem(EQUIPSLOTS.HANDS)
-	if inst.prefab == "walter" and not (TUNING.DSTU and TUNING.WIXIE_HEALTH) then
-		return item ~= nil and (item.components.aoetargeting ~= nil or (item.components.aoecharging ~= nil and inst.components.playercontroller and inst.components.playercontroller:IsControlPressed(CONTROL_FORCE_STACK)))
-	elseif inst.prefab == "walter" and (TUNING.DSTU and TUNING.WIXIE_HEALTH) then
-		return item ~= nil and (item.components.aoetargeting ~= nil or item.components.spellcaster)
-	else
-		return item ~= nil and item.components.aoetargeting ~= nil
-	end
+    -- A locked skill or an empty cooldown must not block a character ability.
+    -- Enabled item skills keep plain right-click; Ctrl selects our ability.
+    return not IsRightActionCtrlPressed(inst) and EquippedPointAbilityEnabled(inst)
+end
+local function InstallRightPointAction(inst, actionfn, needctrl)
+    local picker = inst.components.playeractionpicker
+    if picker == nil then return end
+    local old = picker.pointspecialactionsfn
+    local function guardedaction(player, pos, useitem, right, ...)
+        local inventory = player.replica.inventory
+        local controller = player.components.playercontroller
+        if useitem ~= nil or player:HasTag("playerghost") or player.ingym2hm or
+            (player.weremode ~= nil and player.weremode:value() ~= 0) or
+            (inventory ~= nil and inventory:GetActiveItem() ~= nil) or
+            (controller ~= nil and controller.reticule ~= nil and controller:GetActiveSpellBook() ~= nil) then return {} end
+        return actionfn(player, pos, useitem, right, ...)
+    end
+    picker.rightaction2hm = guardedaction
+    picker.rightactionneedctrl2hm = needctrl
+    picker.pointspecialactionsfn = function(...)
+        -- Extra skills (including medal/skill-tree callbacks) keep plain RMB.
+        -- Ctrl selection is resolved by GetPointSpecialActions after filtering.
+        if old ~= nil then
+            local oldactions, pos2 = old(...)
+            if oldactions ~= nil and #oldactions > 0 then return oldactions, pos2 end
+        end
+        return guardedaction(...)
+    end
 end
 
 local function GetPointSpecialActions_DODGE(inst, pos, useitem, right)
@@ -200,20 +237,7 @@ local function GetPointSpecialActions_DODGE(inst, pos, useitem, right)
 end
 local function OnSetOwner_DODGE(inst)
     if inst.components.playeractionpicker ~= nil then
-        inst.components.playeractionpicker.rightaction2hm = GetPointSpecialActions_DODGE
-        if not inst.components.playeractionpicker.pointspecialactionsfn then
-            inst.components.playeractionpicker.pointspecialactionsfn = GetPointSpecialActions_DODGE
-        else
-            local old = inst.components.playeractionpicker.pointspecialactionsfn
-            inst.components.playeractionpicker.pointspecialactionsfn = function(...)
-                if ctrldisable then
-                    return (inst.components.playercontroller and inst.components.playercontroller:IsControlPressed(CONTROL_FORCE_STACK) and old(...)) or
-                           GetPointSpecialActions_DODGE(...)
-                end
-                local actions = GetPointSpecialActions_DODGE(...)
-                return #actions > 0 and actions or old(...)
-            end
-        end
+        InstallRightPointAction(inst, GetPointSpecialActions_DODGE)
         if inst.prefab == "walter" and TUNING.DSTU and inst.components.playeractionpicker.rightclickoverride and not inst.rightaction2hm_beefalo then
             local old = inst.components.playeractionpicker.rightclickoverride
             inst.components.playeractionpicker.rightclickoverride = function(...)
@@ -308,7 +332,6 @@ AddStategraphState("wilson", state_rotate_weapon2hm)
 AddStategraphState("wilson_client", state_rotate_weapon2hm)
 local function GetPointSpecialActions_Rotate(inst, pos, useitem, right)
     if right and not equipaoetargeting(inst) and inst:HasTag("rotate_weapon2hm") then
-        local has_weapon = false
         local inventory = inst.replica.inventory
         local tool = inventory ~= nil and inventory:GetEquippedItem(EQUIPSLOTS.HANDS) or nil
         local rider = inst.replica.rider
@@ -317,22 +340,7 @@ local function GetPointSpecialActions_Rotate(inst, pos, useitem, right)
     return {}
 end
 local function OnSetOwner_Rotate(inst)
-    if inst.components.playeractionpicker ~= nil then
-        inst.components.playeractionpicker.rightaction2hm = GetPointSpecialActions_Rotate
-        if not inst.components.playeractionpicker.pointspecialactionsfn then
-            inst.components.playeractionpicker.pointspecialactionsfn = GetPointSpecialActions_Rotate
-        else
-            local old = inst.components.playeractionpicker.pointspecialactionsfn
-            inst.components.playeractionpicker.pointspecialactionsfn = function(...)
-                if ctrldisable and inst.components.playercontroller and inst.components.playercontroller:IsControlPressed(CONTROL_FORCE_STACK) then
-                    local oldactions = old(...)
-                    return #oldactions > 0 and oldactions or GetPointSpecialActions_Rotate(...)
-                end
-                local actions = GetPointSpecialActions_Rotate(...)
-                return #actions > 0 and actions or old(...)
-            end
-        end
-    end
+    InstallRightPointAction(inst, GetPointSpecialActions_Rotate)
 end
 local function delayOnSetOwner_Rotate(inst) inst:DoTaskInTime(0, OnSetOwner_Rotate) end
 function AddRotateAbility(inst)
@@ -426,27 +434,7 @@ local function GetPointSpecialActions_WARPFRONT(inst, pos, useitem, right)
     return {}
 end
 local function OnSetOwner_WARPFRONT(inst)
-    if inst.components.playeractionpicker ~= nil then
-        inst.components.playeractionpicker.rightaction2hm = GetPointSpecialActions_WARPFRONT
-        if not inst.components.playeractionpicker.pointspecialactionsfn then
-            inst.components.playeractionpicker.pointspecialactionsfn = ctrlwrapback and function(...)
-                return inst.components.playercontroller and inst.components.playercontroller:IsControlPressed(CONTROL_FORCE_STACK) and
-                           GetPointSpecialActions_WARPFRONT(...) or {}
-            end or GetPointSpecialActions_WARPFRONT
-        else
-            local old = inst.components.playeractionpicker.pointspecialactionsfn
-            inst.components.playeractionpicker.pointspecialactionsfn = function(...)
-                local pressctrl = inst.components.playercontroller and inst.components.playercontroller:IsControlPressed(CONTROL_FORCE_STACK)
-                if ctrlwrapback then return pressctrl and GetPointSpecialActions_WARPFRONT(...) or old(...) end
-                if ctrldisable and pressctrl then
-                    local oldactions = old(...)
-                    return #oldactions > 0 and oldactions or GetPointSpecialActions_WARPFRONT(...)
-                end
-                local actions = GetPointSpecialActions_WARPFRONT(...)
-                return #actions > 0 and actions or old(...)
-            end
-        end
-    end
+    InstallRightPointAction(inst, GetPointSpecialActions_WARPFRONT, ctrlwrapback)
 end
 -- 穿梭到未来添加新的N个坐标
 local function positionalwarpaddfuturepos(self, frontdata2hm)
@@ -640,27 +628,7 @@ local function GetPointSpecialActions_WARPBACK(inst, pos, useitem, right)
     return {}
 end
 local function OnSetOwner_WARPBACK(inst)
-    if inst.components.playeractionpicker ~= nil then
-        inst.components.playeractionpicker.rightaction2hm = GetPointSpecialActions_WARPBACK
-        if not inst.components.playeractionpicker.pointspecialactionsfn then
-            inst.components.playeractionpicker.pointspecialactionsfn = ctrlwrapback and function(...)
-                return inst.components.playercontroller and inst.components.playercontroller:IsControlPressed(CONTROL_FORCE_STACK) and
-                           GetPointSpecialActions_WARPBACK(...) or {}
-            end or GetPointSpecialActions_WARPBACK
-        else
-            local old = inst.components.playeractionpicker.pointspecialactionsfn
-            inst.components.playeractionpicker.pointspecialactionsfn = function(...)
-                local pressctrl = inst.components.playercontroller and inst.components.playercontroller:IsControlPressed(CONTROL_FORCE_STACK)
-                if ctrlwrapback then return pressctrl and GetPointSpecialActions_WARPBACK(...) or old(...) end
-                if ctrldisable and pressctrl then
-                    local oldactions = old(...)
-                    return #oldactions > 0 and oldactions or GetPointSpecialActions_WARPBACK(...)
-                end
-                local actions = GetPointSpecialActions_WARPBACK(...)
-                return #actions > 0 and actions or old(...)
-            end
-        end
-    end
+    InstallRightPointAction(inst, GetPointSpecialActions_WARPBACK, ctrlwrapback)
 end
 function AddWrapAbility(inst)
     inst.rightaction2hm = net_bool(inst.GUID, "player.rightaction2hm", "rightaction2hmdirty")
@@ -1010,27 +978,7 @@ local function GetPointSpecialActions_Lunge(inst, pos, useitem, right)
     return {}
 end
 local function OnSetOwner_Lunge(inst)
-    if inst.components.playeractionpicker ~= nil then
-        inst.components.playeractionpicker.rightaction2hm = GetPointSpecialActions_Lunge
-        if not inst.components.playeractionpicker.pointspecialactionsfn then
-            inst.components.playeractionpicker.pointspecialactionsfn = ctrlLunge and function(...)
-                return inst.components.playercontroller and inst.components.playercontroller:IsControlPressed(CONTROL_FORCE_STACK) and
-                           GetPointSpecialActions_Lunge(...) or {}
-            end or GetPointSpecialActions_Lunge
-        else
-            local old = inst.components.playeractionpicker.pointspecialactionsfn
-            inst.components.playeractionpicker.pointspecialactionsfn = function(...)
-                local pressctrl = inst.components.playercontroller and inst.components.playercontroller:IsControlPressed(CONTROL_FORCE_STACK)
-                if ctrlLunge then return pressctrl and GetPointSpecialActions_Lunge(...) or old(...) end
-                if ctrldisable and pressctrl then
-                    local oldactions = old(...)
-                    return #oldactions > 0 and oldactions or GetPointSpecialActions_Lunge(...)
-                end
-                local actions = GetPointSpecialActions_Lunge(...)
-                return #actions > 0 and actions or old(...)
-            end
-        end
-    end
+    InstallRightPointAction(inst, GetPointSpecialActions_Lunge, ctrlLunge)
 end
 local function delayOnSetOwner_Lunge(inst) inst:DoTaskInTime(0, OnSetOwner_Lunge) end
 function AddLungeAbility(inst)
@@ -1040,6 +988,23 @@ end
 
 -- 扩展动作使用范围
 AddComponentPostInit("playeractionpicker", function(self)
+    local GetPointSpecialActions = self.GetPointSpecialActions
+    self.GetPointSpecialActions = function(self, pos, useitem, right, ...)
+        local actions = GetPointSpecialActions(self, pos, useitem, right, ...)
+        -- Resolve after the current callback chain, even if another mod installs
+        -- its skill after setowner. Never depend on a prefab or medal whitelist.
+        local controller = self.inst.components.playercontroller
+        if right and useitem == nil and self.rightaction2hm ~= nil and
+            IsRightActionCtrlPressed(self.inst) and not self.disable_right_click and
+            self.inst.replica.inventory:GetActiveItem() == nil and (controller.reticule == nil or controller:GetActiveSpellBook() == nil) then
+            local custom = self.rightaction2hm(self.inst, pos, nil, true)
+            if custom ~= nil and #custom > 0 then
+                local sorted = self:SortActionList(custom, pos, nil)
+                if #sorted > 0 then return sorted end
+            end
+        end
+        return actions
+    end
     local DoGetMouseActions = self.DoGetMouseActions
     self.DoGetMouseActions = function(self, position, target, spellbook, ...)
         if not (self.inst.replica and self.inst.replica.inventory) then return end
@@ -1060,7 +1025,16 @@ AddComponentPostInit("playeractionpicker", function(self)
         end
         local ctrlpressed = self.inst.components.playercontroller ~= nil and
             self.inst.components.playercontroller:IsControlPressed(CONTROL_FORCE_STACK)
-        if (rightaction == nil or (ctrlwrapback and ctrlpressed)) and self.rightaction2hm and not TheInput:GetHUDEntityUnderMouse() then
+        local inventory = self.inst.replica.inventory
+        local tool = inventory:GetEquippedItem(EQUIPSLOTS.HANDS)
+        local overrideitem = ctrlpressed and (EquippedPointAbilityEnabled(self.inst) or
+            (tool ~= nil and rightaction ~= nil and rightaction.invobject == tool))
+        local overridepointskill = ctrlpressed and self.rightclickoverride ~= nil and rightaction ~= nil and
+            rightaction.target == nil and rightaction.pos ~= nil
+        if (rightaction == nil or (ctrlpressed and self.rightactionneedctrl2hm) or overrideitem or overridepointskill) and
+            self.rightaction2hm and not self.disable_right_click and inventory:GetActiveItem() == nil and spellbook == nil and
+            (self.inst.components.playercontroller.reticule == nil or self.inst.components.playercontroller:GetActiveSpellBook() == nil) and
+            not TheInput:GetHUDEntityUnderMouse() then
             -- 获取自定义右键动作列表
             local custom_actions = self.rightaction2hm(self.inst,
                 position or TheInput:GetWorldPosition() or (target and target:GetPosition()), nil, true)
@@ -1075,11 +1049,12 @@ AddComponentPostInit("playeractionpicker", function(self)
                 end
             end
             -- 只有确实拿到自定义动作时才覆盖原右键动作。
-            -- 这样不按 Ctrl 时保留妥协滑行手杖的右键滑行；
-            -- 按 Ctrl 时强制用旺达倒走覆盖滑行。
+            -- Plain right-click preserves item skills; Ctrl can select the
+            -- character ability. Unavailable abilities never replace an action.
             if custom_actions and type(custom_actions) == "table" and #custom_actions > 0 then
-                rightaction = self:SortActionList(custom_actions)[1]
-                if position and rightaction then
+                local custom = self:SortActionList(custom_actions)[1]
+                if custom ~= nil then rightaction = custom end
+                if position and custom then
                     if not rightaction.pos then
                         rightaction.pos = DynamicPosition(position)
                         rightaction.pos.local_pt = Vector3(position:Get())
@@ -1090,6 +1065,28 @@ AddComponentPostInit("playeractionpicker", function(self)
             end
         end
         return leftaction, rightaction
+    end
+end)
+-- Switch out of the equipped item's native aiming mode before Ctrl+RMB.
+-- Do not change spellbook aiming, placement, or ordinary RMB cancellation.
+AddComponentPostInit("playercontroller", function(self)
+    local OnRightClick = self.OnRightClick
+    self.OnRightClick = function(self, down, ...)
+        local picker = self.inst.components.playeractionpicker
+        local inventory = self.inst.replica.inventory
+        if down and self:UsingMouse() and self:IsEnabled() and self.placer_recipe == nil and
+            picker ~= nil and picker.rightaction2hm ~= nil and inventory ~= nil and
+            inventory:GetActiveItem() == nil and (self.reticule == nil or self:GetActiveSpellBook() == nil) and
+            not picker.disable_right_click and not TheInput:GetHUDEntityUnderMouse() and
+            IsRightActionCtrlPressed(self.inst) and self:IsAOETargeting() and
+            self.reticule.inst == inventory:GetEquippedItem(EQUIPSLOTS.HANDS) then
+            local actions = picker.rightaction2hm(self.inst, TheInput:GetWorldPosition(), nil, true)
+            if actions ~= nil and #picker:SortActionList(actions) > 0 then
+                self:CancelAOETargeting()
+                self.LMBaction, self.RMBaction = picker:DoGetMouseActions()
+            end
+        end
+        return OnRightClick(self, down, ...)
     end
 end)
 -- AddComponentPostInit("playercontroller", function(self)

@@ -10,6 +10,8 @@ end
 Proxy.Ready=ready
 function Proxy.Family(entity,v)
     if not entity or not Config.Manageable("",entity) then return end
+    if entity.prefab=="shadowbank_container2hm" then return "shadow" end
+    if entity.prefab=="shadowbank_tackle2hm" then return "tacklestation2hm" end
     if entity.shadowvault_page2hm then return Config.Family(entity.shadowvault_page2hm) end
     for family,base in pairs(v and v.native_bases or {})do
         if base==entity and Config.Manageable(family,base) then return family end
@@ -37,9 +39,9 @@ function Proxy.DetachStale(self)
 end
 function Proxy.Ensure(self,v)
     local master=self.master
-    if ready(master) then return true end
+    if ready(master) and not master.exchange_inactive2hm then return true end
     -- An entity whose networking is not ready must wait, not be replaced.
-    if valid(master) then return false end
+    if valid(master) and not master.exchange_inactive2hm then return false end
     local family=Proxy.Family(master,v) or self.shadowvault_family2hm
     local selected=TUNING.SHADOWVAULT_ENABLED2HM
     local replacement=selected and family and v and v.native_bases and v.native_bases[family]

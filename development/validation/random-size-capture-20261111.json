@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-11",
+  "status": "validated_local_unpublished",
+  "workshop_updated": false,
+  "source": "content/ray/suijishengwuapi.lua",
+  "source_sha256": "1b4ef9a46a7189e3e57f679cc49ae26cf19395b2ec9af810988ef4e37c0745ae",
+  "loot_assertions": 189,
+  "capture_murder_assertions": 46,
+  "existing_trap_assertions": 276,
+  "native_assertions": 38,
+  "native_run": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-random-trap-lkueclm7",
+  "native_report": "development/validation/random-trap-native-20261111.json",
+  "limits": [
+    "Headless entity/unit substitutes",
+    "Native stackability supplied by fixture, not a specific stack mod",
+    "No rendered client or remote click verification"
+  ]
+}

@@ -1,6 +1,6 @@
 {
-  "version": "2.8.15.0.23",
-  "sourceHash": "2560a31c2c769dfc85831ee5b21afc42ebaa36612c77aec4fdbc2679c15bd6e7",
+  "version": "2.8.15.0.25",
+  "sourceHash": "f8b837daf33413003a03526f6a12595514159c872663a06ccc2829474bd14b56",
   "total": 439,
   "configs": [
     {
@@ -68,7 +68,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 113
+          "line": 114
         }
       ]
     },
@@ -105,7 +105,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 118
+          "line": 119
         }
       ]
     },
@@ -271,7 +271,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 123
+          "line": 124
         }
       ]
     },
@@ -367,7 +367,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 123
+          "line": 124
         }
       ]
     },
@@ -463,7 +463,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 342
+          "line": 343
         }
       ]
     },
@@ -491,7 +491,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 340
+          "line": 341
         }
       ]
     },
@@ -659,7 +659,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 341
+          "line": 342
         }
       ]
     },
@@ -863,7 +863,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 140
+          "line": 141
         }
       ]
     },
@@ -919,7 +919,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 147
+          "line": 148
         }
       ]
     },
@@ -947,7 +947,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 142
+          "line": 143
         },
         {
           "file": "content/ray/shengwudamiejve.lua",
@@ -979,7 +979,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 145
+          "line": 146
         }
       ]
     },
@@ -1065,11 +1065,11 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 134
+          "line": 135
         },
         {
           "file": "content/modmain.lua",
-          "line": 252
+          "line": 253
         },
         {
           "file": "content/shadow_nerf.lua",
@@ -1697,7 +1697,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 136
+          "line": 137
         },
         {
           "file": "content/shadow_nerf.lua",
@@ -3183,7 +3183,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 65
+          "line": 66
         }
       ]
     },
@@ -3211,7 +3211,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 52
+          "line": 53
         }
       ]
     },
@@ -3432,7 +3432,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 54
+          "line": 55
         }
       ]
     },
@@ -3780,7 +3780,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 67
+          "line": 68
         },
         {
           "file": "content/role/wolfgang.lua",
@@ -3928,7 +3928,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 76
+          "line": 77
         }
       ]
     },
@@ -4334,7 +4334,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 77
+          "line": 78
         }
       ]
     },
@@ -4523,7 +4523,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 78
+          "line": 79
         }
       ]
     },
@@ -4762,7 +4762,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 79
+          "line": 80
         }
       ]
     },
@@ -4963,7 +4963,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 80
+          "line": 81
         }
       ]
     },
@@ -5135,7 +5135,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 81
+          "line": 82
         }
       ]
     },
@@ -5415,7 +5415,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 82
+          "line": 83
         }
       ]
     },
@@ -5619,7 +5619,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 83
+          "line": 84
         }
       ]
     },
@@ -5881,7 +5881,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 84
+          "line": 85
         }
       ]
     },
@@ -6172,7 +6172,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 85
+          "line": 86
         }
       ]
     },
@@ -6543,7 +6543,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 86
+          "line": 87
         }
       ]
     },
@@ -6841,7 +6841,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 87
+          "line": 88
         }
       ]
     },
@@ -7152,7 +7152,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 88
+          "line": 89
         }
       ]
     },
@@ -7500,7 +7500,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 92
+          "line": 93
         }
       ]
     },
@@ -7845,7 +7845,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 93
+          "line": 94
         }
       ]
     },
@@ -7873,7 +7873,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 89
+          "line": 90
         }
       ]
     },
@@ -8069,7 +8069,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 90
+          "line": 91
         }
       ]
     },
@@ -8414,7 +8414,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 91
+          "line": 92
         }
       ]
     },
@@ -8642,7 +8642,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 94
+          "line": 95
         }
       ]
     },
@@ -8842,7 +8842,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 95
+          "line": 96
         }
       ]
     },
@@ -9158,7 +9158,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 96
+          "line": 97
         }
       ]
     },
@@ -9394,7 +9394,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 97
+          "line": 98
         }
       ]
     },
@@ -9586,7 +9586,7 @@
       "references": [
         {
           "file": "content/easy_role/rightaction.lua",
-          "line": 228
+          "line": 252
         },
         {
           "file": "content/easy_role/role_common.lua",
@@ -9631,7 +9631,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 71
+          "line": 72
         }
       ]
     },
@@ -9659,7 +9659,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 101
+          "line": 102
         }
       ]
     },
@@ -9839,7 +9839,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 180
+          "line": 181
         },
         {
           "file": "content/tech/prototyper.lua",
@@ -9876,7 +9876,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 185
+          "line": 186
         },
         {
           "file": "content/role/health.lua",
@@ -9913,7 +9913,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 186
+          "line": 187
         },
         {
           "file": "content/role/sanity.lua",
@@ -9945,7 +9945,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 187
+          "line": 188
         }
       ]
     },
@@ -9988,7 +9988,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 181
+          "line": 182
         },
         {
           "file": "content/role/combat.lua",
@@ -10020,7 +10020,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 182
+          "line": 183
         }
       ]
     },
@@ -10048,7 +10048,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 183
+          "line": 184
         }
       ]
     },
@@ -10076,7 +10076,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 184
+          "line": 185
         }
       ]
     },
@@ -10104,7 +10104,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 188
+          "line": 189
         }
       ]
     },
@@ -10292,7 +10292,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 189
+          "line": 190
         },
         {
           "file": "content/role/leader.lua",
@@ -10324,7 +10324,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 191
+          "line": 192
         }
       ]
     },
@@ -10380,7 +10380,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 195
+          "line": 196
         }
       ]
     },
@@ -10413,7 +10413,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 194
+          "line": 195
         },
         {
           "file": "content/role/death.lua",
@@ -10449,7 +10449,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 197
+          "line": 198
         }
       ]
     },
@@ -10482,7 +10482,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 198
+          "line": 199
         },
         {
           "file": "content/role/recipe_add_material.lua",
@@ -10519,7 +10519,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 200
+          "line": 201
         },
         {
           "file": "content/role/clock_peril.lua",
@@ -10551,7 +10551,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 201
+          "line": 202
         }
       ]
     },
@@ -10583,7 +10583,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 202
+          "line": 203
         }
       ]
     },
@@ -10611,7 +10611,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 206
+          "line": 207
         }
       ]
     },
@@ -10643,7 +10643,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 205
+          "line": 206
         }
       ]
     },
@@ -10671,7 +10671,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 204
+          "line": 205
         },
         {
           "file": "content/role/wx78.lua",
@@ -10716,7 +10716,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 207
+          "line": 208
         },
         {
           "file": "content/role/wickerbottom.lua",
@@ -10756,7 +10756,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 208
+          "line": 209
         }
       ]
     },
@@ -10816,7 +10816,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 203
+          "line": 204
         }
       ]
     },
@@ -10876,7 +10876,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 213
+          "line": 214
         },
         {
           "file": "content/role/walter.lua",
@@ -10908,7 +10908,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 213
+          "line": 214
         },
         {
           "file": "content/role/walter.lua",
@@ -10940,7 +10940,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 214
+          "line": 215
         }
       ]
     },
@@ -10972,7 +10972,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 210
+          "line": 211
         }
       ]
     },
@@ -11004,7 +11004,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 209
+          "line": 210
         }
       ]
     },
@@ -11036,7 +11036,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 211
+          "line": 212
         }
       ]
     },
@@ -11064,7 +11064,7 @@
       "references": [
         {
           "file": "content/easy_role/rightaction.lua",
-          "line": 566
+          "line": 554
         },
         {
           "file": "content/easy_role/wanda_easy.lua",
@@ -11072,7 +11072,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 212
+          "line": 213
         }
       ]
     },
@@ -11100,7 +11100,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 196
+          "line": 197
         }
       ]
     },
@@ -11228,7 +11228,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 193
+          "line": 194
         },
         {
           "file": "content/role/norunattack.lua",
@@ -11315,7 +11315,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 192
+          "line": 193
         }
       ]
     },
@@ -11343,7 +11343,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 217
+          "line": 218
         }
       ]
     },
@@ -11376,7 +11376,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 219
+          "line": 220
         },
         {
           "file": "content/weather/temperature.lua",
@@ -11418,7 +11418,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 228
+          "line": 229
         },
         {
           "file": "content/role/clock_peril.lua",
@@ -11487,7 +11487,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 229
+          "line": 230
         },
         {
           "file": "content/weather/moonlight.lua",
@@ -11519,7 +11519,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 222
+          "line": 223
         },
         {
           "file": "content/weather/weather.lua",
@@ -11560,7 +11560,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 221
+          "line": 222
         },
         {
           "file": "content/monster/lunarthrall_plant.lua",
@@ -11657,7 +11657,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 220
+          "line": 221
         },
         {
           "file": "content/weather/rain.lua",
@@ -11689,7 +11689,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 223
+          "line": 224
         }
       ]
     },
@@ -11722,7 +11722,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 224
+          "line": 225
         },
         {
           "file": "content/weather/winter.lua",
@@ -11764,7 +11764,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 225
+          "line": 226
         },
         {
           "file": "content/weather/autumn.lua",
@@ -11800,7 +11800,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 164
+          "line": 165
         },
         {
           "file": "content/modworldgenmain.lua",
@@ -11836,7 +11836,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 167
+          "line": 168
         }
       ]
     },
@@ -11864,7 +11864,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 168
+          "line": 169
         }
       ]
     },
@@ -11892,7 +11892,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 166
+          "line": 167
         }
       ]
     },
@@ -11920,7 +11920,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 170
+          "line": 171
         }
       ]
     },
@@ -11953,7 +11953,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 172
+          "line": 173
         },
         {
           "file": "content/tech/moonrockidol.lua",
@@ -11990,7 +11990,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 169
+          "line": 170
         },
         {
           "file": "content/tech/oceanlife.lua",
@@ -12089,7 +12089,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 171
+          "line": 172
         },
         {
           "file": "content/tech/clockwork_guard.lua",
@@ -12126,7 +12126,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 175
+          "line": 176
         },
         {
           "file": "content/modworldgenmain.lua",
@@ -12162,7 +12162,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 176
+          "line": 177
         }
       ]
     },
@@ -12195,7 +12195,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 177
+          "line": 178
         },
         {
           "file": "content/tech/ancient_altar.lua",
@@ -12527,7 +12527,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 173
+          "line": 174
         },
         {
           "file": "content/tech/rocks.lua",
@@ -12559,7 +12559,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 174
+          "line": 175
         }
       ]
     },
@@ -12591,7 +12591,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 232
+          "line": 233
         }
       ]
     },
@@ -12637,7 +12637,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 233
+          "line": 234
         }
       ]
     },
@@ -12683,7 +12683,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 234
+          "line": 235
         }
       ]
     },
@@ -12711,7 +12711,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 235
+          "line": 236
         }
       ]
     },
@@ -12748,7 +12748,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 236
+          "line": 237
         }
       ]
     },
@@ -12785,7 +12785,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 237
+          "line": 238
         }
       ]
     },
@@ -13121,7 +13121,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 238
+          "line": 239
         },
         {
           "file": "content/monster/walrus.lua",
@@ -13157,7 +13157,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 239
+          "line": 240
         }
       ]
     },
@@ -13185,7 +13185,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 240
+          "line": 241
         }
       ]
     },
@@ -13312,7 +13312,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 243
+          "line": 244
         }
       ]
     },
@@ -13589,7 +13589,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 246
+          "line": 247
         }
       ]
     },
@@ -13617,7 +13617,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 244
+          "line": 245
         }
       ]
     },
@@ -13694,7 +13694,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 245
+          "line": 246
         }
       ]
     },
@@ -14026,7 +14026,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 241
+          "line": 242
         },
         {
           "file": "content/role/wickerbottom.lua",
@@ -14058,7 +14058,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 242
+          "line": 243
         }
       ]
     },
@@ -14090,7 +14090,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 249
+          "line": 250
         },
         {
           "file": "content/shadowworld.lua",
@@ -14127,7 +14127,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 258
+          "line": 259
         },
         {
           "file": "content/monster/wall.lua",
@@ -14159,7 +14159,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 259
+          "line": 260
         }
       ]
     },
@@ -14382,7 +14382,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 255
+          "line": 256
         },
         {
           "file": "content/monster/supermonster.lua",
@@ -14609,7 +14609,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 255
+          "line": 256
         },
         {
           "file": "content/monster/supermonster.lua",
@@ -14641,7 +14641,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 256
+          "line": 257
         }
       ]
     },
@@ -14669,7 +14669,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 257
+          "line": 258
         }
       ]
     },
@@ -14697,7 +14697,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 260
+          "line": 261
         }
       ]
     },
@@ -14725,7 +14725,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 261
+          "line": 262
         }
       ]
     },
@@ -14753,7 +14753,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 262
+          "line": 263
         }
       ]
     },
@@ -14781,7 +14781,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 263
+          "line": 264
         }
       ]
     },
@@ -14824,11 +14824,11 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 253
+          "line": 254
         },
         {
           "file": "content/modmain.lua",
-          "line": 267
+          "line": 268
         },
         {
           "file": "content/monster/hound.lua",
@@ -14865,7 +14865,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 268
+          "line": 269
         },
         {
           "file": "content/monster/walrus.lua",
@@ -14902,7 +14902,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 278
+          "line": 279
         },
         {
           "file": "content/monster/chess.lua",
@@ -14938,7 +14938,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 280
+          "line": 281
         }
       ]
     },
@@ -14970,7 +14970,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 270
+          "line": 271
         }
       ]
     },
@@ -14998,7 +14998,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 271
+          "line": 272
         }
       ]
     },
@@ -15026,7 +15026,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 281
+          "line": 282
         }
       ]
     },
@@ -15054,7 +15054,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 264
+          "line": 265
         }
       ]
     },
@@ -15082,7 +15082,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 269
+          "line": 270
         }
       ]
     },
@@ -15110,7 +15110,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 319
+          "line": 320
         }
       ]
     },
@@ -15138,7 +15138,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 266
+          "line": 267
         }
       ]
     },
@@ -15166,7 +15166,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 265
+          "line": 266
         }
       ]
     },
@@ -15222,7 +15222,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 272
+          "line": 273
         }
       ]
     },
@@ -15250,7 +15250,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 279
+          "line": 280
         }
       ]
     },
@@ -15283,7 +15283,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 273
+          "line": 274
         },
         {
           "file": "content/monster/crawlingshadow.lua",
@@ -15324,7 +15324,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 274
+          "line": 275
         },
         {
           "file": "content/monster/crawlingshadow.lua",
@@ -15368,7 +15368,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 276
+          "line": 277
         },
         {
           "file": "content/monster/crawlingshadow.lua",
@@ -15405,7 +15405,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 277
+          "line": 278
         },
         {
           "file": "content/monster/ruinsnightmare.lua",
@@ -15442,7 +15442,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 275
+          "line": 276
         },
         {
           "file": "content/monster/shadowleech.lua",
@@ -15474,7 +15474,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 282
+          "line": 283
         }
       ]
     },
@@ -15502,7 +15502,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 287
+          "line": 288
         }
       ]
     },
@@ -15539,11 +15539,11 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 253
+          "line": 254
         },
         {
           "file": "content/modmain.lua",
-          "line": 297
+          "line": 298
         }
       ]
     },
@@ -15571,7 +15571,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 296
+          "line": 297
         }
       ]
     },
@@ -15599,11 +15599,11 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 253
+          "line": 254
         },
         {
           "file": "content/modmain.lua",
-          "line": 285
+          "line": 286
         }
       ]
     },
@@ -15631,7 +15631,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 298
+          "line": 299
         },
         {
           "file": "content/shadowworld.lua",
@@ -15663,7 +15663,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 299
+          "line": 300
         }
       ]
     },
@@ -15691,7 +15691,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 293
+          "line": 294
         },
         {
           "file": "content/shadowworld.lua",
@@ -15723,7 +15723,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 294
+          "line": 295
         }
       ]
     },
@@ -15756,11 +15756,11 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 300
+          "line": 301
         },
         {
           "file": "content/modmain.lua",
-          "line": 302
+          "line": 303
         }
       ]
     },
@@ -15800,7 +15800,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 286
+          "line": 287
         },
         {
           "file": "content/shadow_nerf.lua",
@@ -15836,7 +15836,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 252
+          "line": 253
         }
       ]
     },
@@ -15873,7 +15873,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 295
+          "line": 296
         }
       ]
     },
@@ -15901,7 +15901,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 305
+          "line": 306
         },
         {
           "file": "content/shadowworld.lua",
@@ -15937,7 +15937,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 318
+          "line": 319
         }
       ]
     },
@@ -15965,7 +15965,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 284
+          "line": 285
         }
       ]
     },
@@ -16017,7 +16017,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 316
+          "line": 317
         },
         {
           "file": "content/shadowworld.lua",
@@ -16113,7 +16113,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 317
+          "line": 318
         }
       ]
     },
@@ -16167,7 +16167,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 289
+          "line": 290
         },
         {
           "file": "content/shadowworld.lua",
@@ -16213,7 +16213,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 306
+          "line": 307
         },
         {
           "file": "content/shadowworld.lua",
@@ -16274,7 +16274,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 307
+          "line": 308
         }
       ]
     },
@@ -16326,7 +16326,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 313
+          "line": 314
         }
       ]
     },
@@ -16376,7 +16376,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 314
+          "line": 315
         }
       ]
     },
@@ -16408,7 +16408,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 315
+          "line": 316
         }
       ]
     },
@@ -16631,7 +16631,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 321
+          "line": 322
         },
         {
           "file": "content/monster/secondlevel.lua",
@@ -16711,7 +16711,7 @@
         },
         {
           "file": "content/modmain.lua",
-          "line": 324
+          "line": 325
         },
         {
           "file": "content/monster/chess.lua",
@@ -17848,7 +17848,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 327
+          "line": 328
         },
         {
           "file": "content/monster/secondlevel.lua",
@@ -21997,7 +21997,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 327
+          "line": 328
         },
         {
           "file": "content/monster/secondlevel.lua",
@@ -25255,7 +25255,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 332
+          "line": 333
         },
         {
           "file": "content/ray/shengwuqishilu.lua",
@@ -25537,7 +25537,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 332
+          "line": 333
         },
         {
           "file": "content/ray/shengwuqishilu.lua",
@@ -25674,7 +25674,7 @@
       "references": [
         {
           "file": "content/modmain.lua",
-          "line": 332
+          "line": 333
         },
         {
           "file": "content/ray/shengwuqishilu.lua",

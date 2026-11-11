@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { articles as initial, meta } from './content.mjs';
 import { refreshWorldArticles } from './research/release-20261111-world.mjs';
+import { refreshRelease25 } from './research/release-2-8-15-0-25.mjs';
 export { meta };
 export const categories = [
   {id:'start',name:'入门与说明'}, {id:'mechanics',name:'战斗与生存'}, {id:'world',name:'暗影世界与季节'},
@@ -129,12 +130,13 @@ for(const part of ['roles','mechanics']){
  for(const [key,note] of Object.entries(audit.configNotes??{}))notes[key]={...notes[key],...note};
 }
 for(const id of refreshWorldArticles(articles,notes))currentAuditIds.add(id);
+for(const id of refreshRelease25(articles,notes))currentAuditIds.add(id);
 for(const article of articles.filter(a=>currentAuditIds.has(a.id))){
  if(article.category==='items')itemAuditIds.add(article.id);
  if(article.category==='characters'||article.category==='buildings'||article.id.startsWith('boss-'))entityAuditIds.add(article.id);
  if(article.category==='food'||article.category==='creatures'&&!article.id.startsWith('boss-'))lifeAuditIds.add(article.id);
 }
-about.sections[0].paragraphs.push('本轮重点更新至 2.8.15.0.23 的穿越与共享空间、生存模式、料理、战斗、角色与装备变化。未涉及变更的条目沿用原有核对记录；永不妥协测试版有独立的版本和词条。');
+about.sections[0].paragraphs.push('当前资料基线为 2.8.15.0.25，补充角色技能兼容、体型与捕获掉落、战歌回复、穿越切换恢复及深埋之下兼容。未涉及变更的条目沿用原有核对记录；永不妥协测试版有独立的版本和词条。');
 const configByKey=new Map(configData.configs.map(c=>[c.key,c]));
 export const configId=key=>'cfg-'+createHash('sha1').update(key).digest('hex').slice(0,12);
 export const groupId=(mode,group)=>'group-'+createHash('sha1').update(mode+'/'+group).digest('hex').slice(0,10);

@@ -1,0 +1,112 @@
+{
+  "date": "2026-11-11",
+  "version": "2.8.15.0.25",
+  "status": "published_and_verified",
+  "public_url": "https://cuilian-wiki.pages.dev/",
+  "repository": "https://github.com/yucca-a/tempered-season-wiki",
+  "commit": "ab8c525854da8f0a29300dea821bdcb7ac2712b1",
+  "targeted_articles": 44,
+  "source_files": 104,
+  "tempered_articles": 281,
+  "html_pages": 405,
+  "settings": 439,
+  "choices": 3351,
+  "local_links_and_anchors": 184117,
+  "search_entries": 720,
+  "live_pages": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "bytes": 6593,
+      "matches_build": true,
+      "sha256": "ec05e91036777d5db3c55aba0478ad26425e3da9d778bad2240b98961866daa0"
+    },
+    {
+      "path": "world-random-size.html",
+      "status": 200,
+      "bytes": 106250,
+      "matches_build": true,
+      "sha256": "f2412c61a46147156b82baa3171e8a1897a5c797bfae3432eb05cde97b3bcf4f"
+    },
+    {
+      "path": "world-exchange.html",
+      "status": 200,
+      "bytes": 106928,
+      "matches_build": true,
+      "sha256": "96f2cb5a943b3d9ec9975a1752347b7ed1b07107cfe7370b07cbecc771840615"
+    },
+    {
+      "path": "role-winona.html",
+      "status": 200,
+      "bytes": 113931,
+      "matches_build": true,
+      "sha256": "472c6e18f9e454dfa778ce3f00d5cad9708092eb3485f55a3f2f3a3ff64ddcb8"
+    },
+    {
+      "path": "role-wigfrid.html",
+      "status": 200,
+      "bytes": 117146,
+      "matches_build": true,
+      "sha256": "4e3e8b028e0820457b69bc2b2273c4a98641f0a3aa6db7e411f55011942cce43"
+    },
+    {
+      "path": "world-autumn.html",
+      "status": 200,
+      "bytes": 103996,
+      "matches_build": true,
+      "sha256": "44c7762c64d580217697f20a410293232749db1f0c43dd9e21063dcabe239559"
+    },
+    {
+      "path": "deeply-buried-compatibility.html",
+      "status": 200,
+      "bytes": 103429,
+      "matches_build": true,
+      "sha256": "6a8de7434375eab096b1b066eb93dbed64f618f491baa7f01b069a6e170f6af0"
+    },
+    {
+      "path": "update-2-8-15-0-25.html",
+      "status": 200,
+      "bytes": 102975,
+      "matches_build": true,
+      "sha256": "eae47ee290b76fe521b8861cbd74eb3eff50999349cfa3ec09e365439ffd4568"
+    }
+  ],
+  "deployment_checks": [
+    {
+      "name": "Cloudflare Pages: cuilian-wiki",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://dash.cloudflare.com/?to=/398638a02c199cb5a7394afd90ce8231/pages/view/cuilian-wiki/577404ec-509c-4134-b14b-a7d8d53c6150",
+      "output": {
+        "title": "Deployed successfully",
+        "summary": "<table><tr><td><strong>Latest commit:</strong> </td><td>\n<code>ab8c525</code>\n</td></tr>\n<tr><td><strong>Status:</strong></td><td>&nbsp;✅&nbsp; Deploy successful!</td></tr>\n<tr><td><strong>Preview URL:</strong></td><td>\n<a href='https://577404ec.cuilian-wiki.pages.dev'>https://577404ec.cuilian-wiki.pages.dev</a>\n</td></tr>\n</table>\n\n[View logs](https://dash.cloudflare.com/?to=/398638a02c199cb5a7394afd90ce8231/pages/view/cuilian-wiki/577404ec-509c-4134-b14b-a7d8d53c6150)\n",
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/yucca-a/tempered-season-wiki/check-runs/130536322045/annotations"
+      }
+    },
+    {
+      "name": "Cloudflare Pages: tempered-season-wiki",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://dash.cloudflare.com/?to=/398638a02c199cb5a7394afd90ce8231/pages/view/tempered-season-wiki/63b5e717-7821-413e-b9c5-df11e7df6513",
+      "output": {
+        "title": "Deployed successfully",
+        "summary": "<table><tr><td><strong>Latest commit:</strong> </td><td>\n<code>ab8c525</code>\n</td></tr>\n<tr><td><strong>Status:</strong></td><td>&nbsp;✅&nbsp; Deploy successful!</td></tr>\n<tr><td><strong>Preview URL:</strong></td><td>\n<a href='https://63b5e717.tempered-season-wiki.pages.dev'>https://63b5e717.tempered-season-wiki.pages.dev</a>\n</td></tr>\n</table>\n\n[View logs](https://dash.cloudflare.com/?to=/398638a02c199cb5a7394afd90ce8231/pages/view/tempered-season-wiki/63b5e717-7821-413e-b9c5-df11e7df6513)\n",
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/yucca-a/tempered-season-wiki/check-runs/130536145048/annotations"
+      }
+    }
+  ],
+  "checks": [
+    "Wiki build",
+    "Wiki check against frozen .25 content",
+    "8 live pages byte-identical to local build",
+    "production branch remote SHA matched"
+  ],
+  "limits": [
+    "Text and navigation/link checks; no new CPU/fan benchmark or new client visual audit."
+  ],
+  "previous_20261111_publication": "The earlier .23 refresh and performance changes are now included in the verified live deployment."
+}

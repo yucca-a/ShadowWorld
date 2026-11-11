@@ -1,4 +1,5 @@
 local Transfer = require("shadowbanktransfer2hm")
+local Recovery = require("exchangexianyurecovery2hm")
 
 local function playerbyid(uid)
     for _, player in ipairs(AllPlayers) do
@@ -19,11 +20,15 @@ local ShadowBank = Class(function(self, inst)
     self.epoch = tostring(os.time()) .. "/" .. tostring(math.random(1, 1073741823))
     self.mail, self.imports, self.viewers, self.remote = {}, {}, {}, {}
     self.transfer = self:NewTransfer()
-    if self.enabled then self.task = inst:DoPeriodicTask(1, function() self:Update() end) end
+    self.task = inst:DoPeriodicTask(1, function() self:Update() end)
 end)
 
+function ShadowBank:Recovering()
+    return not self.enabled and self.savedversion and TUNING.EXCHANGE_MODE2HM=="classic"
+end
+
 function ShadowBank:ScheduleWork(bank)
-    if not self.enabled then return end
+    if not self.enabled then return end -- Recovery retries use Update, without remote UI work.
     if TheShard:IsMaster() and validbank(bank) then
         self.dirtybanks = self.dirtybanks or {}
         self.dirtybanks[bank] = true
@@ -176,7 +181,7 @@ end
 function ShadowBank:Packet(peer, data)
     if type(data) ~= "table" then return end
     local variants=self.inst.components.exchangevariants2hm
-    if not self.enabled or variants and not variants.ready then return end
+    if not (self.enabled or self:Recovering()) or variants and not variants.ready then return end
     if data.kind == "transfer" or data.kind == "ack" then
         self.transfer:Receive(peer, data)
         self:ScheduleWork(type(data.payload) == "table" and data.payload.bank)
@@ -323,6 +328,12 @@ function ShadowBank:ReceiveItem(peer, data)
     if not data.record then return true end
     if data.purpose == "deposit" or data.purpose == "import" then
         if not TheShard:IsMaster() or not validbank(data.bank) then return false end
+        if self:Recovering() then
+            -- Replay through the original stream/sequence receipt. Do not
+            -- reconstruct outgoing records: their peer may already own them.
+            table.insert(self.imports,{bank=data.bank,record=data.record})
+            return true
+        end
         self:EnsureBanks()
         local container = self:Bank(data.bank)
         if not container then return false end
@@ -422,9 +433,15 @@ function ShadowBank:DeliverMail()
 end
 
 function ShadowBank:Update()
-    if not self.enabled then return end
+    if not self.enabled and not self:Recovering() then return end
     local variants=self.inst.components.exchangevariants2hm
     if variants and not variants.ready then return end
+    if self:Recovering() then
+        self.transfer:Tick(GetTime())
+        Recovery.Imports(self)
+        self:DeliverMail()
+        return
+    end
     self:EnsureBanks()
     self.transfer:Tick(GetTime())
     for uid, view in pairs(self.viewers) do

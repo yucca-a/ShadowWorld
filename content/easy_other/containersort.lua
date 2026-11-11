@@ -2618,7 +2618,7 @@ Use Orange Amulet will Picktop Near Same Items]],
         return btn
     end
     -- 按钮转向
-    local btnnames = { "reskinbutton2hm", "exchangebutton2hm", "lockbutton2hm", "sortbutton2hm", "multisortbutton2hm",
+    local btnnames = { "reskinbutton2hm", "exchangebutton2hm", "pausebutton2hm", "lockbutton2hm", "sortbutton2hm", "multisortbutton2hm",
         "collectbutton2hm", "button", "collectmeat_inventory_button2hm", "storemeatbutton2hm", "dryingitembutton2hm",
     "upgrade2hm", "privatespacebtn2hm"}
     local changebtndirtip

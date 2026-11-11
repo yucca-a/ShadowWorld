@@ -44,6 +44,33 @@ require("umwinonaworker2hm").Install(env)
 --------------------------------------------------------------------------------------------------------
 if TUNING.DSTU then
 
+    -- Reviewed beta songs inspected combat.target and nearby training dummies
+    -- instead of the entity this attack hit. Antlion deals damage via spikes,
+    -- so its zero defaultdamage must not make an actual boss hit ineligible.
+    local function ValidBattlesongAttack(attacker, data)
+        local victim = data and data.target
+        if victim == nil or not victim:IsValid() or victim.components.health == nil or victim.components.combat == nil then return false end
+        if victim:HasTag("eyeturret") or victim:HasTag("structure") or victim:HasTag("wall") or victim:HasTag("veggie") or
+            victim:HasTag("balloon") or victim:HasTag("groundspike") or victim:HasTag("smashable") or victim:HasTag("companion") or
+            (victim:HasTag("prey") and not victim:HasTag("hostile")) then return false end
+        if victim.components.combat.defaultdamage <= 0 and not (victim:HasTag("hostile") or victim:HasTag("epic")) then return false end
+        if data.projectile and data.projectile.components.projectile and data.projectile.components.projectile:IsBounced() then return false end
+        if data.weapon and data.weapon.components.inventoryitem == nil then return false end
+        return true
+    end
+    local function RepairBattlesongAttackFilter(inst)
+        if not TheWorld.ismastersim or not inst.songdata then return end
+        local slot = UMGuard.Find(inst.songdata.ONAPPLY, "CheckValidAttackData")
+        if slot and UMGuard.Known(slot.value, "battlesong_attack_filter") then
+            if UMGuard.Replace(slot, ValidBattlesongAttack) then
+                TUNING.UM_COMPAT_STATUS2HM = TUNING.UM_COMPAT_STATUS2HM or {}
+                TUNING.UM_COMPAT_STATUS2HM.wigfrid_battlesongs = {applied = true, reason = "reviewed beta actual-hit victim filter"}
+            end
+        end
+    end
+    AddPrefabPostInit("battlesong_healthgain", RepairBattlesongAttackFilter)
+    AddPrefabPostInit("battlesong_sanitygain", RepairBattlesongAttackFilter)
+
     local electrical_type = UPGRADETYPES.ELECTRICAL
     if electrical_type and ModManager:GetMod("workshop-1909182187") then
         local kit_prefab = "winona_upgradekit_electrical"
