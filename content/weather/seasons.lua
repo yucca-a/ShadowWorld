@@ -20,7 +20,6 @@ local random_seasons = GetModConfigData("random_seasons")
 local WorldSettings_Overrides = require("worldsettings_overrides")
 local easing = require("easing")
 local seasons = {"autumn", "winter", "spring", "summer"}
-if SW then seasons = {"mild", "wet", "green", "dry"} end
 local badseasons = {seasons[1], seasons[2], seasons[3], seasons[4], seasons[2], seasons[3], seasons[4], seasons[2], seasons[3], seasons[4]}
 local seasonsindex = {}
 for i, season in pairs(seasons) do
@@ -33,14 +32,6 @@ local DEFAULT_CLOCK_SEGS = {
     spring = {day = 5, dusk = 8, night = 3},
     summer = {day = 11, dusk = 1, night = 4}
 }
-if SW then
-    DEFAULT_CLOCK_SEGS = {
-        mild = {day = 12, dusk = 2, night = 2},
-        wet = {day = 5, dusk = 5, night = 6},
-        green = {day = 7, dusk = 6, night = 3},
-        dry = {day = 10, dusk = 4, night = 2},
-    }
-end
 local segmod = {day = 1, dusk = 1, night = 1}
 local function OnSetSeasonSegModifier(inst, mod) segmod = mod end
 -- 读取季节时长数据
@@ -222,6 +213,7 @@ local function refreshseason(inst)
     if not instdata.lengthdata and seasonsdata and seasonsdata.lengths and seasonsdata.lengths then instdata.lengthdata = seasonsdata.lengths end
     -- 监听季节变化,初始化季节起始时间
     local season = inst.state.season
+    if not seasonsindex[season] then return end
     if not instdata.season then instdata.season = season end
     if not instdata.seasoncycles then
         instdata.seasoncycles = math.clamp(inst.state.cycles - (seasonsdata and seasonsdata.elapseddaysinseason or 0), 0, inst.state.cycles)
@@ -347,10 +339,10 @@ end)
 
 -- 洞穴同步地表状态
 AddShardModRPCHandler("MOD_HARDMODE", "syncseason2hm", function(shard_id, _data)
-    if _data and TheWorld and not TheWorld.ismastershard and TheWorld.components and TheWorld.components.persistent2hm and
+    if type(_data) == "string" and TheWorld and not TheWorld.ismastershard and TheWorld.components and TheWorld.components.persistent2hm and
         TheWorld.components.persistent2hm.data then
         local success, instdata = RunInSandboxSafe(_data)
-        if not success then return end
+        if not success or type(instdata) ~= "table" or not seasonsindex[instdata.season] then return end
         local olddata = TheWorld.components.persistent2hm.data.randomseason or {}
         TheWorld.components.persistent2hm.data.randomseason = instdata
         if instdata.lockseason then
@@ -421,8 +413,7 @@ local function GetModifiedSegs(retsegs, mod)
     end
     return retsegs
 end
-local mindusks = {autumn = 2, winter = 1, spring = 3, summer = nil}
-if SW then mindusks = {mild = 2, wet = 1, green = 3, dry = nil} end
+local mindusks = {autumn = 2, winter = 1, spring = 3}
 local function processseasonclocksegs(data)
     local instdata = TheWorld and TheWorld.components and TheWorld.components.persistent2hm and TheWorld.components.persistent2hm.data and
                          TheWorld.components.persistent2hm.data.randomseason
@@ -505,7 +496,24 @@ AddComponentPostInit("clock", function(self)
 end)
 
 local seasonstext = {autumn = "秋天", winter = "冬天", spring = "春天", summer = "夏天"}
-if SW then seasonstext = {mild = "温和季", wet = "飓风季", green = "雨季", dry = "干旱季"} end
+if SW then
+    AddSimPostInit(function()
+        local world = TheWorld
+        if not world or not (world:HasTag("island") or world:HasTag("volcano")) then return end
+        seasons = {"mild", "wet", "green", "dry"}
+        seasonsindex = {mild = 1, wet = 2, green = 3, dry = 4}
+        normalseasons = {"mild", "green"}
+        badseasons = {"mild", "wet", "green", "dry", "wet", "green", "dry", "wet", "green", "dry"}
+        mindusks = {mild = 2, wet = 1, green = 3}
+        seasonstext = {mild = "温和季", wet = "飓风季", green = "雨季", dry = "干旱季"}
+        DEFAULT_CLOCK_SEGS = {
+            mild = {day = 12, dusk = 2, night = 2},
+            wet = {day = 5, dusk = 5, night = 6},
+            green = {day = 7, dusk = 6, night = 3},
+            dry = {day = 10, dusk = 4, night = 2},
+        }
+    end)
+end
 local function AnnounceSeason()
     if TheWorld.state.temperature and TheWorld.net and TheWorld.net.components and TheWorld.net.components.worldtemperature and
         TheWorld.net.components.worldtemperature.OnSave then

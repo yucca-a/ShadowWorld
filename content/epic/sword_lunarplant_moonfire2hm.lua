@@ -37,6 +37,19 @@ local function GetUsedSword2hm(inst, action)
     return nil
 end
 
+local function IsSwordReady2hm(sword)
+    if sword.components.rechargeable then return sword.components.rechargeable:IsCharged() end
+    return sword._moonfire_ready2hm ~= nil and sword._moonfire_ready2hm:value()
+end
+
+local function CancelSwordCast2hm(doer)
+    if doer.sg and doer.sg.currentstate.name == "combat_leap_start" then
+        doer:ClearBufferedAction()
+        doer.sg:GoToState("idle")
+    end
+    return false
+end
+
 local function FindEnemies2hm(x, z, range, owner)
     local list = {}
     local ents = TheSim:FindEntities(x, 0, z, range, {"_combat"}, ENEMY_CANT_TAGS2HM)
@@ -171,24 +184,18 @@ local SWORD_RIGHT_CD2HM = 10
 
 local function SwordLeapSpell2hm(sword, target, pos, doer)
     if not TheWorld.ismastersim or doer == nil or not doer:IsValid() then return end
-    local now = GetTime()
-    if sword._rightcd2hm ~= nil and now - sword._rightcd2hm < SWORD_RIGHT_CD2HM then
-        if doer.components.talker ~= nil then
-            doer.components.talker:Say(TUNING.isCh2hm and "月火斩冷却中" or "Moonfire Slash cooling down.")
-        end
-        return
-    end
-    sword._rightcd2hm = now
-    sword._rightleap2hm = true
-    sword:DoTaskInTime(1.5, function(s) s._rightleap2hm = nil end)
+    if not IsSwordReady2hm(sword) then return CancelSwordCast2hm(doer) end
     if pos == nil and target ~= nil and target:IsValid() then pos = target:GetPosition() end
-    if pos == nil then return end
+    if pos == nil then return CancelSwordCast2hm(doer) end
     if not (TheWorld.Map:IsAboveGroundAtPoint(pos.x, pos.y, pos.z) or TheWorld.Map:GetPlatformAtPoint(pos.x, pos.z) ~= nil) then
         if doer.components.talker ~= nil then
             doer.components.talker:Say(TUNING.isCh2hm and "唔,差点跳到海里" or "Swimming is not a good idea.")
         end
-        return
+        return CancelSwordCast2hm(doer)
     end
+    sword.components.rechargeable:Discharge(SWORD_RIGHT_CD2HM)
+    sword._rightleap2hm = true
+    sword:DoTaskInTime(1.5, function(s) s._rightleap2hm = nil end)
     if doer.components.combat ~= nil then doer.components.combat:RestartCooldown() end
     doer:PushEvent("combat_leap", {targetpos = pos, weapon = sword})
     local fx = SpawnPrefab("alterguardian_phase3trapgroundfx")
@@ -199,6 +206,21 @@ local function SwordLeapSpell2hm(sword, target, pos, doer)
         fx:DoTaskInTime(3, fx.Remove)
         sword.pulse_fx2hm = fx
     end
+end
+
+local function UpdateSwordSpell2hm(sword)
+    if not sword._sword_shadow2hm then return end
+    local ready = IsSwordReady2hm(sword)
+    local spellcaster = sword.components.spellcaster
+    if spellcaster then
+        spellcaster.canuseontargets = ready
+        spellcaster.canuseondead = ready
+        spellcaster.canuseonpoint = ready
+        spellcaster.canuseonpoint_water = ready
+        spellcaster:SetSpellFn(ready and SwordLeapSpell2hm or nil)
+    end
+    sword._moonfire_ready2hm:set(ready)
+    sword._reticule2hm:set(ready)
 end
 
 local SwordLeapState2hm = State{
@@ -278,6 +300,7 @@ AddStategraphPostInit("wilson", function(sg)
     local _OldCast = sg.actionhandlers[ACTIONS.CASTSPELL].deststate
     sg.actionhandlers[ACTIONS.CASTSPELL].deststate = function(inst, action, ...)
         local sword = GetUsedSword2hm(inst, action)
+        if sword ~= nil and not IsSwordReady2hm(sword) then return end
         if sword ~= nil and not (inst.components.rider ~= nil and inst.components.rider:IsRiding()) then
             return "combat_leap_start"
         end
@@ -296,6 +319,7 @@ AddStategraphPostInit("wilson_client", function(sg)
     local _OldCast = sg.actionhandlers[ACTIONS.CASTSPELL].deststate
     sg.actionhandlers[ACTIONS.CASTSPELL].deststate = function(inst, action, ...)
         local sword = GetUsedSword2hm(inst, action)
+        if sword ~= nil and not IsSwordReady2hm(sword) then return end
         local rider = inst.replica ~= nil and inst.replica.rider or nil
         if sword ~= nil and not (rider ~= nil and rider:IsRiding()) then
             return "combat_leap_start"
@@ -311,6 +335,21 @@ AddStategraphPostInit("wilson_client", function(sg)
     end
     sg.states.combat_leap_start.server_states[hash(SWORD_STATE2HM)] = true
 end)
+
+-- Also reject a stale queued/predicted CASTSPELL before playing its wind-up.
+-- Ordinary ATTACK uses the same client anticipation state and stays available.
+for _, graph in ipairs({"wilson", "wilson_client"}) do
+    AddStategraphPostInit(graph, function(sg)
+        local state = sg.states.combat_leap_start
+        local onenter = state.onenter
+        state.onenter = function(inst, ...)
+            local action = inst:GetBufferedAction()
+            local sword = action and action.action == ACTIONS.CASTSPELL and GetUsedSword2hm(inst, action) or nil
+            if sword and not IsSwordReady2hm(sword) then return CancelSwordCast2hm(inst) end
+            return onenter(inst, ...)
+        end
+    end)
+end
 
 local function SwordActFn2hm(act, inst)
     if act.action == ACTIONS.CASTSPELL and act.pos == nil and act.target ~= nil then
@@ -415,8 +454,9 @@ local function ApplySwordUpgrade2hm(sword)
     sword.components.spellcaster.canusefrominventory = false
     sword.components.spellcaster.can_cast_fn = function(doer)
         local rider = doer.replica ~= nil and doer.replica.rider or doer.components.rider
-        return not (rider ~= nil and rider:IsRiding())
+        return IsSwordReady2hm(sword) and not (rider ~= nil and rider:IsRiding())
     end
+    UpdateSwordSpell2hm(sword)
 end
 
 STRINGS.ACTIONS.CASTSPELL[SWORD_SPELL2HM] = TUNING.isCh2hm and "月火斩" or "Moonfire Slash"
@@ -427,6 +467,7 @@ AddPrefabPostInit("sword_lunarplant", function(inst)
     inst.actfn2hm = SwordActFn2hm
     inst._leap2hm = net_bool(inst.GUID, "sword_lunarplant.leap2hm", "swordleap2hmdirty")
     inst._reticule2hm = net_bool(inst.GUID, "sword_lunarplant.reticule2hm", "swordreticule2hmdirty")
+    inst._moonfire_ready2hm = net_bool(inst.GUID, "sword_lunarplant.moonfireready2hm", "swordmoonfireready2hmdirty")
     inst:ListenForEvent("swordreticule2hmdirty", function(i) EnableReticule2hm(i, i._reticule2hm:value()) end)
     inst.repairmaterials2hm = {[SWORD_MATERIAL2HM] = 1}
     inst.repairtext2hm = "UPGRADE"
@@ -438,6 +479,18 @@ AddPrefabPostInit("sword_lunarplant", function(inst)
         return oldname ~= nil and oldname(self) or nil
     end
     if not TheWorld.ismastersim then return end
+    -- Present before component loading so saved cooldowns restore in any load order.
+    if not inst.components.rechargeable then inst:AddComponent("rechargeable") end
+    inst.components.rechargeable:SetMaxCharge(SWORD_RIGHT_CD2HM)
+    local charged, discharged = inst.components.rechargeable.onchargedfn, inst.components.rechargeable.ondischargedfn
+    inst.components.rechargeable:SetOnChargedFn(function(sword)
+        if charged then charged(sword) end
+        UpdateSwordSpell2hm(sword)
+    end)
+    inst.components.rechargeable:SetOnDischargedFn(function(sword)
+        if discharged then discharged(sword) end
+        UpdateSwordSpell2hm(sword)
+    end)
     inst:AddComponent("persistent2hm")
     inst:AddComponent("repairable2hm")
     inst.components.repairable2hm.ignoremax = true

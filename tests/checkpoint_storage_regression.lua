@@ -90,4 +90,77 @@ broken:PutCut({id="bad",serial=1,players={u=player},owners={u="1"}},"world",func
     check(not ok and why=="player_checkpoint_write_failed","read-back rejects corrupted player snapshot")
 end)
 check(not next(broken.state.cuts) and broken.pending==0,"failed body does not publish cut or keep pending-write flag")
+
+-- Large live checkpoints yield between checksum slices. Startup loaders and
+-- callers without a scheduler retain the synchronous checksum contract.
+local sliced, slicedDisk, slicedIO = storage()
+local deferred = {}
+slicedIO.defer = function(fn) deferred[#deferred + 1] = fn end
+local function step()
+    local fn = table.remove(deferred, 1)
+    assert(fn ~= nil, "scheduled checksum has a next slice")
+    fn()
+end
+local function drain()
+    local count = 0
+    while #deferred > 0 do
+        count = count + 1
+        assert(count < 100, "checksum completes within bounded slices")
+        step()
+    end
+end
+for _, size in ipairs({32768, 32769, 524287, 524288, 524289, 1048577, 1048579}) do
+    local value = string.rep(binary, math.ceil(size / #binary)):sub(1, size)
+    local actual
+    sliced:HashCheckpoint(value, function(hash) actual = hash end)
+    check((actual == nil) == (size > 32768), "only small checksums finish in the save frame")
+    drain()
+    check(actual == originaldigest(value), "slices preserve binary checksum and trailing bytes")
+end
+
+local largeworld, largeplayer = string.rep(binary, 4097), string.rep(player, 8192)
+local complete
+sliced:PutCut({id="async/1",serial=1,owners={u="1"},players={u=largeplayer}},
+    largeworld,function(ok) complete=ok end)
+check(sliced.pending==1 and not complete and not next(sliced.state.cuts),
+    "in-flight checksum blocks rollback without publishing an incomplete cut")
+step()
+check(not complete and not sliced.state.cuts["async/1"], "first slice cannot commit a cut")
+sliced:Register("late_async","2","new-arrival",function(ok) assert(ok) end)
+local largeWorldKey = sliced.prefix.."_world_1_"..Store.Digest("async/1"):gsub(":","_")
+while not slicedDisk[largeWorldKey] do step() end
+check(sliced.pending==1 and not sliced.state.cuts["async/1"], "large body write and read-back run on different frames")
+drain()
+check(complete and sliced.pending==0, "large world and player verification finish once")
+sliced:ReadCut("async/1", function(world, why, hydrated)
+    check(world==largeworld and hydrated.players.u==largeplayer and hydrated.players.late_async=="new-arrival",
+        "async cut preserves captured bytes and arrivals during verification")
+end)
+
+local interrupted, interruptedDisk, interruptedIO = storage()
+interrupted:PutCut({id="previous",serial=1,owners={},players={}},"previous world",function(ok)assert(ok)end)
+interrupted:Seal("previous",function(ok)assert(ok)end)
+local previousHead = interruptedDisk[interrupted.prefix.."_head"]
+local abandoned = {}
+interruptedIO.defer = function(fn) abandoned[#abandoned+1]=fn end
+interrupted:PutCut({id="partial",serial=2,owners={},players={}},largeworld,function()error("abandoned cut completed")end)
+table.remove(abandoned,1)()
+check(interruptedDisk[interrupted.prefix.."_head"]==previousHead, "interrupted checksum retains prior commit")
+Store.new(interruptedIO,"STORAGE"):Load(function(state)
+    check(state and state.current=="previous" and not state.cuts.partial, "restart ignores unfinished checksum")
+end)
+
+local asyncBroken, _, asyncIO = storage()
+asyncIO.defer = function(fn) deferred[#deferred+1]=fn end
+local readAsync = asyncIO.read
+asyncIO.read = function(key, cb)
+    if key:find("_world_",1,true) then cb(true,"torn") else readAsync(key,cb) end
+end
+local failedAsync
+asyncBroken:PutCut({id="async/bad",serial=1,owners={},players={}},largeworld,function(ok, why)
+    failedAsync=not ok and why=="checkpoint_write_failed"
+end)
+drain()
+check(failedAsync and asyncBroken.pending==0 and not next(asyncBroken.state.cuts),
+    "read-back failure after deferred hashing cannot publish a checkpoint")
 print("Checkpoint storage checks:",checks)

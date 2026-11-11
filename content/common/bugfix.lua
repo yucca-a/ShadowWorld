@@ -3,9 +3,16 @@ local checkCause = function(self, cause)
         -- local str = '检测到血量变化信息错误 ' ..tostring(self.inst) .. " 来源 " .. tostring(cause) .. ", 已规避崩溃"
         -- TheNet:Announce(str)
         -- print(str .. "\n" .. TUNING.util2hm.GetStack())
-        if type(cause) == "table" and cause.GetDisplayName then
-            cause = cause:GetDisplayName() or cause.prefab or "unknown"
+        if type(cause) == "table" then
+            -- A nameless entity can throw inside GetDisplayName while adding a
+            -- wet/burnt adjective, before an ordinary `or prefab` fallback runs.
+            if type(cause.GetDisplayName) == "function" then
+                local ok, name = pcall(cause.GetDisplayName, cause)
+                if ok and type(name) == "string" and name ~= "" then return name end
+            end
+            if type(cause.prefab) == "string" and cause.prefab ~= "" then return cause.prefab end
         end
+        return "unknown"
     end
     return cause
 end
@@ -29,6 +36,44 @@ AddComponentPostInit("health", function(health)
         return oldSetVal(self, val, cause, afflicter)
     end
 end)
+
+-- 深埋之下的杂食电路可以处理变质营养砖，但发酵计数依赖消化电路初始化。
+AddSimPostInit(function()
+    if not (TheWorld and TheWorld.ismastersim) then return end
+    local definitions = require("wx78_moduledefs").module_definitions
+    for _, definition in ipairs(definitions) do
+        if definition.name == "worm" and type(definition.activatefn) == "function" then
+            local onEaten, index, scope = require("upvaluehacker2hm").GetUpvalue(definition.activatefn, "wormdigestion_OnEaten")
+            if type(onEaten) == "function" then
+                debug.setupvalue(scope, index, function(wx, data)
+                    if type(wx._digestion_modules) == "number" then return onEaten(wx, data) end
+                end)
+            end
+            break
+        end
+    end
+end)
+
+-- 洞穴蠕虫的电反击会再次击中巨型蠕虫的土堆，重入棘刺反伤。
+local function GuardWormDirtRedirect(inst)
+    local combat = inst.components.combat
+    local redirect = combat and combat.redirectdamagefn
+    if not redirect then return end
+    local redirecting = {}
+    combat.redirectdamagefn = function(dirt, attacker, ...)
+        if attacker == nil or redirecting[attacker] then
+            -- 反击伤害仍由本体承受，这次转发不再触发棘刺。
+            local worm = dirt.worm
+            return worm and worm:IsValid() and worm or nil
+        end
+        redirecting[attacker] = true
+        local target = redirect(dirt, attacker, ...)
+        redirecting[attacker] = nil
+        return target
+    end
+end
+AddPrefabPostInit("worm_boss_dirt", GuardWormDirtRedirect)
+AddPrefabPostInit("worm_boss_shadow_dirt", GuardWormDirtRedirect)
 
 AddStategraphPostInit("wilson", function(sg)
     local wathomleap = sg.states.wathomleap

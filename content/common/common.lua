@@ -20,7 +20,8 @@ if GetModConfigData("Language In Game") then TUNING.isCh2hm = GetModConfigData("
 AddComponentPostInit("talker", function(self)
     local Say = self.Say
     self.Say = function(self, script, ...)
-        if script and type(script) == "string" and string.find(script, "only_used_by_") then script = "" end
+        -- 原版会把角色专属占位词拼在检查描述后面；保留描述及模组追加的提示。
+        if type(script) == "string" then script = script:gsub("only_used_by_[%w_]+", "") end
         return Say(self, script, ...)
     end
 end)
@@ -195,7 +196,12 @@ function SetComponentLoad(component, fn)
 end
 
 -- 多世界统一季节接口 SendModRPCToShard(GetShardModRPC("MOD_HARDMODE", "ms_setseason_update"), nil, season)
-AddShardModRPCHandler("MOD_HARDMODE", "ms_setseason_update", function(shard_id, season) TheWorld:PushEvent("ms_setseason", season) end)
+AddShardModRPCHandler("MOD_HARDMODE", "ms_setseason_update", function(shard_id, season)
+    if type(season) ~= "string" or not TheWorld then return end
+    local component = TheWorld.net and TheWorld.net.components.seasons
+    local data = component and component:OnSave()
+    if not (data and data.lengths) or data.lengths[season] ~= nil then TheWorld:PushEvent("ms_setseason", season) end
+end)
 
 -- -- 道具设置9999堆叠 MakeUnlimitStackSize
 -- local maxsize = 9999 -- net_shortint
@@ -227,6 +233,53 @@ AddShardModRPCHandler("MOD_HARDMODE", "ms_setseason_update", function(shard_id, 
 -- AddClassPostConstruct("components/stackable_replica", function(self)
 --     if self and self.inst and self.inst:IsValid() and self.inst:HasTag("maxstacksize2hm") then processstackablereplica(self) end
 -- end)
+
+-- 骑牛忘带牛铃：沿用原生骑乘事件、牛的实际绑定铃及物品所属链。
+AddPlayerPostInit(function(inst)
+    if not TheWorld.ismastersim then return end
+    local distance = PLAYER_CAMERA_SEE_DISTANCE or 40
+    local warn_dist_sq, reset_dist_sq = distance * distance, distance * distance / 4
+    local task, warnedbell
+    local function stop()
+        if task then task:Cancel(); task = nil end
+        warnedbell = nil
+    end
+    local function check()
+        local rider = inst.components.rider
+        local mount = rider and rider:IsRiding() and rider:GetMount() or nil
+        if not mount or not mount:IsValid() or mount.prefab ~= "beefalo" then stop(); return end
+        -- GetLeader() 可能返回持铃者；原生牛铃逻辑也直接读取 leader 才能取到铃。
+        local bell = mount.components.follower and mount.components.follower.leader
+        if not bell or not bell:IsValid() or (bell.prefab ~= "beef_bell" and bell.prefab ~= "shadow_beef_bell") or
+            not bell.GetBeefalo or bell:GetBeefalo() ~= mount then
+            warnedbell = nil
+            return
+        end
+        local owner = bell.components.inventoryitem and bell.components.inventoryitem:GetGrandOwner()
+        if owner == inst then warnedbell = nil; return end
+        local anchor = owner or bell
+        if not anchor:IsValid() then return end
+        local dist_sq = inst:GetDistanceSqToInst(anchor)
+        if dist_sq <= reset_dist_sq then
+            warnedbell = nil
+        elseif dist_sq >= warn_dist_sq and warnedbell ~= bell and inst.components.talker then
+            inst.components.talker:Say(TUNING.isCh2hm and "糟了，忘带牛铃了！下牛前得回去拿。" or
+                "I forgot my beefalo bell! Better go back before dismounting.", 4)
+            warnedbell = bell
+        end
+    end
+    local function start()
+        local rider = inst.components.rider
+        local mount = rider and rider:IsRiding() and rider:GetMount() or nil
+        if not mount or not mount:IsValid() or mount.prefab ~= "beefalo" then return end
+        if not task then task = inst:DoPeriodicTask(1, check) end
+        check()
+    end
+    inst:ListenForEvent("mounted", start)
+    inst:ListenForEvent("dismounted", stop)
+    inst:ListenForEvent("onremove", stop)
+    inst:DoTaskInTime(0, start) -- 兼容初始化时已经恢复的骑乘状态。
+end)
 -- local function stack_size_changed(inst, data)
 --     if inst.replica and inst.replica.stackable and inst.replica.stackable._stacksize2hm and data and data.stacksize and
 --         inst.replica.stackable._stacksize2hm:value() ~= data.stacksize - 1 then inst.replica.stackable._stacksize2hm:set(data.stacksize - 1) end

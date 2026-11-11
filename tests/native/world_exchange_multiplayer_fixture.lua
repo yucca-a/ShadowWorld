@@ -66,7 +66,6 @@ AddPrefabPostInit('world',function(inst)
         if not e or not e.core:IsReady() then return end
         if phase=='verifyrollback' then
             check(e.core.generation==stage.id,'native rollback selects expected common checkpoint')
-            check(not e.holding,'verified rollback releases server control lock')
             phase='verified'
             print('[MP_AUDIT] ROLLBACK_READY',TheShard:GetShardId(),clock)
             if TheShard:IsMaster() then

@@ -44,6 +44,8 @@ with ZipFile(args.scripts) as archive:
 lua.globals().ui_source = source("content/easy_other/ui.lua")
 lua.globals().temp_source = source("content/common/temp.lua")
 main = source("content/modmain.lua")
+if 'require("seasonwiki2hm")' in main:
+    lua.globals().wiki_source = source("content/scripts/seasonwiki2hm.lua")
 start = main.index('if ((TUNING.TEMP2HM.openmods == nil and GetModConfigData("Show Mod Icon In Game"))')
 lua.globals().ui_import_source = main[start:main.index('\nif GetModConfigData("Disable Outdate Tip")', start)]
 for path in ["content/modmain.lua", "content/common/temp.lua", "content/easy_other/ui.lua"]:

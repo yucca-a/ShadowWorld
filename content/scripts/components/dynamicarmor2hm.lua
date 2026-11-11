@@ -1,8 +1,9 @@
 -- Pressure is stored as a fraction of max health, so health changes preserve it.
-local THRESHOLD = 0.1
+local THRESHOLD = 0.2
 local BAND = 0.1
 local LIMIT = THRESHOLD + BAND
 local UPDATE_PERIOD = 3 * FRAMES
+local COOLING_DELAY = 1
 
 local function IsFinite(value)
     return type(value) == "number" and value == value and value > -math.huge and value < math.huge
@@ -47,11 +48,26 @@ function DynamicArmor:SetExternalHealthMultiplier(multiplier)
     self.externalhealthmult = Multiplier(multiplier)
 end
 
+function DynamicArmor:GetDecayRate()
+    local rate = 0.02 / math.sqrt(self:GetHealthMultiplier())
+    local health = self.inst.components.health
+    local maximum = health ~= nil and health.maxhealth or 0
+    return IsFinite(maximum) and maximum > 0 and math.max(rate, 400 / maximum) or rate
+end
+
+function DynamicArmor:Cool(elapsed, grace)
+    -- Continuous damage still cools proportionally, so sustained attacks cannot
+    -- pin a boss at almost 100% resistance. Delay only the 400 HP/sec floor.
+    local active = math.min(elapsed, math.max(0, grace))
+    local rate = 0.02 / math.sqrt(self:GetHealthMultiplier())
+    self.pressure = math.max(0, self.pressure - active * rate - (elapsed - active) * self:GetDecayRate())
+end
+
 function DynamicArmor:Decay()
     local now = GetTime()
     local elapsed = math.max(0, now - self.lasttime)
+    self:Cool(elapsed, (self.coolinguntil or self.lasttime) - self.lasttime)
     self.lasttime = now
-    self.pressure = math.max(0, self.pressure - elapsed * 0.01 / math.sqrt(self:GetHealthMultiplier()))
     return self.pressure
 end
 
@@ -74,17 +90,14 @@ function DynamicArmor:UpdateFX()
         return
     end
     if self.fx == nil or not self.fx:IsValid() then
-        self.fx = SpawnPrefab("forcefieldfx")
+        self.fx = SpawnPrefab("dynamicarmor_indicator2hm")
         if self.fx == nil then return end
         self.fx.persists = false
-        local scale = self.inst:GetPhysicsRadius(0.2) + 1
         self.fx.entity:SetParent(self.inst.entity)
-        self.fx.Transform:SetPosition(0, scale + 0.2, 0)
-        self.fx.Transform:SetScale(scale, scale, scale)
-        -- Visual strength carries the feedback; avoid a permanent looping sound.
-        if self.fx.SoundEmitter ~= nil then self.fx.SoundEmitter:KillSound("loop") end
+        self.fx.Transform:SetPosition(0, 0, 0)
+        self.fx:SetTarget(self.inst)
     end
-    self.fx.AnimState:SetMultColour(0.65, 0.8, 1, 0.15 + 0.55 * resistance)
+    self.fx:SetResistance(resistance)
 end
 
 function DynamicArmor:StopTask()
@@ -123,6 +136,7 @@ function DynamicArmor:RecordDamage(damage)
     if health ~= nil and IsFinite(health.maxhealth) and health.maxhealth > 0 and damage > 0 then
         self:Decay()
         self.pressure = math.min(LIMIT, self.pressure + damage / health.maxhealth)
+        self.coolinguntil = GetTime() + COOLING_DELAY
         self:Refresh()
     end
 end
@@ -130,7 +144,8 @@ end
 function DynamicArmor:OnSave()
     self:Decay()
     if self.pressure > 0 or self.externalhealthmult ~= 1 then
-        return {pressure = self.pressure, externalhealthmult = self.externalhealthmult}
+        return {pressure = self.pressure, externalhealthmult = self.externalhealthmult,
+            cooling = math.max(0, (self.coolinguntil or 0) - GetTime())}
     end
 end
 
@@ -139,6 +154,8 @@ function DynamicArmor:OnLoad(data)
     self.externalhealthmult = Multiplier(data ~= nil and data.externalhealthmult or nil)
     -- Loading does not count wall-clock/offline time as in-game cooling.
     self.lasttime = GetTime()
+    self.coolinguntil = self.lasttime + (data ~= nil and IsFinite(data.cooling)
+        and math.clamp(data.cooling, 0, COOLING_DELAY) or 0)
     self:Refresh()
 end
 
@@ -150,7 +167,10 @@ end
 
 function DynamicArmor:LongUpdate(dt)
     self:Decay()
-    self.pressure = math.max(0, self.pressure - math.max(0, dt) * 0.01 / math.sqrt(self:GetHealthMultiplier()))
+    local elapsed = math.max(0, dt)
+    local grace = math.max(0, (self.coolinguntil or 0) - GetTime())
+    self:Cool(elapsed, grace)
+    self.coolinguntil = GetTime() + math.max(0, grace - elapsed)
     self.lasttime = GetTime()
     self:Refresh()
 end

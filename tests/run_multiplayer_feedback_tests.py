@@ -147,10 +147,13 @@ check(states[hash('lunge_pre2hm')] and states[hash('lunge_loop2hm')],'prediction
 check(states[hash('combat_lunge')] and states[hash('combat_lunge_start')],'native lunge remains compatible')
 ''')
 
-exchange = source('easy_other/worldexchange.lua')
+# This block intentionally covers the retired exchange implementation; current
+# native-container behavior is exercised by the shadow-vault suites.
+exchange = (ROOT/'development/retired-world-coordination-20261106/content/easy_other/worldexchange.lua').read_text(encoding='utf-8-sig')
 start = exchange.index('local oldShardUpdate')
 lua.execute('''
 GLOBAL={}; REMOTESHARDSTATE={READY=1}; disconnects,wakes,nativecalls=0,0,0
+Engine={discovered={}}
 GLOBAL.Shard_UpdateWorldState=function()nativecalls=nativecalls+1;return 'native'end
 TheWorld={components={worldexchange2hm={
  Disconnected=function()disconnects=disconnects+1 end,Wake=function()wakes=wakes+1 end}}}

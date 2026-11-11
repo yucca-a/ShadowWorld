@@ -1,0 +1,27 @@
+{
+  "workshop_id": "3832182265",
+  "version": "2.8.15.0.8",
+  "published_at_local": "2026-11-07T15:36:44+08:00",
+  "uploader_status": "Update completed",
+  "steam_upload_result": "OK",
+  "visibility": "Public",
+  "version_tag_verified": true,
+  "steam_content_manifest_id": "5459900827393479940",
+  "content_file_count": 450,
+  "content_bytes": 21492549,
+  "server_data_bytes": 21492625,
+  "lua51_syntax_files": 386,
+  "patch_notes_file": "workshop\\update-notes-2.8.15.0.8.txt",
+  "patch_notes_sha256": "2156e2c9af7498248eb45412749f3babcd48203f46faa2853747d8fb0966b8de",
+  "patch_notes_submitted_verified": true,
+  "public_changelog_readback_verified": false,
+  "downloaded_package_verified": false,
+  "archive": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\backups\\releases\\v2.8.15.0.8-content.zip",
+  "archive_sha256": "3a52feae9488c674efdd7ca55d5c20c69c1999c815b4a7cc7a7b4bab1b708020",
+  "uploader_evidence": "work/release-2.8.15.0.8/uploader-verified.txt",
+  "initial_attempt": "Timeout uploading manifest; second submission succeeded",
+  "validation": [
+    "development/validation/vault-capture-recovery-20261107.json",
+    "development/validation/health-cause-20261107.json"
+  ]
+}

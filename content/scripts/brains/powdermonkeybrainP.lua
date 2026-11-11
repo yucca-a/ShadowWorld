@@ -18,7 +18,7 @@ local parameters_MINE
 local parameters_CHOP
 local MINE_CANT_TAGS = { "carnivalgame_part", "event_trigger", "waxedplant" }
 
-parameters_MINE = {
+local parameters_MINE = {
     action = "MINE" -- Required.
 }
 
@@ -31,7 +31,7 @@ parameters_MINE.keepgoing = function(inst, ...) return not inst.no_targeting and
 local FindNew = AssistLeaderDefaults.MINE.FindNew
 parameters_MINE.finder = FindNew
 
-parameters_CHOP = {
+local parameters_CHOP = {
     action = "CHOP" -- Required.
 }
 local Starter_CHOP = AssistLeaderDefaults.CHOP.Starter

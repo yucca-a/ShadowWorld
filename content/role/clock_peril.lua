@@ -5,6 +5,18 @@ local MODE = MODE_MAP[select_clock_peril] or "shuffle"
 
 local dusk_change = GetModConfigData("dusk_change") -- 2026.2.27 YeFeng:漫漫长夜兼容
 
+-- 原生 sleepingbaguser 的 WakeUpTest 比较 phase 与 GetSleepPhase()。
+-- 险境会反复进入黄昏；夜间床铺在黄昏和夜晚都可继续睡，白天仍按原规则唤醒。
+-- phase 比 isday 更早更新，因此沿用实际 phase，避免读取切换过程中的旧布尔值。
+AddComponentPostInit("sleepingbag", function(self)
+    local GetSleepPhase = self.GetSleepPhase
+    self.GetSleepPhase = function(self, ...)
+        local phase = GetSleepPhase(self, ...)
+        if phase == "night" and TheWorld.state.phase == "dusk" then return "dusk" end
+        return phase
+    end
+end)
+
 local Network = require("clock_peril/network")
 local Server = require("clock_peril/server")
 local Client = require("clock_peril/client")

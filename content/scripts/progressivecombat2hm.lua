@@ -6,7 +6,7 @@ local Weapon = require("components/weapon")
 local PlanarDamage = require("components/planardamage")
 local DamageTypeBonus = require("components/damagetypebonus")
 
-local WIDTH = 0.5
+local WIDTH = 1.5
 local SPECIAL_THRESHOLD = 2
 local ROLE_THRESHOLDS = {wolfgang = 3.5, wathom = 4}
 local M = {}
@@ -125,7 +125,7 @@ function M.CalcDamage(self, target, weapon, multiplier)
     local source = mounted and mount or player
     local combat = mounted and mount.components.combat or self
     local threshold = mounted and 2.5 or (ROLE_THRESHOLDS[player.prefab] or 2.5)
-    local report = {threshold = threshold, specialthreshold = SPECIAL_THRESHOLD}
+    local report = {threshold = threshold, specialthreshold = SPECIAL_THRESHOLD, width = WIDTH}
     local targetplayer = CanApplyPlayerDamageMod(target)
     local pvp = targetplayer and player.isplayer and self.pvp_damagemod or 1
     local playerdamage = weapon == nil and targetplayer and self.playerdamagepercent or 1

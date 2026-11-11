@@ -4,6 +4,10 @@ from zipfile import ZipFile
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+RETIRED = ROOT / "development/retired-world-coordination-20261106/content"
+def historical(path):
+    old = RETIRED / path
+    return old if old.exists() else ROOT / "content" / path
 sys.path.insert(0, str(ROOT / "work/test-python"))
 from lupa.lua51 import LuaRuntime
 
@@ -16,7 +20,7 @@ with ZipFile(scripts) as archive:
     lua.execute(util[start:util.index("\nend", start)+4])
 for path in ["scripts/worldexchangeprotocol2hm.lua", "scripts/components/worldexchange2hm.lua",
              "easy_other/worldexchange.lua", "easy_other/containersort.lua", "modmain.lua"]:
-    loader((ROOT / "content" / path).read_text(encoding="utf-8-sig"), path)
+    loader(historical(path).read_text(encoding="utf-8-sig"), path)
 loader((ROOT / "tests/native/world_exchange_speed_fixture.lua").read_text(encoding="utf-8-sig"), "native speed fixture")
 loader((ROOT / "tests/native/world_exchange_rollback_fixture.lua").read_text(encoding="utf-8-sig"), "native rollback fixture")
 lua.globals().Protocol = loader((ROOT / "content/scripts/worldexchangeprotocol2hm.lua").read_text(encoding="utf-8"), "protocol")()
@@ -34,6 +38,9 @@ lua.execute('package.preload["worldexchangeprotocol2hm"] = function() return Pro
 lua.globals().ExchangeRPC = loader((ROOT / "content/scripts/worldexchangerpc2hm.lua").read_text(encoding="utf-8"), "rpc dispatch")()
 lua.execute('package.preload["worldexchangerpc2hm"] = function() return ExchangeRPC end')
 lua.execute('package.preload["worldexchangeengine2hm"] = function() return {} end; modimport = function() end')
-lua.globals().WorldExchange = loader((ROOT / "content/scripts/components/worldexchange2hm.lua").read_text(encoding="utf-8"), "adapter")()
-lua.globals().integration_source = (ROOT / "content/easy_other/worldexchange.lua").read_text(encoding="utf-8")
+lua.globals().WorldExchange = loader(historical("scripts/components/worldexchange2hm.lua").read_text(encoding="utf-8"), "adapter")()
+# Exercise the live item adapter through the historical component fixture.
+lua.globals().VaultItems = loader((ROOT / "content/scripts/shadowvaultitems2hm.lua").read_text(encoding="utf-8"), "vault item adapter")()
+lua.execute('package.preload["shadowvaultitems2hm"]=function()return VaultItems end; for _,k in ipairs({"Snapshot","Validate","Apply"}) do WorldExchange[k]=VaultItems[k] end')
+lua.globals().integration_source = historical("easy_other/worldexchange.lua").read_text(encoding="utf-8")
 lua.execute((ROOT / "tests/world_exchange_adapter_regression.lua").read_text(encoding="utf-8"))

@@ -1,10 +1,17 @@
 local statueruins = {"ruins_statue_head", "ruins_statue_head_nogem", "ruins_statue_mage", "ruins_statue_mage_nogem"}
 
 -- 强化镐斧(远古多用镐斧)挖雕像不出怪
-local function isancientenhancedaxe(worker)
+local function isancientenhancedaxe(inst, worker)
     if not worker or not worker.components.inventory then return false end
-    local item = worker.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS)
-    return item and item.prefab == "multitool_axe_pickaxe" and item:HasTag("ancient_enhanced2hm")
+    local act = worker:GetBufferedAction()
+    local item
+    if act then
+        if act.target ~= inst or act.action ~= ACTIONS.MINE then return false end
+        item = act.invobject
+    else
+        item = worker.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS)
+    end
+    return item and item:IsValid() and item.prefab == "multitool_axe_pickaxe" and item:HasTag("ancient_enhanced2hm")
 end
 
 local function magicGemPlayer(inst, worker)
@@ -46,9 +53,10 @@ for _, statue in ipairs(statueruins) do
         if not inst.components.timer then inst:AddComponent("timer") end
         local oldonwork = inst.components.workable.onwork
         inst.components.workable:SetOnWorkCallback(function(inst, worker, ...)
+            local enhanced = isancientenhancedaxe(inst, worker)
             oldonwork(inst, worker, ...)
-            if worker and worker:HasTag("player") and not isancientenhancedaxe(worker) and math.random() < 0.11 then DoRandomRuinMagic2hm(inst, worker) end
-            if worker and worker:HasTag("player") and not isancientenhancedaxe(worker) and math.random() < 0.11 then
+            if worker and worker:HasTag("player") and not enhanced and math.random() < 0.11 then DoRandomRuinMagic2hm(inst, worker) end
+            if worker and worker:HasTag("player") and not enhanced and math.random() < 0.11 then
                 SpawnMonster2hm(worker, math.random() < 0.75 and "crawlingnightmare" or "oceanhorror2hm")
             end
             if math.random() < 0.11 then magicGemPlayer(inst, worker) end
@@ -62,9 +70,10 @@ for _, statue in ipairs(statueruins) do
         end)
         local oldonfinish = inst.components.workable.onfinish
         inst.components.workable:SetOnFinishCallback(function(inst, worker, ...)
+            local enhanced = isancientenhancedaxe(inst, worker)
             oldonfinish(inst, worker, ...)
-            if worker and worker:HasTag("player") and not isancientenhancedaxe(worker) and math.random() < 0.51 then DoRandomRuinMagic2hm(inst, worker) end
-            if worker and worker:HasTag("player") and not isancientenhancedaxe(worker) then SpawnMonster2hm(worker, math.random() < 0.6 and "nightmarebeak" or "ruinsnightmare") end
+            if worker and worker:HasTag("player") and not enhanced and math.random() < 0.51 then DoRandomRuinMagic2hm(inst, worker) end
+            if worker and worker:HasTag("player") and not enhanced then SpawnMonster2hm(worker, math.random() < 0.6 and "nightmarebeak" or "ruinsnightmare") end
             magicGemPlayer(inst, worker)
         end)
         inst:ListenForEvent("timerdone", function(inst, data)

@@ -291,7 +291,7 @@ local activebox={IsValid=function()return true end,components={container={IsOpen
 ondemand.inst.PocketDimensionContainers={shadow=activebox}
 ShardList={["2"]=true}
 local prepared,requests,exchanges=nil,0,0
-local guard={peer="2",ready=true,IsReady=function(self)return self.ready end}
+local guard={ready=true,IsReady=function(self)return self.ready end,HasPeer=function(_,peer)return peer=="2"end}
 guard.Request=function(self,cb)requests=requests+1;prepared=cb;self.ready=false end
 ondemand.engine={core=guard}
 ondemand.protocol.Start=function(_,name,peer,uid)

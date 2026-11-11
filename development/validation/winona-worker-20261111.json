@@ -1,0 +1,58 @@
+[
+  {
+    "edition": "beta",
+    "disabled": false,
+    "passed": true,
+    "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\winona-electric-beta-wk0xmxkh\\native.log",
+    "case": "beta",
+    "checks": 59
+  },
+  {
+    "edition": "beta",
+    "disabled": false,
+    "passed": true,
+    "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\winona-electric-beta-w0v2e9av\\native.log",
+    "case": "patch-off",
+    "checks": 39
+  },
+  {
+    "edition": "beta",
+    "disabled": false,
+    "passed": true,
+    "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\winona-electric-beta-hjtr5dv3\\native.log",
+    "case": "worker-off",
+    "checks": 5
+  },
+  {
+    "edition": "beta",
+    "disabled": false,
+    "passed": true,
+    "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\winona-electric-beta-zo5tu40v\\native.log",
+    "case": "hungry-builder",
+    "checks": 58
+  },
+  {
+    "edition": "beta",
+    "disabled": false,
+    "passed": true,
+    "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\winona-electric-beta-8qg6uurz\\native.log",
+    "case": "role-off",
+    "checks": 5
+  },
+  {
+    "edition": "stable",
+    "disabled": false,
+    "passed": true,
+    "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\winona-electric-stable-aiiwl6ek\\native.log",
+    "case": "stable",
+    "checks": 39
+  },
+  {
+    "edition": "solo",
+    "disabled": false,
+    "passed": true,
+    "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\winona-electric-solo-ir_s0apv\\native.log",
+    "case": "solo",
+    "checks": 4
+  }
+]

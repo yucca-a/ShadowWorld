@@ -1,0 +1,30 @@
+{
+  "workshop_id": "3832182265",
+  "version": "2.8.15.0.15",
+  "published_at_local": "2026-11-09T14:52:19+08:00",
+  "uploader_status": "Update completed",
+  "steam_upload_result": "OK",
+  "visibility": "Public",
+  "version_tag_verified": true,
+  "public_changelog_readback_verified": true,
+  "patch_notes_file": "workshop/update-notes-2.8.15.0.15.txt",
+  "patch_notes_sha256": "653aef7a064eb5a6dd17044f0d29aed758607b0c50fcea734ebe0dd3813aad5c",
+  "steam_content_manifest_id": "2270805812136028747",
+  "content_file_count": 472,
+  "content_bytes": 21685276,
+  "lua51_syntax_files": 408,
+  "runtime_changes_from_downloaded_2.8.15.0.14": [
+    "shadowworld.lua",
+    "easy_other/magician_private2hm.lua",
+    "modinfo.lua (version only)"
+  ],
+  "validation": [
+    "development/validation/bat-boss-shadow-20261109.json",
+    "development/validation/magician-hat-rollback-20261109.json"
+  ],
+  "archive": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\backups\\releases\\v2.8.15.0.15-content.zip",
+  "archive_sha256": "0c04d98d9fb39d445a040029639cddd5345aa9a1755290993d31976c96b4ac18",
+  "first_attempt": "Steam HTTP 504 while uploading manifest; same package retry succeeded",
+  "uploader_evidence": "work/release-2.8.15.0.15/uploader-completed.txt",
+  "downloaded_package_verified": false
+}

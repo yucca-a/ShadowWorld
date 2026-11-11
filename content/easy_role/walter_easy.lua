@@ -871,9 +871,10 @@ if GetModConfigData("Walter Right Dodge Longer") then
     end)
 	-- 沃尔特双线技能树兼容加速效果
 	AddStategraphPostInit("wilson", function(sg)
-		oldonenter = sg.states.dash_woby_pst.onenter
+		if not sg.states.dash_woby_pst then return end
+		local oldonenter = sg.states.dash_woby_pst.onenter
 		sg.states.dash_woby_pst.onenter = function(inst, isshadow, ...)
-			oldonenter(inst, isshadow, ...)
+			if oldonenter then oldonenter(inst, isshadow, ...) end
 			if inst.sg.statemem.ridingwoby then
 				inst.AnimState:PlayAnimation("sprint_woby_pst")
 				if inst.sg.statemem.normalriding and inst.components.skilltreeupdater:IsActivated("walter_woby_lunar") then

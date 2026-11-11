@@ -93,6 +93,7 @@ end)
 local UpvalueHacker = require("upvaluehacker2hm")
 AddPrefabPostInit("archive_orchestrina_small", function(inst)
     if not TheWorld.ismastersim then return end
+    if not inst.task or type(inst.task.fn) ~= "function" then return end
     local oldfn = UpvalueHacker.GetUpvalue(inst.task.fn, "testforplayers", "testforcompletion")
     local function newfn(inst, ...)
         oldfn(inst, ...)

@@ -222,7 +222,9 @@ if TUNING.DSTU then
     AddPrefabPostInit("um_armor_pyre_nettles", function(inst)
         if not TheWorld.ismastersim then return end
         local old_bumpcheck = inst._bumpcheck
-        if old_bumpcheck then
+        local guard = require("umcompatguard2hm")
+        local bump = old_bumpcheck and guard.Find(old_bumpcheck, "bumpcheck")
+        if bump and guard.Known(bump.value, "legacy_nettles_bump") then
             inst._bumpcheck = function(owner, data)
                 local oldPVP2hm = TUNING.oldPVP2hm
                 TUNING.oldPVP2hm = true
@@ -391,11 +393,7 @@ end
 
 -- 滑倒组件防止崩溃
 AddComponentPostInit("slipperyfeet", function(self)
-    if self.OnInit then
-        local OnInit = self.OnInit
-        self.OnInit = function(inst) if inst.components.slipperyfeet then OnInit(inst) end end
-        if self.inittask then self.inittask.fn = self.OnInit end
-    end
+    require("bootlegnonslip2hm").Install(self)
 end)
 
 -- 死亡后禁止前往hit状态

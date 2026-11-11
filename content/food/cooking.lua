@@ -16,12 +16,25 @@ AddClassPostConstruct("widgets/containerwidget", function(self)
         local result = oldOpen(self, container, doer, ...)
         if container and container:HasTag("fueledpot2hm") and container.fueledlevel2hm then
             local level = doer:HasTag("masterchef") and 4 or container.fueledlevel2hm:value()
-            for k, v in pairs(self.inv) do
-                if k + level > 4 then
+            local rows = container.fiveslotrows2hm
+            local numslots = rows and 5 or #self.inv
+            local filled = math.ceil(level * numslots / 4)
+            local function Mark(k, v)
+                if v and k + filled > numslots then
                     v:SetBGImage2(resolvefilepath(CRAFTING_ICONS_ATLAS), "filter_fire.tex", {1, 1, 1, 0.25})
                     local w, h = v.bgimage:GetSize()
                     v.bgimage2:SetSize(w, h)
                 end
+            end
+            if rows then
+                for row=1,rows do
+                    for column=1,5 do
+                        local slot = column == 5 and rows * 5 + row or (row - 1) * 5 + column
+                        Mark(column, self.inv[slot])
+                    end
+                end
+            else
+                for k, v in pairs(self.inv) do Mark(k, v) end
             end
         end
         return result
@@ -68,8 +81,16 @@ local function needfuel(inst)
     inst.components.fueled:SetSectionCallback(OnFuelSectionChange)
     inst.components.fueled:InitializeFuelLevel(TUNING.CAMPFIRE_FUEL_MAX * 0.01)
     inst.components.fueled:StopConsuming()
+    -- 原生 Fueled 会省略满燃料的存档数据；本模组的新锅只以 1% 燃料初始化，
+    -- 因此必须显式保存满燃料，否则批量锅读档时会误以为不足以继续烹饪。
+    local savefuel = inst.components.fueled.OnSave
+    inst.components.fueled.OnSave = function(self, ...)
+        local data, references = savefuel(self, ...)
+        return data or {fuel = self.currentfuel}, references
+    end
     inst:ListenForEvent("onburnt", function() inst:RemoveComponent("fueled") end)
     local self = inst.components.stewer
+    if not self then return end -- 月炆宝炊沿用自己的批量烹饪组件。
     local oldCanCook = self.CanCook
     self.CanCook = function(self, ...)
         if oldCanCook(self, ...) then
@@ -168,6 +189,7 @@ AddRecipePostInit("portablecookpot_item", function(inst) table.insert(inst.ingre
 AddRecipePostInit("portableblender_item", function(inst) table.insert(inst.ingredients, Ingredient("redgem", 1)) end)
 AddRecipePostInit("portablespicer_item", function(inst) table.insert(inst.ingredients, Ingredient("redgem", 1)) end)
 
+if cookingchange == -3 then TUNING.util2hm.InstallCookingRules2hm(cooking, env) end
 if cookingchange == -2 or cookingchange == -3 then -- 2025.7.9 melon:-3也减
     -- 食材拥有食材度除怪物肉度不可食用度外都减少0.25
     local function ProcessFoodTags(tags)
@@ -187,7 +209,7 @@ if cookingchange == -2 or cookingchange == -3 then -- 2025.7.9 melon:-3也减
 end
 
 -- 2025.7.9 melon:5格锅、减食物度、加料理所需食物度、食物新鲜度在50%~70%时属性降低为3/4、限制不可食用度
-if cookingchange == -3 and not ModManager:GetMod("workshop-3193922031") then
+if cookingchange == -3 then
     -- 5格锅-----------------------------------------------------------------------------
     local containers = require("containers")
     -- 烹饪锅
@@ -204,7 +226,14 @@ if cookingchange == -3 and not ModManager:GetMod("workshop-3193922031") then
     -- containers.params.cookpot.widget.pos = Vector3(0, 150, 0)
     containers.params.cookpot.widget.buttoninfo.position = Vector3(0, 0, 0)
     -- 便携锅
-    containers.params.portablecookpot = containers.params.cookpot
+    -- 两类锅保留自己的准入/角色规则，不共享同一份可变容器定义。
+    local portable = deepcopy(containers.params.portablecookpot)
+    containers.params.portablecookpot = portable
+    portable.widget.slotpos = deepcopy(containers.params.cookpot.widget.slotpos)
+    portable.widget.animbank = containers.params.cookpot.widget.animbank
+    portable.widget.animbuild = containers.params.cookpot.widget.animbuild
+    portable.widget.buttoninfo.position = Vector3(0, 0, 0)
+    require("fiveslotcookers2hm").Install(env, cooking, needfuel, updatebyfurnace)
     -- 龙鳞火炉
     -- 食物新鲜度在50%~70%时属性降低为3/4-----------------------------------------------------
     -- [[ 考虑到做菜不如烤了吃的问题，此部分改动可以改成只影响非料理(还没这么改) ]]

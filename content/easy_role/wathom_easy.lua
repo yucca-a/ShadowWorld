@@ -148,7 +148,7 @@ if TUNING.DSTU and GetModConfigData("wathom upgrade") then
                 sg.states.wathomleap.onenter = function(inst, ...)
                     _wathomleap(inst, ...)
                     local weapon = inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS) or nil
-                    if inst.prefab == "wathom" and weapon and weapon.prefab and (weapon.prefab == "icestaff" or weapon.prefab == "firestaff") then
+                    if inst.prefab == "wathom" and weapon and (weapon:HasTag("icestaff") or weapon.prefab == "firestaff") then
                         inst.range2hm = true -- 使用远程武器的标记
                         inst.rangetask2hm = inst:DoTaskInTime(0.6, function(inst) inst.range2hm = nil end) -- 0.6秒恢复
                     end

@@ -495,7 +495,7 @@ if GetModConfigData("The tent supports multiple people sharing it") then
         for k,v in pairs(self) do
             if k =="onsleep" or k =="onwake"
             or k =="health_tick" or k == "hunger_tick" or k == "sanity_tick"
-            or k =="dryingrate" or k =="temperaturetickfn" or k == "GetSleepPhase" then
+            or k =="dryingrate" or k =="temperaturetickfn" or k == "sleep_phase" or k == "GetSleepPhase" then
                 ex_bag.components.sleepingbag[k] = v
             end
         end

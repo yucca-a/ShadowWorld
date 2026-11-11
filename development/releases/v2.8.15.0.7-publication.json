@@ -1,0 +1,29 @@
+{
+  "workshop_id": "3832182265",
+  "version": "2.8.15.0.7",
+  "published_at_utc": "2026-11-07T06:35:22+00:00",
+  "uploader_status": "Update completed",
+  "steam_upload_result": "OK",
+  "visibility": "Public",
+  "version_tag_verified": true,
+  "patch_notes_submitted_match_prepared_text_ignoring_whitespace": true,
+  "public_changelog_readback_verified": false,
+  "public_changelog_readback_reason": "Steam Community returned HTTP 429",
+  "steam_content_manifest_id": "7568478283949470969",
+  "patch_notes_file": "workshop\\update-notes-2.8.15.0.7.txt",
+  "patch_notes_sha256": "fe18dd8bad32995860e1a2988c2ee389e7052e481bd11f1139f440c3b7ff1197",
+  "content_file_count": 449,
+  "content_bytes": 21490024,
+  "lua51_syntax_files": 385,
+  "regression_checks": {
+    "dynamic_armor": 190,
+    "progressive_combat": 129,
+    "wixie_and_configuration": 705
+  },
+  "native_validation": "development/validation/combat-shade-defaults-20261107.json",
+  "uploader_evidence": "work/release-2.8.15.0.7/uploader-verified.txt",
+  "archive": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\backups\\releases\\v2.8.15.0.7-content.zip",
+  "archive_sha256": "a8b073b65bec223a6e55e13881a32a0e23ff990aeea6abb9df68329b9b80674d",
+  "uploader_generated_changes": [],
+  "downloaded_package_verified": false
+}

@@ -93,6 +93,27 @@ AddPlayerPostInit(function(inst)
     if not TheWorld.ismastersim then return end
     if not inst.components.persistent2hm then inst:AddComponent("persistent2hm") end
 
+    local OnPreLoad, OnLoad = inst.OnPreLoad, inst.OnLoad
+    local restoringtool = false
+    inst.OnPreLoad = function(player, data, ...)
+        -- 非老麦的魔术能力在下一帧恢复；先接住旧存档里仍由 magician 保管的帽子。
+        if data and data.magician and data.magician.item and not player.components.magician then
+            player:AddComponent("magician")
+            restoringtool = true
+        end
+        if OnPreLoad then return OnPreLoad(player, data, ...) end
+    end
+    inst.OnLoad = function(player, data, ...)
+        if OnLoad then OnLoad(player, data, ...) end
+        -- 与老麦原生读档一致，库存加载完成后归还帽子，不恢复临时打开的界面。
+        if player.components.magician then player.components.magician:StopUsing() end
+        if restoringtool then
+            restoringtool = false
+            -- 临时组件只负责找回物品，魔术能力仍由原有角色/兑换逻辑恢复。
+            player:RemoveComponent("magician")
+        end
+    end
+
     SetOnSave2hm(inst, function(i, data)
         local container = GetPrivateContainer2hm(i)
         if container ~= nil then

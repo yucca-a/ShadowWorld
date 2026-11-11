@@ -1,0 +1,25 @@
+{
+  "workshop_id": "3832182265",
+  "version": "2.8.14.98.6",
+  "published_at_utc": "2026-11-05T13:00:29+00:00",
+  "uploader_status": "Update completed",
+  "visibility": "Public",
+  "version_tag_verified": true,
+  "published_notes_match_prepared_text": true,
+  "steam_changelog_entry": "1793883629",
+  "steam_content_manifest_id": "8312610608743928205",
+  "patch_notes_file": "workshop/update-notes-2.8.14.98.6.txt",
+  "patch_notes_sha256": "f7cd6e600f4b09df241fe6cddcb95a22c49590ed92be0cb159164f3ef79cadb3",
+  "content_file_count": 432,
+  "content_bytes": 21442540,
+  "checks": {
+    "lua51_syntax": 368,
+    "exchange_modes": 1040,
+    "fast_exchange_checkpoint": 7358,
+    "native_rollback": 43,
+    "checkpoint_storage": 320,
+    "native_four_shard_travel": "passed, six migrations",
+    "native_wx78_foodbrick": "passed",
+    "native_worm_retaliation": "passed, normal and shadow"
+  }
+}

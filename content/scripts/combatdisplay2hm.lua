@@ -8,8 +8,8 @@ return function(inst, damage, special, report)
         lines[#lines + 1] = string.format("%s: %.2f", kind == "planar" and TUNING.isCh2hm and "位面" or kind, amount)
     end
     if report ~= nil then
-        lines[#lines + 1] = string.format(TUNING.isCh2hm and "渐进阈值：普通 %.1f / 特殊 %.1f；增长空间 0.5"
-            or "Soft thresholds: regular %.1f / special %.1f; width 0.5", report.threshold, report.specialthreshold)
+        lines[#lines + 1] = string.format(TUNING.isCh2hm and "渐进阈值：普通 %.1f / 特殊 %.1f；增长空间 %.1f"
+            or "Soft thresholds: regular %.1f / special %.1f; width %.1f", report.threshold, report.specialthreshold, report.width)
         if report.opaque then
             lines[#lines + 1] = TUNING.isCh2hm and "含兼容来源：内部倍率未拆分" or "Includes compatibility sources with opaque internal multipliers"
         end

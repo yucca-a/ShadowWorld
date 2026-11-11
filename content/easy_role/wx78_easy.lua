@@ -1406,7 +1406,7 @@ if  GetModConfigData("WX-78 Drone Optimization") then
             wx78_common.ActivateSocketsIn = function(inst, socketposition, socketname, ...)
                 oldActivateSocketsIn(inst, socketposition, socketname, ...)
                 if inst and not inst:HasTag("player") and socketname and inst.doublesocket2hm then
-                    socketname_ = (socketname == SOCKETNAMES.SHADOW and SOCKETNAMES.GESTALTTRAPPER) or (socketname == SOCKETNAMES.GESTALTTRAPPER and SOCKETNAMES.SHADOW) or false
+                    local socketname_ = (socketname == SOCKETNAMES.SHADOW and SOCKETNAMES.GESTALTTRAPPER) or (socketname == SOCKETNAMES.GESTALTTRAPPER and SOCKETNAMES.SHADOW) or false
                     if inst.components.socketholder then
                         inst.components.socketholder:SetSocketPositionName(2, socketname_ == false and 0 or socketname_)
                     end

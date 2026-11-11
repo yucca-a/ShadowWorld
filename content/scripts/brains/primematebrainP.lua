@@ -9,7 +9,7 @@ local AssistLeaderDefaults = BrainCommon.AssistLeaderDefaults
 local parameters_MINE
 local parameters_CHOP
 
-parameters_MINE = {
+local parameters_MINE = {
     action = "MINE" -- Required.
 }
 
@@ -22,7 +22,7 @@ parameters_MINE.keepgoing = function(inst, ...) return not inst.no_targeting and
 local FindNew_MINE = AssistLeaderDefaults.MINE.FindNew
 parameters_MINE.finder = FindNew_MINE
 
-parameters_CHOP = {
+local parameters_CHOP = {
     action = "CHOP" -- Required.
 }
 local Starter_CHOP = AssistLeaderDefaults.CHOP.Starter

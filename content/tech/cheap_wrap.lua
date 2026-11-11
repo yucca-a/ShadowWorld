@@ -8,7 +8,8 @@ AddRecipePostInit("bundlewrap", function(self)
 end)
 
 local function CheckPerishableChange(self)
-    local used_time = GetTime() - self.wrap_time + self.used_time
+    local now = GetTime()
+    local used_time = now - self.wrap_time + self.used_time
     -- print("CheckPerishableChange " .. used_time .. " " .. self.inst.prefab)
     if self.itemdata and self.inst.prefab ~= "bundle" then
         for i, v in ipairs(self.itemdata) do
@@ -23,6 +24,8 @@ local function CheckPerishableChange(self)
                 end
             end
         end
+        -- 延迟拆包会再次调用 Unwrap，只扣除上次结算之后的时间。
+        self.wrap_time, self.used_time = now, 0
     end
 end
 
@@ -42,9 +45,10 @@ AddComponentPostInit("unwrappable", function(self)
     self.used_time = 0
     -- print("制造时间 " .. self.wrap_time)
     local oldUnwrap = self.Unwrap
-    function self:Unwrap(doer)
+    function self:Unwrap(doer, ...)
         CheckPerishableChange(self)
-        return oldUnwrap(self, doer)
+        -- 原版延迟回调传入 nodelay=true，必须透传，否则惊喜礼物会无限重新等待。
+        return oldUnwrap(self, doer, ...)
     end
     SetComponentSave(self, OnSave)
     SetComponentLoad(self, OnLoad)

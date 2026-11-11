@@ -228,7 +228,13 @@ local function newKnowsRecipe(self, recipe, ignore_tempbonus, cached_tech_trees)
         return true
     elseif recipe.builder_tag ~= nil and not self.inst:HasTag(recipe.builder_tag) then
         return false
-    elseif recipe.builder_skill ~= nil and not self.inst.components.skilltreeupdater:IsActivated(recipe.builder_skill) then
+    elseif recipe.no_builder_tag ~= nil and self.inst:HasTag(recipe.no_builder_tag) then
+        return false
+    elseif recipe.builder_skill ~= nil and not (self.inst.components.skilltreeupdater and
+        self.inst.components.skilltreeupdater:IsActivated(recipe.builder_skill)) then
+        return false
+    elseif recipe.no_builder_skill ~= nil and self.inst.components.skilltreeupdater and
+        self.inst.components.skilltreeupdater:IsActivated(recipe.no_builder_skill) then
         return false
     elseif self.station_recipes[recipe.name] or table.contains(self.recipes, recipe.name) then
         return true
@@ -320,7 +326,13 @@ local function newReplicaKnowsRecipe(self, recipe, ignore_tempbonus, cached_tech
                 return true
             elseif recipe.builder_tag ~= nil and not self.inst:HasTag(recipe.builder_tag) then
                 return false
-            elseif recipe.builder_skill ~= nil and not self.inst.components.skilltreeupdater:IsActivated(recipe.builder_skill) then
+            elseif recipe.no_builder_tag ~= nil and self.inst:HasTag(recipe.no_builder_tag) then
+                return false
+            elseif recipe.builder_skill ~= nil and not (self.inst.components.skilltreeupdater and
+                self.inst.components.skilltreeupdater:IsActivated(recipe.builder_skill)) then
+                return false
+            elseif recipe.no_builder_skill ~= nil and self.inst.components.skilltreeupdater and
+                self.inst.components.skilltreeupdater:IsActivated(recipe.no_builder_skill) then
                 return false
             elseif self.classified.recipes[recipe.name] ~= nil and self.classified.recipes[recipe.name]:value() then
                 return true

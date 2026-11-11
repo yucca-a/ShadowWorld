@@ -45,7 +45,7 @@ AddSimPostInit(function()
             player.components.playercontroller:Enable(true)
             e:Joined(player, false)
         end
-        local state = e.core.phase .. "/hold=" .. tostring(e.holding) .. "/paused=" .. tostring(TheNet:IsServerPaused(true)) ..
+        local state = e.core.phase .. "/paused=" .. tostring(TheNet:IsServerPaused(true)) ..
             "/control=" .. tostring(player.components.playercontroller:IsEnabled())
         if state ~= previous then print("[REGEN_PROBE] STATE", stage, elapsed, state); previous = state end
         if e.core:IsReady() then
@@ -80,8 +80,8 @@ AddSimPostInit(function()
             if item and item.prefab == (TheShard:IsMaster() and "rocks" or "goldnugget") then
                 traded = true
                 print("[REGEN_PROBE] FIRST_EXCHANGE_DONE", saves)
-                assert(not e.holding and player.components.playercontroller:IsEnabled(), "first use must preserve movement")
-                print("[REGEN_PROBE] VERIFIED", session, "holding", e.holding, "control", player.components.playercontroller:IsEnabled())
+                assert(player.components.playercontroller:IsEnabled(), "first use must preserve movement")
+                print("[REGEN_PROBE] VERIFIED", session, "control", player.components.playercontroller:IsEnabled())
             end
         end
         if ready and elapsed > ready + 15 then

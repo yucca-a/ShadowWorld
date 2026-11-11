@@ -1,4 +1,5 @@
 -- Loaded exclusively instead of epic_armor.lua. Do not reuse invincible2hm.
+PrefabFiles[#PrefabFiles + 1] = "dynamicarmor_indicator2hm"
 local configuredmult = GetModConfigData("extra_change") and GetModConfigData("boss_health") or 1
 TUNING.DYNAMIC_ARMOR_BOSS_HEALTH_MULT2HM = type(configuredmult) == "number"
     and configuredmult == configuredmult and configuredmult < math.huge and math.max(1, configuredmult) or 1

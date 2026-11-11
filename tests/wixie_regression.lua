@@ -137,6 +137,67 @@ for _,mods in ipairs({{}, {'workshop-2039181790'}, {'workshop-3193922031'}}) do
 end
 table.remove(all)
 
+local furnace = {name = "dragonfly furnace stewer", default = true, options = {{data = false}, {data = true}}}
+table.insert(all, furnace)
+for _, value in ipairs({-1, true, false}) do
+    furnace.saved = value
+    local selected
+    for _, option in ipairs(screen():CollectSettings()) do
+        if option.name == furnace.name then selected = option.saved end
+    end
+    check(selected == (value ~= false), "Furnace migrates the old enabled selection and preserves explicit off")
+    check(furnace.saved == value, "Furnace GUI migration leaves runtime settings intact")
+end
+table.remove(all)
+
+local ruin = {name = "epic_ruin", default = 0.8, options = {
+    {data = false}, {data = 0.6}, {data = 0.8}, {data = "full"}, {data = 2},
+}}
+table.insert(all, ruin)
+for _, value in ipairs({1, false, 0.6, 0.8, "full", 2}) do
+    ruin.saved = value
+    local selected
+    for _, option in ipairs(screen():CollectSettings()) do
+        if option.name == "epic_ruin" then selected = option.saved end
+    end
+    check(selected == (value == 1 and 0.8 or value), "Epic Ruin migrates the old 100% selection in the configuration screen")
+end
+table.remove(all)
+
+local exchange = {name = "World Exchange", default = "coordinated", options = {
+    {data = "off"}, {data = "classic"}, {data = "coordinated"},
+}}
+table.insert(all, exchange)
+for _, value in ipairs({false, "traditional", "coordinated", "off", "classic"}) do
+    exchange.saved = value
+    local selected
+    for _, option in ipairs(screen():CollectSettings()) do
+        if option.name == "World Exchange" then selected = option.saved end
+    end
+    local legacy = value == false or value == "traditional"
+    check(selected == (legacy and "coordinated" or value), "World Exchange migrates old settings and saves explicit selections")
+end
+table.remove(all)
+
+-- Native screen collection migrates the obsolete default but preserves every
+-- explicit traditional selection through multiple close/reopen cycles.
+for _,name in ipairs({"combat","epic_armor_5"})do
+    local default=name=="combat"and 4 or "dynamic"
+    local option={name=name,default=default,options={{data=false},{data="traditional_1"},{data=default}}}
+    table.insert(all,option)
+    for _,value in ipairs({1,true,false,"traditional_1",2,3,4,5,default})do
+        option.saved=value
+        local expected=(value==1 or value==true)and default or value
+        for round=1,3 do
+            local selected
+            for _,saved in ipairs(screen():CollectSettings())do if saved.name==name then selected=saved.saved end end
+            check(selected==expected,"combat GUI migration/manual choice survives reopen "..name.." "..round)
+            option.saved=selected
+        end
+    end
+    table.remove(all)
+end
+
 -- Native speed helpers exercise real timeline mutation, with both independent switches.
 local function runrole(source,w,wix)
     local e=env();e.TUNING={DSTU=true,WIXIE_HEALTH=1};e.TheWorld={ismastersim=true}
@@ -231,6 +292,13 @@ for _,master in ipairs({false,true})do for _,enabled in ipairs({false,true})do
     local e=env();local hooks,components,graphs={},{},{}
     e.TUNING={DSTU=true,WIXIE_HEALTH=1,easymode2hm=false,SLINGSHOT_DISTANCE=10,SLINGSHOT_DISTANCE_MAX=14}
     e.TheWorld={ismastersim=master}
+    e.STRINGS={NAMES={},RECIPE_DESC={}}
+    e.TECH={CELESTIAL_THREE={}}
+    e.Ingredient=function(name,count)return {type=name,amount=count}end
+    e.AddRecipe2=function(name,ingredients,tech,config)
+        config.name=name;config.product=name;config.ingredients=ingredients;config.level=tech
+        e.AllRecipes[name]=config
+    end
     e.ModManager={GetPostInitFns=function()return {} end}
     e.GetModConfigData=function(n)return n=='Walter Use Wixie Slingshot'and enabled or false end
     e.AddPrefabPostInit=function(n,f)
@@ -250,6 +318,17 @@ for _,master in ipairs({false,true})do for _,enabled in ipairs({false,true})do
     end}
     e.require=function(name)assert(name=='containers');return containers end
     assert(setfenv(assert(loadstring(access_patch)),e))()
+    do
+        local recipe=recipes.slingshotammo_moonglass_walter2hm
+        check(recipe and recipe.builder_tag=='walter_moonglass2hm','round recipe has separate Walter permission')
+        check(recipe.builder_skill=='walter_ammo_shattershots'and recipe.numtogive==20,'native glass skill and yield')
+        check(recipe.no_builder_tag==nil,'round recipe is not classified as Wixie ammo')
+        check(recipe.atlas=='images/inventoryimages3.xml'and recipe.image=='slingshotammo_moonglass.tex','native round icon bypasses UM override')
+        local crafter={components={skilltreeupdater={IsActivated=function()return false end}}}
+        check(recipe.override_numtogive_fn(recipe,crafter)==nil,'normal native yield')
+        crafter.components.skilltreeupdater.IsActivated=function()return true end
+        check(recipe.override_numtogive_fn(recipe,crafter)==30 and recipe.sg_state(recipe,crafter)=='domediumaction','native efficiency yield and crafting state')
+    end
     do
         local graph=master and 'wilson' or 'wilson_client'
         local released=0

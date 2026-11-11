@@ -1,10 +1,7 @@
 local hardmode = TUNING.hardmode2hm and GetModConfigData("role_nerf")
 
--- 薇诺娜建造不受饥饿影响  -- 2025.4.10 melon:取消注释
-if GetModConfigData("Winona No Hungry Builder") then
-    AddPrefabPostInit("winona", function(inst) inst:RemoveTag("hungrybuilder") end)
-    if TUNING.DSTU and TUNING.DSTU.WINONA_WORKER then TUNING.DSTU.WINONA_WORKER = false end
-end
+-- 制作增强只改变制作动作；保留妥协独立配置的工作能力，并初始化其已有倍率。
+require("winonabuilder2hm").Install(env, GetModConfigData("Winona No Hungry Builder"))
 
 -- 薇诺娜锤建筑掉落全部材料
 if GetModConfigData("Winona Hammer Drop All Loot") then

@@ -1,5 +1,7 @@
 local M = {}
+local combatconfig = require("combatconfig2hm")
 local umOptions = {
+    um_weather_particles2hm = true,
     wixie = true,
     ["Wixie No Claustrophobia"] = true,
     ["Walter Use Wixie Slingshot"] = true,
@@ -43,10 +45,20 @@ function M.Install(G, modname)
             if target ~= name or type(config) ~= "table" then return config end
             local visible = {}
             for _, option in ipairs(config) do
-                if option.name == "um_patch" and (option.saved == 1 or option.saved == 2 or option.saved == 3) then
+                local saved = combatconfig.MigrateSaved(option.name, option.saved)
+                if option.name == "epic_ruin" and saved == 1 then
+                    saved = option.default
+                elseif option.name == "World Exchange" and (saved == "traditional" or saved == false) then
+                    saved = option.default
+                elseif option.name == "um_patch" and (saved == 1 or saved == 2 or saved == 3) then
+                    saved = true
+                elseif option.name == "dragonfly furnace stewer" and saved == -1 then
+                    saved = true
+                end
+                if saved ~= option.saved then
                     local migrated = {}
                     for key, value in pairs(option) do migrated[key] = value end
-                    migrated.saved = true
+                    migrated.saved = saved
                     table.insert(visible, migrated)
                 elseif hideUMOptions and umOptions[option.name] then
                     local value = option.saved
@@ -62,6 +74,32 @@ function M.Install(G, modname)
         local function finish(ok, ...)
             index.LoadModConfigurationOptions = load
             if not ok then error((...), 0) end
+            -- 原生标题隐藏 Spinner 后仍沿用左列右对齐；只调整本模组，滚动复用时恢复普通行。
+            local scroll = self.options_scroll_list
+            if scroll and scroll.update_fn and scroll.GetScrollRegionSize then
+                local update = scroll.update_fn
+                local layouts = {}
+                scroll.update_fn = function(context, widget, data, ...)
+                    local label = widget.opt.label
+                    local layout = layouts[label]
+                    if not layout then
+                        local width, height = label:GetRegionSize()
+                        layout = {position = label:GetPosition(), width = width, height = height}
+                        layouts[label] = layout
+                    end
+                    label:SetPosition(layout.position)
+                    label:SetRegionSize(layout.width, layout.height)
+                    label:SetHAlign(G.ANCHOR_RIGHT)
+                    local result = update(context, widget, data, ...)
+                    if data and data.is_header then
+                        label:SetPosition(0, layout.position.y, layout.position.z)
+                        label:SetRegionSize(scroll:GetScrollRegionSize(), layout.height)
+                        label:SetHAlign(G.ANCHOR_MIDDLE)
+                    end
+                    return result
+                end
+                scroll:RefreshView()
+            end
             if #hidden == 0 then return ... end
             -- Saving another visible option must not erase hidden preferences.
             local collect = self.CollectSettings

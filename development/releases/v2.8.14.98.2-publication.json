@@ -1,0 +1,28 @@
+{
+  "workshop_id": "3832182265",
+  "version": "2.8.14.98.2",
+  "published_at_utc": "2026-11-05T06:52:23+00:00",
+  "uploader_status": "Update completed",
+  "visibility": "Public",
+  "version_tag_verified": true,
+  "published_notes_match_prepared_text": true,
+  "steam_changelog_entry": "1793861543",
+  "patch_notes_file": "workshop/update-notes-2.8.14.98.2.txt",
+  "patch_notes_sha256": "569416d516100f968eb26378995e14fd24c86f2bd0a3501a07c1fd7d19fcf150",
+  "content_file_count": 432,
+  "content_bytes": 21430995,
+  "steam_content_bytes": 21430999,
+  "checks": {
+    "exchange_modes": 999,
+    "fast_exchange_fault_rounds": 720,
+    "fast_exchange_checkpoint": 7341,
+    "native_rollback": 38,
+    "world_exchange_map": 9,
+    "checkpoint_storage": 320,
+    "world_exchange_protocol": 518,
+    "world_exchange_adapter": 86,
+    "epic_ruin_save_reload_rollback": "passed",
+    "wixie": 645,
+    "lua51_syntax": 368
+  }
+}
