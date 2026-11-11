@@ -1,0 +1,18 @@
+{
+  "workshop_id": "3779015027",
+  "version": "3.8",
+  "author": "皮皮酱",
+  "checked_date": "2026-11-10",
+  "download_revalidated": true,
+  "source": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\um-adjustment-audit\\3.8-20261110",
+  "source_hashes": {
+    "mod.manifest": "a832afeff7d676767050edd84dd34cdb08535add05c1dedc1c7afd2611b402b8",
+    "modicon.tex": "1170d610f0fb1dff83bee3f64228be0724f550f260096678cd9643b1990f5b9d",
+    "modicon.xml": "e1a3739c59f441e3bc2db7ef28509abaf971d9e4202c3de64ec30514ab3cfcb7",
+    "modinfo.lua": "cca8c7c91a85e0385d1c5d9aa9a2d85a41b98f49a3f6deaff18c5311719d0367",
+    "modmain.lua": "ba8ea68925eb942fa74fc1ebf65b91fcb725b8cb86dc90af484a50814ad0aa46",
+    "更新日志.txt": "fd3ba105b303e33e4f543979b56ec6d384821b8e12bbad723829c0e724323ee3",
+    "测试用例_v2.8-v2.9.md": "200b5e2a06e603f765bd0231dc560146af4d6dbc0d6d466467b6a26587d461a3"
+  },
+  "method": "Read-only source analysis, compared relevant functions to local UM beta 6.0.3.9 snapshot and ShadowWorld 2.8.15.0.22; no game simulation or patches applied."
+}

@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>寒霜之祠与霜冻核心 · 定稿</title>
+<style>
+:root{color-scheme:dark;--stage:#444b40}*{box-sizing:border-box}body{margin:0;background:#171d23;color:#e4edf0;font:16px/1.65 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1100px;margin:auto;padding:42px 24px}header p{color:#aabac2;margin-top:4px}h1{font-size:30px;margin:0}h2{font-size:21px;margin:0}.eyebrow{font-size:11px;letter-spacing:3px;color:#8caab6;margin-bottom:10px}.toolbar{display:flex;align-items:center;gap:10px;margin:26px 0}.toolbar span{font-size:13px;color:#aabac2}button{border:1px solid #53616a;border-radius:20px;padding:7px 17px;background:transparent;color:#b9cad1;cursor:pointer}button[aria-pressed=true]{background:#b8dce5;color:#142a32;border-color:#b8dce5}.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}article{overflow:hidden;border:1px solid #3a474f;border-radius:14px;background:#202931}.stage{background:var(--stage);height:450px;padding:24px;display:flex;align-items:center;justify-content:center}.hero{width:100%;height:100%;object-fit:contain}.info{padding:24px}.version{font-size:12px;color:#9ed3e2}.info p{color:#aabac2;font-size:14px;margin:6px 0 20px}.icons{display:flex;align-items:center;gap:16px;border-top:1px solid #39464f;padding-top:18px}.icon{background:var(--stage);width:84px;height:84px;border-radius:9px;display:flex;align-items:center;justify-content:center}.icon img{width:64px;height:64px}.icons span{font-size:13px;color:#b3c4cb}a{color:#a2d8eb;text-underline-offset:4px}footer{font-size:13px;color:#94a6af;margin-top:22px}@media(max-width:680px){main{padding:26px 16px}.grid{grid-template-columns:1fr}.stage{height:350px}.toolbar{flex-wrap:wrap}h1{font-size:25px}}
+</style>
+<main>
+<header><div class="eyebrow">SHADOW WORLD / SELECTED ART</div><h1>寒霜之祠与霜冻核心 · 定稿</h1><p>寒霜之祠采用第四版，霜冻核心采用第三版。</p></header>
+<div class="toolbar"><span>预览底色</span><button data-bg="#444b40" aria-pressed="true">草地色</button><button data-bg="#d7d4c5" aria-pressed="false">浅色</button><button data-bg="#252b34" aria-pressed="false">深色</button></div>
+<div class="grid">
+<article><div class="stage"><img class="hero" src="frost-shrine-v4.png" alt="第四版寒霜之祠"></div><div class="info"><div class="version">第四版</div><h2>寒霜之祠</h2><p>保留冰颚底座、张口含核与白鬃冰鳍的完整造型。</p><div class="icons"><div class="icon"><img src="icon-frostshrine2hm.png" alt="寒霜之祠制作栏图标"></div><span>制作栏图标 · 64 像素预览<br><a href="frost-shrine-v4.png">查看透明原图</a></span></div></div></article>
+<article><div class="stage"><img class="hero" src="frost-core-v3.png" alt="第三版霜冻核心"></div><div class="info"><div class="version">第三版</div><h2>霜冻核心</h2><p>蓝白冰核与冰鳍碎片，作为独立战利品呈现。</p><div class="icons"><div class="icon"><img src="icon-frostcore2hm.png" alt="霜冻核心物品栏图标"></div><span>物品栏图标 · 64 像素预览<br><a href="frost-core-v3.png">查看透明原图</a></span></div></div></article>
+</div>
+<footer>两张定稿均保留所选版本原图。大图为原稿展示，图标由已编译游戏贴图解码，展示比例不代表游戏内尺寸。本地资源已接入，尚未发布至创意工坊。</footer>
+</main>
+<script>document.querySelectorAll('[data-bg]').forEach(button=>button.addEventListener('click',()=>{document.documentElement.style.setProperty('--stage',button.dataset.bg);document.querySelectorAll('[data-bg]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)))}));</script>
+</html>

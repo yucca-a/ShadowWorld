@@ -1,0 +1,211 @@
+{
+  "date": "2026-11-07",
+  "status": "passed",
+  "published": true,
+  "design": {
+    "storage": "original registered native prefabs on Master and secondary shards",
+    "ui": "native ContainerWidget/InvSlot/ItemTile and original buttons; no custom panel",
+    "items": "normal native container RPCs; no per-item shard transaction",
+    "ownership": "same-shard sharing; one writable shard per page; closed secondary pages return to Master",
+    "specials": "registered pocket families, including UM skull/winky and Legion cloudpine_l1..4",
+    "compatibility": "schema 4 journal migration retained; saved local native refs authoritative for matching ownership epochs",
+    "um_cleanup": "UM startup singleton repair excludes intentional extra pages, preserving normal untracked duplicate repair",
+    "load_order": "canonical saved GUIDs restored before other world components LoadPostPass"
+  },
+  "reports": {
+    "native_client_six_rounds": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-_5mupe4t",
+      "status": "passed",
+      "blackhole": false,
+      "rounds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "client_log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-_5mupe4t\\real-client.log",
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\nexus-native-client-final.json"
+    },
+    "four_shards_eight_rounds": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-fi9qspyi",
+      "rounds": [
+        {
+          "round": 1,
+          "owner": "Master",
+          "two_native_openers": true
+        },
+        {
+          "round": 2,
+          "owner": "Caves",
+          "two_native_openers": true
+        },
+        {
+          "round": 3,
+          "owner": "Layer3",
+          "two_native_openers": true
+        },
+        {
+          "round": 4,
+          "owner": "Layer4",
+          "two_native_openers": true
+        },
+        {
+          "round": 5,
+          "owner": "Master",
+          "two_native_openers": true
+        },
+        {
+          "round": 6,
+          "owner": "Caves",
+          "two_native_openers": true
+        },
+        {
+          "round": 7,
+          "owner": "Layer3",
+          "two_native_openers": true
+        },
+        {
+          "round": 8,
+          "owner": "Layer4",
+          "two_native_openers": true
+        }
+      ],
+      "independent_pages": "passed",
+      "status": "passed",
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-fi9qspyi\\native-four-result.json"
+    },
+    "legacy_upgrade_and_normal_restart": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-06b0b447",
+      "checks": [
+        "old_journal_gift",
+        "native_master_edits",
+        "old_items_transfer_to_caves",
+        "native_caves_restart_while_borrowed",
+        "returned_once_after_restart"
+      ],
+      "status": "passed",
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-06b0b447\\native-upgrade-result.json"
+    },
+    "um_legion_medal_specials_and_normal_restart": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-445ekmhp",
+      "cases": [
+        {
+          "family": "skull",
+          "prefab": "skullchest",
+          "slots": 12,
+          "rounds": 2
+        },
+        {
+          "family": "cloudpine_l1",
+          "prefab": "cloudpine_box_l1",
+          "slots": 4,
+          "rounds": 2
+        },
+        {
+          "family": "cloudpine_l2",
+          "prefab": "cloudpine_box_l2",
+          "slots": 12,
+          "rounds": 2
+        },
+        {
+          "family": "cloudpine_l3",
+          "prefab": "cloudpine_box_l3",
+          "slots": 24,
+          "rounds": 2
+        },
+        {
+          "family": "cloudpine_l4",
+          "prefab": "cloudpine_box_l4",
+          "slots": 30,
+          "rounds": 2
+        }
+      ],
+      "restart": "passed",
+      "status": "passed",
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-445ekmhp\\native-special-result.json"
+    },
+    "um_legion_medal_real_client_buttons": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-eoc4vy_f",
+      "status": "passed",
+      "blackhole": false,
+      "rounds": [
+        1
+      ],
+      "client_log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-eoc4vy_f\\real-client.log",
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\nexus-native-modded-master-client-final.json"
+    },
+    "um_legion_medal_real_client_both_shards": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-kz7z7j33",
+      "status": "passed",
+      "blackhole": false,
+      "rounds": [
+        1,
+        2
+      ],
+      "client_log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-kz7z7j33\\real-client.log",
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\nexus-native-modded-client-final.json"
+    },
+    "um_legion_medal_normal_character_migration": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-4oegpb1d",
+      "status": "passed",
+      "blackhole": false,
+      "arrivals": [
+        0,
+        1
+      ],
+      "client_log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-4oegpb1d\\real-client.log",
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\nexus-native-modded-migration.json"
+    },
+    "native_existing_preserver_lock_and_rot": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-gsseci7h",
+      "status": "passed",
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-gsseci7h\\native-preservation-result.json"
+    }
+  },
+  "native_item_ack_seconds": {
+    "samples": [
+      0.10000000521541,
+      0.20000001043081,
+      0.13333334028721,
+      0.13333334028721,
+      0.13333334028721,
+      0.13333334028721
+    ],
+    "min": 0.10000000521541,
+    "max": 0.20000001043081,
+    "scope": "local isolated real client; server-confirmed gift deposit, includes polling; not an Internet latency guarantee"
+  },
+  "unit_command": "work/python-3.12.8/python.exe tests/run_vault_journal_tests.py",
+  "native_behavior_assertions": 33,
+  "scope_notes": [
+    "Medal 1.6.8.2 enabled alongside Legion and UM beta; no new world-unique pocket definition found in this local Medal source. Ordinary Medal chests are not converted into unique storage.",
+    "Cloud pine engine test exercises all four original capacities twice, then matures a real tree before saving with level-4 page borrowed; tests normal restart and exact quantities.",
+    "Linked references remain native within a shard; cross-shard page export refuses unsupported linked records and retains originals.",
+    "No actual sudden-world-crash or forced disconnect stress tests were performed in this task. Historical mocked recovery tests still run.",
+    "Additional first combined-mod client migration attempt p19c8nvx timed out after completing Master UI actions; excluded from passed counts. Ordinary migration baseline 4oegpb1d passed. Retest kz7z7j33 uses a normal save before migration and completed all UI actions on both shards. Direct initial secondary login krq8zveg was not supported and is excluded. No production migration gate or forced save was added.",
+    "Preserver engine test gsseci7h runs the actual perishable update on near-rotten berries: both a canonical Legion box and a newly cloned original prefab freeze while read-only, then produce exactly four spoiled_food when unlocked. An earlier test caught an incorrect server API name; the final implementation uses the native readonlycontainer property."
+  ],
+  "sha256": {
+    "content/easy_other/shadowvault.lua": "1c093a9f7d5cc4f02cadab194b18d4d8880e00340a1d362e4dc265015c08663f",
+    "content/scripts/components/shadowvault2hm.lua": "7e6edf6c8ed08792ba4136b93874a0d82aec1de187958e41fac9b34c8174f340",
+    "content/scripts/shadowvaultconfig2hm.lua": "702910e767cdfa651775786b02e5f82bd26f2eaf2f3827991162b0a21feff15e",
+    "content/scripts/shadowvaultnative2hm.lua": "5ea2b6e5ee4a5a2999b29d6b05254549d107c653259fc664202571e2c755ef6f",
+    "content/scripts/shadowvaultjournal2hm.lua": "ee9078e69c73aeae7d1e43b0fe9e0bdf672de2ea6ec53ed2f74400096885c8f4",
+    "content/scripts/shadowvaulttransport2hm.lua": "b43a1bd1831d199880e074deaf4579ad25ebb9f097da302a4c2b0f7b5bbbb6b1",
+    "content/easy_other/containersort.lua": "08b5fee3c70f5d451607f0dd2302d3c337e632891aa37c202dee3bcde0c85c66",
+    "tests/shadow_vault_native_regression.lua": "909db5a8b0b04e23b51ece2d0040e7382f4680de7451d258da3a7f90b4b1d0e0"
+  },
+  "modded_native_item_ack_seconds": {
+    "samples": [
+      0.20000001043081,
+      0.43333335593343
+    ],
+    "min": 0.20000001043081,
+    "max": 0.43333335593343,
+    "scope": "local real client, UM beta + Legion + Medal, Master and Caves; includes polling and rendering"
+  },
+  "published_version": "2.8.15.0.5",
+  "publication_record": "development/releases/v2.8.15.0.5-publication.json"
+}

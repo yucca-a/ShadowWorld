@@ -1,0 +1,410 @@
+{
+  "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-7nw10_5f",
+  "checks": [
+    {
+      "label": "initial_delivery",
+      "expected": {
+        "gold": 17
+      },
+      "actual": {
+        "gold": 17
+      },
+      "state": {
+        "Master": {
+          "label": "settle_confirm",
+          "sent": 17,
+          "banks": {
+            "1": [],
+            "2": []
+          },
+          "time": 7.3000003807247,
+          "saves": 1,
+          "shard": "1",
+          "runtimeboot": "1793972313:22000:804542605",
+          "dropped": 0,
+          "locations": [],
+          "details": [],
+          "pending": 0,
+          "journalrevision": 11,
+          "goods": [],
+          "duplicated": 0,
+          "snapshot": 4,
+          "kind": "state"
+        },
+        "Caves": {
+          "label": "settle_confirm",
+          "sent": 18,
+          "banks": [],
+          "time": 7.5666670612991,
+          "saves": 1,
+          "shard": "2",
+          "runtimeboot": "1793972313:22000:566085019",
+          "dropped": 0,
+          "locations": {
+            "KU_VA_2_1": 17
+          },
+          "details": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ],
+          "pending": 0,
+          "journalrevision": 14,
+          "goods": {
+            "gold": 17
+          },
+          "duplicated": 0,
+          "snapshot": 4,
+          "kind": "state"
+        }
+      }
+    },
+    {
+      "label": "partially_consumed",
+      "expected": {
+        "gold": 12
+      },
+      "actual": {
+        "gold": 12
+      },
+      "state": {
+        "Master": {
+          "label": "settle_confirm",
+          "sent": 19,
+          "banks": {
+            "1": [],
+            "2": []
+          },
+          "time": 9.7000005058944,
+          "saves": 1,
+          "shard": "1",
+          "runtimeboot": "1793972313:22000:804542605",
+          "dropped": 0,
+          "locations": [],
+          "details": [],
+          "pending": 0,
+          "journalrevision": 11,
+          "goods": [],
+          "duplicated": 0,
+          "snapshot": 4,
+          "kind": "state"
+        },
+        "Caves": {
+          "label": "settle_confirm",
+          "sent": 19,
+          "banks": [],
+          "time": 9.9666671864688,
+          "saves": 1,
+          "shard": "2",
+          "runtimeboot": "1793972313:22000:566085019",
+          "dropped": 0,
+          "locations": {
+            "KU_VA_2_1": 12
+          },
+          "details": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 12,
+                "prefab": "goldnugget"
+              }
+            }
+          ],
+          "pending": 0,
+          "journalrevision": 16,
+          "goods": {
+            "gold": 12
+          },
+          "duplicated": 0,
+          "snapshot": 4,
+          "kind": "state"
+        }
+      }
+    },
+    {
+      "label": "only_remaining_quantity_recovered",
+      "expected": {
+        "gold": 12
+      },
+      "actual": {
+        "gold": 12
+      },
+      "state": {
+        "Master": {
+          "label": "settle_confirm",
+          "sent": 23,
+          "banks": {
+            "1": [],
+            "2": []
+          },
+          "time": 32.666668370366,
+          "saves": 1,
+          "shard": "1",
+          "runtimeboot": "1793972313:22000:804542605",
+          "dropped": 0,
+          "locations": [],
+          "details": [],
+          "pending": 0,
+          "journalrevision": 11,
+          "goods": [],
+          "duplicated": 0,
+          "snapshot": 4,
+          "kind": "state"
+        },
+        "Caves": {
+          "label": "settle_confirm",
+          "sent": 0,
+          "banks": [],
+          "time": 2.0000001043081,
+          "saves": 0,
+          "shard": "2",
+          "runtimeboot": "1793972345:20000:131443338",
+          "dropped": 0,
+          "locations": {
+            "KU_VA_2_1": 12
+          },
+          "details": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 12,
+                "prefab": "goldnugget"
+              }
+            }
+          ],
+          "pending": 0,
+          "journalrevision": 20,
+          "goods": {
+            "gold": 12
+          },
+          "duplicated": 0,
+          "snapshot": 4,
+          "kind": "state"
+        }
+      }
+    },
+    {
+      "label": "fully_consumed",
+      "expected": {},
+      "actual": {},
+      "state": {
+        "Master": {
+          "label": "settle_confirm",
+          "sent": 23,
+          "banks": {
+            "1": [],
+            "2": []
+          },
+          "time": 35.100001830608,
+          "saves": 1,
+          "shard": "1",
+          "runtimeboot": "1793972313:22000:804542605",
+          "dropped": 0,
+          "locations": [],
+          "details": [],
+          "pending": 0,
+          "journalrevision": 11,
+          "goods": [],
+          "duplicated": 0,
+          "snapshot": 4,
+          "kind": "state"
+        },
+        "Caves": {
+          "label": "settle_confirm",
+          "sent": 0,
+          "banks": [],
+          "time": 4.4333335645497,
+          "saves": 0,
+          "shard": "2",
+          "runtimeboot": "1793972345:20000:131443338",
+          "dropped": 0,
+          "locations": [],
+          "details": [],
+          "pending": 0,
+          "journalrevision": 21,
+          "goods": [],
+          "duplicated": 0,
+          "snapshot": 4,
+          "kind": "state"
+        }
+      }
+    },
+    {
+      "label": "consumed_goods_not_refunded",
+      "expected": {},
+      "actual": {},
+      "state": {
+        "Master": {
+          "label": "settle_confirm",
+          "sent": 23,
+          "banks": {
+            "1": [],
+            "2": []
+          },
+          "time": 58.066669695079,
+          "saves": 1,
+          "shard": "1",
+          "runtimeboot": "1793972313:22000:804542605",
+          "dropped": 0,
+          "locations": [],
+          "details": [],
+          "pending": 0,
+          "journalrevision": 11,
+          "goods": [],
+          "duplicated": 0,
+          "snapshot": 4,
+          "kind": "state"
+        },
+        "Caves": {
+          "label": "settle_confirm",
+          "sent": 0,
+          "banks": [],
+          "time": 2.0000001043081,
+          "saves": 0,
+          "shard": "2",
+          "runtimeboot": "1793972370:20000:925463612",
+          "dropped": 0,
+          "locations": [],
+          "details": [],
+          "pending": 0,
+          "journalrevision": 22,
+          "goods": [],
+          "duplicated": 0,
+          "snapshot": 4,
+          "kind": "state"
+        }
+      }
+    },
+    {
+      "label": "issuance_interrupt_held",
+      "expected": {
+        "gold": 17
+      },
+      "actual": {
+        "gold": 17
+      },
+      "state": {
+        "Master": {
+          "label": "issuance_interrupt_held",
+          "sent": 33,
+          "banks": {
+            "1": [],
+            "2": []
+          },
+          "time": 63.333336636424,
+          "saves": 1,
+          "shard": "1",
+          "runtimeboot": "1793972313:22000:804542605",
+          "dropped": 0,
+          "locations": [],
+          "details": [],
+          "pending": 0,
+          "journalrevision": 16,
+          "goods": [],
+          "duplicated": 0,
+          "snapshot": 4,
+          "kind": "state"
+        },
+        "Caves": {
+          "label": "issuance_interrupt_held",
+          "sent": 9,
+          "banks": [],
+          "time": 7.2666670456529,
+          "saves": 0,
+          "shard": "2",
+          "runtimeboot": "1793972370:20000:925463612",
+          "dropped": 0,
+          "locations": {
+            "shadowvaulttransfer2hm": 17
+          },
+          "details": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ],
+          "pending": 1,
+          "journalrevision": 28,
+          "goods": {
+            "gold": 17
+          },
+          "duplicated": 0,
+          "snapshot": 4,
+          "kind": "state"
+        }
+      }
+    },
+    {
+      "label": "uncertain_issuance_not_guessed",
+      "expected": {
+        "gold": 17
+      },
+      "actual": {
+        "gold": 17
+      },
+      "state": {
+        "Master": {
+          "label": "uncertain_issuance_not_guessed",
+          "sent": 37,
+          "banks": {
+            "1": [],
+            "2": []
+          },
+          "time": 84.866671092808,
+          "saves": 1,
+          "shard": "1",
+          "runtimeboot": "1793972313:22000:804542605",
+          "dropped": 0,
+          "locations": [],
+          "details": [],
+          "pending": 0,
+          "journalrevision": 16,
+          "goods": [],
+          "duplicated": 0,
+          "snapshot": 4,
+          "kind": "state"
+        },
+        "Caves": {
+          "label": "uncertain_issuance_not_guessed",
+          "sent": 0,
+          "banks": [],
+          "time": 0.66666670143604,
+          "saves": 0,
+          "shard": "2",
+          "runtimeboot": "1793972398:20000:818624195",
+          "dropped": 0,
+          "locations": {
+            "shadowvaulttransfer2hm": 17
+          },
+          "details": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ],
+          "pending": 1,
+          "journalrevision": 29,
+          "goods": {
+            "gold": 17
+          },
+          "duplicated": 0,
+          "snapshot": 4,
+          "kind": "state"
+        }
+      }
+    }
+  ],
+  "status": "passed",
+  "native_migration_with_held_record": 85.766671139747,
+  "journal_failure_did_not_gate_native_migration": true
+}

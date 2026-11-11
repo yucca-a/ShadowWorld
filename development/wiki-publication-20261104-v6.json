@@ -1,0 +1,50 @@
+{
+  "date": "2026-11-04",
+  "version": "2.8.14.97.4",
+  "scope": "25 character, 22 building and 20 Boss articles; current source mechanics, values, triggers, loot and configuration; original-mod introduction corrected",
+  "project_id": "appgprj_6aeab300ca58819193ec146fbf0d4571",
+  "checkout_path": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\tempered-season-site",
+  "commit_sha": "31328f8db2961a6a41f3adae13520b135abc4d78",
+  "archive": "D:/Users/Yucca/Documents/ChatGPT/ShadowWorld/work/tempered-season-wiki-v6.tar.gz",
+  "deployment": {
+    "id": "appgdep_6aeadba156e081918dc5327ebddb6acc",
+    "project_id": "appgprj_6aeab300ca58819193ec146fbf0d4571",
+    "title": "淬炼之季 Wiki",
+    "version_id": "appgprj_6aeab300ca58819193ec146fbf0d4571~appgver_5a32929f97e481918ecf86355c0556ff",
+    "type": "publish",
+    "status": "succeeded",
+    "url": "https://tempered-season-wiki.stormy-ant-2734.chatgpt.site",
+    "has_mcp": false,
+    "screenshot_asset_pointer": null,
+    "provider_deployment_id": "site---6aeab300ca58819193ec146fbf0d4571",
+    "failure_message": null,
+    "env_set_revision": 0,
+    "updated_at": "2026-11-04T07:16:15.209888+00:00"
+  },
+  "validation": {
+    "pages": 250,
+    "articles": 247,
+    "configs": 424,
+    "choices": 3322,
+    "localLinksAndAnchors": 119914,
+    "searchEntries": 671,
+    "entityArticles": 67,
+    "entitySections": 532,
+    "entityTables": 160,
+    "hashedModSources": 116,
+    "unchangedPriorModSources": 54,
+    "browser": [
+      "1280px desktop character tables and building layout",
+      "390px mobile reading and navigation",
+      "full-text search",
+      "inactive configuration badge",
+      "published origin introduction",
+      "published deerclops source values"
+    ],
+    "gameRuntimeTested": false
+  },
+  "screenshots": [
+    "development/wiki-preview-v6-home-20261104.png",
+    "development/wiki-preview-v6-boss-20261104.png"
+  ]
+}

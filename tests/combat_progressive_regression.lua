@@ -25,7 +25,7 @@ for name, source in pairs(native_sources) do
     local code = source
     package.preload[name] = function() return assert(loadstring(code))() end
 end
-for _, name in ipairs({"progressivecombat2hm", "combatdisplay2hm", "components/dynamicarmor2hm"}) do
+for _, name in ipairs({"progressivecombat2hm", "combatdisplay2hm", "combatconfig2hm", "components/dynamicarmor2hm"}) do
     local code = mod_sources["scripts/" .. name .. ".lua"]
     package.preload[name] = function() return assert(loadstring(code))() end
 end
@@ -35,6 +35,7 @@ local Weapon = require("components/weapon")
 local Planar = require("components/planardamage")
 local TypeBonus = require("components/damagetypebonus")
 local Calculator = require("progressivecombat2hm")
+local Config = require("combatconfig2hm")
 local Armor = require("components/dynamicarmor2hm")
 Combat = {}; Health = {}
 assert(loadstring(native_calc_source))()
@@ -42,7 +43,7 @@ assert(loadstring(native_attacked_source))()
 assert(loadstring(health_source))()
 local hooks, prefabs, playerhooks, config, now, jobs
 function GetTime() return now end
-function GetModConfigData(key) return config[key] end
+GetModConfigData = Config.Wrap(function(key) return config[key] end)
 function AddComponentPostInit(name, fn)
     hooks[name] = hooks[name] or {}; table.insert(hooks[name], fn)
 end
@@ -62,7 +63,8 @@ local function advance(dt)
 end
 local function install(mode, dynamic)
     hooks = {}; prefabs = {}; playerhooks = {}; jobs = {}; now = 0
-    config = {combat = mode, extra_change = false}
+    PrefabFiles={}
+    config = {combat = mode == 1 and "traditional_1" or mode, extra_change = false}
     TheWorld.ismastersim = true
     modimport("role/combat.lua")
     if dynamic then modimport("epic/dynamic_armor.lua") end
@@ -144,17 +146,57 @@ locale = "zh"; assert(loadstring(mod_sources["modinfo.lua"]))()
 local opt
 for _, entry in ipairs(configuration_options) do if entry.name == "combat" then opt = entry end end
 equal(opt.default, 4)
+local defaults={};for _,entry in ipairs(configuration_options)do defaults[entry.name]=entry.default end
+equal(defaults.epic_armor_5,"dynamic","dynamic armor is the actual mod default")
+equal(defaults["enable hard mode"],true,"hard mode default permits both mechanics")
+equal(defaults.role_nerf,true,"default character switch permits progressive combat")
+equal(defaults.monster_change,true,"default monster switch permits dynamic armor")
+-- The native frontend deliberately reuses saved host settings for new worlds.
+-- Verify this separately from the defaults, without rewriting player saves.
+local update=assert(loadstring(native_options_update))()
+local build=assert(loadstring(native_options_ctor))()
+local oldindex,oldscreen=KnownModIndex,Screen
+Screen={_ctor=function()end}
+local function frontend(saved)
+    local options={}
+    for _,entry in ipairs(configuration_options)do
+        if entry.name=="combat"or entry.name=="epic_armor_5"then
+            options[#options+1]={name=entry.name,label=entry.label,options=entry.options,default=entry.default}
+        end
+    end
+    update({},options,saved,false)
+    KnownModIndex={LoadModConfigurationOptions=function()return options end,GetModInfo=function()return {}end}
+    local screen={};build(screen,"ShadowWorld",false)
+    local values={};for _,entry in ipairs(screen.options)do values[entry.name]=entry.value end
+    return values
+end
+local fresh=frontend({})
+equal(fresh.combat,4,"fresh native frontend uses progressive default")
+equal(fresh.epic_armor_5,"dynamic","fresh native frontend uses dynamic armor default")
+local remembered=frontend({{name="combat",saved=1},{name="epic_armor_5",saved=1}})
+equal(Config.Resolve("combat",remembered.combat),4,"old host default cannot restore legacy combat")
+equal(Config.Resolve("epic_armor_5",remembered.epic_armor_5),"dynamic","old host default cannot restore legacy armor")
+local disabled=frontend({{name="combat",saved=false},{name="epic_armor_5",saved=false}})
+equal(disabled.combat,false,"explicit disabled combat is retained")
+equal(disabled.epic_armor_5,false,"explicit disabled armor is retained")
+KnownModIndex,Screen=oldindex,oldscreen
 local modes = {}; for _, entry in ipairs(opt.options) do modes[entry.data] = true end
-equal(modes[false], true); for i = 1, 4 do equal(modes[i], true) end
+equal(modes[false], true); equal(modes.traditional_1,true);for i = 2, 4 do equal(modes[i], true) end
+equal(modes[1],nil,"manual tier1 has a distinct saved token")
+for _,name in ipairs({"combat","epic_armor_5"})do
+    equal(Config.Resolve(name,"traditional_1"),1,"explicit traditional1 still runs as tier1")
+    equal(Config.Resolve(name,false),false,"explicit off remains off")
+    for _,mode in ipairs({2,3})do equal(Config.Resolve(name,mode),mode,"other explicit legacy tiers retained")end
+end
 
 install(4)
 local p, c = player(); local w = weapon(100, 20)
-for _, row in ipairs({{1, 1}, {2.5, 2.5}, {3, 2.75}, {4, 2.875}, {5, 2.9166666666667}, {10, 2.96875}}) do
+for _, row in ipairs({{1, 1}, {2.5, 2.5}, {3, 2.875}, {4, 3.25}, {5, 3.4375}, {10, 3.75}}) do
     c.damagemultiplier = row[1]
     local d, sp = c:CalcDamage(target, w)
     near(d, row[2] * 100); near(sp.planar, 20, "ordinary does not leak to planar")
 end
-for _, row in ipairs({{"wolfgang", 3.5, 4}, {"wathom", 4, 4.5}}) do
+for _, row in ipairs({{"wolfgang", 3.5, 5}, {"wathom", 4, 5.5}}) do
     local character, cc = player(row[1]); cc.damagemultiplier = math.huge
     local d, sp = cc:CalcDamage(target, w)
     near(d, row[3] * 100, "finite extreme output"); near(sp.planar, 20)
@@ -164,19 +206,19 @@ end
 c.damagemultiplier = 2; c.externaldamagemultipliers:SetModifier("buff", 2)
 tagbonus(w, 1.5)
 local d, sp = c:CalcDamage(target, w)
-near(d, 293.75, "counter bonus inside pool"); near(sp.planar, 30)
+near(d, 355, "counter bonus inside pool"); near(sp.planar, 30)
 c.externaldamagemultipliers:SetModifier("debuff", 0.8); c.damagebonus = 20
-d = c:CalcDamage(target, w); near(d, 255, "negative after positive limit; flat bonus last")
+d = c:CalcDamage(target, w); near(d, 304, "negative after positive limit; flat bonus last")
 w.components.damagetypebonus = nil
 c.externaldamagemultipliers:RemoveModifier("debuff"); c.damagebonus = 50
 local pvptarget = entity("wilson", {player = true})
-d, sp = c:CalcDamage(pvptarget, w); near(d, 193.75); near(sp.planar, 10)
+d, sp = c:CalcDamage(pvptarget, w); near(d, 212.5); near(sp.planar, 10)
 
 -- Planar local multipliers/bonuses and character-owned contributions stay distinct.
 p, c = player(); w = weapon(100, 20)
 planar(w, 20, 2, 5); planar(p, 10); tagbonus(w, 1.5)
 d, sp = c:CalcDamage(target, w)
-near(d, 150); near(sp.planar, 64.1666666666667, "source-local bonus scopes")
+near(d, 150); near(sp.planar, 69.5, "source-local bonus scopes")
 p.components.planardamage = nil; planar(w, 20, 1)
 local customcalls, specialcalls, tagcalls, damagecalls = 0, 0, 0, 0
 c.customdamagemultfn = function() customcalls = customcalls + 1; return 2 end
@@ -185,10 +227,11 @@ w.components.damagetypebonus:AddBonusCallback(function() tagcalls = tagcalls + 1
 w.components.weapon.damage = function() damagecalls = damagecalls + 1; return 100 end
 local before = c.CalcDamage
 toggle(p); d, sp = c:CalcDamage(target, w)
-near(d, 275); near(sp.planar, 46.6666666666667)
+near(d, 287.5); near(sp.planar, 52)
 equal(c.CalcDamage, before, "display never changes calculator")
 near(customcalls, 1); near(specialcalls, 1); near(tagcalls, 1); near(damagecalls, 1)
 advance(0.1); equal(p.lastspeech ~= nil, true)
+equal(p.lastspeech:find("width 1.5",1,true)~=nil,true,"display reports the relaxed growth width")
 toggle(p); local d2, sp2 = c:CalcDamage(target, w)
 near(d2, d); near(sp2.planar, sp.planar)
 near(customcalls, 2); near(specialcalls, 2); near(damagecalls, 2)
@@ -205,7 +248,7 @@ d, sp = c:CalcDamage(target, w); near(d, 200); near(sp.planar, 30); near(calls, 
 w.components.weapon.progressiveterms2hm = function()
     return {regular = {{amount = 100, factors = {2, 3}}}, special = {planar = {{amount = 10, factors = {3}}}}}
 end
-d, sp = c:CalcDamage(target, w); near(d, 293.75); near(sp.planar, 23.3333333333333); near(calls, 1)
+d, sp = c:CalcDamage(target, w); near(d, 355); near(sp.planar, 26); near(calls, 1)
 
 -- Mounted source and saddle bonuses; rider ordinary multiplier must not leak.
 p, c = player("wathom"); c.damagemultiplier = 100
@@ -213,7 +256,7 @@ local mount = entity("beefalo"); local mc = combat(mount); mc.damagemultiplier =
 local saddle = entity("saddle"); saddle.components.saddler = {GetBonusDamage = function() return 20 end}
 planar(mount, 10); planar(saddle, 5)
 p.components.rider = {IsRiding = function() return true end, GetMount = function() return mount end, GetSaddle = function() return saddle end}
-d, sp = c:CalcDamage(target); near(d, 345); near(sp.planar, 15)
+d, sp = c:CalcDamage(target); near(d, 390); near(sp.planar, 15)
 near(mc:CalcDamage(target), 400, "NPCs retain native calculation")
 -- Maxwell's followers must not inherit their owner's progressive calculation.
 local maxwell, maxwellcombat = player("waxwell")
@@ -279,12 +322,12 @@ boss.components.inventory = {ApplyDamage = function(_, amount, _, _, special) re
 boss.components.planardefense = {GetDefense = function() return 5 end}
 bc.externaldamagetakenmultipliers:SetModifier("vulnerable", 1.2)
 bh.absorb = 0.1; bh:SetMaxDamageTakenPerHit(150)
-boss.components.dynamicarmor2hm:OnLoad({pressure = 0.15})
-d, sp = c:CalcDamage(boss, w); near(d, 255); near(sp.planar, 46.6666666666667)
+boss.components.dynamicarmor2hm:OnLoad({pressure = 0.25})
+d, sp = c:CalcDamage(boss, w); near(d, 304); near(sp.planar, 52)
 bc:GetAttacked_Internal(p, d, w, nil, sp)
 near(10000 - bh.currenthealth, 69.6460117874711, "full defense order then continuous armor")
 equal(boss.events.healthdelta, 1, "one health change for mixed damage")
-near(boss.components.dynamicarmor2hm.pressure, 0.156964601178747)
+near(boss.components.dynamicarmor2hm.pressure, 0.256964601178747)
 -- Huge mixed hit is capped once, after summing both channels.
 boss.components.inventory = nil; boss.components.planardefense = nil
 bc.externaldamagetakenmultipliers:Reset(); bh.absorb = 0; bh.maxdamagetakenperhit = nil

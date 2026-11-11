@@ -1,0 +1,107 @@
+永不妥协测试版内存／递归问题复现记录（2026-11-10）
+
+结论
+没有复现截图中“Out of memory. Bytes requested: 402653184”这一相同故障。
+已在隔离原生专服确认烟雾休眠积累、保存后重现，以及人工候选集压力下的递归栈溢出。
+另在无真实客户端的空调使用流程中，两次触发独立的 brain 空引用错误。
+这些结果不能合并成“所有内存溢出都是无限递归导致”的结论。
+本轮只添加复现脚本、采样与记录，未修改淬炼或妥测运行源码，未上传工坊。
+
+截图能说明什么
+collectgarbage("count") 的单位是 KiB，截图最后的 892046 约为 871.1 MiB Lua 堆。
+它不是游戏进程总内存；截图没有先强制 GC，也没有给出长期 GC 后趋势。
+最后一次申请失败为 402653184 字节，即 384 MiB；截图缺少该次分配的调用栈。
+截图实体总数 26342，miasma_cloud=2466，air_conditioner_smoke=2098，magma_tile=980，um_pyre_nettles=962。
+数量较大提供了排查方向，但单次计数不证明无限生成或引用泄漏。
+
+输入和隔离条件
+DST 本机运行 build 762172，x64 独立原生专服；无真实网络客户端。
+妥测冻结副本：On The Rocks! v1.6 Testing v6.0.3.9，work/um-memory-beta-frozen。
+淬炼比较基础：已发布 .19 的源码归档，不使用正在准备的 .20 修改来解释结果。
+包括原版对照、单开妥测、淬炼 .19＋妥测＋影子、再加入全图定位完全同步 3138571948。
+地表使用相同一次性测试种子；另生成一个全新的小型洞穴预设，单独观察自然实体。
+所有存档均位于 work/ 下独立隔离目录，没有读取或修改玩家问题世界。
+探针记录自然 Lua 堆、完整 GC 后堆、进程私有内存／工作集、实体与任务、保存结果。
+完整 GC 会改变运行时机，因此这些采样不能冒充自然游玩全程性能曲线。
+单个测试进程超过 3 GiB 私有内存会停止观察，全部测试均未触发该保护阈值。
+未通过申请巨型字符串、限制分配器或耗尽宿主内存制造所谓“相同 OOM”。
+
+复现一：air_conditioner_smoke 在休眠区积累并写入存档
+单开妥测，连续三批各生成 32 个真实烟雾，分别等待 8 秒后采样：32 -> 64 -> 96 个残留。
+全部处于休眠状态、persists=true、无定时任务，完整 GC 后仍然存在。
+正常保存并重启，96 个仍然恢复；第二次正常重启仍在。
+同一场景的原生 small_puff 视觉特效全部回收；妥测烟雾保持唤醒时也全部回收。
+保持唤醒组的烟雾动画长度约 0.9 秒，96 个均触发 animover 并被移除。
+
+淬炼 .19＋妥测＋影子场景再生成与截图相同的 2098 个休眠烟雾：
+2098 个全部残留，保存重启后仍为 2098，未出现 OOM。
+该组从 small_puff 清理后到烟雾采样的 GC 后 Lua 堆差约 9.7 MiB，不能解释截图中的全部高内存。
+代码对应 scripts/prefabs/air_conditioner_smoke.lua 的第一个 fn：只在 animover 移除，
+没有非持久化声明、超时清理或休眠清理。休眠时动画不完成，因而未触发回收。
+这证明一个明确的无用实体持久积累路径，不证明所有 2098 个现场烟雾都由同一玩法过程产生。
+完整人工创建流程、休眠与动画事件计数保留在原始 JSON。
+
+复现二：Ocupus 位置查找的深递归
+对应 scripts/components/um_ocupusappearinator.lua，FindLocation -> IterateThroughTiles。
+候选被现有 Ocupus 覆盖时，代码删除候选并非尾递归再次遍历，深度随失败候选数量增加。
+这是有限但可能过深的递归，并非已经证明的无限递归。
+
+隔离 Lua 直接执行原组件、原生 Class/deepcopy：
+100、1000、4000、10000、16000 个全阻塞候选均返回；24000 个时在约 16377 次距离检查后 stack overflow。
+错误回溯明确重复 IterateThroughTiles 第 30 行。压力调用约 1.1 秒，峰值采样约 13.9 MiB Lua 堆。
+五次重复失败后 GC 堆约 4.85 MiB，没有观察到数百 MiB 的持续堆增长；探针保留了少量回溯文本。
+
+隔离原生专服进一步确认：使用原组件和真实 EntityScript 距离计算，构造两个占用区域，
+分别提供 1000、10000、24000 个均被占用的候选；前两组返回，24000 触发 stack overflow。
+原生控制台调用往返约 2.16 秒，包含采样／控制台开销，不将其当成精确的算法 CPU 时间。
+异常被探针 pcall 捕获，随后世界仍能正常保存。
+候选集和占用锚点为人工压力条件，不是从玩家实际地图提取，尚未证明玩家世界满足该条件。
+它证明一处需要处理的递归深度问题，错误类型与截图的堆内存申请失败不同。
+
+附带发现：空调治疗云的 brain 初始化时机
+单开妥测，在原生空调放入蓝色蘑菇糊，生成 Wilson 并调用原生 channelable:StartChanneling。
+6 次计划使用中的首次触发、另一次仅计划使用 1 次，均在首次生成治疗云时退出。
+原始调用链：air_conditioner.lua SmokePuff -> 设置治疗云位置 -> OnEntitySleep/playerprox ForceUpdate
+-> air_conditioner_smoke.lua:135 inst.brain:Stop，brain 为 nil。
+这是两次稳定的原生隔离错误；演员没有真实网络客户端，激活区域和脑初始化时机需要实机补充确认。
+不可将它当成截图 OOM；未修改该代码。
+
+其他对照
+单开妥测以及搭配淬炼、影子时，保持唤醒的烟雾 96/96 正常回收。
+淬炼＋妥测＋全图定位完成 6 次连续真实保存，GC 后堆在后几轮约 451.8 MiB 附近，没有持续明显增长。
+该测试演员没有真实客户端地图握手，也没有大规模探索图和嵌套库存，不排除老存档相关保存问题。
+新生成的妥测洞穴自然存在 magma_tile=682、um_pyre_nettles=916；短期数量稳定。
+洞穴观察末期 miasma_cloud=14，保存重启后仍为 14；未出现 OOM。
+原版地表的同种子短期 GC 后堆约 325～326 MiB；妥测地表约 405～407 MiB。
+这些只是该种子和配置下的观察值，不是通用内存预算或泄漏判据。
+
+运行结果与失败分类
+9z_ahblk：单开妥测，唤醒特效、保存与重启，观察完成。
+nw0sqbiz：单开妥测，休眠烟雾 32/64/96 与两次重启，观察完成。
+0mhqxg4c：原生递归压力，捕获 stack overflow 后保存，观察完成。
+77e89lh9：淬炼＋妥测＋影子，唤醒特效，观察完成。
+jz4iksd9：空调使用，捕获独立 brain 空引用崩溃。
+iq0ge8n5：原版地表对照，观察完成。
+ucgy4t45：淬炼＋妥测＋影子＋全图定位，6 次保存，观察完成。
+le_139w9：2098 个烟雾的积累和首次重启已观察；额外重启发生测试端口竞争，标为基础设施失败。
+ia0gw5qm：新生成妥测洞穴，观察、保存、重启完成。
+umsbd71l：2098 个烟雾场景串行完整重跑，观察完成，无端口冲突和 OOM。
+75wh7rfj：只使用 1 次空调，重复同一 brain 空引用崩溃。
+上述目录统一位于 work/vault-hardened-hosted-<后缀>/，保留 um-memory-result.json、原生日志和输入。
+不将 11 个运行全部称为通过：8 个完成观察，2 个复现产品错误，1 个测试基础设施失败。
+
+可复现入口
+work/python-3.12.8/python.exe tests/run_um_memory_probe.py --mode um --scenario effects --dormant --restart
+work/python-3.12.8/python.exe tests/run_um_memory_probe.py --mode um --scenario recursion
+work/python-3.12.8/python.exe tests/run_um_memory_probe.py --mode combined --scenario effects --shadows 1 --dormant --rounds 1 --batch 2098 --restart
+work/python-3.12.8/python.exe tests/run_um_memory_probe.py --mode combined --scenario save --gps --rounds 6 --age 3 --shadows 1
+work/python-3.12.8/python.exe tests/run_um_memory_probe.py --mode um --world cave --scenario idle --restart
+work/python-3.12.8/python.exe tests/run_um_recursion_probe.py
+原生各组应串行执行；空调场景预期会终止一次性服务器，不能用玩家存档运行这些探针。
+
+后续决策依据
+烟雾视觉特效与 air_conditioner_cloud 治疗实体是不同对象，回收修复应精确限定视觉特效。
+Ocupus 位置选择可考虑改为有限迭代，并验证合法选点、无合法位置及原始地块列表不被破坏。
+空调 brain 错误需要区分休眠初始化与真实客户端激活区域，再决定兼容方式。
+截图那次 384 MiB 分配失败仍需实际问题存档及完整服务器日志，才能定位分配入口。
+本次没有更改 GC 策略、添加全局删实体限制或提交上述修复。

@@ -1,0 +1,168 @@
+{
+  "version": "0.2.6",
+  "date": "2026-11-09",
+  "behavior": {
+    "speed_key_cycle": [
+      "关闭",
+      "温和",
+      "加速",
+      "极速"
+    ],
+    "client_attempts": [
+      0,
+      3,
+      4,
+      8
+    ],
+    "direct_host_multipliers": [
+      1,
+      1.8,
+      3.5,
+      5
+    ],
+    "initial_mode": "关闭",
+    "notifications": "Only the feature bound to the pressed key; if both features share one key, combine both after updating them.",
+    "held_key": "One transition per down/up pair.",
+    "mouse_mid_walk": "Retain destination across nonzero modes; clear on off.",
+    "configuration": "Remove obsolete speed_level; keep speed_key and recover_key."
+  },
+  "tests": {
+    "core": 73,
+    "mouse": 42,
+    "native_modinfo_loader": "passed",
+    "native_hud_lifecycle": "passed",
+    "native_runs": {
+      "prediction_on": {
+        "path": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\client-assist-patch-rewexqpc",
+        "phases": {
+          "baseline": {
+            "arrival": "2.2333334498107",
+            "dx": "11.949127197266",
+            "dz": "0.00994873046875",
+            "maxx": "11.949127197266",
+            "remote": "true"
+          },
+          "gentle": {
+            "arrival": "1.7666667588055",
+            "dx": "11.961822509766",
+            "dz": "0.006591796875",
+            "maxx": "11.961822509766",
+            "remote": "true"
+          },
+          "fast": {
+            "arrival": "1.2666667327285",
+            "dx": "12",
+            "dz": "0",
+            "maxx": "12",
+            "remote": "true"
+          },
+          "turbo": {
+            "arrival": "0.73333337157965",
+            "dx": "12",
+            "dz": "0",
+            "maxx": "12",
+            "remote": "true"
+          },
+          "off": {
+            "arrival": "nil",
+            "dx": "0",
+            "dz": "0",
+            "maxx": "0",
+            "remote": "true"
+          }
+        },
+        "key_events": [
+          "[00:00:42]: [VANILLA_CRAFT_TEST] MODE_KEY\t1\tdesired=1\tattempts=3\t",
+          "[00:00:48]: [VANILLA_CRAFT_TEST] MODE_KEY\t2\tdesired=0\tattempts=4\t",
+          "[00:00:48]: [VANILLA_CRAFT_TEST] MODE_KEY\t3\tdesired=0\tattempts=8\t",
+          "[00:00:48]: [VANILLA_CRAFT_TEST] MODE_KEY\t0\tdesired=0\tattempts=0\t",
+          "[00:00:50]: [VANILLA_CRAFT_TEST] MODE_KEY\t1\tdesired=2\tattempts=3\t",
+          "[00:00:50]: [VANILLA_CRAFT_TEST] MODE_KEY\t2\tdesired=2\tattempts=4\t",
+          "[00:00:56]: [VANILLA_CRAFT_TEST] MODE_KEY\t3\tdesired=0\tattempts=8\t",
+          "[00:00:56]: [VANILLA_CRAFT_TEST] MODE_KEY\t0\tdesired=0\tattempts=0\t",
+          "[00:00:57]: [VANILLA_CRAFT_TEST] MODE_KEY\t1\tdesired=3\tattempts=3\t",
+          "[00:00:57]: [VANILLA_CRAFT_TEST] MODE_KEY\t2\tdesired=3\tattempts=4\t",
+          "[00:00:57]: [VANILLA_CRAFT_TEST] MODE_KEY\t3\tdesired=3\tattempts=8\t",
+          "[00:01:03]: [VANILLA_CRAFT_TEST] MODE_KEY\t0\tdesired=0\tattempts=0\t"
+        ],
+        "no_lua_errors_or_rate_limits": true,
+        "production_core_sha256": "a65fe463d84bf52175cf3dc2e48dc6a6a42abe30107520adde410e04558d2ab8"
+      },
+      "prediction_off": {
+        "path": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\client-assist-patch-jv895rj2",
+        "phases": {
+          "baseline": {
+            "arrival": "2.1666667796671",
+            "dx": "11.958435058594",
+            "dz": "0.00811767578125",
+            "maxx": "11.958435058594",
+            "remote": "false"
+          },
+          "gentle": {
+            "arrival": "2.2000001147389",
+            "dx": "12",
+            "dz": "0",
+            "maxx": "12",
+            "remote": "nil"
+          },
+          "fast": {
+            "arrival": "1.4333334080875",
+            "dx": "11.990081787109",
+            "dz": "0.0015869140625",
+            "maxx": "11.990081787109",
+            "remote": "nil"
+          },
+          "turbo": {
+            "arrival": "0.93333338201046",
+            "dx": "12",
+            "dz": "0",
+            "maxx": "12",
+            "remote": "nil"
+          },
+          "off": {
+            "arrival": "nil",
+            "dx": "0",
+            "dz": "0",
+            "maxx": "0",
+            "remote": "nil"
+          }
+        },
+        "key_events": [
+          "[00:00:42]: [VANILLA_CRAFT_TEST] MODE_KEY\t1\tdesired=1\tattempts=3\t",
+          "[00:00:48]: [VANILLA_CRAFT_TEST] MODE_KEY\t2\tdesired=0\tattempts=4\t",
+          "[00:00:48]: [VANILLA_CRAFT_TEST] MODE_KEY\t3\tdesired=0\tattempts=8\t",
+          "[00:00:48]: [VANILLA_CRAFT_TEST] MODE_KEY\t0\tdesired=0\tattempts=0\t",
+          "[00:00:50]: [VANILLA_CRAFT_TEST] MODE_KEY\t1\tdesired=2\tattempts=3\t",
+          "[00:00:50]: [VANILLA_CRAFT_TEST] MODE_KEY\t2\tdesired=2\tattempts=4\t",
+          "[00:00:56]: [VANILLA_CRAFT_TEST] MODE_KEY\t3\tdesired=0\tattempts=8\t",
+          "[00:00:56]: [VANILLA_CRAFT_TEST] MODE_KEY\t0\tdesired=0\tattempts=0\t",
+          "[00:00:57]: [VANILLA_CRAFT_TEST] MODE_KEY\t1\tdesired=3\tattempts=3\t",
+          "[00:00:57]: [VANILLA_CRAFT_TEST] MODE_KEY\t2\tdesired=3\tattempts=4\t",
+          "[00:00:57]: [VANILLA_CRAFT_TEST] MODE_KEY\t3\tdesired=3\tattempts=8\t",
+          "[00:01:03]: [VANILLA_CRAFT_TEST] MODE_KEY\t0\tdesired=0\tattempts=0\t"
+        ],
+        "no_lua_errors_or_rate_limits": true,
+        "production_core_sha256": "a65fe463d84bf52175cf3dc2e48dc6a6a42abe30107520adde410e04558d2ab8"
+      }
+    }
+  },
+  "gentle_calibration": {
+    "before": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\client-assist-patch-u43p4y0z\\result.json",
+    "finding": "Two correction attempts stalled under mouse walking with native local prediction; three attempts completed the route in both final native runs."
+  },
+  "limitations": [
+    "Isolated offline test worlds with normal collision; not user save.",
+    "Native raw key events and native WALKTO action driver; no physical-key or mouse automation.",
+    "Speed measurements are single samples and are not fixed speed guarantees.",
+    "Notification scoping and shared/rebound key behavior verified by regression; native Label rendering method unchanged."
+  ],
+  "installed": "D:\\SteamLibrary\\steamapps\\common\\Don't Starve Together\\mods\\vanilla_solo_assist",
+  "backup": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\client-assist-before-cycle-06s0yp4z\\vanilla_solo_assist",
+  "package": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\client_mods\\vanilla_solo_assist-0.2.6.zip",
+  "hashes": {
+    "modinfo.lua": "c3b4ed8a3cf7223e1d4be72d39c19cf33eb9b20999b1de7966eee76e7c304e37",
+    "modmain.lua": "df523c56f50d837a75f9666041338428a25823a7d68c9adb4d6318711178b4fe",
+    "README.md": "d711c0b6844d04f240153345ee2eb3067bfd83bb0f8ce75d98dc750a9d7d95e9",
+    "scripts\\soloassist2hm.lua": "a65fe463d84bf52175cf3dc2e48dc6a6a42abe30107520adde410e04558d2ab8"
+  }
+}

@@ -1,0 +1,50 @@
+【已被后续方案替代】用户随后明确要求时间线性叠加；本文件记录此前的刷新方案，不是当前行为。最终说明见 wendy-elixir-additive-20261108.txt。
+
+温蒂药剂时长重复乘倍修复（本地开发，未发布）
+
+反馈
+点出持续时间翻倍技能后，重复喝药，每次时长在上一次基础上乘 1.5；未点技能正常。
+用户要求修复前先查联机版底层与淬炼版源码、优先复用现有接口。
+
+修复前接口调查
+读取本机正版联机版 data/databundles/scripts.zip：
+- components/ghostlyelixir.lua：Apply 解析目标并调用 doapplyelixerfn，成功时从堆叠消耗一份。
+- prefabs/ghostly_elixirs.lua：DoApplyElixir 调用 buff_skill_modifier_fn；
+  后者每次从 DURATION_PLAYER/DURATION 与当前技能重新计算并重启 decay，
+  不对上一轮剩余时间乘倍。buff_OnExtended 为原生刷新路径。
+- components/timer.lua：SetTimeLeft 可调整当前计时器，不需复制计时器实现。
+- prefabs/skilltree_wendy.lua：wendy_potion_duration 为对应持续时间技能。
+检索淬炼 content：原 easy_role/wendy_easy.lua 已在阿比盖尔药效并存分支复用
+buff_skill_modifier_fn；可直接用于本次修复。未找到其他需要新增的时长接口。
+
+根因
+淬炼共享药效包装在药剂实体的闭包中保存 oldduration；每次施药都对其乘
+困难模式 1.5 或非困难模式 2。因此使用同一堆叠剩余实体时会连续放大。
+原来的 inst.buff_prefab.skill_modifier_long_duration 也不是真正的调参标记，
+buff_prefab 是名称字符串；该条件不会阻止重复乘倍。
+
+修复
+删除该累计变量及倍率计算。共享到玩家的实际 buff 调用原生
+buff_skill_modifier_fn(giver, player) 重算时长；再通过 Timer:SetTimeLeft
+应用淬炼困难模式原有 3/4 时长缩减，以及技能 1.5 倍相对原生倍率的调整。
+原生自身施药、阿比盖尔施药、不同药效并存等流程照常沿用既有实现。
+不改技能收益、不增加配置开关。重新施药将异常时长刷新为正常计算值，
+不会主动扫描或清空当前世界中已经存在的超长 buff。
+
+原生验证
+tests/run_native_wendy_elixir_tests.py 复制完整 content 与一次性测试存档运行。
+tests/native/wendy_elixir_duration_fixture.lua 使用真实温蒂、技能树、阿比盖尔、
+9 种药剂堆叠、debuff 与 timer，每种配置 36 组、932 项检查。
+困难/非困难配置均通过，合计 72 组、1864 项检查。
+每组施药 8 次；技能组再移除技能并检查加成清除。
+旧工坊源码作对照：困难配置 8 个共享技能组失败，例如攻击药剂
+405 → 607.5 秒、速度药剂 540 → 810 秒，均在第二次复现 1.5 倍增长；
+快速回复药不受长效技能加成，对照正常。
+证据：development/validation/wendy-elixir-duration-20261108.json。
+
+限制
+确切复现的是阿比盖尔共享到温蒂的药效累计。直接自身施药回调在旧版对照中
+未出现累计，不把用户所说“直接吃”的界面操作断言为已原样复现。
+自身测试直接调用实际施药回调，不模拟鼠标操作或目标选择；
+共享路径经过原生 Apply 并实际消耗堆叠。未验证真实客户端画面或任意第三方模组组合。
+未发布工坊，版本号未递增。

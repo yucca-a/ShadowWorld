@@ -1,0 +1,125 @@
+{
+  "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-_q8bbbgp",
+  "status": "completed",
+  "options": {
+    "source": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\content",
+    "clients": 3,
+    "legion": true,
+    "tagmod": true,
+    "um": true,
+    "newconstant": true,
+    "crosspatch": true,
+    "extra_mod": [
+      "3779015027",
+      "3435107342",
+      "2950481491",
+      "1185229307",
+      "2287303119"
+    ],
+    "characters": "wixie,wathgrithr,wathgrithr",
+    "internal_tags": 1,
+    "trace_netvars": true,
+    "pressure_tags": 48,
+    "reconnect_third": true
+  },
+  "rounds": [
+    {
+      "log": "client-1.log",
+      "index": 1,
+      "crafted": true,
+      "stored": true,
+      "final_gold": 3,
+      "stable_snapshots": 8
+    },
+    {
+      "log": "client-1.log",
+      "index": 1,
+      "crafted": true,
+      "stored": true,
+      "final_gold": 3,
+      "stable_snapshots": 8
+    },
+    {
+      "log": "client-2.log",
+      "index": 2,
+      "crafted": true,
+      "stored": true,
+      "final_gold": 3,
+      "stable_snapshots": 8
+    },
+    {
+      "log": "client-2.log",
+      "index": 2,
+      "crafted": true,
+      "stored": true,
+      "final_gold": 3,
+      "stable_snapshots": 8
+    },
+    {
+      "log": "client-3.log",
+      "index": 3,
+      "crafted": true,
+      "stored": true,
+      "final_gold": 3,
+      "stable_snapshots": 8
+    },
+    {
+      "log": "client-3-reconnect.log",
+      "index": 3,
+      "crafted": true,
+      "stored": true,
+      "final_gold": 3,
+      "stable_snapshots": 8
+    }
+  ],
+  "schemas": [
+    {
+      "userid": "FU_76561199500702609",
+      "body_matches": true,
+      "body_count": 56,
+      "body_duplicates": [],
+      "classified_matches": true,
+      "classified_count": 2743,
+      "classified_duplicates": []
+    },
+    {
+      "userid": "OU_76561199500702609",
+      "body_matches": true,
+      "body_count": 59,
+      "body_duplicates": [],
+      "classified_matches": true,
+      "classified_count": 2743,
+      "classified_duplicates": []
+    },
+    {
+      "userid": "KU_76561199500702609",
+      "body_matches": true,
+      "body_count": 59,
+      "body_duplicates": [],
+      "classified_matches": true,
+      "classified_count": 2743,
+      "classified_duplicates": []
+    }
+  ],
+  "recipes": [
+    {
+      "userid": "FU_76561199500702609",
+      "count": 1448,
+      "differences": []
+    },
+    {
+      "userid": "OU_76561199500702609",
+      "count": 1448,
+      "differences": []
+    },
+    {
+      "userid": "KU_76561199500702609",
+      "count": 1448,
+      "differences": []
+    }
+  ],
+  "mismatches": 0,
+  "pressure_missing": [],
+  "limitations": [],
+  "observed_failure": false
+}

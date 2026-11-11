@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "branch": "stable",
+      "optional": true,
+      "density": 4,
+      "checks": 21
+    },
+    {
+      "branch": "stable",
+      "optional": false,
+      "density": 10,
+      "checks": 11
+    },
+    {
+      "branch": "stable",
+      "optional": true,
+      "density": 10,
+      "checks": 21
+    },
+    {
+      "branch": "beta",
+      "optional": true,
+      "density": 4,
+      "checks": 134
+    },
+    {
+      "branch": "beta",
+      "optional": false,
+      "density": 10,
+      "checks": 11
+    },
+    {
+      "branch": "beta",
+      "optional": true,
+      "density": 10,
+      "checks": 134
+    }
+  ],
+  "checks": 332
+}

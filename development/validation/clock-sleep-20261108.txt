@@ -1,0 +1,48 @@
+时钟险境切换时段误唤醒修复（2026-11-08，未发布）
+
+问题与源码依据
+- 游戏原生 sleepingbaguser.lua 的 WakeUpTest 监听 WorldState.phase，并在 phase ~= bed.components.sleepingbag:GetSleepPhase() 时唤醒。
+- 普通帐篷和普通夜间睡具的 sleep_phase 为 night；原生入睡状态机却允许非白天（黄昏、夜晚）入睡。
+- 按正常日序，黄昏转夜晚刚好匹配 night，夜晚转白天应当醒来；时钟险境反复进入黄昏时，精确相等检查会错误唤醒。
+- 遮阳棚原生 sleep_phase 为 day，仅允许白天入睡，允许时段与检查值一一对应，因此单人没有同样的不对称。
+- WorldState 在更新 phase 并调用其监听之后，才更新 isday/isdusk/isnight；不能在 phase 监听中依赖尚未同步的 isday 布尔值。
+
+修复
+- 在现有 role/clock_peril.lua 中复用 sleepingbag:GetSleepPhase，不增加组件、接口、时钟算法或新的唤醒机制。
+- 原方法返回 night 且实际 phase 为 dusk 时，返回当前合法阶段 dusk；其余返回值保留原方法。
+- 普通夜间床铺在 dusk/night 之间保持睡眠，到 day 仍由原生 WakeUpTest 唤醒。
+- 遮阳棚继续只在 day 保持睡眠，到 dusk/night 正常醒来。
+- 升级床铺原本通过动态 GetSleepPhase 支持全天睡眠；该逻辑保持不变。
+- sleepingbaguser 的工作任务、监听注册/清理、主动唤醒、饥饿、锤击与着火等唤醒入口均未替换。
+- 此兼容只随时钟险境模块加载，关闭该功能不加载其 GetSleepPhase 包装。
+
+多人床位相关修正
+- 原版多人帐篷 CreateExSleepingBag 复制了回复量等属性及 GetSleepPhase，却漏掉原生 sleep_phase。
+- 新建的额外床位默认仍是 night；这会让遮阳棚第二位使用者的时段规则与第一位不同。
+- 在现有必要属性复制列表中补上 sleep_phase；不增加字段，不改变人数限制或耐久逻辑。
+
+验证
+1. work/python-3.12.8/python.exe tests/run_clock_sleep_tests.py
+   38 项检查通过。使用本机游戏的 Class、WorldState、SleepingBag、SleepingBagUser，以及实际多人属性复制代码。
+   成功复现未修复组件在 night -> dusk 唤醒；验证修复后的 dusk/night 全部组合、重复 phase、day 唤醒、任务与监听清理。
+   验证遮阳棚、多人遮阳棚继承 sleep_phase、升级床铺、主动唤醒与饥饿。
+   两份修改的玩法文件通过 Lua 5.1 编译。
+
+2. work/python-3.12.8/python.exe tests/run_native_clock_sleep.py --mode 2
+   碎片化模式，16 组场景、112 项检查通过。
+   结果：work/vault-hardened-hosted-m4q3x1l7/clock-sleep-result.json
+   完整当前淬炼版，实际 CLOCK_PERIL.Server 的周期执行函数、原生时钟强制相位、WorldState 和角色 tent 状态机。
+   每组两个真实 wilson 实体共用帐篷或遮阳棚，另覆盖使用原有 repairable2hm:Repair 与睡眠材料的升级路径。
+   覆盖黄昏/夜晚双向与重复切换、白天唤醒、遮阳棚 day -> day/dusk/night、升级帐篷和升级遮阳棚、手动/饥饿/锤击中断。
+   合法时段切换保留睡眠，且不会错误扣除醒来时的帐篷耐久。
+
+3. work/python-3.12.8/python.exe tests/run_native_clock_sleep.py --mode 1
+   乱序模式，同样的 16 组场景、112 项检查通过。
+   结果：work/vault-hardened-hosted-vfw1_3yg/clock-sleep-result.json
+   两种模式合计 32 组场景、224 项原生检查；冻结输入与最终两份玩法文件逐字节相同，测试服务器均已停止。
+
+状态与限制
+- 测试存档由 work/reuse-audit/config/Audit 复制；模组输入冻结、原生日志和结果保存在对应工作目录。
+- 使用真实引擎实体与组件，离线假用户标识没有对应客户端连接；不表示真实客户端网络预测/画面验收。
+- 时钟日程在测试中确定为目标阶段，以复现实际强制相位路径；没有修改随机日程生成算法。
+- 尚未发布工坊或修改版本号。

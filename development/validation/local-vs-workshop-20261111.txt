@@ -1,0 +1,25 @@
+本地源码与工坊最新版差异核对（2026-11-11）
+
+Steam公开接口GetPublishedFileDetails实时返回：3832182265，version:2.8.15.0.22，内容清单1940718395300237549；与v2.8.15.0.22-publication.json记录一致。
+对比基准：backups/releases/v2.8.15.0.22-content.zip，SHA-256 ad2aafc72c669d015631fc5b9e13ee465bee2b23461e54160bcba0f40eec60bb，核验一致。该发布归档此前已通过下载包逐文件验证。
+
+工坊发布包483个文件，本地489个文件：新增6个、修改7个、删除0个。本地modinfo.lua版本号仍为2.8.15.0.22。
+
+新增：
+easy_role/winona_electrical.lua
+scripts/prefabs/electrical_shock2hm.lua
+scripts/prefabs/winona_electrical2hm.lua
+scripts/umwinonaworker2hm.lua
+scripts/winonaelectrical2hm.lua
+scripts/winonabuilder2hm.lua
+
+修改：
+ARCHIVE_SOURCE.txt：新增电击行为参考来源说明。
+easy_other/um_patch.lua：仅新增已核对妥测死亡复活监听的修复入口。
+easy_role/winona_easy.lua：地面充电移交统一电气模块；从本地制作增强入口纠正误关工作能力／删除角色标签的问题，并补齐初始化。
+mod.manifest：新文件索引。
+modinfo.lua：新增薇诺娜电气改造与过充开关；版本号未变。
+modmain.lua：注册新增文件并加载电气模块。
+scripts/umcompatprofiles2hm.lua：增加已核对的妥测薇诺娜工作回调指纹。
+
+玩法差异仅涉及本轮薇诺娜电气改造／过充、淬炼自身的制作／工作兼容修复，以及妥测死亡复活监听修复。新日志为workshop/update-notes-local-after-2.8.15.0.22.txt；旧update-notes-next-draft.txt使用过时基准，未作为本次日志依据。

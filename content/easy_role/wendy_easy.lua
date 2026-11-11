@@ -536,16 +536,31 @@ if GetModConfigData("Wendy Share Debuff From Abigail") then
     local function processghostlyelixir(inst)
         if not TheWorld.ismastersim or not inst.components.ghostlyelixir then return end
         local DoApplyElixir = inst.components.ghostlyelixir.doapplyelixerfn
-		local oldduration = inst.potion_tunings.DURATION_PLAYER or inst.potion_tunings.DURATION
-		local useskillP = false
-		if inst.potion_tunings.skill_modifier_long_duration then useskillP = true end
         inst.components.ghostlyelixir.doapplyelixerfn = function(inst, giver, target, ...)
-			-- 药效持续时间随技能树变化
-			if useskillP and giver.components.skilltreeupdater:IsActivated("wendy_potion_duration") and not inst.buff_prefab.skill_modifier_long_duration then
-				oldduration = oldduration * (hardmode and 1.5 or 2)
-			end
+            local function getbuff(who)
+                for _, key in ipairs({inst.buff_prefab, "elixir_buff", "super_elixir_buff"}) do
+                    local buff = who:GetDebuff(key)
+                    if buff and buff.prefab == inst.buff_prefab then return buff end
+                end
+            end
+            local function remaining(who)
+                local buff = getbuff(who)
+                return buff and buff.components.timer and buff.components.timer:GetTimeLeft("decay") or 0
+            end
+            local previous = remaining(target)
+            local function addremaining(buff, time)
+                if buff and buff.components.timer and time > 0 then
+                    local timer = buff.components.timer
+                    timer:SetTimeLeft("decay", (timer:GetTimeLeft("decay") or 0) + time)
+                end
+            end
+            local function applyduration(buff)
+                buff:buff_skill_modifier_fn(giver, target)
+                addremaining(buff, previous)
+            end
             -- 攻击和移速药剂对姐姐和温蒂同时生效
             if table.contains(playerghostlyelixirs, inst.prefab) and not target:HasTag("player") and target._playerlink and target._playerlink:IsValid() then
+                local sharedprevious = remaining(target._playerlink)
 				if not table.contains(noreduce, inst.prefab) and not target._playerlink.ghostlyelixir2hm then
                     target._playerlink.ghostlyelixir2hm = true
                 end
@@ -560,8 +575,19 @@ if GetModConfigData("Wendy Share Debuff From Abigail") then
                 if target._playerlink:AddDebuff(inst.buff_prefab, inst.buff_prefab) then
 					local newbuff = target._playerlink:GetDebuff(inst.buff_prefab)
 					if newbuff and newbuff.components.timer then
-						newbuff.components.timer:StopTimer("decay")
-						newbuff.components.timer:StartTimer("decay", oldduration * (hardmode and 3/4 or 1))
+                        -- 原生接口每次按基础时长和当前技能重算，不能在药剂闭包中累乘。
+                        newbuff:buff_skill_modifier_fn(giver, target._playerlink)
+                        if hardmode then
+                            local scale = 3/4
+                            if inst.potion_tunings.skill_modifier_long_duration and
+                                giver.components.skilltreeupdater:IsActivated("wendy_potion_duration") then
+                                -- 保留淬炼困难模式的 1.5 倍技能及共享时长削弱。
+                                scale = scale * 1.5 / (1 + TUNING.SKILLS.WENDY.POTION_DURATION_MOD)
+                            end
+                            local timer = newbuff.components.timer
+                            timer:SetTimeLeft("decay", timer:GetTimeLeft("decay") * scale)
+                        end
+                        addremaining(newbuff, sharedprevious)
 					end
 				end
             end
@@ -588,7 +614,7 @@ if GetModConfigData("Wendy Share Debuff From Abigail") then
 					local buff = target:AddDebuff("elixir_buff", inst.buff_prefab)
 					if buff then
 						local new_buff = target:GetDebuff("elixir_buff")
-						new_buff:buff_skill_modifier_fn(giver, target)
+						applyduration(new_buff)
 					end
 					return true
                 elseif ghostlyelixirsbuffs[inst.buff_prefab] then
@@ -596,7 +622,7 @@ if GetModConfigData("Wendy Share Debuff From Abigail") then
 					local buff = target:AddDebuff(inst.buff_prefab, inst.buff_prefab)
 					if buff then
 						local new_buff = target:GetDebuff(inst.buff_prefab)
-						new_buff:buff_skill_modifier_fn(giver, target)
+						applyduration(new_buff)
 					end
 					return true
                 elseif cur_buff.prefab == "ghostlyelixir_retaliation_buff" and inst.buff_prefab == "ghostlyelixir_shield_buff" then
@@ -604,7 +630,9 @@ if GetModConfigData("Wendy Share Debuff From Abigail") then
                     return false
                 end
 			end
-            return DoApplyElixir(inst, giver, target, ...)
+            local result, reason = DoApplyElixir(inst, giver, target, ...)
+            if result then addremaining(getbuff(target), previous) end
+            return result, reason
         end
     end
     local ghostlyelixirs = {

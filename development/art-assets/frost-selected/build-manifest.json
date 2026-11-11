@@ -1,0 +1,79 @@
+{
+  "selected": [
+    {
+      "name": "frostshrine2hm",
+      "source": "2026-11-04-frost-v4/frost-shrine-v4.png",
+      "sha256": "989be9b42d739e90bc0868e3f44a00089dadce81ea89b2672a67419e711590c0",
+      "crop": [
+        135,
+        18,
+        1119,
+        1240
+      ],
+      "world_size": [
+        412,
+        512
+      ],
+      "ground_anchor": 24,
+      "animations": {
+        "idle": 5,
+        "jiggle": 28
+      }
+    },
+    {
+      "name": "frostcore2hm",
+      "source": "2026-11-04-frost-v3/frost-core-v3.png",
+      "sha256": "6a6272fd33a73473e20781da8c4ce43bd1d4aeab60ab360cc4307b15669da5a3",
+      "crop": [
+        220,
+        180,
+        1034,
+        1088
+      ],
+      "world_size": [
+        129,
+        144
+      ],
+      "ground_anchor": 24,
+      "animations": {
+        "idle": 1
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "path": "anim/frostshrine2hm.zip",
+      "sha256": "02928ba61b932a9833d5457f4c37b7ff942d9431d8bbf09494a3fef0261f5cb6",
+      "bytes": 108679
+    },
+    {
+      "path": "images/frostshrine2hm.tex",
+      "sha256": "f9a853a61e1b26e27b2ddbdf73615febb4557fccf12614983390db3577e0cc34",
+      "bytes": 21960
+    },
+    {
+      "path": "images/frostshrine2hm.xml",
+      "sha256": "29005a3a3032b87ad9639923c3ff63b4a5f7b892d48c6acd7cf8f4d5c36e384a",
+      "bytes": 175
+    },
+    {
+      "path": "anim/frostcore2hm.zip",
+      "sha256": "f1d03cc5f9dd26aeb4383df4b6edf98d9ec460a64c9bd2a0533bebb09b92b86e",
+      "bytes": 13088
+    },
+    {
+      "path": "images/inventoryimages/frostcore2hm.tex",
+      "sha256": "3e5e8e93a4450e5704e9dfcb4719c9b1b1dbf5570c3b8d54b9fcee37137de2a8",
+      "bytes": 21960
+    },
+    {
+      "path": "images/inventoryimages/frostcore2hm.xml",
+      "sha256": "d244ed67c453066faadc38a1528c2f4ac1c0900bb502999f80799a61d2fdf76d",
+      "bytes": 171
+    }
+  ],
+  "compiler": "D:\\SteamLibrary\\steamapps\\common\\Don't Starve Mod Tools\\mod_tools\\tools\\scripts\\buildanimation.py",
+  "scope": "Local artwork resource replacement; no gameplay changes or Workshop upload.",
+  "backup": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\backups\\frost-art-before-20261104-203245",
+  "installed": true
+}

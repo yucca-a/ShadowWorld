@@ -1,0 +1,210 @@
+{
+  "status": "passed_local_unpublished",
+  "version": "2.8.15.0.8",
+  "archive_sha256": "e4c95f653737d93e8831f436613341c93590e0d19adc87d282f835cb20693d44",
+  "native_report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-fi7p7wun\\archive-zip-report.json",
+  "normal_save_restarts": 2,
+  "initial_open_checks": [
+    {
+      "view": "1",
+      "access": true,
+      "cansee": true,
+      "distance": 0,
+      "roundtrip": false,
+      "master_valid": true,
+      "player_found": true,
+      "shard": "1",
+      "queue": 2,
+      "opened": true,
+      "family": "shadow",
+      "kind": "archive_opened",
+      "ready": true
+    },
+    {
+      "view": "3677129562",
+      "access": true,
+      "cansee": true,
+      "distance": 0,
+      "roundtrip": false,
+      "master_valid": true,
+      "player_found": true,
+      "shard": "3677129562",
+      "queue": 0,
+      "opened": true,
+      "family": "shadow",
+      "kind": "archive_opened",
+      "ready": true
+    },
+    {
+      "view": "tackle_1",
+      "access": true,
+      "cansee": true,
+      "distance": 0,
+      "roundtrip": false,
+      "master_valid": true,
+      "player_found": true,
+      "shard": "1",
+      "queue": 0,
+      "opened": true,
+      "family": "tacklestation2hm",
+      "kind": "archive_opened",
+      "ready": true
+    },
+    {
+      "view": "tackle_3677129562",
+      "access": true,
+      "cansee": true,
+      "distance": 0,
+      "roundtrip": false,
+      "master_valid": true,
+      "player_found": true,
+      "shard": "3677129562",
+      "queue": 0,
+      "opened": true,
+      "family": "tacklestation2hm",
+      "kind": "archive_opened",
+      "ready": true
+    },
+    {
+      "access": true,
+      "cansee": true,
+      "distance": 0,
+      "roundtrip": true,
+      "master_valid": true,
+      "player_found": true,
+      "shard": "1",
+      "queue": 0,
+      "opened": true,
+      "family": "cloudpine_l4",
+      "kind": "archive_opened",
+      "ready": true
+    },
+    {
+      "access": true,
+      "cansee": true,
+      "distance": 0,
+      "roundtrip": true,
+      "master_valid": true,
+      "player_found": true,
+      "shard": "3677129562",
+      "queue": 0,
+      "opened": true,
+      "family": "cloudpine_l4",
+      "kind": "archive_opened",
+      "ready": true
+    },
+    {
+      "view": "tackle_1",
+      "access": true,
+      "cansee": true,
+      "distance": 0,
+      "roundtrip": false,
+      "master_valid": true,
+      "player_found": true,
+      "shard": "1",
+      "queue": 0,
+      "opened": true,
+      "family": "tacklestation2hm",
+      "kind": "archive_opened",
+      "ready": true
+    },
+    {
+      "view": "tackle_3677129562",
+      "access": true,
+      "cansee": true,
+      "distance": 0,
+      "roundtrip": false,
+      "master_valid": true,
+      "player_found": true,
+      "shard": "3677129562",
+      "queue": 0,
+      "opened": true,
+      "family": "tacklestation2hm",
+      "kind": "archive_opened",
+      "ready": true
+    }
+  ],
+  "rollback_open_checks": [
+    {
+      "view": "tackle_1",
+      "access": true,
+      "cansee": true,
+      "distance": 0,
+      "roundtrip": false,
+      "master_valid": true,
+      "player_found": true,
+      "shard": "1",
+      "queue": 0,
+      "opened": true,
+      "family": "tacklestation2hm",
+      "kind": "archive_opened",
+      "ready": true
+    },
+    {
+      "view": "tackle_3677129562",
+      "access": true,
+      "cansee": true,
+      "distance": 0,
+      "roundtrip": false,
+      "master_valid": true,
+      "player_found": true,
+      "shard": "3677129562",
+      "queue": 0,
+      "opened": true,
+      "family": "tacklestation2hm",
+      "kind": "archive_opened",
+      "ready": true
+    }
+  ],
+  "missing_mods": [
+    "workshop-2354272932",
+    "workshop-2559637840",
+    "workshop-2983831077",
+    "workshop-3377825871",
+    "workshop-3585747839",
+    "workshop-3779015027"
+  ],
+  "legacy_fixture": true,
+  "unit_checks": {
+    "native_adoption": 19,
+    "stale_entrance_and_rollback": 14
+  },
+  "inventories": {
+    "Master": {
+      "private_containers": 12,
+      "private_occupied_slots": 48,
+      "private_item_count": 197,
+      "linked_bells": 2,
+      "cloudpine": [
+        {
+          "prefab": "cloudpine_box_l4",
+          "occupied_slots": 20,
+          "item_count": 20,
+          "protected_swords": 2
+        }
+      ]
+    },
+    "Caves": {
+      "private_containers": 8,
+      "private_occupied_slots": 7,
+      "private_item_count": 27,
+      "linked_bells": 0,
+      "cloudpine": [
+        {
+          "prefab": "cloudpine_box_l4",
+          "occupied_slots": 22,
+          "item_count": 40,
+          "protected_swords": 1
+        }
+      ]
+    }
+  },
+  "sources": {
+    "easy_other/shadowvault.lua": "e7765de3c81ac7dacdebae3ed2329deb2bbbf8fe2eb5cf4de453a9b4a5b7ce49",
+    "scripts/components/shadowvault2hm.lua": "1e7b3290a493f9b551b23e16c05649a59419f99c58671a6d27ed7608b4d2c450",
+    "scripts/shadowvaultconfig2hm.lua": "ac4de6c1180a6a567081e40c0f03f3d334e3bea5393644341635536c920fa2e6",
+    "scripts/shadowvaultnative2hm.lua": "4c2aeb6170aa9303bc08b0c2b684f7f0b7e64fd5e1675358c52f66485836ddd2",
+    "scripts/shadowvaultjournal2hm.lua": "33bd61d8acdbe372aac8f9e3d88ccc38948ad42eae54043507a525c484c6c372",
+    "scripts/shadowvaultproxy2hm.lua": "bbf626e9212a565730a7d5eef926e6dcfd890cc3dd8daf0d4e212fa222238747"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "images": [
+    {
+      "file": "frost-shrine-v2.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "transparent_pixels": 798104,
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "frost-core-v2.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "transparent_pixels": 951762,
+      "alpha_range": [
+        0,
+        255
+      ]
+    }
+  ],
+  "missing_files": [],
+  "runtime_assets_modified": false
+}

@@ -1,3 +1,4 @@
+local UpvalueHacker = require("upvaluehacker2hm")
 local hardmode = TUNING.hardmode2hm and GetModConfigData("role_nerf") and GetModConfigData("wormwood")
 
 -- 沃姆伍德吃食物获得75%生命

@@ -3,8 +3,15 @@
 固定工坊条目：https://steamcommunity.com/sharedfiles/filedetails/?id=3832182265
 游戏：Don't Starve Together（322330）
 维护者：Yucca
-当前已发布版本：2.8.14.97.4，基于原版 2.8.14.95。
-最近发布：2026-11-04，2.8.14.97.4 穿越机制与性能优化、陷阱必中。官方上传器返回 Update completed，线上版本号和完整更新日志核对通过。日志见 workshop\update-notes-2.8.14.97.4.txt。
+2026-11-11 发布 2.8.15.0.23：薇诺娜电气改造与过充、淬炼工作制作修复及妥测死亡复活兼容。官方上传器完成、Steam OK、线上版本及完整更新日志已核验；重新下载 489 个文件，488 个源码与资源逐字节一致，上传器重建的 mod.manifest 索引与哈希集合一致。发布记录见 development/releases/v2.8.15.0.23-publication.json。
+2026-11-10 后续启动崩溃修复（原 2.8.15.0.20 准备改动，已包含于后续正式发布）：新增模块在 require 前向原生 ManifestManager 注册，content/mod.manifest 已补齐到全部 478 个文件。发布前运行 tests/update_mod_manifest.py --write 和 tests/run_module_manifest_tests.py；下载包也用 tests/update_mod_manifest.py --root <下载目录> 核对索引。详见 development/validation/module-manifest-20261110.txt。
+2026-11-10 已重新下载工坊 2.8.15.0.18，以已归档的 2.8.15.0.17 为共同基础，合入队友的眼球炮塔与牛犊成长改动，并完整保留本轮 15 个文件的本地修复。当前源码为 content/，版本 2.8.15.0.19 已上传工坊，官方上传器完成、Steam 上传结果 OK，线上版本标签及六条公开更新日志已核验。发布记录见 development/releases/v2.8.15.0.19-publication.json。合并证据、备份及校验见 development/validation/collaborative-merge-20261110.txt 与同名 JSON；本次按用户要求不进行在线或游戏实测。正式更新日志为 workshop/update-notes-2.8.15.0.19.txt。
+2026-11-09 发布 2.8.15.0.16：五格锅与群鸟绘卷内置智能锅兼容补全。官方上传器完成、Steam OK、线上版本号核验通过；公开改动说明 HTTP 429，未读回核验。发布记录见 development/releases/v2.8.15.0.16-publication.json。
+2026-11-09 发布 2.8.15.0.15：猎犬蝙蝠 Boss 分身回收崩溃、魔术帽打开时保存回档丢失修复。官方上传器完成、Steam OK、线上版本号及两条公开更新日志均已核验；发布记录见 development/releases/v2.8.15.0.15-publication.json。
+2026-11-08：已按 2.8.15.0.10 共同基础合入工坊 .11 的 13 个独有文件，保留本轮工具、睡眠、牛铃和配置页改动。合并记录见 development/validation/collaborative-merge-20261108.json。
+2026-11-07 发布 2.8.15.0.10：补充贝爷／德爷默认关闭与 /nd 查询的简短日志。上传器完成、Steam OK、线上版本标签核验通过。
+2026-11-07 发布 2.8.15.0.9：穿越三档、旧档自动迁移和崩溃修复。官方上传器和 Steam 日志确认成功，线上版本标签已核验。
+2026-11-06 发布 2.8.15.0，包含暗影枢纽、开房 60 tick、龙鳞火炉与装备兼容更新。官方上传器返回 Update completed，线上版本号和完整更新日志核对通过。日志见 workshop\update-notes-2.8.15.0.txt。
 
 日常维护位置
 源码：D:\Users\Yucca\Documents\ChatGPT\ShadowWorld\content
@@ -12,7 +19,7 @@
 原始版本压缩包、清单和首次发布记录：backups（历史档案，不是待发布源码）
 本次迁移校验与上传器原配置备份：work（不纳入 Git）
 Git 远程仓库：https://github.com/yucca-a/ShadowWorld（私有），维护分支 codex/maintenance。
-发布标签：upstream-v2.8.14.95、v2.8.14.96、v2.8.14.96.1、v2.8.14.97、v2.8.14.97.1、v2.8.14.97.2、v2.8.14.97.3、v2.8.14.97.4。回退方法见 development/版本回退说明.md。
+当前发布标签：v2.8.15.0.23；另保留 v2.8.15.0.10、v2.8.14.98.1 及此前历史标签。完整索引见 README.md，回退方法见 development/版本回退说明.md。
 Git 备份包含完整源码、资源、测试和维护资料；不包含玩家世界存档及本机临时工具。
 
 修改入口
@@ -25,14 +32,14 @@ content\scripts：实体与组件等。
 保留 LICENSE 和已有的版权声明。
 
 更新到现有工坊条目
-1. 修改并在测试世界验证代码，再把 modinfo.lua 第一行改为新版本号；新版本号不得与当前工坊版本重复。
+1. 完成修改并进行任务要求的验证，再把 modinfo.lua 第一行改为新版本号；新版本号不得与当前工坊版本重复。运行 tests/update_mod_manifest.py --write 同步所有包内文件的原生索引，再运行 tests/run_module_manifest_tests.py 核对加载路径。
 2. 打开 D:\SteamLibrary\steamapps\common\Don't Starve Mod Tools\ModUploader.exe。
 3. Target Game 选择 Don't Starve Together，选中本模组后点 Edit。确认页面链接 ID 为 3832182265，不要点 Add。
 4. 勾选 Update Data，目录必须为本项目的 content 文件夹。不要选择整个 ShadowWorld 项目根目录。
 5. 勾选 Upload redundant files，确保 LICENSE 等文件随模组发布。
 6. 只有需要更换封面时才勾 Update Preview Image，路径为 workshop\preview.png。
 7. 只有需要修改工坊名称或介绍时才勾 Update Details，使用 workshop 中的标题和介绍文本。上传器可能显示中文乱码或空介绍，提交前核对填写内容。
-8. 可见性保持 Public；Patch Notes 填入已确认的更新日志。点击 Publish!，等待 Update completed 后核对工坊版本和日志。
+8. 可见性保持 Public；Patch Notes 填入已确认的更新日志。点击 Publish!，等待 Update completed 后核对工坊版本和日志。重新下载工坊包逐文件核对源码，并用 tests/update_mod_manifest.py --root <下载目录> 核对索引，记录下载包结果；上传完成或版本号一致不能代替包内校验。
 
 保存本地文件不会自动上传。更换本地源码目录不改变工坊 ID，也不需要发布新版本。
 上传器已保存本项目的源码和封面路径；本次迁移没有更改模组文件内容或递增版本号。
@@ -52,7 +59,7 @@ content\scripts：实体与组件等。
 崩溃修复、地图丢失修复、技能点提示等小功能和问题修复不单独设置开关。
 眼球炮塔加强沿用现有“眼球炮塔加强”开关。
 大霜鲨交易次数随“BOSS血量”倍率调整，不设独立交易开关。
-“穿越机制”单独设置“关闭／传统／双界协同”三档，默认双界协同；传统保留为爽原有交换及辅助暂停按钮。
+“穿越机制”设置为爽原版／咸鱼版／暗影枢纽，默认原版；旧配置统一迁移到原版，旧枢纽物品先恢复并送回各层原生容器，保存后开放。之后显式选择其他档位可保留，各档库存独立保存。
 切换穿越档位不能跳过旧存档中未完成的恢复流程；恢复保护不提供“恢复故障”的开关。
 
 2.8.14.97.4 改动记录（已发布）

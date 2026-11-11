@@ -67,20 +67,54 @@ TheNet.TruncateSnapshots=function(_,session,snapshot)resumed=snapshot end
 Engine.Bootstrap(index,{meta={session_identifier="ROLLBACK"},map={persistdata={worldexchange2hm={version=2,checkpoint="old/2"}}}},function(data)loaded=data end)
 check(resumed==13 and loaded.map.persistdata.worldexchange2hm.version==1,"crash after rebase commit resumes old native target")
 check(Engine.boot.legacy and Engine.boot.native_snapshot==13,"resumed rollback retains legacy transaction recovery")
+check(Engine.boot.store.state.rebase_applied=="pending-timeline","verified rollback is marked applied")
+local newest={meta={session_identifier="ROLLBACK"}}
+resumed=nil
+Engine.Bootstrap(index,newest,function(data)loaded=data end)
+check(loaded==newest and not resumed and not Engine.boot.native_only,"later native saves do not repeat an applied rollback")
+
+local missingDisk, missingIO=memory()
+local missing=journal(missingIO)
+missing:RebaseNative({snapshot=196,token="old-rebase"},function(ok)assert(ok)end)
+local headKey=missing.prefix.."_head"
+local priorHead=missingDisk[headKey]
+Engine.IO=function()return missingIO end
+TheNet.GetWorldSessionFile=function()return "session/ROLLBACK/0000000209"end
+Engine.Bootstrap(index,newest,function(data)loaded=data end)
+check(loaded==newest and Engine.boot.native_only and not resumed,"a missing 196 opens native 209 without coordinated exchange")
+check(missingDisk[headKey]==priorHead,"native fallback does not rewrite the recovery journal")
+local marked={meta={session_identifier="ROLLBACK"},map={persistdata={worldexchange2hm={version=2,checkpoint="old/2"}}}}
+local ok=pcall(Engine.Bootstrap,index,marked,function()error("unexpected native load")end)
+check(not ok and not resumed and not Engine.boot.native_only,"a missing target does not bypass a checkpoint marker")
+local _, multiIO=memory()
+local multi=Store.new(multiIO,"ROLLBACK")
+multi:Load(function(state)assert(state)end)
+for serial=1,2 do
+    local id="multi/"..serial
+    local raw=multiIO.encode({meta={session_identifier="ROLLBACK"},map={persistdata={worldexchange2hm={version=2,checkpoint=id}}}})
+    multi:PutCut({id=id,serial=serial,native_snapshot=17+serial,owners={},players={},
+        members={['1']=true,['2']=true,['3']=true}},raw,function(ok)assert(ok)end)
+    multi:Seal(id,function(ok)assert(ok)end)
+end
+Engine.IO=function()return multiIO end
+Engine.Bootstrap(index,native,function(data)loaded=data end)
+check(loaded.map.persistdata.worldexchange2hm.checkpoint=="multi/1" and Engine.boot.requested=="multi/1",
+    "rollback before multishard checkpoints requests an exact retained shared cut")
+check(not Engine.boot.rollback_request and Engine.boot.store.state.current=="multi/2",
+    "multishard rollback retains history until the master verifies the common cut")
 Engine.IO=originalIO
 
 -- Stale pre-restart shard announcements must not unlock the old timeline.
-local connected, held, requested=0,true,nil
+local connected, requested=0,nil
 local peerEngine=setmetatable({store={state={timeline="timeline-A"}},service={legacy=true,session="ROLLBACK"},
     timeline_wait=true,core={Connected=function()connected=connected+1 end}},Engine)
-peerEngine.Hold=function(_,h)held=h end
 peerEngine.RebaseNative=function(_,r)requested=r end
 peerEngine:PeerHello("1",{fast=2,boot="old"})
 check(connected==0 and peerEngine.timeline_wait,"different timeline stays blocked")
 peerEngine:PeerHello("1",{fast=2,boot="new",timeline="timeline-B",rebase={token="timeline-B",snapshot=13}})
 check(requested and requested.snapshot==13 and connected==0,"secondary follows master's explicit native target")
 peerEngine:PeerHello("1",{fast=2,boot="new",timeline="timeline-A"})
-check(connected==1 and not peerEngine.timeline_wait and not held,"matching native timeline releases legacy completion")
+check(connected==1 and not peerEngine.timeline_wait,"matching native timeline releases legacy completion")
 peerEngine.rollback_request=13
 peerEngine:PeerHello("1",{fast=2,boot="new",timeline="timeline-A"})
 check(connected==1 and not peerEngine:CanAdvance(),"pending local native rollback cannot run exchanges")
@@ -142,7 +176,6 @@ delayedIO.write=function(k,v,cb)
 end
 delayed:PutCut({id="cut/1",serial=1,players={},owners={}},"world",function(ok)assert(ok)end)
 local recovering=setmetatable({store=delayed,service={session="ROLLBACK"},core={Fail=function(_,why)error(why)end}},Engine)
-recovering.Hold=function()end
 recovering:RebaseNative({snapshot=13,token="delayed-timeline"})
 check(recovering.pending_rebase and not delayed.state.rebase,"in-flight body write delays native rebase")
 release()
@@ -151,11 +184,11 @@ release()
 check(not recovering:Writing() and delayed.state.cuts["cut/1"],"pending body and journal finish before recovery")
 local invoked, wakes=0,0
 local draining=setmetatable({store={busy=true,queue={}},service={session="DRAIN",Wake=function()wakes=wakes+1 end}},Engine)
-draining.Hold=function(_,value)check(value,"rollback holds before draining writes")end
 draining:Rollback(function()invoked=invoked+1 end)
 draining:Rollback(function()error("duplicate rollback")end)
 draining:Update()
-check(invoked==0 and wakes==1,"native rollback waits for pending writes and ignores duplicate requests")
+check(invoked==0 and wakes==1 and not draining:CanAdvance(),
+    "native rollback waits for pending writes and gates protocol work")
 draining.store.busy=false;draining:Update()
 check(invoked==1,"native rollback starts once after writes drain")
 
@@ -173,17 +206,5 @@ notice:BeforeRollbackRestart(function()resets=resets+1 end)
 check(hinted==1 and flushed and resets==0 and notice.exits[1].at==10.1,"hint leaves before master restart without a fixed long delay")
 notice.exits[1].callback();check(resets==1,"original restart resumes after notice")
 
-local enabled,paused=true,false
-local pc={IsEnabled=function()return enabled end,Enable=function(_,value)enabled=value end}
-AllPlayers={{components={playercontroller=pc}}}
-TheNet.IsServerPaused=function()return paused end
-TheNet.SetServerPaused=function(_,value)paused=value end
-local gate=setmetatable({released=true,core={generation="c/1"}},Engine)
-gate:Hold(true)
-check(not enabled and paused and pc.worldexchange_resume2hm,"recovery holds movement until verification")
-gate:Hold(false)
-check(enabled and not paused and not pc.worldexchange_resume2hm,"verified completion releases movement immediately")
-enabled=false;gate:Hold(true);gate:Hold(false)
-check(not enabled,"recovery does not enable controls disabled by another feature")
 AllPlayers={}
 print("Production native rollback checks:",checks)

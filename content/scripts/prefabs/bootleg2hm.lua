@@ -152,34 +152,9 @@ local function CalculateMapDecorations(inst, rmbents, px, pz, rmbx, rmbz)
     rmbents[2].worldz = dz + pz
 end
 
-local function bootlegcancel(inst)
-    local oldowner = inst.oldowner2hm
-    inst.oldowner2hm = nil
-    if oldowner and oldowner:IsValid() and oldowner.bootlegs2hm then
-        for i = #oldowner.bootlegs2hm, 1, -1 do
-            local bootleg = oldowner.bootlegs2hm[i]
-            if bootleg == inst then
-                table.remove(oldowner.bootlegs2hm, i)
-                break
-            end
-        end
-        if IsTableEmpty(oldowner.bootlegs2hm) and not oldowner:HasTag("playerghost") and not oldowner.components.slipperyfeet then
-            oldowner:AddComponent("slipperyfeet")
-            oldowner.bootlegs2hm = nil
-        end
-    end
-end
-local function bootlegupdate(inst)
-    local owner = inst.components.inventoryitem:GetGrandOwner()
-    if owner == inst.oldowner2hm then return end
-    bootlegcancel(inst)
-    if owner and owner:IsValid() and owner:HasTag("player") and owner.components.slipperyfeet then
-        inst.oldowner2hm = owner
-        inst.oldowner2hm:RemoveComponent("slipperyfeet")
-        owner.bootlegs2hm = owner.bootlegs2hm or {}
-        table.insert(owner.bootlegs2hm, inst)
-    end
-end
+local nonslip = require("bootlegnonslip2hm")
+local bootlegcancel = nonslip.Remove
+local bootlegupdate = nonslip.Update
 local function delaybootlegupdate(inst) inst:DoTaskInTime(0, bootlegupdate) end
 
 local function onsave(inst, data) 

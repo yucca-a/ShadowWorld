@@ -1,0 +1,50 @@
+刮地皮头盔实际工具识别修复（2026-11-08，未发布）
+
+源码依据
+- 查阅本机游戏 scripts.zip 的 bufferedaction.lua、entityscript.lua、actions.lua、components/workable.lua、components/autoterraformer.lua。
+- EntityScript:PerformBufferedAction 在 bufferedaction:Do() 执行期间保留 bufferedaction。原生注释明确说明旧逻辑依赖这一引用。
+- EntityScript:GetBufferedAction 返回实体当前动作，或 locomotor 中排队的动作；动作的 invobject 是实际工具。
+- DoToolWork 用 invobject 计算效率和强力工作资格，随后 Workable 的工作/完成回调仅传入 worker 等信息。
+- 对照当前淬炼版与本机原版为爽（工坊 2886753796）common/common.lua 和 easy_other/easy_equipments.lua。
+- 为爽已有 actfn2hm 在动作构造时修改属性；它不是动作执行上下文，不适合保存执行中的工具。
+
+实现
+- 没有增加公共接口、组件、工具上下文模块或全局动作钩子。
+- 在头盔现有逻辑内增加局部执行保护，执行现有 BufferedAction 时临时保留 owner.bufferedaction。
+- 调用结束恢复原动作；失败和异常也恢复。如果回调主动清除或更换动作，尊重该变化，不复活旧动作。
+- 覆盖头盔现有捕虫/砍树/铲挖/采矿/锤击、清理月晶、刮地皮、耕地、重置陷阱及施肥的 BufferedAction 调用。
+- 雕像原有强化斧镐判定改读 GetBufferedAction().invobject，并核对目标和 MINE 动作；无动作时保留手部查询回退。
+- 在原工作/完成回调之前确定本次工具，避免回调改变动作或删除实体后影响本次判断。
+- 宝石陷阱、工作效率和耐久消耗规则不变；物品始终留在原容器/装备槽，不触发额外装备/卸下/物品移动事件。
+- 先前试写的 worktoolcontext2hm 模块及相关测试已移除。
+
+验证
+1. work/python-3.12.8/python.exe tests/run_antlionhat_tools_tests.py
+   871 项检查通过；两个修改后的玩法文件通过 Lua 5.1 编译。
+   使用游戏原生动作/工作代码和实际雕像补丁；实体、物品使用事件和法术调用由测试对象提供。
+   覆盖动作成功、失败、无效、异常、嵌套、取消/替换、移动队列、目标/动作不匹配、工具已删除、无工具。
+   对四个雕像 prefab 强制执行所有概率分支，验证普通工具惩罚、强化工具免召怪及六色宝石陷阱。
+
+2. work/python-3.12.8/python.exe tests/run_native_antlionhat_tools.py
+   56 组场景，817 项检查通过。
+   原生游戏构建 761239，完整当前淬炼版；犀牛难度加强、雕像和头盔增强开启。
+   真实 wilson、antlionhat、multitool_axe_pickaxe、cane 和四类雕像实体。
+   每类雕像分别设置红宝石/无宝石，对照原生手持强化/普通斧镐与头盔的五种手部/槽内组合。
+   通过真实头盔 DoTerraform 扫描目标、真实 BufferedAction 和原生组件执行。
+   同配置下普通斧镐为 4 次工作，强化斧镐为 2 次，头盔与手持一致；并非把固定次数写进玩法。
+   强制概率分支并拦截额外召怪/远古事件/宝石法术函数，验证调用次数，不在测试世界实际生成这些惩罚。
+   强化斧镐免召怪及额外远古事件；普通斧镐保持惩罚；红宝石法术仍触发。
+   实际使用工具优先于槽内未使用的强化工具；手部工具的原有优先级保持。
+   手部装备、工具所在槽、工具耐久、装备/物品移动事件及未完成玩家动作检查通过。
+   结果：work/vault-hardened-hosted-_ob6cr37/antlionhat-tools-result.json
+   原生日志及冻结输入清单同目录保存；所有测试子进程已停止。
+
+测试工具调整
+- 首轮原生验证采用固定普通工具敲击次数，未计入完整为爽对工作量的调整；改为同配置原生手持对照。
+- 第二轮 56 组实际执行通过，但单行 JSON 被游戏日志截断，启动器无法读取；改为逐场景输出和简短汇总。
+- 最终轮完整通过并保存可解析结果。
+
+范围
+- 只修改当前工作区，未发布工坊，未变更版本号。
+- 不涉及真实客户端键鼠、网络预测或任意第三方模组组合。
+- 工具信息在同步动作执行期间可通过原生 GetBufferedAction 查询；延迟效果仍需在创建任务时保存本次工具。

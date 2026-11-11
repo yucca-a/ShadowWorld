@@ -24,14 +24,17 @@ local function simulation()
             n.core = Core.new({
                 id=id, boot=n.boot, master=id=="1", now=function() return self.now end,
                 bootready=function() return true end,
-                connected=function(peer,boot) return self.nodes[peer] and self.nodes[peer].boot==boot and not self.disconnected end,
+                connected=function(peer,boot) return self.nodes[peer] and self.nodes[peer].boot==boot and not self.disconnected and
+                    not (self.stopped and self.stopped[peer]) end,
                 send=function(peer,m) table.insert(self.wire,{from=id,to=peer,target=self.nodes[peer].boot,m=Store.Copy(m)}) end,
                 idle=function() return not n.protocol.active end,
-                hold=function(h) n.hold=h end, log=function(msg) n.error=msg end,
+                log=function(msg) n.error=msg end,
                 restart=function() n.restart=true end,
                 save=function(cut,owners)
                     self.saves=self.saves+1; n.savecount=n.savecount+1
-                    self:defer(function() n.core:Saved({id=cut.id,serial=cut.serial,owners=Store.Copy(owners),players={}},n.items) end)
+                    local players = {}
+                    for uid in pairs(owners) do players[uid] = false end
+                    self:defer(function() n.core:Saved({id=cut.id,serial=cut.serial,owners=Store.Copy(owners),players=players},n.items) end)
                 end,
             },n.store,loaded,requested)
             n.protocol = Fast.new({
@@ -51,15 +54,21 @@ local function simulation()
         local queue=self.queue; self.queue={}; for _,fn in ipairs(queue) do fn() end
         if self.observe then self:observe() end
         for id,n in pairs(self.nodes) do
-            local p=self.nodes[id=="1" and "2" or "1"]
-            if n.core and p and p.core and not self.disconnected then
-                if n.core.peerboot~=p.boot or n.core.suspended then n.core:Connected(p.id,p.boot) end
+            if n.core and not self.disconnected and not (self.stopped and self.stopped[id]) then
+                for peer,p in pairs(self.nodes) do
+                    if peer~=id and p.core and not (self.stopped and self.stopped[peer]) and
+                        (n.core.peers[peer]~=p.boot or n.core.offline[peer]) then
+                        n.core:Connected(p.id,p.boot)
+                    end
+                end
                 n.core:Tick(); n.protocol:Tick()
             end
         end
         local wire=self.wire; self.wire={}
+        if self.shape then wire = self:shape(wire) end
         for _,packet in ipairs(wire) do
-            if self.nodes[packet.to].core and packet.target==self.nodes[packet.to].boot and not self.disconnected and (not self.filter or self.filter(packet)) then
+            if self.nodes[packet.to].core and packet.target==self.nodes[packet.to].boot and not self.disconnected and
+                not (self.stopped and self.stopped[packet.to]) and (not self.filter or self.filter(packet)) then
                 local n=self.nodes[packet.to]
                 if packet.m.v==3 then n.core:Receive(packet.from,packet.m)
                 else n.protocol:Receive(packet.from,packet.m) end
@@ -100,14 +109,13 @@ check(not fa.protocol:Start("chest","2","u"),"exchange still requires a durable 
 fa.protocol:Receive("2",{v=2,kind="PREPARE",checkpoint=nil})
 check(not fa.protocol.active,"nil checkpoint packets cannot bypass first-cut protection")
 fresh.disconnected=true;fa.core:Disconnected("2");fb.core:Disconnected("1")
-check(not fa.hold and not fb.hold,"fresh worlds do not freeze movement while peer is absent")
 check(not fa.core:IsReady() and not fb.core:IsReady(),"disconnect still blocks cross-world operations")
 fresh.disconnected=false
 fresh:until_(function()return fresh:ready()end,"fresh reconnect")
 fresh:node("2")
 fresh:until_(function()return fresh:ready()end,"fresh peer reboot")
 fb=fresh.nodes["2"]
-check(not fa.hold and not fb.hold and fresh.saves==0,"peer startup does not impose a fresh-world control lock")
+check(fresh.saves==0,"peer startup does not impose a new checkpoint")
 fa.core:Register("early-traveller","1",false)
 fresh:until_(function()return not fa.core.regbusy end,"new player before first cut")
 check(fa.core:CanMigrate("early-traveller"),"native cave travel need not wait for a first exchange")
@@ -127,7 +135,7 @@ failedfresh:until_(function()return failedfresh:ready()end,"fresh failure test")
 local ff=failedfresh.nodes["1"]
 ff.core:Fail("injected_registration_failure")
 ff.core:Disconnected("2");ff.core:Connected("2","rebooted")
-check(ff.hold and ff.core.phase=="error","pristine reconnect never releases a storage/error protection lock")
+check(not ff.core:IsReady() and ff.core.phase=="error","reconnect never bypasses a storage failure")
 
 local s=simulation();s:start()
 check(s.saves==2,"one initial paired cut")
@@ -139,11 +147,12 @@ s.nodes["2"].core:Request(function() completed=true end)
 s:until_(function() return completed and s:ready() end,"normal save")
 check(s.saves==4,"manual/automatic request saves both once")
 
--- Drop first occurrence of every control message, plus repeat each delivery.
-for _,op in ipairs({"INFO","FREEZE","DRAINED","CAPTURE","PREPARED","SEAL","SEALED","ACTIVATE","ACTIVE","OPEN","REQUEST"}) do
+-- Drop the first occurrence of each message. Suppress all CAPTURED messages
+-- to verify that an older secondary's PREPARED still advances the save.
+for _,op in ipairs({"INFO","FREEZE","DRAINED","CAPTURE","CAPTURED","PREPARED","SEAL","SEALED","ACTIVATE","ACTIVE","OPEN","REQUEST"}) do
     local t=simulation();local dropped=false
     t.filter=function(p)
-        if p.m.op==op and not dropped then dropped=true;return false end
+        if p.m.op==op and (not dropped or op=="CAPTURED") then dropped=true;return false end
         if p.m.v==3 then t.nodes[p.to].core:Receive(p.from,p.m) end
         return true
     end
@@ -160,7 +169,7 @@ check(t.nodes["1"].items=="rocks" and t.nodes["2"].items=="gold","cut contains c
 -- A transient disconnection resumes without rollback; a new peer process does not.
 t:trade();local a,b=t.nodes["1"],t.nodes["2"]
 t.disconnected=true;a.core:Disconnected("2");b.core:Disconnected("1")
-check(a.hold and b.hold,"disconnect holds both worlds")
+check(not a.core:CanExchange("2") and not b.core:CanExchange("1"),"disconnect gates exchanges on both shards")
 t.disconnected=false;t:until_(function() return t:ready() end,"same boot reconnect")
 check(not a.restart and not b.restart,"reconnect does not restart")
 t:node("2",b.disk,true)
@@ -190,13 +199,31 @@ check(rollback.nodes["1"].items=="gold" and rollback.nodes["2"].items=="rocks","
 
 -- New UID records are durable locally and remotely before migration is permitted.
 local u=simulation();u:start();local left,right=u.nodes["1"],u.nodes["2"]
+u.disconnected=true
+left.core:Disconnected("2")
 local registered=false;left.core:Register("NEW","1","BEFORE",function() registered=true end)
+local secondCallback=false
+left.core:Register("NEW","1","BEFORE",function() secondCallback=true end)
+check(not registered and not secondCallback,"spawn waits for the local before-image to be durable")
 check(not left.core:CanMigrate("NEW"),"registration gates migration")
-u:until_(function() return registered end,"registration")
+u:until_(function() return registered and secondCallback end,"local registration without a peer")
 for _,cut in pairs(left.store.state.cuts) do check(cut.players.NEW=="BEFORE","owner before-image") end
+check(left.core.regbusy and not left.core:CanMigrate("NEW") and not left.core:CanExchange("2"),
+    "local registration releases login while leaving cross-shard gates closed")
+u.disconnected=false
+u:until_(function() return left.core:CanMigrate("NEW") end,"registration acknowledged on the peer")
 for _,cut in pairs(right.store.state.cuts) do check(cut.players.NEW==false,"peer tombstone") end
-local migration = left.core:Depart("NEW");left.core:Request();for _=1,20 do u:step() end
+left.core.io.bootready=function()return false end
+check(not left.core:CanExchange("2") and not left.core:CanReceive("2") and not left.core:CanMigrate("NEW"),
+    "local rollback preparation closes all cross-shard gates even with an established peer")
+left.core.io.bootready=function()return true end
+left.core:Begin()
+check(left.core:CanMigrate("NEW") and not left.core:CanExchange("2"),
+    "player travel can start while the checkpoint is draining and box exchange is closed")
+local migration = left.core:Depart("NEW")
+for _=1,20 do u:step() end
 check(u.saves==2,"pending migration blocks checkpoint")
+check(not right.core:CanMigrate("NEW"),"a shard that finalized its owner map cannot start another migration")
 right.core:Arrived("NEW",migration,"1");u:until_(function() return u.saves==4 and u:ready() end,"migration drain")
 check(left.core.owners.NEW=="2" and right.core.owners.NEW=="2","migration owns one side")
 local returning = right.core:Depart("NEW")
@@ -207,6 +234,48 @@ check(left.core.owners.NEW=="1" and right.core.owners.NEW=="1","late migration m
 local cancelled = left.core:Depart("NEW")
 left.core:Arrived("NEW",cancelled,"1")
 check(not next(left.core.outbound),"failed native migration may return to source")
+
+-- Pause native capture, then pause only the backup. The return trip should
+-- proceed while the same checkpoint is still being written.
+local travel=simulation();travel:start()
+local surface,cave=travel.nodes["1"],travel.nodes["2"]
+local traveller="CAVE_TRAVELLER"
+surface.core:Register(traveller,"1",false)
+travel:until_(function() return surface.core:CanMigrate(traveller) end,"register cave traveller")
+cave.core:Arrived(traveller,surface.core:Depart(traveller),"1")
+travel:until_(function() return cave.core:CanMigrate(traveller) end,"initial cave arrival")
+local capture, verify
+local putCut=cave.store.PutCut
+cave.store.PutCut=function(self,...)
+    local args={...}
+    verify=function()putCut(self,unpack(args))end
+end
+local nativeSave=cave.core.io.save
+cave.core.io.save=function(cut,owners)
+    capture=function()nativeSave(cut,owners)end
+end
+surface.core:Request()
+travel:until_(function() return capture~=nil end,"cave capture requested")
+check(not cave.core:CanMigrate(traveller,"1"),"travel waits for uncaptured cave snapshot")
+surface.core:Receive("2",{v=3,kind="CHECKPOINT",op="TRAVEL_OPEN",id=surface.core.pending.id})
+check(not surface.core:CanMigrate(traveller,"2"),"a secondary cannot reopen travel")
+capture()
+local dropped=false
+travel.filter=function(packet)
+    if packet.m.op=="TRAVEL_OPEN" and not dropped then dropped=true;return false end
+    return true
+end
+travel:until_(function() return verify and cave.core:CanMigrate(traveller,"1") end,"native cave exit while backup verifies")
+check(dropped and cave.core.phase=="saving" and not cave.core:CanExchange("1"),
+    "retried travel release opens migration while exchange is still locked")
+surface.core:Arrived(traveller,cave.core:Depart(traveller),"2")
+travel:until_(function() return not surface.core.inbound[traveller] end,"arrive before backup completes")
+verify()
+travel:until_(function() return travel:ready() end,"complete checkpoint after cave exit")
+for _,node in pairs(travel.nodes) do
+    check(node.store.state.cuts[node.core.generation].owners[traveller]=="2","backup retains pre-travel owner")
+    check(node.core.owners[traveller]=="1","live owner remains at the destination")
+end
 
 -- Reloading either side during each checkpoint stage selects a common complete
 -- cut. Replayed/truncated stages never release one world's newer items alone.
@@ -311,9 +380,25 @@ leaving.filter=function(p) return p.m.op~="OPEN" end
 leaving.nodes["1"].core:Request(function()exits[1]=true end,true)
 leaving.nodes["2"].core:Request(function()exits[2]=true end,true)
 leaving:until_(function()return exits[1]end,"master exit")
-leaving.nodes["2"].core:Disconnected("1")
-check(exits[2],"secondary exit completes after sealed peer closes")
+check(exits[2],"secondary exit completes with committed proof even if OPEN is lost and no disconnect is delivered")
 check(leaving.nodes["1"].store.state.current==leaving.nodes["2"].store.state.current,"exit uses same durable cut")
+local clusterExit=simulation()
+for i=1,4 do clusterExit:node(tostring(i)) end
+clusterExit:until_(function()
+    for _,n in pairs(clusterExit.nodes) do if not n.core or not n.core:IsReady() then return false end end
+    return true
+end,"four-shard exit setup")
+local completed, missed = {}, false
+clusterExit.filter=function(p)
+    if p.to=="4" and p.m.op=="ACTIVATE" and not missed then missed=true; return false end
+    return p.m.op~="OPEN"
+end
+for id,n in pairs(clusterExit.nodes) do n.core:Request(function() completed[id]=true end,true) end
+clusterExit:until_(function()return missed and completed["2"] end,"one secondary receives committed proof")
+clusterExit.stopped={["2"]=true}
+check(not completed["1"] and not completed["4"],"master cannot quit before online peers receive committed proof")
+clusterExit:until_(function()return completed["1"] and completed["3"] and completed["4"]end,
+    "master retries activation after a secondary has already quit")
 local extraSaves=0
 Engine.nativeSave=function()extraSaves=extraSaves+1 end
 local ended=false
@@ -333,7 +418,7 @@ check(tombstone==false,"native empty session means deleted player")
 
 local exitClock,exitCount,acknowledge=0,0,nil
 AllPlayers={}
-local offlineExit=setmetatable({service={Now=function()return exitClock end},store={state={registry={}}},
+local offlineExit=setmetatable({service={Now=function()return exitClock end},store={state={registry={}},queue={}},
     core={generation="cut",opened=true,suspended=true,Request=function(_,cb)acknowledge=cb end,
         Tick=function()end,IsReady=function()return false end}},Engine)
 offlineExit:Exit(function()exitCount=exitCount+1 end)
@@ -341,6 +426,27 @@ offlineExit:Update();exitClock=1;offlineExit:Update()
 check(exitCount==1,"offline peer does not trap normal exit")
 acknowledge();exitClock=2;offlineExit:Update()
 check(exitCount==1,"late checkpoint callback cannot exit twice")
+local stuckExited=false
+local stuck=setmetatable({service={Now=function()return exitClock end},store={state={registry={},cuts={cut={}}},queue={}},
+    timeline_wait=true,core={generation="cut",phase="joining",io={},AllPeers=function()return true end,Request=function()end}},Engine)
+stuck:Exit(function()stuckExited=true end)
+stuck:Update()
+check(not stuckExited,"exit allows time for a healthy recovery to finish")
+exitClock=exitClock+Engine.EXIT_TIMEOUT;stuck:Update()
+exitClock=exitClock+1;stuck:Update()
+check(stuckExited and stuck.store.state.cuts.cut,"a stalled handshake cannot block exit or discard the last cut")
+for _,ackReceived in ipairs({false,true}) do
+    local count, complete=0,nil
+    local paused=setmetatable({service={Now=function()return 0 end},
+        core={generation="cut",Request=function(_,cb)complete=cb end}},Engine)
+    paused:Exit(function()count=count+1 end)
+    if ackReceived then complete() end
+    paused.core.suspended=true
+    paused:PeerDisconnected()
+    complete()
+    paused:PeerDisconnected()
+    check(count==1,"disconnect finishes a requested shutdown even without any later static updates")
+end
 
 -- Early rollback notice starts the live cave reload before the master exits.
 local early=simulation();early:start()
@@ -356,7 +462,7 @@ check(not primary.restart and primary.core:IsReady(),"secondary cannot rewind ma
 hint(cave.core,"1","missing",1);hint(cave.core,"1",target,999)
 check(not cave.restart and cave.core:IsReady(),"unknown or mismatched target hint is ignored")
 hint(cave.core,"1",target,1)
-check(cave.hold and not cave.core:IsReady(),"valid hint holds before loading target")
+check(not cave.core:IsReady(),"valid hint closes cross-shard operations before loading target")
 early:until_(function()return cave.restart end,"cave starts early rollback")
 check(cave.store.state.forced==target and cave.core.requested==target,"early target durable before restart")
 hint(cave.core,"1",target,1)
@@ -397,12 +503,11 @@ for round=1,12 do
     mp:until_(function()return mp:ready() and not ma.core.want end,'checkpoint after multiplayer migration')
     mp:trade()
 end
-check(not ma.hold and not mb.hold,'repeated multiplayer migrations leave no global control lock')
 -- A stale owner map must still allow unrelated arrival/registration retries.
 local sent={}
-local stale=setmetatable({io={master=true,now=function()return 10 end,connected=function()return true end,
+local stale=setmetatable({io={id='1',master=true,now=function()return 10 end,connected=function()return true end,
     send=function(_,m)sent[m.op]=true end},peer='2',peerboot='b',phase='frozen',pending={id='c'},
-    peerdrained='c',peerowners={A='2'},owners={A='1'},lastsend=-100,
+    peers={['2']='b'},offline={},members={['1']=true,['2']=true},peerdrained={['2']={A='2'}},owners={A='1'},lastsend=-100,
     registrations={B={localdone=true,owner='1'}},inbound={C='token'}},Core)
 stale:Tick()
 check(sent.REGISTER and sent.ARRIVED and sent.FREEZE,'owner disagreement cannot starve control retries')
@@ -418,4 +523,230 @@ check(writes==0 and wakes==1 and already.phase=='activating' and already.lastsen
 already.phase='joining';already.store.state.forced='c'
 already:Select('c',false)
 check(writes==1,'forced recovery still seals its journal before activation')
+
+local four=simulation()
+local forest,caves,islands=four:node("1"),four:node("2"),four:node("3")
+four:until_(function()return forest.core end,"read initial journal")
+forest.core:Discover("4")
+for _=1,60 do four:step() end
+check(not forest.core:IsReady() and four.saves==0,"three online shards cannot start a four-shard timeline")
+local cold=simulation()
+local coldForest=cold:node("1",forest.disk)
+cold:node("2",caves.disk);cold:node("3",islands.disk)
+for _=1,100 do cold:step() end
+check(coldForest.core.members["4"] and not coldForest.core:IsReady() and cold.saves==0,
+    "remembered shard remains required after a cold restart before the first checkpoint")
+local localSaved=false
+local incomplete=setmetatable({core=forest.core,store=forest.store},Engine)
+local nativeSave=Engine.nativeSave
+Engine.nativeSave=function(_,done)done()end
+incomplete:SaveRequested(false,function()localSaved=true end)
+Engine.nativeSave=nativeSave
+check(localSaved,"incomplete fresh cluster can still take local native saves")
+local volcano=four:node("4")
+local shards={forest,caves,islands,volcano}
+local function fourready()
+    for _,node in ipairs(shards) do if not node.core or not node.core:IsReady() then return false end end
+    return true
+end
+
+-- The next save may start while one shard is still waiting for a lost OPEN.
+local overlap=simulation()
+overlap:node("1");overlap:node("2");overlap:node("3");overlap:node("4")
+local function overlapReady()
+    for _, node in pairs(overlap.nodes) do
+        if not node.core or not node.core:IsReady() then return false end
+    end
+    return true
+end
+overlap:until_(overlapReady,"overlapping save setup")
+local primary=overlap.nodes["1"]
+local droppedOpen
+overlap.filter=function(p)
+    if p.to=="4" and p.m.op=="OPEN" and not droppedOpen then droppedOpen=true; return false end
+    return true
+end
+primary.core:Request()
+overlap:until_(function()return droppedOpen and primary.core:IsReady()end,"one shard misses OPEN")
+check(not overlap.nodes["4"].core:IsReady(),"fourth shard is still waiting for confirmation")
+primary.core:Request()
+overlap:until_(function()return overlapReady() and overlap.saves==8 end,"second save after lost OPEN")
+primary.core:Connected("4","restarted")
+overlap.wire={}
+primary.core:Receive("4",{v=3,kind="CHECKPOINT",op="ACTIVE",id=primary.core.generation})
+check(#overlap.wire==0,"a stale acknowledgement cannot reopen a shard while reconciling a restart")
+four:until_(fourready,"four shards discover one another")
+local order={}
+local overlappedVerification=false
+for _,node in ipairs(shards) do
+    local save=node.core.io.save
+    node.core.io.save=function(cut,owners)
+        local capturing,saving=0,0
+        for _,participant in ipairs(shards) do
+            local core=participant.core
+            if core.phase=="saving" then
+                saving=saving+1
+                if core.captured~=core.pending.id then capturing=capturing+1 end
+            end
+        end
+        assert(capturing==1,"only one shard serializes at a time")
+        assert(saving<=2,"at most two native captures and backup checks overlap")
+        if saving>1 then overlappedVerification=true end
+        order[#order+1]=node.id
+        save(cut,owners)
+    end
+end
+four.filter=function(packet)
+    if packet.m.op=="SEAL" then
+        for _,node in ipairs(shards) do
+            assert(node.store.state.cuts[packet.m.id],"all backups are durable before sealing")
+        end
+    end
+    return true
+end
+volcano.core:Request()
+four:until_(function()return fourready() and four.saves==4 end,"first four-shard checkpoint")
+check(table.concat(order,",")=="1,2,3,4","four native saves are staggered")
+check(overlappedVerification,"backup verification overlaps the next native capture")
+local idlePackets=0
+four.filter=function(p)if p.m.v==3 then idlePackets=idlePackets+1 end;return true end
+for _=1,50 do four:step() end
+four.filter=nil
+check(idlePackets==0,"healthy idle shards do not repeatedly broadcast checkpoint state")
+local anchor=forest.core.generation
+for _,node in ipairs(shards) do
+    check(node.core.generation==anchor and node.store.state.cuts[anchor].members["4"],"four participants seal one cut")
+end
+local uid="ISLAND_PLAYER"
+islands.core:Register(uid,"3","starting profile")
+four:until_(function()return islands.core:CanMigrate(uid) end,"all shards record player before-image")
+local oldtoken=islands.core:Depart(uid)
+volcano.core:Arrived(uid,oldtoken,"3")
+four:until_(function()return volcano.core:CanMigrate(uid) end,"islands-to-volcano travel")
+caves.core:Arrived(uid,volcano.core:Depart(uid),"4")
+four:until_(function()return caves.core:CanMigrate(uid) end,"volcano-to-caves travel")
+forest.core:Receive("4",{v=3,kind="CHECKPOINT",op="ARRIVED",uid=uid,token=oldtoken})
+for _,node in ipairs(shards) do check(node.core.owners[uid]=="2","late arrival cannot reverse four-shard ownership") end
+check(caves.protocol:Start("chest","4","test"),"two secondary shards can exchange")
+four:until_(function()return not caves.protocol.active and not volcano.protocol.active end,"secondary exchange")
+check(four.saves==4,"four-shard exchange does not save the worlds")
+forest.core:Request()
+four:until_(function()return fourready() and four.saves==8 end,"second four-shard checkpoint")
+
+four.stopped={["4"]=true}
+caves.core.io.migrationready=function(peer, generation)
+    return peer=="3" and generation==islands.core.generation and islands.core.phase=="ready"
+end
+four:step()
+check(not caves.core:IsReady() and not caves.core:CanExchange("3"),"a stopped fourth shard still blocks shared operations")
+check(not caves.core:CanMigrate(uid,"4") and not caves.core:CanMigrate(uid,"1"),"offline or unverified destination stays blocked")
+check(caves.core:CanMigrate(uid,"3"),"established player can travel between live peers on the same cut")
+islands.core:Arrived(uid,caves.core:Depart(uid),"2")
+four:until_(function()return caves.core.outbound[uid]==nil and forest.core.owners[uid]=="3" end,"notify live peers of arrival during suspension")
+check(not islands.core:CanMigrate(uid,"2") and islands.core.inbound[uid],"unacknowledged ownership cannot be overwritten by another migration")
+four.stopped=nil
+four:until_(function()return fourready() and not islands.core.inbound[uid] end,"resend arrival to returning shard")
+check(volcano.core.owners[uid]=="3","returning shard records the latest owner before reopening")
+
+local recovered=simulation()
+for i,node in ipairs(shards) do
+    shards[i]=recovered:node(node.id,node.disk,true,i==1 and anchor or nil)
+end
+recovered:until_(function()
+    for i,node in ipairs(shards) do
+        if node.restart then shards[i]=recovered:node(node.id,node.disk,true) end
+    end
+    return fourready()
+end,"all four shards restore selected common checkpoint")
+for _,node in ipairs(shards) do check(node.core.generation==anchor,"four-shard rollback agrees on the selected cut") end
+shards[1].core:Disconnected("4")
+check(not shards[1].core:CanExchange("2") and not shards[1].core:IsReady(),"known missing shard gates even two available endpoints")
+
+for count=5,7 do
+    local many=simulation()
+    local nodes={}
+    for id=1,count do nodes[id]=many:node(tostring(id)) end
+    local function allready()
+        for _,node in ipairs(nodes) do if not node.core or not node.core:IsReady() then return false end end
+        return true
+    end
+    many:until_(allready,"discover larger cluster")
+    nodes[count].core:Request()
+    many:until_(function()return allready() and many.saves==count end,"seal larger cluster")
+    for _,node in ipairs(nodes) do
+        check(node.core.generation==nodes[1].core.generation,"all configured shards seal the same cut")
+    end
+    check(nodes[count-1].protocol:Start("chest",tostring(count),"test"),"last two secondary shards can exchange")
+    many:until_(function()return not nodes[count-1].protocol.active and not nodes[count].protocol.active end,"larger cluster trade")
+    check(many.saves==count,"cross-shard exchange never requests a world save")
+end
+
+local faultRuns, faultRounds, faultSaves = 0, 0, 0
+for _,count in ipairs({2,4,7}) do
+    for seed=1,3 do
+        local s=simulation()
+        local randomState=count*100+seed
+        local function random(max)
+            randomState=randomState*48271%2147483647
+            return randomState%max+1
+        end
+        local delayed={}
+        function s:shape(wire)
+            for _,p in ipairs(wire) do
+                if random(100)>12 then
+                    delayed[#delayed+1]={packet=p,at=self.now+random(5)*.05}
+                    if random(100)<=20 then delayed[#delayed+1]={packet=p,at=self.now+random(10)*.05} end
+                end
+            end
+            local due={}
+            for i=#delayed,1,-1 do
+                if delayed[i].at<=self.now then
+                    due[#due+1]=delayed[i].packet
+                    table.remove(delayed,i)
+                end
+            end
+            return due
+        end
+        local nodes={}
+        for i=1,count do nodes[i]=s:node(tostring(i));nodes[i].items="cargo-"..i end
+        local function idle(requireCut)
+            for _,n in ipairs(nodes) do
+                if not n.core or not n.core:IsReady() or n.protocol.active or
+                    (requireCut and (not n.core.generation or n.core.generation~=nodes[1].core.generation)) then return false end
+            end
+            return true
+        end
+        s:until_(function()return idle(false)end,"fault stress discovery")
+        nodes[1].core:Request()
+        s:until_(function()return idle(true)end,"fault stress first checkpoint")
+        for round=1,80 do
+            local from=random(count)
+            local to=(from+random(count-1)-1)%count+1
+            check(nodes[from].protocol:Start("chest",tostring(to),"stress"),"fault stress starts primary exchange")
+            if round%3==0 then
+                nodes[to].protocol:Start("chest",tostring(from),"simultaneous")
+            end
+            if count>=4 and round%4==0 then
+                local other={}
+                for i=1,count do if i~=from and i~=to then other[#other+1]=i end end
+                check(nodes[other[1]].protocol:Start("chest",tostring(other[2]),"independent"),
+                    "fault stress starts two independent exchanges in the same tick")
+            end
+            local saved
+            if round%5==0 then nodes[random(count)].core:Request(function()saved=true end) end
+            s:until_(function()return (round%5~=0 or saved) and idle(true) end,
+                "fault stress settle "..count.."/"..seed.."/"..round,2500)
+            local cargos={}
+            for _,n in ipairs(nodes) do
+                check(not n.lock and not cargos[n.items],"fault stress conserves every cargo and unlocks all containers")
+                cargos[n.items]=true
+            end
+            for i=1,count do check(cargos["cargo-"..i],"fault stress retains the original cargo set") end
+            faultRounds=faultRounds+1
+        end
+        faultSaves=faultSaves+s.saves
+        faultRuns=faultRuns+1
+    end
+end
+print("Fault stress runs/rounds/shard saves:",faultRuns,faultRounds,faultSaves)
 print("Production fast/checkpoint checks:",checks)

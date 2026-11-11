@@ -1,0 +1,25 @@
+薇诺娜制作增强／妥测监听修复，归属纠正后最终验证（2026-11-11，未发布）
+
+一、淬炼自身代码修正
+入口：content/easy_role/winona_easy.lua → scripts/winonabuilder2hm.lua。
+删除原来关闭TUNING.DSTU.WINONA_WORKER、移除hungrybuilder的错误处理。角色标签与妥协工作开关均保持原生状态；制作增强只调整服务端／客户端BUILD动作，保留特殊配方状态、其他角色和妥协原生PICK。已核对的工作倍率初始化归此入口，独立于um_patch。
+
+二、上游问题
+content/easy_other/um_patch.lua → scripts/umwinonaworker2hm.lua只处理已核对妥测的死亡复活监听缺陷。该模块不初始化倍率、不处理PICK或BUILD。上游更新实现或自行修复时按指纹退让。
+
+三、原生隔离离线专服
+beta：59项检查通过。
+patch-off：39项检查通过。
+worker-off：5项检查通过。
+hungry-builder：58项检查通过。
+role-off：5项检查通过。
+stable：39项检查通过。
+solo：4项检查通过。
+七组均通过，共209项。完整日志路径见winona-worker-20261111.json。
+
+真实PerformBufferedAction核对三档工作量、工具损耗、饥饿消耗和原冷却；实际进入并推进原生采集／制作状态至超时，确认采集完成及斧头产出。核对原生客户端BUILD路由、五次死亡复活、角色保存恢复。关闭um_patch仍保留淬炼自身修复；关闭薇诺娜增强时，um_patch不擅自初始化工作倍率。
+
+实际妥测闭包＋原生倍率组件归属回归37项通过，覆盖本地增强与补丁独立开关、客户端／服务端制作、原生PICK未改写、特殊配方、其他角色与其他倍率来源、上游1.6新倍率及自行修复后的退让。
+已有UM兼容115项、牛铃归属18项、原生require／manifest15项回归通过。425个content Lua文件编译通过，489个包内文件索引已更新。
+
+此前混合入口的105项原生／57项回归记录已由本轮替代。未进行真实客户端鼠标操作或画面验收；未操作玩家世界、未上传工坊。

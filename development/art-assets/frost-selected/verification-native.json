@@ -1,0 +1,13 @@
+{
+  "pass": true,
+  "exit_code": 0,
+  "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\frost-assets-build\\native-check-20261104-203916\\native.log",
+  "checks": [
+    "[00:00:01]: Could not load mod_config_data/modconfiguration_FrostArtProbe_CLIENT\t",
+    "[00:00:05]: Could not load mod_config_data/modconfiguration_FrostArtProbe\t",
+    "[00:00:05]: Could not load mod_config_data/modconfiguration_FrostArtProbe\t",
+    "[00:00:15]: Could not find anim [idle_loop] in bank [sewing_mannequin]",
+    "[00:00:21]: [FROST_ART_PROBE] PASS: shrine/core/placer spawn; native idle/jiggle; hammer; inventory; floatable; upgrade\t"
+  ],
+  "limitation": "Nullrenderer native smoke test; not a client visual screenshot."
+}

@@ -1,0 +1,90 @@
+{
+  "version": "0.2.4",
+  "date": "2026-11-09",
+  "changes": [
+    "Observe native WALKTO actions for ground clicks and drag targets.",
+    "Reuse native Pathfinder IsClear/SubmitSearch/GetSearchStatus/GetSearchResult/KillSearch APIs.",
+    "Cancel mouse acceleration on interaction, keyboard takeover, drag release, busy/focus/platform checks and F6 off.",
+    "Stop and clear native predicted movement and explicitly send native StopWalking at arrival."
+  ],
+  "tests": {
+    "existing_core_checks": 55,
+    "mouse_checks": 40,
+    "native_modinfo_empty_environment": "passed",
+    "native_hud_lifecycle": "passed",
+    "native_clients": {
+      "prediction_on": {
+        "path": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\client-assist-patch-wwg40v3n",
+        "phases": {
+          "baseline": {
+            "arrival": "2.2333334498107",
+            "dx": "11.979614257813",
+            "dz": "0.00390625",
+            "maxx": "11.979614257813",
+            "remote": "true"
+          },
+          "fast": {
+            "arrival": "1.4000000730157",
+            "dx": "12",
+            "dz": "0",
+            "maxx": "12",
+            "remote": "true"
+          },
+          "off": {
+            "arrival": "nil",
+            "dx": "0",
+            "dz": "0",
+            "maxx": "0",
+            "remote": "true"
+          }
+        },
+        "production_core_sha256": "b0223b8b166a7d85f6e91f8091e3fa485d2bf86e4d19c0afaac1e3a170b330ff",
+        "no_lua_errors": true,
+        "no_invalid_prediction_rpcs": true
+      },
+      "prediction_off": {
+        "path": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\client-assist-patch-pztlxkvo",
+        "phases": {
+          "baseline": {
+            "arrival": "2.1666667796671",
+            "dx": "11.948455810547",
+            "dz": "0.010009765625",
+            "maxx": "11.948455810547",
+            "remote": "false"
+          },
+          "fast": {
+            "arrival": "1.5333334133029",
+            "dx": "12",
+            "dz": "0",
+            "maxx": "12",
+            "remote": "nil"
+          },
+          "off": {
+            "arrival": "nil",
+            "dx": "0",
+            "dz": "0",
+            "maxx": "0",
+            "remote": "nil"
+          }
+        },
+        "production_core_sha256": "b0223b8b166a7d85f6e91f8091e3fa485d2bf86e4d19c0afaac1e3a170b330ff",
+        "no_lua_errors": true,
+        "no_invalid_prediction_rpcs": true
+      }
+    }
+  },
+  "test_limitations": [
+    "Offline isolated worlds with normal player collisions; not the user save.",
+    "Native client driver invokes DoAction with the same WALKTO and non-preview callback used by mouse input; no physical mouse click automated.",
+    "Obstacle routing, cancellation and drag lifecycle covered by simulated regression; native client measurements cover single-destination movement and arrival."
+  ],
+  "backup": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\client-assist-before-mouse-5w2hmv3v\\vanilla_solo_assist",
+  "installed": "D:\\SteamLibrary\\steamapps\\common\\Don't Starve Together\\mods\\vanilla_solo_assist",
+  "package": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\client_mods\\vanilla_solo_assist-0.2.4.zip",
+  "source_hashes": {
+    "modinfo.lua": "658169e8befd416fe167eded8e3e47edfd17b2c6e71d7e0a87b1295aeef83821",
+    "modmain.lua": "cd39d1d79f60f2fad82c48a3f9933e056b31794ee63ca23c73d184fcd35f545e",
+    "README.md": "50e2f947fe51fc9cf6d26315b8fa59e8da457f23e2fc1e2c663f1d5835d78509",
+    "scripts\\soloassist2hm.lua": "b0223b8b166a7d85f6e91f8091e3fa485d2bf86e4d19c0afaac1e3a170b330ff"
+  }
+}

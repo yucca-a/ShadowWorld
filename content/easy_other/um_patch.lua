@@ -4,15 +4,31 @@
 -----------------------------------------------------------------------------------
 -- 引用
 local UpvalueHacker = require("upvaluehacker2hm")
+local UMGuard = require("umcompatguard2hm")
+-- 五格锅所必需的动态料理防崩溃适配也统一由此入口加载。
+-- 关闭可选补丁时，只保留当前确实启用的五格锅所需部分。
+local optionalpatch = GetModConfigData("um_patch")
+-- Guard each upstream implementation before replacing it. Critical cloud
+-- correctness remains active; performance/visual adjustments follow um_patch.
+if TUNING.DSTU then require("umperformance2hm").Install(env, optionalpatch) end
+local fivepot = TUNING.hardmode2hm and GetModConfigData("food_change") and GetModConfigData("cooking_change") == -3
+if TUNING.DSTU and UM_CONFIG and UM_CONFIG.FOOD_STATS and (optionalpatch or fivepot) then
+    modimport("easy_other/um_food_stats.lua")
+end
+if not optionalpatch then return end
+require("umwinonaworker2hm").Install(env)
 -----------------------------------------------------------------------------------
 --[[修改列表:
 将妥协的瓶中信出宝藏概率34%改回60%
 修复雪球砸亮茄崩溃
 妥协厨师袋也可以移动中打开
 熊皮衣格子
-修复测试版黄油蝴蝶的自然生成
+修复动态料理属性及多模组锅具兼容
+优化两版妥协天气与测试版生态任务，自动跳过未知上游实现
+修复已核对测试版薇诺娜死亡与复活时工作监听的清理和恢复
 修复沃托克斯编织暗影重载后恢复掉落
 修复修补工具包互修和零收益扣次
+佩戴巧手勋章时可使用电能转换套件
 
 滑行手杖(马头杖)加移速减cd
 输出老鼠分时输出扣分物品名字和分数(根据TUNING.isCh2hm判断中英文输出)
@@ -27,29 +43,36 @@ local UpvalueHacker = require("upvaluehacker2hm")
 --]]
 --------------------------------------------------------------------------------------------------------
 if TUNING.DSTU then
-    do
-        -- 临时兼容测试版汉化 20260926.1。汉化改读 UM_CONFIG 后删除此块。
-        local translation = ModManager:GetMod("workshop-3597225156")
-        local config = GLOBAL.UM_CONFIG
-        if translation and translation.modinfo.version == "20260926.1" and config and
-            TUNING.DSTU.SLEEPINGBUFF == nil and type(config.SLEEPINGBUFF) == "number" then
-            local modimport = translation.modimport
-            translation.modimport = function(path)
-                if path ~= "init/init_strings/init_tooltips" then return modimport(path) end
 
-                -- 旧字段仅对汉化提示文件可见，避免改动游戏的全局设置。
-                translation.modimport = modimport
-                local previous_tuning = rawget(translation, "TUNING")
-                local tuning = previous_tuning or TUNING
-                local sleep_settings = setmetatable({
-                    SLEEPINGBUFF = config.SLEEPINGBUFF,
-                    GOTOBED = config.GOTOBED
-                }, {__index = tuning.DSTU})
-                translation.TUNING = setmetatable({DSTU = sleep_settings}, {__index = tuning})
-                modimport(path)
-                translation.TUNING = previous_tuning
+    local electrical_type = UPGRADETYPES.ELECTRICAL
+    if electrical_type and ModManager:GetMod("workshop-1909182187") then
+        local kit_prefab = "winona_upgradekit_electrical"
+        local upgrader_tag = electrical_type .. "_upgrader"
+        local upgradeable_tag = electrical_type .. "_upgradeable"
+        local upgradeuser_tag = electrical_type .. "_upgradeuser"
+
+        -- 巧手考验勋章不授予 has_handy_medal。沿用原版升级动作。
+        table.insert(TUNING.USEITEMFNS2HM, function(inst, doer, target, actions)
+            if inst.prefab == kit_prefab and target and target:HasTag(upgradeable_tag) and inst:HasTag(upgrader_tag) and
+                doer:HasTag("has_handy_medal") and not doer:HasTag(upgradeuser_tag) then
+                table.insert(actions, ACTIONS.UPGRADE)
             end
-        end
+        end)
+
+        AddPrefabPostInit(kit_prefab, function(inst)
+            if not TheWorld.ismastersim then return end
+            local upgrader = inst.components.upgrader
+            if not upgrader then return end
+
+            local CanUpgrade = upgrader.CanUpgrade
+            function upgrader:CanUpgrade(target, doer, ...)
+                if self.upgradetype == electrical_type and target.components.upgradeable.upgradetype == electrical_type and
+                    doer and doer:HasTag("has_handy_medal") then
+                    return true
+                end
+                return CanUpgrade(self, target, doer, ...)
+            end
+        end)
     end
 
     local gem_repair_values = TUNING.DSTU.GEM_REPAIRER_REPAIR_VALUE
@@ -83,37 +106,8 @@ if TUNING.DSTU then
     end
 
     do
-        if TUNING.DSTU.BUTTERFLYWINGS_NERF == "unique" then
-            local function SkipButterflyLoadRoll() end
-            AddPrefabPostInit("butterfly", function(inst)
-                if not TheWorld.ismastersim or inst.UMSlipAway == nil then return end
-
-                -- UM rolls on load, but wild butterflies do not persist. Leave captured butterflies intact.
-                if inst.OnLoad then
-                    local roll = UpvalueHacker.GetUpvalue(inst.OnLoad, "RollForButtery")
-                    if roll and roll ~= SkipButterflyLoadRoll then
-                        UpvalueHacker.SetUpvalue(inst.OnLoad, SkipButterflyLoadRoll, "RollForButtery")
-                    end
-                end
-
-                -- The spawner assigns the flower and moves the butterfly after SpawnPrefab returns.
-                inst:DoTaskInTime(0, function(inst)
-                    local seeker = inst.components.homeseeker
-                    local home = seeker and seeker:GetHome()
-                    if not (home and home:IsValid()) or inst:IsInLimbo() then return end
-
-                    inst.buttery = math.random(1, 100)
-                    if inst.buttery < 98 then return end
-
-                    local butterfly = SpawnPrefab("um_buttery_fly")
-                    if butterfly == nil then return end
-                    if butterfly.components.homeseeker then butterfly.components.homeseeker:SetHome(home) end
-                    if butterfly.components.pollinator then butterfly.components.pollinator:Pollinate(home) end
-                    butterfly.Physics:Teleport(inst.Transform:GetWorldPosition())
-                    inst:Remove()
-                end)
-            end)
-        end
+        -- Current beta rolls its own buttery butterfly on spawn. Keep the
+        -- upstream roll/save marker; do not run a second conversion here.
 
         if UPGRADETYPES.SOUL_SHADOW then
             local function IsWovenShadow(inst)
@@ -162,13 +156,11 @@ if TUNING.DSTU then
         -- 2025.5.3 melon:修复雪球砸亮茄崩溃-------------------------------------------
         AddStategraphPostInit("lunarthrall_plant_vine", function(sg)
             if sg.events and sg.events.attacked and sg.events.attacked.fn then
-                sg.events.attacked.fn = function(inst)
-                    -- 增加判断是否有health组件
-                    if inst.components.health and not inst.components.health:IsDead() then
-                        if inst.sg:HasStateTag("caninterrupt") or not inst.sg:HasStateTag("busy") then
-                            inst.sg:GoToState("hit")
-                        end
-                    end
+                local attacked = sg.events.attacked.fn
+                sg.events.attacked.fn = function(inst, ...)
+                    -- Only guard UM's health-less vine; preserve native
+                    -- electrocution handling and any later upstream behavior.
+                    if inst.components.health then return attacked(inst, ...) end
                 end
             end
         end)
@@ -180,7 +172,7 @@ if TUNING.DSTU then
             if not TheWorld.ismastersim then return end
             if inst.components.container.droponopen then inst.components.container.droponopen = nil end
         end)
-        -- 2025.9.19 melon:熊皮衣格子移动到这里------------------------------------------------
+        -- 熊皮大衣的六格口袋
         local containers = require("containers")
         containers.params.pack2hm2p3 =
         {
@@ -202,19 +194,24 @@ if TUNING.DSTU then
             if inst.components.container:IsEmpty() then inst.components.inventoryitem.cangoincontainer = true
             else inst.components.inventoryitem.cangoincontainer = false end
         end
-        local function addpack(inst, widget) -- 加背包
-            if inst == nil or inst:HasTag("pocketbackpack") then return end -- 加过背包了，不重复加
+        local function SetBeargerVestPockets(inst)
             inst:AddTag("pocketbackpack")
             if not TheWorld.ismastersim then
-                inst.OnEntityReplicated = function(inst) inst.replica.container:WidgetSetup(widget) end
-                return inst
+                local OnEntityReplicated = inst.OnEntityReplicated
+                inst.OnEntityReplicated = function(inst, ...)
+                    if OnEntityReplicated then OnEntityReplicated(inst, ...) end
+                    inst.replica.container:WidgetSetup("pack2hm2p3")
+                end
+                return
             end
-            if inst.components.container == nil then
-                inst:AddComponent("container")
-                inst.components.container.itemtestfn = function(container, item) return true end -- 可放所有物品
-                inst.components.container:WidgetSetup(widget) -- 设置样式
+            if inst.components.container then
+                -- 测试版已经接好了穿脱和耐久耗尽逻辑，只覆盖它的四格布局。
+                inst.components.container:WidgetSetup("pack2hm2p3")
+                return
             end
-            -- 修改装备和脱下函数
+            inst:AddComponent("container")
+            inst.components.container.itemtestfn = function() return true end
+            inst.components.container:WidgetSetup("pack2hm2p3")
             if inst.components.equippable ~= nil then
                 local _onequipfn = inst.components.equippable.onequipfn
                 inst.components.equippable.onequipfn = function(inst, owner)
@@ -231,24 +228,19 @@ if TUNING.DSTU then
             if inst.components.fueled ~= nil then
                 local _depleted = inst.components.fueled.depleted
                 inst.components.fueled:SetDepletedFn(function(inst)
-                    if inst.components.container ~= nil then -- 骨甲不掉
+                    if inst.components.container ~= nil then
                         inst.components.container:DropEverything()
                     end
                     if _depleted ~= nil then _depleted(inst) end
                 end)
             end
-            -- 若有背包栏，则设置背包。兼容多格 护甲类不设置 2025.7.25
-            -- if EQUIPSLOTS["BACK"] ~= nil then
-            --     if inst.components.equippable ~= nil then
-            --         inst.components.equippable.equipslot = EQUIPSLOTS.BACK
-            --     end
-            -- end
             -- 监听事件
             inst:ListenForEvent("itemget", OnContainerChanged)
             inst:ListenForEvent("itemlose", OnContainerChanged)
         end
-        if TUNING.DSTU.POCKET_POWERTRIP then -- 开衣物改动才加
-            AddPrefabPostInit("beargervest", function(inst) addpack(inst, "pack2hm2p3") end) -- 熊皮衣
+        -- 正式版从 DSTU 读取设置，测试版已迁移到 UM_CONFIG。
+        if TUNING.DSTU.POCKET_POWERTRIP or (UM_CONFIG and UM_CONFIG.POCKET_POWERTRIP) then
+            AddPrefabPostInit("beargervest", SetBeargerVestPockets)
         end
     end
 
@@ -265,7 +257,7 @@ if TUNING.DSTU then
             return table.contains(rotprefabs, v.prefab)
         end
         -- 2025.9.5 melon:排除的算分容器 钓鱼容器、暗影空间
-        local safe_container = {"meatrack", "mushroom_light", "mushroom_light2", "tacklestation2hm", "shadow_container", "offering_pot_upgraded", }
+        local safe_container = {"meatrack", "mushroom_light", "mushroom_light2", "tacklestation2hm", "shadowbank_tackle2hm", "shadow_container", "offering_pot_upgraded", }
         local function SnifferFoodScoreCalculations(inst, container, v)
             local stackmult = v.components.stackable and v.components.stackable:StackSize() or 1
             local preparedmult = v:HasTag("preparedfood") and 2 or 1
@@ -410,8 +402,9 @@ if TUNING.DSTU then
             if not TheWorld.ismastersim then return end
             local _TimeForACheckUp = nil -- 记录原来的函数
             local count_fn = 0 -- 记录个数  保证只有一个目标函数时才修改
-            for i, func in ipairs(inst.event_listeners["rat_sniffer"][inst]) do -- 找函数
-                if UpvalueHacker.GetUpvalue(func, "SnifferFoodScoreCalculations") then
+            local listeners = inst.event_listeners and inst.event_listeners["rat_sniffer"]
+            for i, func in ipairs(listeners and listeners[inst] or {}) do -- 找函数
+                if UMGuard.Known(func, "legacy_rat_check") and UpvalueHacker.GetUpvalue(func, "SnifferFoodScoreCalculations") then
                     _TimeForACheckUp = func -- 调用SnifferFoodScoreCalculations的即为所找监听函数
                     count_fn = count_fn + 1
                 end
@@ -449,11 +442,12 @@ if TUNING.DSTU then
             if not TheWorld.ismastersim then return end
             -- 2025.8.17 melon:第2天月龙也不跟过来。但会导致非夏天脱加载不消失，要第2天才消失。
             -- "seasontick" 这个监听事件妥协放到TheWorld.event_listeners里了
-            if TheWorld.event_listeners["seasontick"] then
-                for i, func in ipairs(TheWorld.event_listeners["seasontick"][inst]) do -- 找函数
+            if TheWorld.event_listeners and TheWorld.event_listeners["seasontick"] then
+                for i, func in ipairs(TheWorld.event_listeners["seasontick"][inst] or {}) do -- 找函数
                     if UpvalueHacker.GetUpvalue(func, "OnSeasonChange") then -- seasontick里找OnSeasonChange
                         local fn, i, prv = UpvalueHacker.GetUpvalue(func, "OnSeasonChange")
-                        if UpvalueHacker.GetUpvalue(fn, "OnEntitySleep") then -- OnSeasonChange里找OnEntitySleep
+                        if UMGuard.Known(fn, "legacy_moonmaw_season") and
+                            UMGuard.Known(UpvalueHacker.GetUpvalue(fn, "OnEntitySleep"), "legacy_moonmaw_sleep") then
                             UpvalueHacker.SetUpvalue(fn, OnEntitySleep, "OnEntitySleep")
                         end
                     end
@@ -462,8 +456,9 @@ if TUNING.DSTU then
             -- "entitysleep"
             local _OnEntitySleep = nil -- 记录原来的函数
             local count_fn = 0 -- 记录个数  保证只有一个目标函数时才修改
-            for i, func in ipairs(inst.event_listeners["entitysleep"][inst]) do -- 找函数
-                if UpvalueHacker.GetUpvalue(func, "LeaveWorld") then
+            local listeners = inst.event_listeners and inst.event_listeners["entitysleep"]
+            for i, func in ipairs(listeners and listeners[inst] or {}) do -- 找函数
+                if UMGuard.Known(func, "legacy_moonmaw_sleep") and UpvalueHacker.GetUpvalue(func, "LeaveWorld") then
                     -- TheNet:SystemMessage(debug.getinfo(func, "S").source or "nil")
                     _OnEntitySleep = func -- 调用LeaveWorld的即为所找监听函数
                     count_fn = count_fn + 1
@@ -479,11 +474,12 @@ if TUNING.DSTU then
             if not TheWorld.ismastersim then return end
             -- 2025.8.17 melon:第2天时令龙也不跟过来。但会导致非夏天脱加载不消失，要第2天才消失。
             -- "seasontick" 这个监听事件妥协放到TheWorld.event_listeners里了
-            if TheWorld.event_listeners["seasontick"] then
-                for i, func in ipairs(TheWorld.event_listeners["seasontick"][inst]) do -- 找函数
+            if TheWorld.event_listeners and TheWorld.event_listeners["seasontick"] then
+                for i, func in ipairs(TheWorld.event_listeners["seasontick"][inst] or {}) do -- 找函数
                     if UpvalueHacker.GetUpvalue(func, "OnSeasonChange") then -- seasontick里找OnSeasonChange
                         local fn, i, prv = UpvalueHacker.GetUpvalue(func, "OnSeasonChange")
-                        if UpvalueHacker.GetUpvalue(fn, "OnEntitySleep") then -- OnSeasonChange里找OnEntitySleep
+                        if UMGuard.Known(fn, "legacy_dragon_season") and
+                            UMGuard.Known(UpvalueHacker.GetUpvalue(fn, "OnEntitySleep"), "legacy_dragon_sleep") then
                             UpvalueHacker.SetUpvalue(fn, OnEntitySleep, "OnEntitySleep")
                         end
                     end
@@ -492,8 +488,9 @@ if TUNING.DSTU then
             -- "entitysleep"
             local _OnEntitySleep = nil -- 记录原来的函数
             local count_fn = 0 -- 记录个数  保证只有一个目标函数时才修改
-            for i, func in ipairs(inst.event_listeners["entitysleep"][inst]) do -- 找函数
-                if UpvalueHacker.GetUpvalue(func, "LeaveWorld") then
+            local listeners = inst.event_listeners and inst.event_listeners["entitysleep"]
+            for i, func in ipairs(listeners and listeners[inst] or {}) do -- 找函数
+                if UMGuard.Known(func, "legacy_dragon_sleep") and UpvalueHacker.GetUpvalue(func, "LeaveWorld") then
                     _OnEntitySleep = func -- 调用LeaveWorld的即为所找监听函数
                     count_fn = count_fn + 1
                 end
@@ -578,18 +575,17 @@ if TUNING.DSTU then
                     minotaur = minotaur.swp2hm
                 end
                 inst.minotaur = minotaur
-                minotaur:OrganUpdate(minotaur)
+                if minotaur and type(minotaur.OrganUpdate) == "function" then minotaur:OrganUpdate(minotaur) end
             elseif inst.minotaur then
                 if inst.minotaur:HasTag("swc2hm") and inst.minotaur.swp2hm and inst.minotaur.swp2hm:IsValid() then
                     inst.minotaur = inst.minotaur.swp2hm
                 end
-                inst.minotaur:OrganUpdate(inst.minotaur)
+                if type(inst.minotaur.OrganUpdate) == "function" then inst.minotaur:OrganUpdate(inst.minotaur) end
             end
         end
 
         AddPrefabPostInit("minotaur_organ", function(inst)
             if not TheWorld.ismastersim then return end
-            local src = "../mods/workshop-2039181790/scripts/prefabs/minotaur_organ.lua"
             local periodtask = nil
             local count_task = 0
             if inst.pendingtasks then
@@ -597,7 +593,7 @@ if TUNING.DSTU then
                 for a,b in pairs(inst.pendingtasks) do
                     -- TheNet:SystemMessage(debug.getinfo(a.fn, "S").source or "nil")
                     -- 路径对、间隔对
-                    if debug.getinfo(a.fn, "S").source == src and a.period == 1 then
+                    if UMGuard.Known(a.fn, "legacy_organ_shield") and a.period == 1 then
                         periodtask = a
                         count_task = count_task + 1
                     end
@@ -630,15 +626,16 @@ if TUNING.DSTU then
         -- end)
     end
 
-    -- 2025.5.3 melon:开启鼠潮时自动打开老鼠分宣告------------------------------------
-    AddPrefabPostInit("charcoal", function(inst)
+    -- 等鼠潮组件挂载后，再按妥协的实际配置设置播报。
+    AddSimPostInit(function()
         if not TheWorld.ismastersim then return end
-        if TUNING.DSTU.ANNOUNCE_BASESTATUS then return end
-        inst.open_task2hm = inst:DoTaskInTime(0, function(inst)
-            if inst:HasTag("NORATCHECK") then -- 木炭有NORATCHECK标签说明开启了鼠潮
-                TUNING.DSTU.ANNOUNCE_BASESTATUS = true -- 开启老鼠分宣告
-            end
-        end)
+        local beta = ModManager:GetMod("workshop-3193922031")
+        local um = beta or ModManager:GetMod("workshop-2039181790")
+        if not um then return end
+
+        local announce = um.GetModConfigData("rat_raids") == true and TheWorld.components.ratcheck ~= nil
+        TUNING.DSTU.ANNOUNCE_BASESTATUS = announce
+        if beta and UM_CONFIG then UM_CONFIG.ANNOUNCE_BASESTATUS = announce end
     end)
     if TUNING.DSTU.MAXTEMPDAMAGE then modimport("easy_other/um_temperature_penalty.lua") end
 end -- if TUNING.DSTU

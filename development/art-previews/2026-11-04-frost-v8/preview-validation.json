@@ -1,0 +1,31 @@
+{
+  "images": [
+    {
+      "file": "frost-shrine-v8a-reliquary.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "frost-shrine-v8b-altar.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ]
+    }
+  ],
+  "core_unchanged": true,
+  "missing_preview_files": [],
+  "runtime_assets_modified": false
+}

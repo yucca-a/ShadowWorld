@@ -1,0 +1,44 @@
+寒霜贴图定稿与本地接入记录
+日期：2026-11-04
+
+选定原稿
+寒霜之祠：第四版 frost-shrine-v4.png。
+霜冻核心：第三版 frost-core-v3.png。
+两份原稿按 SHA-256 与相应预览版本逐字节核对一致，没有重绘。
+
+本地资源
+已更新 content/ 中两件物品的独立动画包、制作栏/物品栏图标和 prefab 资源引用。
+寒霜之祠使用 frostshrine2hm bank/build；保留原雕像 idle 与 jiggle 的变换帧。
+霜冻核心使用 frostcore2hm bank/build 和 idle 动画。
+移除旧雕像的额外蓝色乘色，以显示选定原稿颜色。
+配方、掉落、交易、锤击逻辑及核心升级逻辑均未更改。
+未修改版本号，未上传创意工坊，未覆盖 Steam 已安装的模组。
+
+导出
+使用官方 Klei buildanimation.py 和 TextureConverter.exe 编译。
+寒霜之祠世界精灵为 412 × 512；核心为 129 × 144。
+两件物品的图标图集均为 128 × 128，BC3，含 mipmap。
+源图仅做透明边缘裁切、缩放和格式转换。
+build_assets.py 为重建入口；默认只编译，--install 先备份后复制资源文件。
+Lua 引用修改已单独完成，不由该脚本重写。
+
+备份
+D:/Users/Yucca/Documents/ChatGPT/ShadowWorld/backups/frost-art-before-20261104-203245
+其中 manifest.json 记录各文件原先是否存在，包含原资源与两个 prefab。
+
+验证
+官方编译成功；已解码最终 TEX 并检查两张世界图集与两张图标。
+选定原稿及已安装资源的 SHA-256 与 build-manifest.json 全部一致。
+两个 prefab 通过 Lua 5.1 语法检查。
+git diff 检查通过（按仓库现有 CRLF 设置 cr-at-eol）。
+preview.html 的全部本地图片与链接均存在。
+独立复制的模组与测试世界通过原生专服检查，进程退出码为 0：
+物品与建造预览生成；idle/jiggle 动画加载；锤击反馈；核心图标引用；
+漂浮组件存在；核心堆叠和容器升级正常。
+测试结果：verification-native.json。
+原生检查使用 nullrenderer，不等于客户端画面检查；实际场景比例和视觉效果尚待客户端确认。
+测试世界载入时另有 sewing_mannequin 的 idle_loop 提示，与本次两个 frost 资源无关。
+
+预览
+preview.html 同时展示本次选定的第四版寒霜之祠、第三版霜冻核心。
+其中小图标由最终游戏 TEX 解码生成，大图使用原稿；未用旧版混搭预览页。

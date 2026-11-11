@@ -15,6 +15,18 @@ local hardmode = TUNING.hardmode2hm
 -- 定义每次闪避消耗的饥饿值
 local HUNGER_CONSUMPTION_PER_DODGE = 5
 
+local function ResetDodgeFatigue2hm(player, announce)
+    if player.dodgetiredtask2hm then
+        player.dodgetiredtask2hm:Cancel()
+        player.dodgetiredtask2hm = nil
+    end
+    player.pettiredPG = 0
+    if player.components.grogginess then player.components.grogginess:ResetGrogginess() end
+    if announce and player.components.talker then
+        player.components.talker:Say((TUNING.isCh2hm and "剩余次数: " or "left times: ") .. "3", 1, true)
+    end
+end
+
 -- 闪避冲刺动作
 AddAction("DODGE_WALTER", "Dodge", function(act, data)
     if act.pos or act.target then
@@ -29,7 +41,7 @@ AddAction("DODGE_WALTER", "Dodge", function(act, data)
 				inbucked = 4
 				duration = 20
 			end
-			doer.pettiredPG = doer.pettiredPG + 1
+			doer.pettiredPG = (doer.pettiredPG or 0) + 1
             -- 2025.9.2 melon:头顶显示剩余滑铲次数
             if doer.components.talker and doer.pettiredPG <= 3 then
                 local _times = doer.pettiredPG <= 3 and 3 - doer.pettiredPG or 0
@@ -41,37 +53,15 @@ AddAction("DODGE_WALTER", "Dodge", function(act, data)
 			if doer.pettiredPG > inbucked then
 				doer:PushEvent("bucked")
 			end
-			if taskPG ~= nil then
-				taskPG:Cancel()
-				taskPG = nil
-			end
-			taskPG = doer:DoTaskInTime(duration, function(doer)
-				doer.pettiredPG = 0
-				doer.components.grogginess:ResetGrogginess()
-                -- 2025.9.2 melon:头顶显示剩余滑铲次数
-                if doer.components.talker then
-                    doer.components.talker:Say((TUNING.isCh2hm and "剩余次数: " or "left times: ") .. tostring(3), 1, true) -- 显示2秒
-                end
-			end)
-			doer:ListenForEvent("death", function(doer)
-				doer.pettiredPG = 0
-				if taskPG ~= nil then
-					taskPG:Cancel()
-					taskPG = nil
-				end
-			end)
-			doer:ListenForEvent("bucked", function(doer)
-				doer.pettiredPG = 0
-				doer.components.grogginess:ResetGrogginess()
-				if taskPG ~= nil then
-					taskPG:Cancel()
-					taskPG = nil
-				end
-                -- 2025.9.2 melon:头顶显示剩余滑铲次数
-                if doer.components.talker then
-                    doer.components.talker:Say((TUNING.isCh2hm and "剩余次数: " or "left times: ") .. tostring(3), 2, true) -- 显示2秒
-                end
-			end)
+            if doer.dodgetiredtask2hm then doer.dodgetiredtask2hm:Cancel() end
+            doer.dodgetiredtask2hm = doer:DoTaskInTime(duration, function(player)
+                ResetDodgeFatigue2hm(player, true)
+            end)
+            if not doer.dodgetiredlisteners2hm then
+                doer.dodgetiredlisteners2hm = true
+                doer:ListenForEvent("death", function(player) ResetDodgeFatigue2hm(player, false) end)
+                doer:ListenForEvent("bucked", function(player) ResetDodgeFatigue2hm(player, true) end)
+            end
 		end
         doer.sg:GoToState("dodge2hm", {pos = act.pos or act.target})
         return true

@@ -1,0 +1,40 @@
+{
+  "status": "static artwork preview only; no runtime assets changed",
+  "date": "2026-11-04",
+  "generator": "built-in image_gen",
+  "artworks": [
+    {
+      "name": "寒霜之祠",
+      "file": "frost-shrine-v1.png",
+      "prompt": "Use case: stylized-concept.\nAsset type: a SINGLE complete hand-drawn 2D building sprite preview for a Don't Starve Together mod, not a concept board, not a 3D render.\nPrimary request: Independently design and draw the Frost Shrine (寒霜之祠), using the original game's Scaled Furnace / dragonfly_furnace as the benchmark for proportions, readable silhouette and drawing language. The game reference has a squat broad bulbous main chamber, a short tapering neck ending in a forked fin crest, two small raised shoulder ornaments, overlapping irregular plates, and a huge dark oval frontal opening. Design a distinct icy shrine with comparable visual weight and game camera angle.\nSubject: A squat ancient frost-worn charcoal-blue stone shrine, broad lower body, short tapered upper spire with a split shark-fin crest, two compact curved fin-like shoulder buttresses holding small dark-blue faceted stones. Main body clad in just two rows of large irregular overlapping slate plates with pale frost along the lips. A large open dark shrine alcove in the lower front, framed by three or four jagged icicle-like stone teeth, contains one visible small pale cyan frozen crystal heart being venerated. A low chipped oval stone footing, a few angular ice chips integrated into its edge, no large scene base. The upper spire is short: whole silhouette slightly taller than wide, not a tall tower. A little asymmetry and crooked handmade construction. Suggest cold with two tiny angular wisps inside the alcove, restrained.\nStyle/medium: Match the actual Don't Starve Together in-game artwork: expressive thick nearly-black irregular ink contours, angular shapes, thin scratchy diagonal ink hatching, flat muted gouache-like color areas, 2-3 hard value steps, sparse offwhite dry-brush highlights. A cut-paper theatrical 2D sprite, not polished fantasy concept art. Think of the native Scaled Furnace linework, Moon Stone masonry and Endothermic Fire Pit blue stone surfaces. Strong dark contour survives at 128px size. Deliberately economical surface detail. No dense ornamental filigree or runes.\nComposition/framing: single centered isolated object, complete full object visible, square image, occupies around 78% height, moderate 3/4 overhead Don't Starve camera with front mouth fully readable and top planes just visible, mild perspective, no horizon.\nColor palette: desaturated slate blue, charcoal navy, frost grey, muted ice cyan; blue-white highlight confined to crystal and frost edges. Most surfaces dark/mid-value, no huge pure white mass.\nBackground: genuinely transparent alpha, no floor or scenery, no external cast shadow, no checkerboard.\nConstraints: exactly one object, no character, no text, no labels, no watermark, no borders, no copied sprite fragments. Draw new artwork. No photorealism, no rendered 3D, no glossy mobile game style, no smooth airbrush, no neon bloom, no big aura, no snowflake particles, no ornate cathedral. This is a static approval preview, not an animation sheet."
+    },
+    {
+      "name": "霜冻核心",
+      "file": "frost-core-v1.png",
+      "prompt": "Use case: stylized-concept.\nAsset type: a SINGLE complete 2D inventory item sprite preview for a Don't Starve Together mod.\nPrimary request: Independently design and draw Frost Core (霜冻核心), a portable rare magical freezing component used to upgrade containers and an ice staff. It should look native beside Don't Starve's Blue Gem, Ice, Moon Rock, Iridescent Gem and Shadow Heart.\nSubject: A compact palm-sized frozen heart of power: an irregular roughly ovoid icy crystal core, leaning just slightly, containing a small pale blue-white angular heart-shaped frozen seed visible through a wide fractured front face. Three thick dark slate-blue jagged shell plates curl around the lower half like a broken stone seed husk; five or six broad sharp icy facets form the upper silhouette. One thin crooked ink-dark fracture branches across a major pale facet. The silhouette is chunky, asymmetrical, immediately readable, about 1.15 times taller than wide. Frozen luminous inner heart framed by a heavy dark lower shell, rather than a uniform light-blue gemstone. Only a few large facets. This is a loose handheld item with no stand or plinth, no suspension loops and no ornamental metal apparatus.\nStyle/medium: actual Don't Starve Together 2D hand-drawn inventory art: bold uneven near-black outlines, jagged/angular contours, economical flat muted colour fills with only 2-3 hard-edged shadow values, short scratchy diagonal pen hatching within dark facets, sparse sharp chalky white reflective strokes. Intentionally rough, a little crooked and eerie, not polished fantasy loot. Strong legibility even at 64x64. Less detail is better. The thin highlights can be chalk-white; the outline remains charcoal.\nComposition/framing: exactly one centered isolated object, complete visible, square image, occupies about 70% canvas height, mild three-quarter view revealing the fractured front and one side, same camera language as native inventory Blue Gem.\nPalette: charcoal navy shell, desaturated dark steel blue facets, muted icy cyan interior, tiny blue-white core. Small dark-blue areas balance the pale center.\nBackground: genuine transparent alpha, no scenery, no floor, no cast shadow, no checkerboard.\nConstraints: no text, no label, no watermark, no UI box, no extra items, no floating shards, no sparkle cloud, no aura ring, no external glow, no wings or antlers, no sci-fi machinery, no photorealism, no rendered 3D, no smooth airbrush or jewel photography, no glossy mobile game finish. New original drawing, static approval preview, not an animation sheet."
+    }
+  ],
+  "references": {
+    "inventory_atlas_entries": [
+      1024,
+      1024,
+      1024,
+      335
+    ],
+    "note": "Counts include skins and variants, not unique items; all four atlas images visually browsed. Focused contact sheet contained 43 original/mod items.",
+    "animation_atlases_reviewed": [
+      "dragonfly_furnace",
+      "coldfirepit",
+      "moonbase",
+      "winter_ornaments2023"
+    ],
+    "source": "Installed Don't Starve Together assets; work/frost-art-preview/references/reference-manifest.json",
+    "online_reference": "https://www.spriters-resource.com/pc_computer/dontstarve/asset/103290/"
+  },
+  "pending": [
+    "User visual review",
+    "Layer separation and animation production",
+    "KTEX/atlas/build packaging",
+    "In-game verification at actual world scale"
+  ]
+}

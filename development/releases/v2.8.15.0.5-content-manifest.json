@@ -1,0 +1,2222 @@
+[
+  {
+    "path": "anim/boat_bumper_crabking_kit2hm.zip",
+    "size": 21095,
+    "sha256": "59f2a15207af85338e96126ef2f9e57de07ed214b25e302965febe4bebab3e4e"
+  },
+  {
+    "path": "anim/carrotcake2hm.zip",
+    "size": 9133,
+    "sha256": "872e7ff342550e4abd6e185a83176b009d957ef9166a0aa6fa6c64643e98fe74"
+  },
+  {
+    "path": "anim/cook_pot_food_sw.zip",
+    "size": 321810,
+    "sha256": "1b0bcad6a661e3ae8ec144a3fa4669ee9946cbb6d96961208f37605dbd389cb6"
+  },
+  {
+    "path": "anim/frostcore2hm.zip",
+    "size": 13088,
+    "sha256": "f1d03cc5f9dd26aeb4383df4b6edf98d9ec460a64c9bd2a0533bebb09b92b86e"
+  },
+  {
+    "path": "anim/frostshrine2hm.zip",
+    "size": 108679,
+    "sha256": "02928ba61b932a9833d5457f4c37b7ff942d9431d8bbf09494a3fef0261f5cb6"
+  },
+  {
+    "path": "anim/hpm_player_ghost (2).zip",
+    "size": 1213054,
+    "sha256": "fb5c7349824fe1995d40593e975f7e6dc87f8b26d200ba45ebec4f67e0f66918"
+  },
+  {
+    "path": "anim/hpm_player_ghost.zip",
+    "size": 1213054,
+    "sha256": "fb5c7349824fe1995d40593e975f7e6dc87f8b26d200ba45ebec4f67e0f66918"
+  },
+  {
+    "path": "anim/hpm_player_tomb.zip",
+    "size": 98050,
+    "sha256": "eca99a5118842f87f2bce85432c56e3f3110f2b62ae8265836584de211fc33a7"
+  },
+  {
+    "path": "anim/hpm_soul_bottle.zip",
+    "size": 141469,
+    "sha256": "315083f502ed0ae4e4b0337c8ccfe6774f46f51201dbb57f5f00d883fedfef82"
+  },
+  {
+    "path": "anim/sharkboi_icefx2hm.zip",
+    "size": 74827,
+    "sha256": "3f63e65b89f5dad1bb69c645c50e84349f8a1f49aa42ac0a05b365a7557667b0"
+  },
+  {
+    "path": "anim/smallcandy2hm.zip",
+    "size": 9312,
+    "sha256": "69981a0fb2cf5f5a7295fa3facf19ef26270b2ef652da193d2ce6228399d0dd9"
+  },
+  {
+    "path": "anim/swap_ham_bat_1_00.zip",
+    "size": 18976,
+    "sha256": "561f6c466a590860a03a8a7d273a5d7fdfaf97df2753e2576e15a453651f128e"
+  },
+  {
+    "path": "anim/swap_ham_bat_1_17.zip",
+    "size": 28623,
+    "sha256": "664f952b465bfc915afe89dd62c56db070d28475fc0ca6c4a7b01b5b696ffa70"
+  },
+  {
+    "path": "anim/swap_ham_bat_1_31.zip",
+    "size": 32036,
+    "sha256": "34b7ee561e8f34f15cf7e0cbf8b4f735a1b29a7f98a28bcf03c5b040640689ee"
+  },
+  {
+    "path": "anim/swap_ham_bat_1_44.zip",
+    "size": 37780,
+    "sha256": "e8ffce58154b6bae44ca4b8d928823011ded135d1ef437fd1ac0936486dbd22b"
+  },
+  {
+    "path": "anim/swap_ham_bat_1_55.zip",
+    "size": 41730,
+    "sha256": "5accafdc3a4b1c98d21b3576ce8cb0db61fd690796a7ecd3ccd8c772c751e2c4"
+  },
+  {
+    "path": "anim/swap_ham_bat_1_65.zip",
+    "size": 46807,
+    "sha256": "d4f3219e24d8b47c41adf88fdc5b4dfc8ffcbb448a43bb79ad27fe21dac4fedd"
+  },
+  {
+    "path": "anim/swap_ham_bat_1_74.zip",
+    "size": 59167,
+    "sha256": "e6bf1aaa31c2a04d0cc67356a4d4cd49e71322f91b0a874fad3343cd9773a6a4"
+  },
+  {
+    "path": "anim/swap_ham_bat_1_82.zip",
+    "size": 60919,
+    "sha256": "3970c1c26c25fdbb45766fa5f452dd0030c46860210ee6dc5596b7d835e7e377"
+  },
+  {
+    "path": "anim/swap_ham_bat_1_90.zip",
+    "size": 75312,
+    "sha256": "773d48b8726a28e3bca9b541da469b792c97979a7b458f6a80a0254d634b86ef"
+  },
+  {
+    "path": "anim/swap_ham_bat_1_97.zip",
+    "size": 78825,
+    "sha256": "f484c8be59445889e182f4b5b8851ecc3969bfa24eea6796a11420d6b414d712"
+  },
+  {
+    "path": "anim/swap_ham_bat_2_04.zip",
+    "size": 75690,
+    "sha256": "48db519dd3f8345a954bd1ff4de10a650b4492003cc5b906250fbc606ef623e9"
+  },
+  {
+    "path": "anim/swap_ham_bat_2_11.zip",
+    "size": 77231,
+    "sha256": "233bcfb201d35da186d518539bc3a4e00fbd3b4c9035f74c7c7dbae54c6cc16c"
+  },
+  {
+    "path": "anim/swap_ham_bat_2_23.zip",
+    "size": 96518,
+    "sha256": "8fcf91cffe544d59c5631c389c75c58a45bfd257467ffd278a03fe44567e5ce6"
+  },
+  {
+    "path": "anim/swap_ham_bat_2_29.zip",
+    "size": 101884,
+    "sha256": "66bf9d55b151aee1a513e961c9daa6178ea41cf904ed0531d6baa3de6910ac7d"
+  },
+  {
+    "path": "anim/swap_ham_bat_2_35.zip",
+    "size": 106447,
+    "sha256": "9a0d0c91cc23f2efa74ff7bb4d787882ca1e03174a43f1452d19e7600b8e8c0c"
+  },
+  {
+    "path": "anim/swap_ham_bat_2_40.zip",
+    "size": 109882,
+    "sha256": "dadd7e909184e1599f89729f23c27dcf0653aa4ba3973ae9ec9c44bbd15b99da"
+  },
+  {
+    "path": "anim/swap_ham_bat_2_46.zip",
+    "size": 113184,
+    "sha256": "9c241eb6802a2cd8db9155933cbc2630c91a6af6ee5196b8e93f7b872ca2b776"
+  },
+  {
+    "path": "anim/swap_ham_bat_2_50.zip",
+    "size": 105151,
+    "sha256": "ceec1b7eb62318f0c60c2f04368621626805a815e6ff92bf9217c8b6a46aeaeb"
+  },
+  {
+    "path": "anim/tropicalbouillabaisse.zip",
+    "size": 31687,
+    "sha256": "ab0ce88aa41602c63c873506406c9b227eb3a5c19f6e8bdc3500aa9a0cf9f50e"
+  },
+  {
+    "path": "anim/tropicalbouillabaisse2hm.zip",
+    "size": 9133,
+    "sha256": "872e7ff342550e4abd6e185a83176b009d957ef9166a0aa6fa6c64643e98fe74"
+  },
+  {
+    "path": "anim/ui_dragonflyfurnace2hm.zip",
+    "size": 56265,
+    "sha256": "bd143cacbd639587c9646afc4dffbe03bd465ba40bc007d321540cc8f5ddddf9"
+  },
+  {
+    "path": "ARCHIVE_SOURCE.txt",
+    "size": 1139,
+    "sha256": "ba414730952bbd34c933f1185232dd1924737c65c6766970dc3d6a84c83cdbd0"
+  },
+  {
+    "path": "common/bugfix.lua",
+    "size": 5251,
+    "sha256": "7b6bd0605fc0c093e0e085ecf70f6a1fd4cbfbf6200b1b774672b07e3521b4ba"
+  },
+  {
+    "path": "common/clientfx.lua",
+    "size": 30,
+    "sha256": "badc3800a75e5c82014616a4af072a268463323625e1a8c786ec9d9b4f303a26"
+  },
+  {
+    "path": "common/common.lua",
+    "size": 47068,
+    "sha256": "fe0715f3c58468df15be4d1485253b61b7ed84f90d4f171cd8d5e87d8f43a281"
+  },
+  {
+    "path": "common/curse.lua",
+    "size": 8591,
+    "sha256": "ae21938ad0f54c7260b5cf8def2de1e081ea705a758e7c8b3bbdb3fc13b9719a"
+  },
+  {
+    "path": "common/equip_slot_fix.lua",
+    "size": 2072,
+    "sha256": "4e318c58a04bfcdf9b55b90228d72b0c29044819efec06a260c745ca74fd1eac"
+  },
+  {
+    "path": "common/food_util.lua",
+    "size": 915,
+    "sha256": "85daee9726f9178d08a3d542cd8617a5a1e955a074d391e928c02372169285bb"
+  },
+  {
+    "path": "common/hardmode.lua",
+    "size": 11990,
+    "sha256": "613120e6e42ec8197ebd887825fdec42e5199a437b0f26a551dcbe65d67f8c6d"
+  },
+  {
+    "path": "common/language2hm.lua",
+    "size": 2195,
+    "sha256": "8ec32fea005afd934abeb184800fec6b1658044a6e3af432d5b410639d7c3ef1"
+  },
+  {
+    "path": "common/monster_nightvision.lua",
+    "size": 8337,
+    "sha256": "b42e20a7187e3fd89888d462f6bdb3ccb9adae134ea438981f2f926ec0a42a68"
+  },
+  {
+    "path": "common/newstate.lua",
+    "size": 9520,
+    "sha256": "dd5f6d461fccbfa83d7e1f367c33742ed2bf1c40b3795ca05532816441213e16"
+  },
+  {
+    "path": "common/patch.lua",
+    "size": 27695,
+    "sha256": "c8523d19e949b36b772e6d8980d721f25d8a38450c0682a833c7bbf8c13ecee7"
+  },
+  {
+    "path": "common/projectile.lua",
+    "size": 8502,
+    "sha256": "86f4d9ec9ddb7ec9d071d13baa3a42420d924d02588560aad052ab577e285b8d"
+  },
+  {
+    "path": "common/recipe_util.lua",
+    "size": 1650,
+    "sha256": "d58a9b9a4be1fe20396cc04cd741d3b5f9f35ed78d7773b0e72ff320805ff08a"
+  },
+  {
+    "path": "common/replica.lua",
+    "size": 36,
+    "sha256": "14bedd23c08f6a06c9750190196b953bc7417d57b0829dcf6162c8f2cbb7fe45"
+  },
+  {
+    "path": "common/superutils.lua",
+    "size": 21811,
+    "sha256": "a380f04a8f1eeca2d64f3bf8cbafd089669571de17a605802acfcf43c78c2d3f"
+  },
+  {
+    "path": "common/temp.lua",
+    "size": 3747,
+    "sha256": "3eacbf5f142fa271831306a1d16dbee800dca684dc6f67834001c2a19284d69a"
+  },
+  {
+    "path": "common/walter_wixie_slingshot.lua",
+    "size": 9510,
+    "sha256": "895093383f7a210363db93120ca0cea166d3c2cee0a8e2e82e9de7b6bf28d3fd"
+  },
+  {
+    "path": "easy_other/containersort.lua",
+    "size": 223283,
+    "sha256": "08b5fee3c70f5d451607f0dd2302d3c337e632891aa37c202dee3bcde0c85c66"
+  },
+  {
+    "path": "easy_other/easy_equipments.lua",
+    "size": 299493,
+    "sha256": "148fe6d914d83e429285af421e9758650c31f090da0f019930f899736864d0d5"
+  },
+  {
+    "path": "easy_other/easy_items.lua",
+    "size": 79603,
+    "sha256": "201d56747143203ccf49cd5158ae6dc85894c12b1cf2779d75869a3d26efbc8c"
+  },
+  {
+    "path": "easy_other/easy_living_things.lua",
+    "size": 7527,
+    "sha256": "653c8b830a99df138aaf55b7976fdb753bd63d6a513bb733ff32fa75a1fd55a8"
+  },
+  {
+    "path": "easy_other/easy_mechanics.lua",
+    "size": 34712,
+    "sha256": "02b0aad2267fbc8aa30e42004a6883e54e88f796bca280fc8fb9a72c9526f054"
+  },
+  {
+    "path": "easy_other/easy_structures.lua",
+    "size": 175156,
+    "sha256": "a0246983b56e858f36dbeb2f71d9370b4ccee84a7e4c2d4ce9d5d699386e8af2"
+  },
+  {
+    "path": "easy_other/eyeturret2hm.lua",
+    "size": 22854,
+    "sha256": "2b12c63a869b22d86431cb197a34e2bea0e3350317ee1f62b2c0a9884b5f2112"
+  },
+  {
+    "path": "easy_other/lunar_shadow_items.lua",
+    "size": 62156,
+    "sha256": "6b0b5b24ceffd749a7e6daf0051f94e6029ec39838c8a6147f6ef47848c0a974"
+  },
+  {
+    "path": "easy_other/magician_private2hm.lua",
+    "size": 9293,
+    "sha256": "dd1c8bfb2059db37ecdd8583de1f1b9f87b14ed2f4e59374af87a285113b2f64"
+  },
+  {
+    "path": "easy_other/mod.lua",
+    "size": 671,
+    "sha256": "fcdcd8cf703061e758ada77f8ccaabcf8a97336cff8589919eefc4e2ef6aec77"
+  },
+  {
+    "path": "easy_other/serverpaused.lua",
+    "size": 1430,
+    "sha256": "64e6e2955d4389971d1ea376729a2abb1a3e5e6549c49198ceee05c479733314"
+  },
+  {
+    "path": "easy_other/shadowvault.lua",
+    "size": 5467,
+    "sha256": "1c093a9f7d5cc4f02cadab194b18d4d8880e00340a1d362e4dc265015c08663f"
+  },
+  {
+    "path": "easy_other/shadowvaultplayer.lua",
+    "size": 1350,
+    "sha256": "33f466beb54a02ac465ebebeaabf29206796412a90e2664ac2cffc84d6268b7f"
+  },
+  {
+    "path": "easy_other/simplechatbot.lua",
+    "size": 216,
+    "sha256": "6543bb20fcbe5a071af4a0a4a3ed3bfbfd61841afc42718df17ad53e8518c020"
+  },
+  {
+    "path": "easy_other/ui.lua",
+    "size": 22783,
+    "sha256": "62ddb1e3ef8329946cace74d08f1ee518facc2e3b9c85d3228b2c03fb7e03b3f"
+  },
+  {
+    "path": "easy_other/um_food_stats.lua",
+    "size": 11775,
+    "sha256": "c889b63b67860781decfc7a97af5112c86abb92e6d03f983eb8bf46fc3ebd19c"
+  },
+  {
+    "path": "easy_other/um_patch.lua",
+    "size": 38151,
+    "sha256": "96b4f934ab87c8aad2fa1d5287e15335e9680db9ece438dcc5d481ab8731d753"
+  },
+  {
+    "path": "easy_other/um_temperature_penalty.lua",
+    "size": 5934,
+    "sha256": "5bdee43e1cde6624e322a674602f365fb161435bf93c4e48270f20a40686314e"
+  },
+  {
+    "path": "easy_other/whip_kaleidoscope.lua",
+    "size": 5051,
+    "sha256": "fb9a3b5b8eef755bef2b73a977b598b81a4ef44c6cc5d91b3bb9b2a1bc8c911e"
+  },
+  {
+    "path": "easy_role/attackaction.lua",
+    "size": 3021,
+    "sha256": "80d0d922d9caefd78b84db3d089bf4cc4748ef72f619a206942a4cd2d81935b2"
+  },
+  {
+    "path": "easy_role/gym.lua",
+    "size": 19078,
+    "sha256": "5433862989dea4c3ec55456a76a540c87018e236d3d0c70b55434c2a793872d2"
+  },
+  {
+    "path": "easy_role/rightaction.lua",
+    "size": 61905,
+    "sha256": "f5192a017f783eef93121d9420cdab9ea8019b10da1bd75aa0d28f30d1d4d69c"
+  },
+  {
+    "path": "easy_role/rightselfaction.lua",
+    "size": 8838,
+    "sha256": "49e37964f6c9e27c59f744a99deacca323a55066638ce8fa1f94d5cecabff2ba"
+  },
+  {
+    "path": "easy_role/role_common.lua",
+    "size": 1282,
+    "sha256": "4860a456fb2b279dac8f544b0adab4c64a1f4260556ab17a18db018f7f9fbf7f"
+  },
+  {
+    "path": "easy_role/skilltree_common.lua",
+    "size": 17121,
+    "sha256": "91fd9430d9a7599f336bfb91cb1c79dea1d37381f6dfffdafc5e45100389c568"
+  },
+  {
+    "path": "easy_role/walter_easy.lua",
+    "size": 45830,
+    "sha256": "9e1debd51964ea74cec03a7b40f7d348537187d49238267c59adfd64f677a950"
+  },
+  {
+    "path": "easy_role/wanda_dreadwatch2hm.lua",
+    "size": 8677,
+    "sha256": "6daa77f2d80af6e223f81af841e677004aedbdca7d3026eb58c545619a8dfc24"
+  },
+  {
+    "path": "easy_role/wanda_easy.lua",
+    "size": 23191,
+    "sha256": "b128554599473f23a38f87d8514c6f94f3f6e142d79831cb247cd21096989e00"
+  },
+  {
+    "path": "easy_role/warly_easy.lua",
+    "size": 9952,
+    "sha256": "cc41310b82e6e16c84bbf13b1f1a1cbfdb692eaf079bc800f8b17d7a68a0c116"
+  },
+  {
+    "path": "easy_role/wathom_easy.lua",
+    "size": 8553,
+    "sha256": "c616f366c793fc0490f0e9949a2ac914a7a214f803074bec3c163dde04f539f3"
+  },
+  {
+    "path": "easy_role/waxwell_easy.lua",
+    "size": 7146,
+    "sha256": "d9e2f1feced8555119c413fdd9678f6f455b7a530f10483f4f7b151f2fdd8965"
+  },
+  {
+    "path": "easy_role/webber_easy.lua",
+    "size": 26549,
+    "sha256": "b88cb247736cc2b51cbc6a96ebc81af9a960d8ddeafada0165f319a9303fd887"
+  },
+  {
+    "path": "easy_role/wendy_easy.lua",
+    "size": 49486,
+    "sha256": "910b5e61b114131bb52c4d5259b30315f17b526d6edde0fa8cabd997c34f8b98"
+  },
+  {
+    "path": "easy_role/wes_easy.lua",
+    "size": 15578,
+    "sha256": "67310060b2e4d78c0c9a5e84ae5c8bd90916efb6ba40154e0bd78de32762ecee"
+  },
+  {
+    "path": "easy_role/wickerbottom_easy.lua",
+    "size": 31730,
+    "sha256": "49c0d01371ee71f7267093f00e3f9bdef5a03b7512f65ec21ea10fc510ffbb1c"
+  },
+  {
+    "path": "easy_role/wigfrid_easy.lua",
+    "size": 73895,
+    "sha256": "75f9f27172e73d28ab58a78fcb95e363e7f62d49d1afc2846e1ec89b500d7ab0"
+  },
+  {
+    "path": "easy_role/willow_easy.lua",
+    "size": 28398,
+    "sha256": "34414bb1d42e7724841bdd2f06b9b3f522b76a2869cca63ed400cfe0e37b08ff"
+  },
+  {
+    "path": "easy_role/wilson_easy.lua",
+    "size": 12550,
+    "sha256": "5aaa48de2dc01b05d52c65fd6831b1dba4053b79003aff97cb4620911b826337"
+  },
+  {
+    "path": "easy_role/winona_easy.lua",
+    "size": 12079,
+    "sha256": "8b3d4a736b67644b69e81529b01935c47c127b3f8eb9019369356d926132961c"
+  },
+  {
+    "path": "easy_role/winona_toolbox.lua",
+    "size": 2592,
+    "sha256": "fbd1e6c5d340f38fe05f867aa02caadbabfd186fa38978553c11407d120cd549"
+  },
+  {
+    "path": "easy_role/wixie_easy.lua",
+    "size": 2861,
+    "sha256": "34fc48cb795d8a18bfb20e6639b43cc1e3e410c0f5ab997b02d72770ebc72857"
+  },
+  {
+    "path": "easy_role/wolfgang_easy.lua",
+    "size": 4505,
+    "sha256": "fdbc9e49118eb92f4a0c9f4b2de8a46792b74fe8956fa52934752f00e4cee15e"
+  },
+  {
+    "path": "easy_role/wonkey_easy.lua",
+    "size": 21211,
+    "sha256": "fde2609697b1084b2d878dbc10ce12c089151d46e34d81e51f3b5a16e8716f1d"
+  },
+  {
+    "path": "easy_role/woodie_easy.lua",
+    "size": 12003,
+    "sha256": "eb75434e64cb49d58f24c5397bf4a58ecf105f8abc15ab481f9afb7c75552aec"
+  },
+  {
+    "path": "easy_role/wormwood_easy.lua",
+    "size": 55767,
+    "sha256": "9a817ada12ab99b94f41bd5e6a0e0a13f4c8f35a394ef1bf73b1a83ab7220751"
+  },
+  {
+    "path": "easy_role/wortox_easy.lua",
+    "size": 17677,
+    "sha256": "9c3860d607d037558574f72690a02dfde36508f8d316a5031f33bc22d42ca34f"
+  },
+  {
+    "path": "easy_role/wurt_easy.lua",
+    "size": 20512,
+    "sha256": "e7ee0abab8a6aa8cdec0275c31dcd957db2381c96f82a2f99cbd61ac5730062b"
+  },
+  {
+    "path": "easy_role/wx78_easy.lua",
+    "size": 66957,
+    "sha256": "979de0274921b8e20c6f30435238d7d4f5122202426d463f9887342f05386117"
+  },
+  {
+    "path": "epic/alterguardian.lua",
+    "size": 139098,
+    "sha256": "fda966ba15268956585581f0795e52bf2032157593ad34edfb2269ec756ce5fa"
+  },
+  {
+    "path": "epic/alterguardian_phase4_lunarrift.lua",
+    "size": 36270,
+    "sha256": "178724f78f20ef9c3face6b5f46e0f05bc4e5c675a7d548f9b89844d2e6f935e"
+  },
+  {
+    "path": "epic/antlion.lua",
+    "size": 57625,
+    "sha256": "aec66c7e11692422043ac441aa9232d40af4a898d0813ddade062d7aed43a99f"
+  },
+  {
+    "path": "epic/atriumstalker.lua",
+    "size": 28507,
+    "sha256": "1cf193230630df544a0606ae0a20cb6382ec5e090ca086289189deb3b5d98d10"
+  },
+  {
+    "path": "epic/bearger.lua",
+    "size": 15447,
+    "sha256": "f9e8e891bfdc0215f13024a73e640c3c12e5426e0fcd8c6ab37fbbf189e2c91b"
+  },
+  {
+    "path": "epic/beargerfur_sack_lunar_seed2hm.lua",
+    "size": 10586,
+    "sha256": "f7a60d9f626046daf4cdcfc42390ae4a900134b94fdc025906055278a95535c1"
+  },
+  {
+    "path": "epic/beequeen.lua",
+    "size": 5057,
+    "sha256": "afa12d0b69ec63c105733e8457142427e3bca804ef20b651b16985e900664fc5"
+  },
+  {
+    "path": "epic/crabking.lua",
+    "size": 48633,
+    "sha256": "30aaafb07f0d0e3dd3a935a8a40ba8252e30823ac62fa8d0bc9f646b3f2ac1df"
+  },
+  {
+    "path": "epic/crabking_deprecated.lua",
+    "size": 34467,
+    "sha256": "102a155ac06563ab19dd748d17b2794ccd373bae569908197796263cc9a59182"
+  },
+  {
+    "path": "epic/daywalker2.lua",
+    "size": 43032,
+    "sha256": "095b7d8d401effd4cc86e44766c9fa76e467892f7e922b7d833bf8a6cc2c608b"
+  },
+  {
+    "path": "epic/deerclops.lua",
+    "size": 20368,
+    "sha256": "406ba56a07d62405d8e309ba5edf2966b45cf52de1490e85f58bd9c5b98b2e8a"
+  },
+  {
+    "path": "epic/dragonfly.lua",
+    "size": 12111,
+    "sha256": "6e2b7cd56c67570d593e92733a144c4390d36d88c19b3f1a22cfd7df13a5451f"
+  },
+  {
+    "path": "epic/dynamic_armor.lua",
+    "size": 6384,
+    "sha256": "ba42879b40e0738e402d59a9480e068617cb44cfb9bca157928074c51e5fadec"
+  },
+  {
+    "path": "epic/epic_armor.lua",
+    "size": 15281,
+    "sha256": "82c6e2a13fbcf174353909396c0ad0d1120b13f0418d90f21dba892acfbbd3e9"
+  },
+  {
+    "path": "epic/epic_ruin.lua",
+    "size": 4755,
+    "sha256": "0e1aa52e5471b3f43a3e69814863afd092ebcf8004495e571f07c48ac6186204"
+  },
+  {
+    "path": "epic/eyeofterror.lua",
+    "size": 1049,
+    "sha256": "4bc31e1dfc03cdb49e61b4b943257559e83521cc03454a518781f9f09f9953f6"
+  },
+  {
+    "path": "epic/gelblob_storage_kit2hm.lua",
+    "size": 3064,
+    "sha256": "d937447c261a9d2a0a3c6f13ff7a4d8b091508fc2438a0fd64581613a58696fc"
+  },
+  {
+    "path": "epic/icestaff_frostcore2hm.lua",
+    "size": 4350,
+    "sha256": "b76b8e6ec1ad7f1d4f19c68b71aa60de8d4c578f203cff22d1402bf89a1a15b7"
+  },
+  {
+    "path": "epic/klaus.lua",
+    "size": 51207,
+    "sha256": "c68656708c77342164495e3910a444d07f6a8b144fcad5f3f2a3908f01e497f3"
+  },
+  {
+    "path": "epic/leif.lua",
+    "size": 14391,
+    "sha256": "444115041cc784e8bcd3d7a6cf88aca7fc8caacec4cf50588ca550ffadd64955"
+  },
+  {
+    "path": "epic/lunarepic.lua",
+    "size": 18555,
+    "sha256": "8edf6d0c96b7465a2f2f0526eca2110b1f7b7c73c45c010332ed94a774938fa0"
+  },
+  {
+    "path": "epic/malbatross.lua",
+    "size": 11271,
+    "sha256": "feee3e011309935aa55c669c4d68ecd97884c2c76b1c47408dc779f1c0311e75"
+  },
+  {
+    "path": "epic/minotaur.lua",
+    "size": 57211,
+    "sha256": "a990afa43b88b63ba75fa374196e31e65117f1f772ed65bf8b550e9d10ab1801"
+  },
+  {
+    "path": "epic/minotaur_old.lua",
+    "size": 42826,
+    "sha256": "704452e6cad7db135b75d90380a7f42a4388d9e149a2f923b5eadc68d63009c1"
+  },
+  {
+    "path": "epic/moosegoose.lua",
+    "size": 3092,
+    "sha256": "842ecfb9e3ee1aa7ba525ac24fe974b646b1c57593c19ad48261ea42ba789a66"
+  },
+  {
+    "path": "epic/pig_boss.lua",
+    "size": 13296,
+    "sha256": "da84a778e071e5cc74538f8b594d5c568dc4b50ac4f6facec9250e61e07fe343"
+  },
+  {
+    "path": "epic/poor_armor.lua",
+    "size": 6483,
+    "sha256": "a57fc01563d9f3d50d689add34c9f429bd47079f75cd743620d993eeabcd47d6"
+  },
+  {
+    "path": "epic/shadowchesspieces.lua",
+    "size": 33041,
+    "sha256": "3cd13538996ecc18bb589a73b0e8d1c5bc3633b2d540d011eb062be8cdff805a"
+  },
+  {
+    "path": "epic/sharkboi.lua",
+    "size": 67387,
+    "sha256": "14f00b7b5aa279ae2cd0d69e03ab914c5950236b5129662adf0faa65909733cb"
+  },
+  {
+    "path": "epic/sword_lunarplant_moonfire2hm.lua",
+    "size": 21908,
+    "sha256": "01d7e3e5c331e1edb0de2a5940fe5a2813cbd695b4b7fec373b06f6bd17b4910"
+  },
+  {
+    "path": "epic/sword_lunarplant_shadow2hm.lua",
+    "size": 12498,
+    "sha256": "2ba8ba260e2972ad4c5e0f43fbd34ec9813b2191d7ed74c5ea36c55e2b180f53"
+  },
+  {
+    "path": "epic/toadstool.lua",
+    "size": 25378,
+    "sha256": "9a206f0d1ec8c37fcfc98a820ae136bd143628d0faa33457c89a01d8c11dab64"
+  },
+  {
+    "path": "epic/um_hoodedwidow.lua",
+    "size": 37939,
+    "sha256": "5df75c90afb023333461001be8c70d1863b9dc66e1f8b152c8eed356fe7da3e5"
+  },
+  {
+    "path": "extra/extra.lua",
+    "size": 21559,
+    "sha256": "8099650350d9730cb089d8f1d84830a788a15a246caa82ce4ac2a5388e5e690e"
+  },
+  {
+    "path": "extra/frostjaw_trade.lua",
+    "size": 3441,
+    "sha256": "511107f1988c9ee648b576164a4d0f3442a1c274249cbb334ca2075c8832b89d"
+  },
+  {
+    "path": "extra/fruitfly2hm.lua",
+    "size": 748,
+    "sha256": "d2267caa4afbae17c5114a5818f09ab7d716ac723aac9190f5821fc2abb9d0d4"
+  },
+  {
+    "path": "food/action.lua",
+    "size": 10814,
+    "sha256": "14d8a62c37f251599e9ebb56db8b1d5f04dd5355fa31733efb61901354c6ca88"
+  },
+  {
+    "path": "food/animal.lua",
+    "size": 11994,
+    "sha256": "cb14af69912f9cf146a7de697153c2d30cfa9a800d13e7dbd373e3962548ddcc"
+  },
+  {
+    "path": "food/beefalo.lua",
+    "size": 5272,
+    "sha256": "a74028f594ab38314c735349a98a53aefed04d0e9e14cf4f43b9017b990a28ce"
+  },
+  {
+    "path": "food/birds.lua",
+    "size": 10308,
+    "sha256": "3f15f7886a64122485d7d91f951b17195e7e206861c145ef7309bf64fda06dc6"
+  },
+  {
+    "path": "food/container_live.lua",
+    "size": 5081,
+    "sha256": "8081f26c3601187c093b05755b0140d0a9205f14b74dedd99341fdeaa6ebef88"
+  },
+  {
+    "path": "food/cooking.lua",
+    "size": 14909,
+    "sha256": "c815b2ec14f864977e9495e6b906fdd4fb5f18ca0daa7bd3c5aa7b0cedd4a589"
+  },
+  {
+    "path": "food/farm.lua",
+    "size": 12082,
+    "sha256": "446280982911bf3333b18d3fc26bd07f51228ef7638a664ae5e1971b5e4af986"
+  },
+  {
+    "path": "food/farm_plant.lua",
+    "size": 1099,
+    "sha256": "2ab29f179a3717114254f535f77227043d31c899874c3aaaa8a8664345c67f4b"
+  },
+  {
+    "path": "food/fooddata.lua",
+    "size": 1835,
+    "sha256": "f94321d71f2e1eecec771d05819c4fe4aa3e062e6a9b2c005be7106719604b2c"
+  },
+  {
+    "path": "food/glommer.lua",
+    "size": 5153,
+    "sha256": "dc92000ed4448cbcc623bf023b042c16dc307acb8760250f013c64dbf1d4ab35"
+  },
+  {
+    "path": "food/koalefant.lua",
+    "size": 15926,
+    "sha256": "cd0c6ed19e7c7484eae5b77cc2b9799763eee6bfe58bbdc95677d3a12d6c0a05"
+  },
+  {
+    "path": "food/nutrient.lua",
+    "size": 6764,
+    "sha256": "a87724ff8b8c470b43f3861c2ad92345abd2e4e3a45805d27cee338567c29e81"
+  },
+  {
+    "path": "food/oceanfish.lua",
+    "size": 23323,
+    "sha256": "6a9ca294974920904b88da60228a5c4d4c51185136b624c7b0c8bddf81f71b02"
+  },
+  {
+    "path": "food/plant.lua",
+    "size": 16771,
+    "sha256": "82a3c4a050221fcd69032e45e1914e38174cf0149f614db4b824f8ed5d6b2da5"
+  },
+  {
+    "path": "food/seeds.lua",
+    "size": 2363,
+    "sha256": "bfedef30ccf1a2a70728c1a2cdd6817799a2aa657cb712778a3f8ab7798b7465"
+  },
+  {
+    "path": "images/frostshrine2hm.tex",
+    "size": 21960,
+    "sha256": "f9a853a61e1b26e27b2ddbdf73615febb4557fccf12614983390db3577e0cc34"
+  },
+  {
+    "path": "images/frostshrine2hm.xml",
+    "size": 175,
+    "sha256": "29005a3a3032b87ad9639923c3ff63b4a5f7b892d48c6acd7cf8f4d5c36e384a"
+  },
+  {
+    "path": "images/inventoryimages/bootleg2hm.tex",
+    "size": 5566,
+    "sha256": "0ec529b8b62dd18b0a4c952dd845830ebdb0bb7ec9b091ffa9ace9419a1323a0"
+  },
+  {
+    "path": "images/inventoryimages/bootleg2hm.xml",
+    "size": 166,
+    "sha256": "e7903de9adbe452a2b115e15249481a63fd8f39a86936c74a1c68cbfe7df7527"
+  },
+  {
+    "path": "images/inventoryimages/bottle_soul.tex",
+    "size": 4114,
+    "sha256": "d4b2212fd3406ec1187fb33b725e76bed49addcb3af981cc733b0c40336ae660"
+  },
+  {
+    "path": "images/inventoryimages/bottle_soul.xml",
+    "size": 168,
+    "sha256": "ca6f3e40a11b91031f98d5981e2b2bd9c24bff0baec3857a3a778aeb0511c530"
+  },
+  {
+    "path": "images/inventoryimages/carrotcake2hm.tex",
+    "size": 5566,
+    "sha256": "89980d61514ea287d73e688c689c5a6e0143ded931c4440ebf69bbef58f2d469"
+  },
+  {
+    "path": "images/inventoryimages/carrotcake2hm.xml",
+    "size": 172,
+    "sha256": "4d43ca507e5ec4ea67e661c5f7b8f9ea00f0dbe0e266b0e4237b0d178f5c2e05"
+  },
+  {
+    "path": "images/inventoryimages/crabking_kit2hm.tex",
+    "size": 5566,
+    "sha256": "4b8b1c516d9366b8aee5608ec40bce8606b26fb55830ae8731360686ce17eee9"
+  },
+  {
+    "path": "images/inventoryimages/crabking_kit2hm.xml",
+    "size": 176,
+    "sha256": "94946481c37b5b471f86b1ddfb7308b646699b96e7e5ddf9afc5865beb9a3fcd"
+  },
+  {
+    "path": "images/inventoryimages/frostcore2hm.tex",
+    "size": 5566,
+    "sha256": "334b0aeef45117f467c6303b86024ab7952d8cfa0a257ff0d5674433dd011792"
+  },
+  {
+    "path": "images/inventoryimages/frostcore2hm.xml",
+    "size": 171,
+    "sha256": "d244ed67c453066faadc38a1528c2f4ac1c0900bb502999f80799a61d2fdf76d"
+  },
+  {
+    "path": "images/inventoryimages/pocketwatch_heal2hm.tex",
+    "size": 21960,
+    "sha256": "f28b6e5f89e095d4fe2d8b18abfed92947d4098077e55f44338015d83b66b60c"
+  },
+  {
+    "path": "images/inventoryimages/pocketwatch_heal2hm.xml",
+    "size": 188,
+    "sha256": "16e46827cd966116284291925929737fe3539e69b77ad210b8b6d05be333e0ce"
+  },
+  {
+    "path": "images/inventoryimages/smallcandy2hm.tex",
+    "size": 16402,
+    "sha256": "00623f907121aba25bf989c374e72d4582ad50c93337eaf037521c1f52c949bf"
+  },
+  {
+    "path": "images/inventoryimages/smallcandy2hm.xml",
+    "size": 172,
+    "sha256": "2b250aaaf350c6058aede9a3cdf5c54d5e056a9a172e3c4bcf33d71305599c83"
+  },
+  {
+    "path": "images/inventoryimages/sword_vortex2hm.tex",
+    "size": 5566,
+    "sha256": "eacb16dc0e351132f86d98e2a5f6698707cb62a72cbaa7d90378cbddbe6e5016"
+  },
+  {
+    "path": "images/inventoryimages/sword_vortex2hm.xml",
+    "size": 176,
+    "sha256": "7758927a944b5935a7ae0484741e4b62f564fb643db2e4ca2b2d83927467e2ab"
+  },
+  {
+    "path": "images/inventoryimages/tropicalbouillabaisse.tex",
+    "size": 5592560,
+    "sha256": "50c23abaee7a75da552d352b80b4d3b135d8a8153ec844a27f099d58429f9832"
+  },
+  {
+    "path": "images/inventoryimages/tropicalbouillabaisse2hm.tex",
+    "size": 5592560,
+    "sha256": "50c23abaee7a75da552d352b80b4d3b135d8a8153ec844a27f099d58429f9832"
+  },
+  {
+    "path": "images/inventoryimages/tropicalbouillabaisse2hm.xml",
+    "size": 214,
+    "sha256": "9140c9cbf1e38073f682420fb5ee105dcb337db0355debe11e2fba52096aa7fd"
+  },
+  {
+    "path": "images/map_icons/tomb_repair.tex",
+    "size": 4114,
+    "sha256": "f38698327c5eb8034f51d13a92173e491b3290105cb4eaf5f8bea5e36f411369"
+  },
+  {
+    "path": "images/map_icons/tomb_repair.xml",
+    "size": 168,
+    "sha256": "f86e9e9afa4287a6c6a367d43a271d57ae04e07ff374df08327c0438cced53e1"
+  },
+  {
+    "path": "images/tomb_repair.tex",
+    "size": 4114,
+    "sha256": "f38698327c5eb8034f51d13a92173e491b3290105cb4eaf5f8bea5e36f411369"
+  },
+  {
+    "path": "images/tomb_repair.xml",
+    "size": 168,
+    "sha256": "f86e9e9afa4287a6c6a367d43a271d57ae04e07ff374df08327c0438cced53e1"
+  },
+  {
+    "path": "init/assets.lua",
+    "size": 1574,
+    "sha256": "bab586a9870bf6012e8ca61cbd6823d53ada4a83eaa712ccd0f90346c668b955"
+  },
+  {
+    "path": "init/hover.lua",
+    "size": 791,
+    "sha256": "7ff930ae2dbdcaf36740a6891f69aeb0714b1af88a4595e44b3d035b8a66bf6a"
+  },
+  {
+    "path": "LICENSE",
+    "size": 9441,
+    "sha256": "5d2bed72b295522b941633247c6f63dee7a3223650635edb55d9156f866dc659"
+  },
+  {
+    "path": "mod.manifest",
+    "size": 1736,
+    "sha256": "4c069eb4ac47326dac50deda9ce5f81fdb3815b89607c4271327708a22b3593f"
+  },
+  {
+    "path": "modicon.tex",
+    "size": 219474,
+    "sha256": "1f54c25e4f16626e6db0ad5146c65b03aa4ef45f863c131f1130242cd5b338ff"
+  },
+  {
+    "path": "modicon.xml",
+    "size": 142,
+    "sha256": "ccb15542239a7195c3b729d353996453cf77788f8a26f430874c0ff493d0b112"
+  },
+  {
+    "path": "modinfo.lua",
+    "size": 137311,
+    "sha256": "f66870d0ed11fc4c67d4e3a07e109d0917097fce375555620588dfd80ef0f87f"
+  },
+  {
+    "path": "modmain.lua",
+    "size": 20857,
+    "sha256": "2076b0c7a73350ce5aa8955aee900c317b8e7e7da2809744cc179f5c8c617885"
+  },
+  {
+    "path": "modservercreationmain.lua",
+    "size": 8143,
+    "sha256": "99db4e3bbd200b199c5e08c44ff1e9a12ba0594f5a0bfb66eb759604e514d5aa"
+  },
+  {
+    "path": "modworldgenmain.lua",
+    "size": 31230,
+    "sha256": "7fb1e3fdb4135cfc73ec2c669992d2d0a807e0d5d0d05798764bc14ce0d45298"
+  },
+  {
+    "path": "monster/bee.lua",
+    "size": 4585,
+    "sha256": "2726085f38d5135b0b59e849c9f41aa9cb04651a8f27d6ad0494c4e3b1a68a4c"
+  },
+  {
+    "path": "monster/boss_nofight.lua",
+    "size": 1929,
+    "sha256": "00acb1c5760ba557f7135a7ce351b1ab1b7fcbadfa4f49f57f65635fe7b2ed6d"
+  },
+  {
+    "path": "monster/calmfire.lua",
+    "size": 4146,
+    "sha256": "508c4c7358e9f9504568abc2bd4561c103a9429bc56aa920696562fd95214f46"
+  },
+  {
+    "path": "monster/chess.lua",
+    "size": 29163,
+    "sha256": "8f7cbc41b952129cfa3593bcabf5942cbe329d2bc02b0bbdaa981537e5a652ff"
+  },
+  {
+    "path": "monster/common.lua",
+    "size": 5726,
+    "sha256": "aacf900b02c75938f27d8d9af1f6a19724b3a581cd9db7ef9c5db49a5f46aa93"
+  },
+  {
+    "path": "monster/crawlingshadow.lua",
+    "size": 20132,
+    "sha256": "1a5efbc14854188421281a970425dd510602d29a3112981959b56d2bc1d5e01a"
+  },
+  {
+    "path": "monster/flying.lua",
+    "size": 2227,
+    "sha256": "de12d85a2c8f3c150ff0c1775104420281d1190b7b8b0c46dd3633056ec30ede"
+  },
+  {
+    "path": "monster/fruitfly.lua",
+    "size": 2524,
+    "sha256": "4f5ab77dd5847c26bb1d1538fbae848eeebbeb8726e1795326bcec8cd2e69154"
+  },
+  {
+    "path": "monster/hound.lua",
+    "size": 16844,
+    "sha256": "2e389baa602ec8f97945f4b2de77e65389ae3c29bd2fc1212ccdb247c8d925dc"
+  },
+  {
+    "path": "monster/krampus.lua",
+    "size": 4426,
+    "sha256": "03fe0de4e20ba2732920856eb33271c734ea9686cc76a47265d80a48d322a1d5"
+  },
+  {
+    "path": "monster/lunarthrall_plant.lua",
+    "size": 22519,
+    "sha256": "57f13d28d719428ff3d3595c47ba0b3b884e69e7169d91ad3f73bc87cd267412"
+  },
+  {
+    "path": "monster/mimicreep.lua",
+    "size": 601,
+    "sha256": "5c13469e58058c3d371e3bf376d713ab1bc48b812480578b8086fc3cbd834dd0"
+  },
+  {
+    "path": "monster/monkey.lua",
+    "size": 11473,
+    "sha256": "cbd399006764b49e75d9737fbf19a865fa477b0a029db560e194cac1f52c4cc5"
+  },
+  {
+    "path": "monster/moveattack.lua",
+    "size": 8645,
+    "sha256": "826a4e3b7fff316b99f8f59aa59d60873ee77f3c122d635016210b1ad6904ad6"
+  },
+  {
+    "path": "monster/oceanshadow.lua",
+    "size": 9014,
+    "sha256": "f551c08b0fe3f16d59c340fe886541817f1090a26357dadd7574a66a756aa869"
+  },
+  {
+    "path": "monster/otter.lua",
+    "size": 16650,
+    "sha256": "8b365dc21f1545959a3f7c844df77ec87df5554a60dc31d0aaf9ead2ef1a7af6"
+  },
+  {
+    "path": "monster/pigman.lua",
+    "size": 15337,
+    "sha256": "ccd12a5b876e26a81fb2afbe9116a5e475a619eaefe29c035b2b413a5858f121"
+  },
+  {
+    "path": "monster/powdermonkey.lua",
+    "size": 364,
+    "sha256": "00e635500689a69d2e5799f508f2a60bf81959e67a452eb9bba6d038ed1bbd8a"
+  },
+  {
+    "path": "monster/ruinsnightmare.lua",
+    "size": 22729,
+    "sha256": "f62fcbf4b7cae74b56968a1d08ea76bd027530a09bc5c2258e61fbaf3e43b4b2"
+  },
+  {
+    "path": "monster/secondlevel.lua",
+    "size": 3620,
+    "sha256": "62300518873a4c39d8993013738d194ca6b37bfbf5c689acf535ccb6ff1a9851"
+  },
+  {
+    "path": "monster/shadowbeak.lua",
+    "size": 25002,
+    "sha256": "314b1eb0e63325f822422ad91fa662d2ac1d6d58b71d68a9ec87a63ab4745ab4"
+  },
+  {
+    "path": "monster/shadowleech.lua",
+    "size": 10410,
+    "sha256": "aa5a5c1e6c2ff08571f1b9fd399cbb131808048664d305b4cdaa396ad1f1421f"
+  },
+  {
+    "path": "monster/shadowthrall.lua",
+    "size": 16621,
+    "sha256": "2d87c490f1b51374143ee28f982fa0768b3ae12d6d3e04aa2a07075a4a7c54f7"
+  },
+  {
+    "path": "monster/shadowthrall_centipede.lua",
+    "size": 1122,
+    "sha256": "fb40f7bc84f3ed211e540054dd0277494e3e7bedc8630f1fe6ef3df0c0241aec"
+  },
+  {
+    "path": "monster/shark.lua",
+    "size": 5327,
+    "sha256": "82917809a5f8333011938905a6db83777276b8e1aa2786764fb45d0bdb38249e"
+  },
+  {
+    "path": "monster/spider.lua",
+    "size": 9147,
+    "sha256": "c0fae16ba5e75f6d80ed0cb3362692a9b633e2ca19b7eed2ad9764b6943cc33c"
+  },
+  {
+    "path": "monster/supermonster.lua",
+    "size": 43944,
+    "sha256": "8aa7bac1e5a4d7cd15d12ed43df10da6b3e915e48268573e7a12f2f6c7c63be9"
+  },
+  {
+    "path": "monster/tentacle.lua",
+    "size": 4564,
+    "sha256": "1d8c3a2bb0e4ea19ca918c9baa8a448f6eb12b546d17435db9e484bd4f1e4a08"
+  },
+  {
+    "path": "monster/wall.lua",
+    "size": 16176,
+    "sha256": "d6070e15ea90f548e49ad6e781f1571d15b24dd7a26c7f0da5e6e133a58a358f"
+  },
+  {
+    "path": "monster/walrus.lua",
+    "size": 1874,
+    "sha256": "b5f333b353f44e6ae31ab706c7ce19644f493415d736b5135f8fe4ea4927714f"
+  },
+  {
+    "path": "ray/shengwudamiejve.lua",
+    "size": 9146,
+    "sha256": "75285299fd26b86ed33099c1cc36258a8518c499d8298216594a7385809f724d"
+  },
+  {
+    "path": "ray/shengwuqishilu.lua",
+    "size": 4754,
+    "sha256": "7c4ca9f57eeab443fe506bb7d43b226e3ee65e02671cc20ce5f015a6600b3f7b"
+  },
+  {
+    "path": "ray/suijishengwuapi.lua",
+    "size": 29389,
+    "sha256": "e6bb2a6df5abdcac586f8db86c953da415c94e6b6a063862421e32396b2d9fc8"
+  },
+  {
+    "path": "ray/yincangditu.lua",
+    "size": 5546,
+    "sha256": "5f398001bcc48f6c544bfc5e8d6424821114e570cb2d725316a315a1fbe662dc"
+  },
+  {
+    "path": "README.en.md",
+    "size": 997,
+    "sha256": "90ba317317c2c02211fb0e9db15d06b6eb4f595a5929c72c5eb78c511b2e68dd"
+  },
+  {
+    "path": "readme.md",
+    "size": 4857,
+    "sha256": "2f284ebbefbf126fe02a539c31cdddf14a8425ff1e8f7e2ca2d983cd00ad2d88"
+  },
+  {
+    "path": "role/clock_peril.lua",
+    "size": 2775,
+    "sha256": "26cbfc90183f93d32ab7a169cb62bc3d2ddadc5e15d5e41bbd4f823e40940036"
+  },
+  {
+    "path": "role/clock_rotate.lua",
+    "size": 4587,
+    "sha256": "420dc02a64958613c602b927392e88a54ab772c9ca67c31dcbf0392b32825322"
+  },
+  {
+    "path": "role/combat.lua",
+    "size": 27112,
+    "sha256": "76d865fad63a6f70b2f6a17aa74277be6b5a4a799f3d718565c48bfc158942b8"
+  },
+  {
+    "path": "role/combat_progressive.lua",
+    "size": 1860,
+    "sha256": "661cd8e3d1843cf8260c528368f73a1d622de1440c9387ab3f36ecd7beac29ff"
+  },
+  {
+    "path": "role/death.lua",
+    "size": 8938,
+    "sha256": "a4b7dccaaeb111d785cb5395bf8e693c42b5cd133581bacd12292881abdc3d61"
+  },
+  {
+    "path": "role/death_danger.lua",
+    "size": 1109,
+    "sha256": "579b33dfc79a1f6ea6729d1d3cecf2640b728ace072db47b90e0fdd9a0948433"
+  },
+  {
+    "path": "role/delayleave.lua",
+    "size": 745,
+    "sha256": "68da483195d762add6125ca99ada34124aaf49034a66146208d02cfc14190386"
+  },
+  {
+    "path": "role/haitang_curse.lua",
+    "size": 3944,
+    "sha256": "29e37138022316c7458441c6a99b8e51bf366f623ad0cc2365917541e519d1de"
+  },
+  {
+    "path": "role/haitang_curse_2.lua",
+    "size": 3542,
+    "sha256": "7b99bff70de134a86bc6a3efa106ac9b937e210b51aeee8b20cbd0b638101534"
+  },
+  {
+    "path": "role/health.lua",
+    "size": 3979,
+    "sha256": "ed54903133427ed3a0a2fd2f90e7c1e7bf1bec1f73e6550b6c0735173a7c98be"
+  },
+  {
+    "path": "role/hunger.lua",
+    "size": 12964,
+    "sha256": "55e0f1235c89db1e57970219543b9e2c0b6ce6613951675ce40f22266abe390e"
+  },
+  {
+    "path": "role/leader.lua",
+    "size": 3488,
+    "sha256": "13ef079da815bd817fc5810f7ae8e9f89169f853ec7a6caf7763110b5909bb19"
+  },
+  {
+    "path": "role/legion_shield.lua",
+    "size": 1205,
+    "sha256": "efd8881aeaaa016929e2e9de19c1229f8464305ebbda0c4bc76af05181099ce9"
+  },
+  {
+    "path": "role/norunattack.lua",
+    "size": 1608,
+    "sha256": "abffef1b13c7b922fe1ef65d50640516a493eeb312f959b2998740d80adcd868"
+  },
+  {
+    "path": "role/pvp.lua",
+    "size": 1921,
+    "sha256": "3f9e0b608dd20e2d13563b1a0f4ca0fa927f024918f05244845f2bb719340893"
+  },
+  {
+    "path": "role/recipe_add_material.lua",
+    "size": 12351,
+    "sha256": "09ea452e52ea5f745e2449ec348b414c36bf34ea28cc783d9fb4b98f8a4640ce"
+  },
+  {
+    "path": "role/regen.lua",
+    "size": 8871,
+    "sha256": "1918f474b0289b4728fc2cd5e04bd234870b65ecd90bd5641352cf41474b8224"
+  },
+  {
+    "path": "role/riding_hunger.lua",
+    "size": 1159,
+    "sha256": "78ecde1dd481230c86bad0903f57d76e007862253bdafd888d31c31479328df2"
+  },
+  {
+    "path": "role/sanity.lua",
+    "size": 6767,
+    "sha256": "0de550a74300ebfb02af5417f084669941239ce8e8d96c660f43d56fe5f7efd5"
+  },
+  {
+    "path": "role/soul.lua",
+    "size": 11233,
+    "sha256": "0d9ecacbed828e809d916d73e78318735dee447fb052291d38d6306a9cf3d005"
+  },
+  {
+    "path": "role/stand_fight.lua",
+    "size": 2605,
+    "sha256": "8c67cde81c806798a1356f143766eb9160c7c1fdf98f5c25178426cf4e973478"
+  },
+  {
+    "path": "role/taste.lua",
+    "size": 5514,
+    "sha256": "427421929990ce087181f2a966c3b544af92e406e695c2b7879626c77ec17736"
+  },
+  {
+    "path": "role/walter.lua",
+    "size": 11665,
+    "sha256": "27f29670fbfb4ed68381886adccbed2fd903a8a78ea4f83cae87d0c28d920026"
+  },
+  {
+    "path": "role/wanda.lua",
+    "size": 810,
+    "sha256": "9889386b04fa1ade55f401274cb2b225a8164c4ce4ab924fd27665f7b44e1b62"
+  },
+  {
+    "path": "role/waxwell.lua",
+    "size": 1600,
+    "sha256": "5869ee6c98b6e22864fb06f7d42c4dd8f7108b0fdb82189c1c1c76c65e981b07"
+  },
+  {
+    "path": "role/webber.lua",
+    "size": 995,
+    "sha256": "26b1e485fe866f6d9cfc1ab3fc2ea32cb404f77abf3a31590b1d2f9b27ed9e86"
+  },
+  {
+    "path": "role/wendy.lua",
+    "size": 21387,
+    "sha256": "a76e84ffd9d43e85d6e0ba9baa2a73cec19c46e37f755321fd771e4fb431242f"
+  },
+  {
+    "path": "role/wes.lua",
+    "size": 562,
+    "sha256": "80ee9d7fb7b6602bb6286571f25004fbecd9670ca79416b2eb11938b2394dd28"
+  },
+  {
+    "path": "role/wickerbottom.lua",
+    "size": 17039,
+    "sha256": "cc7086ec5f4ad6eb337f182d9e3755a8d031bc50e5ef8ffc7b9157b3a8ef53a4"
+  },
+  {
+    "path": "role/wigfrid.lua",
+    "size": 10268,
+    "sha256": "c38f0174d61c8089a3ab556128fa4a9ed1216135d7df406561d3dc28cce09109"
+  },
+  {
+    "path": "role/willow.lua",
+    "size": 13900,
+    "sha256": "4c272f3ea9208a37e18bb417e17f87a0a22a8f15fced703cece7b765cfaf2dbd"
+  },
+  {
+    "path": "role/wilson.lua",
+    "size": 117,
+    "sha256": "7a80a8a930d0e036ebbb644711f36e9bec83d66aeab1566ca2fae0df392650cd"
+  },
+  {
+    "path": "role/winona.lua",
+    "size": 660,
+    "sha256": "b9a75670897afc4668b0d304ce2360edcc622f6113fc53d0320681fcd914a137"
+  },
+  {
+    "path": "role/wolfgang.lua",
+    "size": 3042,
+    "sha256": "17a0d4373b4bdf8f5181fedc044c0a54f994de7046f5b7aaca3104d3b2498c0a"
+  },
+  {
+    "path": "role/wormwood.lua",
+    "size": 4798,
+    "sha256": "612d9bb9ab80ca5bb1a1065e8de13923e9bf2c55f3dddabd8db7af3ade805e13"
+  },
+  {
+    "path": "role/wortox.lua",
+    "size": 2738,
+    "sha256": "860997fe14a304ebdfa0be763aef865794cff73028a8fa532e182fbf7514ce91"
+  },
+  {
+    "path": "role/wurt.lua",
+    "size": 3939,
+    "sha256": "8b81a459be90e155f11b194bd092eced66b83e9f6148dd5f1eed71a8b5a0c1a8"
+  },
+  {
+    "path": "role/wx78.lua",
+    "size": 54397,
+    "sha256": "4b472c3b2a3890c7462094ac8bbc208fbcc9b3a572c2f6d9302606e99f5cde51"
+  },
+  {
+    "path": "scripts/brains/alterguardian_phase4_lunarriftbrainYf.lua",
+    "size": 1370,
+    "sha256": "4695b4c6a2e575fd4c929a70a693aa78ff6434511e65196a99df79c457f67541"
+  },
+  {
+    "path": "scripts/brains/berniebigbrain2hm.lua",
+    "size": 3128,
+    "sha256": "62908cc21f4ad7d4cd91b903c1e57de4dd28cc0d52c68b3bc0ac272850a8d4f7"
+  },
+  {
+    "path": "scripts/brains/berniebrain2hm.lua",
+    "size": 2414,
+    "sha256": "7d7d2fcfaf1d8fa382780939d63072f38a6e5ce369ce5e2d0b23bc843c2f2fbb"
+  },
+  {
+    "path": "scripts/brains/crabking2hmbrain.lua",
+    "size": 2757,
+    "sha256": "6a8f2d14229a64a3803dcbb4b839c2481d452dfd9dd85c1db012210e164ebb68"
+  },
+  {
+    "path": "scripts/brains/crabking2hmclawbrain.lua",
+    "size": 4828,
+    "sha256": "d88c1fe4472fc2590318b6d28f65e672732c5fa951e61fa1fd3a51b61190dea3"
+  },
+  {
+    "path": "scripts/brains/daywalker2brainPG.lua",
+    "size": 3846,
+    "sha256": "405f9f50bfadab07eb0c8064c36351070a8dd0cd6779f8046dd9df8bcbe5804c"
+  },
+  {
+    "path": "scripts/brains/klausbrain2hm.lua",
+    "size": 2897,
+    "sha256": "05507bc0a5c1fad1d3dda5f561ca3a41175af6b401ee40c55faa60431d409679"
+  },
+  {
+    "path": "scripts/brains/nightmarecreaturebrain2hm.lua",
+    "size": 3427,
+    "sha256": "413286a10dee3857d8f2f5547c1604bca7e71c691f93d459ab60588cee142930"
+  },
+  {
+    "path": "scripts/brains/powdermonkeybrainP.lua",
+    "size": 11746,
+    "sha256": "50ae92e226d5e64846d5b764892ab7386364e27562a0c98a9447ced8b79a8077"
+  },
+  {
+    "path": "scripts/brains/primematebrainP.lua",
+    "size": 5972,
+    "sha256": "7b3438356b1a8ab14883b8f520e12971c0565e19d496fdb39bf20c45ae1a3c5f"
+  },
+  {
+    "path": "scripts/brains/sharkboibrain2hm.lua",
+    "size": 1565,
+    "sha256": "fb38192e1125eeb742d115a6d36e5cec4cd7b7e2b42285a54d15bec30b490227"
+  },
+  {
+    "path": "scripts/brains/wagdrone_rollingbrain2hm.lua",
+    "size": 10139,
+    "sha256": "ea3f3f5e31e2f624f6facdb8bc3d8817ead85670dd7f6bc0c74d24f9429b8786"
+  },
+  {
+    "path": "scripts/clock_peril/client.lua",
+    "size": 3219,
+    "sha256": "692532a8389c3f27c3c4fcf8bda8916f29a8ef6764d1329eaf753f051f46be3a"
+  },
+  {
+    "path": "scripts/clock_peril/network.lua",
+    "size": 1053,
+    "sha256": "3aacc023b32eb615aecfa7ce2eacd7463ec67ee54d4b4d21fc4ccc92ac7240e1"
+  },
+  {
+    "path": "scripts/clock_peril/schedule.lua",
+    "size": 4115,
+    "sha256": "d2da1eac7e4bf523f0a9c0a41602a10f48cbbc20769ecb64073060ac52a66285"
+  },
+  {
+    "path": "scripts/clock_peril/server.lua",
+    "size": 15282,
+    "sha256": "ee3bc24c2f0f6d31d8e0da6470452a6c3489f886f421ffad989c6af88305bf3c"
+  },
+  {
+    "path": "scripts/combatdisplay2hm.lua",
+    "size": 1477,
+    "sha256": "c61cffa7d7c4ec9c5b5cc806f63e2ebab31d20f69f62d7bac0885ff534ef9361"
+  },
+  {
+    "path": "scripts/components/action2hm.lua",
+    "size": 164,
+    "sha256": "c9467af02dffa242d14c243c3710feb2dc87ae84bc36e17650b922458f47141d"
+  },
+  {
+    "path": "scripts/components/childspawner2hm.lua",
+    "size": 26776,
+    "sha256": "4845fb6ae8771fdc6464171d00d44b1214963aca9cca16afc5ddf8147a3aaef6"
+  },
+  {
+    "path": "scripts/components/despawnfader2hm.lua",
+    "size": 1037,
+    "sha256": "7872ef95be1de9b6a56ca3a5f2afae1fe2986fa7d57206d6b23a6dc402b4ea00"
+  },
+  {
+    "path": "scripts/components/dynamicarmor2hm.lua",
+    "size": 6068,
+    "sha256": "87200d39450b66b4ec45bbb821bd073c34cf744f666e6f22631a4d6e2df90a2b"
+  },
+  {
+    "path": "scripts/components/haitangcurse2hm.lua",
+    "size": 3334,
+    "sha256": "9066269cb034ed9adcc4971d000fcdf77d600de428e53c30602ace5ce45b02b3"
+  },
+  {
+    "path": "scripts/components/hambat2hm.lua",
+    "size": 8829,
+    "sha256": "65193dfed48e57bb354efe6cd26111dc783157b1127e1ccd83ed8021ad394db0"
+  },
+  {
+    "path": "scripts/components/hattrickchild2hm.lua",
+    "size": 4377,
+    "sha256": "55297a8b8c7d3dff2a8ae732a7d6fc426b2e365e1025865f70d3d23e72e205e7"
+  },
+  {
+    "path": "scripts/components/hattrickparent2hm.lua",
+    "size": 4917,
+    "sha256": "50fcbec25582618a5079a286a7bfaa00e36c0a2f36fbf2d1d639019805d3e8b1"
+  },
+  {
+    "path": "scripts/components/hoverer2hm.lua",
+    "size": 264,
+    "sha256": "6aa700b45c61caa91de61eb33fb30afa0d2b06b9785aab828458e1dd688f2e4d"
+  },
+  {
+    "path": "scripts/components/hoverer2hm_replica.lua",
+    "size": 197,
+    "sha256": "ebd5e643a1338191b418302c715009067034e706d5be7db95bda9d35d5f13608"
+  },
+  {
+    "path": "scripts/components/moonstormmanager2hm.lua",
+    "size": 12363,
+    "sha256": "92591195a58182690a89a28fa56f4c5999316e434a474d5e61aacd48466db585"
+  },
+  {
+    "path": "scripts/components/moonstorms2hm.lua",
+    "size": 7198,
+    "sha256": "7cab9aea3de99e8842984f973ba87af1d34bd60a7ae4c034e583e946dd3ad529"
+  },
+  {
+    "path": "scripts/components/passive_shadows2hm.lua",
+    "size": 4572,
+    "sha256": "399147d166583890397e267ded7a7b1bd5033fe3c336e8f6afe7d53aefc37301"
+  },
+  {
+    "path": "scripts/components/persistent2hm.lua",
+    "size": 955,
+    "sha256": "5c23d809f3fe4d813eb923eabbbb3bdf6126575761d32abb80c4546f01e404c5"
+  },
+  {
+    "path": "scripts/components/playerprox2hm.lua",
+    "size": 8682,
+    "sha256": "ee16f8c980a03a6d9db8b219d42cad8abf61ced88dc184156e86a8896f95314e"
+  },
+  {
+    "path": "scripts/components/removeleaveinventory2hm.lua",
+    "size": 19388,
+    "sha256": "5f59b326f2ead78fd98c6f11e265ddfb005fb7c949b379c733fffd4361856f1c"
+  },
+  {
+    "path": "scripts/components/repairable2hm.lua",
+    "size": 9011,
+    "sha256": "22aeae3bb04724b52a201f672bc6210f2d30a60232a0dcb6fbfb20273eb4b261"
+  },
+  {
+    "path": "scripts/components/rightselfaction2hm.lua",
+    "size": 98,
+    "sha256": "def25e21a10dc9d1d4f7002a53df19a4b87e119c9d112eda9738f2802e1bc045"
+  },
+  {
+    "path": "scripts/components/saveddata.lua",
+    "size": 1630,
+    "sha256": "79ec0be640062be246c0c312f9ee747bfcfe05fd85ddc8e54585d2da2cada285"
+  },
+  {
+    "path": "scripts/components/shadowvault2hm.lua",
+    "size": 58272,
+    "sha256": "7e6edf6c8ed08792ba4136b93874a0d82aec1de187958e41fac9b34c8174f340"
+  },
+  {
+    "path": "scripts/components/shadowvaultissued2hm.lua",
+    "size": 807,
+    "sha256": "db4cd5cdfab29887c44703211386fce84e44fbe207215cb781dc194451ac0534"
+  },
+  {
+    "path": "scripts/components/shadowvaultticket2hm.lua",
+    "size": 376,
+    "sha256": "a748a3b7522b2c20aa451ddc0fda2d09732cee4698fc3292e7e57c58abce70f5"
+  },
+  {
+    "path": "scripts/components/shaver2hm.lua",
+    "size": 131,
+    "sha256": "341fb932eecd1eebb9a809f1f082e17b061f107e71e0fcfeaa06ddb6e55bb64e"
+  },
+  {
+    "path": "scripts/components/simplechatbot2hm.lua",
+    "size": 2461,
+    "sha256": "462f32911b6c62fbb30d00f6a10a35ebd39591e2e82a9aeab646d64a57ba6a0b"
+  },
+  {
+    "path": "scripts/components/sinkholespawner2hm.lua",
+    "size": 13022,
+    "sha256": "c5c8d5f44ee622e747e685671d291e517f467b5b37ea445a8a58f9cee41b43df"
+  },
+  {
+    "path": "scripts/components/spawnfader2hm.lua",
+    "size": 1154,
+    "sha256": "3b36c67cb2fecef3fafda33e3b10e7261d38c6afdd6c5a691724d462cd6f9701"
+  },
+  {
+    "path": "scripts/components/stackable_replica.lua",
+    "size": 4710,
+    "sha256": "68718daaf3b10c41fdf26622553babe76d65cd829fcc30ce10bc9451c816e5aa"
+  },
+  {
+    "path": "scripts/components/tempequip2hm.lua",
+    "size": 1134,
+    "sha256": "417b785a554fb83a08b39be9d87ed8e087e7fb18fcb8ac6f587ce38dae3936b9"
+  },
+  {
+    "path": "scripts/components/waterstreakrain2hm.lua",
+    "size": 23164,
+    "sha256": "3d13c3d23253bc3f444a9459554dfc9a50edae197f8833b5d96ba856aa270ccd"
+  },
+  {
+    "path": "scripts/components/worldexchange2hm.lua",
+    "size": 665,
+    "sha256": "a7263b5d856e4fb9af959abc66b2cfe5f9ab542d155cfdbcd27376cc2fab8365"
+  },
+  {
+    "path": "scripts/debugcommands2hm.lua",
+    "size": 1197,
+    "sha256": "4270cf617a61037b4afadd9f033200bdd0ac5008315ea17bd26fa9153c8e8d0f"
+  },
+  {
+    "path": "scripts/entergift2hm.lua",
+    "size": 2190,
+    "sha256": "ac1e25daeb64c13836c14751d0675869902e16e75afc3d8a736a795c41239f7d"
+  },
+  {
+    "path": "scripts/foodsdata2hm.lua",
+    "size": 5995,
+    "sha256": "dfbe06f4f3aa99876f245baef531e6d247c1545896c225be9e97bbd16d215326"
+  },
+  {
+    "path": "scripts/frostshrinefx2hm.lua",
+    "size": 4422,
+    "sha256": "b9f443c905b957c413de30ed0c7e6ab6f270b2533d7fad3a2a1ddad7dfb0b2fb"
+  },
+  {
+    "path": "scripts/ingredientcollect2hm.lua",
+    "size": 859,
+    "sha256": "8d3959c9377b178760c2be4c5e279bb8aeb78a6e4d7ba598120ad5f76faa401f"
+  },
+  {
+    "path": "scripts/prefabs/backpackicon2hm.lua",
+    "size": 817,
+    "sha256": "c8806a7e1d94a336a140a56cd7bb8f07c273d5720f88e678dc0a3150eca631d4"
+  },
+  {
+    "path": "scripts/prefabs/battlesongbuffs.lua",
+    "size": 6323,
+    "sha256": "512fc77e4af9eef466b019ea882c8ed6b7589e94fdc75dca8b7ee9f7b36ea645"
+  },
+  {
+    "path": "scripts/prefabs/battlesongdefs_old.lua",
+    "size": 25458,
+    "sha256": "70a793b952f218b320164d32bb894aa4c4e977def4e3d4357f1980af1167e230"
+  },
+  {
+    "path": "scripts/prefabs/beargerrangeattackfx2hm.lua",
+    "size": 3116,
+    "sha256": "54528d59333d9f98f092879e1397f89ca042722b348d4e03b4dddb0f079b525c"
+  },
+  {
+    "path": "scripts/prefabs/blank2hm.lua",
+    "size": 978,
+    "sha256": "ad924ae2176aaff9828a7c838762a7883fa624cf4079cbd156d019d67601812d"
+  },
+  {
+    "path": "scripts/prefabs/boatwaterfx2hm.lua",
+    "size": 983,
+    "sha256": "9868a3e11e5b309bd12de71715e1d89e9e2e70c796cb4e2ea010dbc08f0f2a58"
+  },
+  {
+    "path": "scripts/prefabs/book_temperature_buff2hm.lua",
+    "size": 2643,
+    "sha256": "7e9a7ae121969dd59c5258a26ca06d904a3582aa6fa2a7da69c87808f89aa831"
+  },
+  {
+    "path": "scripts/prefabs/bookstation2hm.lua",
+    "size": 2372,
+    "sha256": "102376ca88450812ab18d69c0cbb20ab24de470b10bb273b73bb8b7bb38b6d39"
+  },
+  {
+    "path": "scripts/prefabs/bootleg2hm.lua",
+    "size": 11153,
+    "sha256": "552096f95b2bfb5f469619f6f4b41764adeee6a2a95617c3a8b62bf9b4b34aab"
+  },
+  {
+    "path": "scripts/prefabs/bootleg_2hm.lua",
+    "size": 7275,
+    "sha256": "19e0439c4a75bed7aebaca8bd9f049f636bb60aa801c6a209c7f66e303626ced"
+  },
+  {
+    "path": "scripts/prefabs/classified2hm.lua",
+    "size": 1240,
+    "sha256": "44d7d28d5c21e4141b86cf795e35eec67883299944609079c09e089ee7c361e2"
+  },
+  {
+    "path": "scripts/prefabs/crabking2hm.lua",
+    "size": 70923,
+    "sha256": "dcda50615e7e01b4fb350cffe2f338f186780fef33b610d987e750eac5521610"
+  },
+  {
+    "path": "scripts/prefabs/crabking2hm_claw.lua",
+    "size": 14729,
+    "sha256": "43f523ec3224528e1aadc51dda484d0be1081c4f9220f35e8650239405e4f434"
+  },
+  {
+    "path": "scripts/prefabs/crabking_feeze2hm.lua",
+    "size": 6433,
+    "sha256": "86b0a9e23bd7880246fbcdf0f748de36b1de23bc7a404779f3bb0fa8cdb9b1c6"
+  },
+  {
+    "path": "scripts/prefabs/crabking_kit2hm.lua",
+    "size": 2306,
+    "sha256": "557447a696121b9d37fba364d3a8edc50ae33419c86b1b88c0cd7966f201c4b7"
+  },
+  {
+    "path": "scripts/prefabs/deer2hm.lua",
+    "size": 25764,
+    "sha256": "7808f845ea3cd09dc60890aef5e2d6069715bf7c42a4908388adafc07abd75a9"
+  },
+  {
+    "path": "scripts/prefabs/devil_heart2hm.lua",
+    "size": 1585,
+    "sha256": "6fe679e292192c2a152c69ca4c96f86eb02f8976995a9d49d9c24427e0ef40dd"
+  },
+  {
+    "path": "scripts/prefabs/devilfruits2hm.lua",
+    "size": 7964,
+    "sha256": "4284a222a30a2d5768eb10ad4546e872f0ff0441f511b92ce354bd28aa91b528"
+  },
+  {
+    "path": "scripts/prefabs/devilplants2hm.lua",
+    "size": 13846,
+    "sha256": "e45180b1d1d509cbe1b1c8abdcd2b9f71f3a496b0be929320c02a4fc5e2d866c"
+  },
+  {
+    "path": "scripts/prefabs/dirt2hm.lua",
+    "size": 740,
+    "sha256": "bd488e893205482d8645d66c52da1f7ee6a64ef8e147164b14a865a9983a5db0"
+  },
+  {
+    "path": "scripts/prefabs/dragonfly_ringfire2hm.lua",
+    "size": 4938,
+    "sha256": "5dd33ada37e57013e9827125779fcbdd2cc5fe933e7f88dff06470092368e89a"
+  },
+  {
+    "path": "scripts/prefabs/dryberries2hm.lua",
+    "size": 3142,
+    "sha256": "f8c10aa27876ff9ddd2ccab90c97002bbfbd6c638ad3c89299a0fca73ecbbfa7"
+  },
+  {
+    "path": "scripts/prefabs/dryplants2hm.lua",
+    "size": 4510,
+    "sha256": "78196238cf1f49b05f3759b2713bf1634d3df2be760944b772d92ee4c26ab911"
+  },
+  {
+    "path": "scripts/prefabs/dryseeds2hm.lua",
+    "size": 4429,
+    "sha256": "cbbcb43f8d0b4f0f86f9827858a06843cb6fadba948a88672ebe7ec23095411f"
+  },
+  {
+    "path": "scripts/prefabs/eyeturret_safefire2hm.lua",
+    "size": 2748,
+    "sha256": "256cef7aec75f461e1f07305fdfb1448dadb7667d54a37132ca2ffe01d8f0e8d"
+  },
+  {
+    "path": "scripts/prefabs/food2hm.lua",
+    "size": 7372,
+    "sha256": "0c167d3ebad7b58b0fd82994dd344a4fe9ab8edc6e0f6507cdc6a86659e5bede"
+  },
+  {
+    "path": "scripts/prefabs/foodbuffs2hm.lua",
+    "size": 7988,
+    "sha256": "9e19f04f35d28a16feaa039d1a684e948961743ba480a76e3bb4ff89f052a32f"
+  },
+  {
+    "path": "scripts/prefabs/frostcore2hm.lua",
+    "size": 7932,
+    "sha256": "527f863cd14b69c4bd84141cd7247f33bd3cdba9bcd69104c4fd034155564040"
+  },
+  {
+    "path": "scripts/prefabs/frostshrine2hm.lua",
+    "size": 9141,
+    "sha256": "8c222b4d9ea654cc5ca5d5b29c22d63e0b73dacd6391ecf515ae85e25efda806"
+  },
+  {
+    "path": "scripts/prefabs/fx2hm.lua",
+    "size": 1121,
+    "sha256": "40422d553a8ad07518cccab639bf60935913e34b779acfd49671e002c21c0cdf"
+  },
+  {
+    "path": "scripts/prefabs/groundpoundringfx2hm.lua",
+    "size": 1566,
+    "sha256": "2c12870eff583a1f1a6bef83fb6d1988a6f95eef281a704e129bcc32de125f4b"
+  },
+  {
+    "path": "scripts/prefabs/gulumi_bless2hm.lua",
+    "size": 2185,
+    "sha256": "cd3214a873894c10928e5b8f24cabe5750fbb1e6b7cf80df658492fa5df0ae71"
+  },
+  {
+    "path": "scripts/prefabs/healthregenbuff2hm.lua",
+    "size": 4495,
+    "sha256": "8a4744d8276216b01fd8634f6940c24adbbe4b206ce63d56d725e069d064c357"
+  },
+  {
+    "path": "scripts/prefabs/heavyoceanfish2hm.lua",
+    "size": 20609,
+    "sha256": "290704d380b895cde51eb351d5d760f3e6a2ecde91554477d9ffbb16ffb0b5e3"
+  },
+  {
+    "path": "scripts/prefabs/houndterritory2hm.lua",
+    "size": 3801,
+    "sha256": "3acd5c729de57972a9498c9cdd8d22e46a13cea0fa43760d91d5013dd961d82e"
+  },
+  {
+    "path": "scripts/prefabs/icespike2hm.lua",
+    "size": 2701,
+    "sha256": "d01f3ac6cb092a000bea637cfdc30de5ac592c7fc4ed69ab7b948c8fc8a446cf"
+  },
+  {
+    "path": "scripts/prefabs/kaleidoscope2hm.lua",
+    "size": 3517,
+    "sha256": "3fe74aba71d7c1b309ca9bfab6b127aea51514edc6b16e5f3a381dc75451b92c"
+  },
+  {
+    "path": "scripts/prefabs/klaus2hm.lua",
+    "size": 45729,
+    "sha256": "09102b1271e2c274022bf1dc27d8870c520cb11039b2c3371433d8f0c2f3003a"
+  },
+  {
+    "path": "scripts/prefabs/linefx2hm.lua",
+    "size": 2615,
+    "sha256": "4fb5e28fcfb2fd6e578b17c074a22c90de742332c0388f016a3a391b2993ba13"
+  },
+  {
+    "path": "scripts/prefabs/magician_private_container2hm.lua",
+    "size": 935,
+    "sha256": "17d79da29f43777de6ca63dec0615531a057cd3fa542e00eeeb459f348a627f2"
+  },
+  {
+    "path": "scripts/prefabs/malbatross_feather2hm.lua",
+    "size": 3531,
+    "sha256": "e7e344b814f47af9f5888d2d60612b56e7d8e9ca02b583a2efc95805d4abb16d"
+  },
+  {
+    "path": "scripts/prefabs/minotaurhorn_2.lua",
+    "size": 2410,
+    "sha256": "4eadbcc54e37ef50d008705c6aa7f010e159e1ffc9af33ab49a44c422b703488"
+  },
+  {
+    "path": "scripts/prefabs/mod_hardmode_deathcursedequip.lua",
+    "size": 12342,
+    "sha256": "244d9c85a2d53f919c63cacdbdeb142f5b13292a9fcea909a2db0318d870e8d0"
+  },
+  {
+    "path": "scripts/prefabs/mod_hardmode_lavae.lua",
+    "size": 5365,
+    "sha256": "b17f2fa0d9dd84d93c2d934313342056ce1f71862443f68b903de9b24e51f36f"
+  },
+  {
+    "path": "scripts/prefabs/mod_hardmode_shadow_pillar.lua",
+    "size": 8053,
+    "sha256": "6e49b43df47c0a34f333c75e8189f99b24428243c43060f9749a79ed8b6476fc"
+  },
+  {
+    "path": "scripts/prefabs/mod_hardmode_shadow_trap.lua",
+    "size": 11468,
+    "sha256": "a272caf9bd041ace4026be3f442e6eded75395c8ff33aabe4b40d2590812715e"
+  },
+  {
+    "path": "scripts/prefabs/mod_hardmode_stafflight.lua",
+    "size": 26992,
+    "sha256": "f8dd471fd27a99531ea57bcce2f2a31ab78593cb55d4914535289d7f5a095286"
+  },
+  {
+    "path": "scripts/prefabs/mod_hardmode_tumbleweed.lua",
+    "size": 7191,
+    "sha256": "bc92661cb89205f7a4ca9efbf81c45f95f07960773274db5c5c912c5f2eda684"
+  },
+  {
+    "path": "scripts/prefabs/moonstorm_ground_lightning_fx2hm.lua",
+    "size": 1242,
+    "sha256": "a64cf0960ca54c33e772f0bafc3e70bb819779ff3dd5e47ef2c0ae454c3bbaa0"
+  },
+  {
+    "path": "scripts/prefabs/moonstormmarker2hm.lua",
+    "size": 1802,
+    "sha256": "41bb0ee3cb62f5f1e13f5456b43a4d66836e83e2d70e038e7d940152f7a197c9"
+  },
+  {
+    "path": "scripts/prefabs/oceanshadowcreature2hm.lua",
+    "size": 8621,
+    "sha256": "1873a948a971040128a8f0f387435599fa91a9254cdf07bc2407ed2ffa6746d9"
+  },
+  {
+    "path": "scripts/prefabs/onion_celestial2hm.lua",
+    "size": 1624,
+    "sha256": "bbe25b1a923b00509b7c150b1c8a676e0b66cdb1d8a1ee5f79ac64da28a61f96"
+  },
+  {
+    "path": "scripts/prefabs/passive_shadow_fx2hm.lua",
+    "size": 8673,
+    "sha256": "e945726209784b1aaa6bdea12c2df01850c2085ae8ffa85ee6cb5bea4c1ff933"
+  },
+  {
+    "path": "scripts/prefabs/pirate_stash2hm.lua",
+    "size": 4545,
+    "sha256": "dce5ba315d5a1b24e6eb31d1b728e956ff409b14f9857e10bb55c873d6f2a5b4"
+  },
+  {
+    "path": "scripts/prefabs/player_soul2hm.lua",
+    "size": 3551,
+    "sha256": "778a05647facd5ef03a857e07d22d01c2ca4184eef7b37e070aefb0f8e9fa9bf"
+  },
+  {
+    "path": "scripts/prefabs/player_soul_bottle2hm.lua",
+    "size": 4105,
+    "sha256": "c141f1de80a3203e4f445fd782b2d452869aa2ebbeb5bf966c7b4230038c1b20"
+  },
+  {
+    "path": "scripts/prefabs/player_tomb2hm.lua",
+    "size": 20463,
+    "sha256": "3a14e0479565356797edd779d8f76c103a8708cbffd4193677bb47b80d77051b"
+  },
+  {
+    "path": "scripts/prefabs/playertagentity2hm.lua",
+    "size": 359,
+    "sha256": "2d2307977a5e4d7dc6a11fef50e5fcdbfb647f00470234f1a9ecb411032d5061"
+  },
+  {
+    "path": "scripts/prefabs/pocketwatch_heal2hm.lua",
+    "size": 6720,
+    "sha256": "a468e4783d5e597f9775b501ece04d1133abf3a2b1df65e0a399a87095f87ed0"
+  },
+  {
+    "path": "scripts/prefabs/powdermonkeyP.lua",
+    "size": 12860,
+    "sha256": "882419b74ed7ce5aef166ba940bce9d9f609001effaafbd86a491b8c482c69ee"
+  },
+  {
+    "path": "scripts/prefabs/primemateP.lua",
+    "size": 11978,
+    "sha256": "b7e9b5ba6d119b552d509a4aa6e5bb302b3cdb265e93a7aa3594334b45104789"
+  },
+  {
+    "path": "scripts/prefabs/ruinsnightmare_horn_attack2hm.lua",
+    "size": 7255,
+    "sha256": "af3154d1e26e7da669c17e09726f20edba010cf9267bea81d9b5a10beae0a648"
+  },
+  {
+    "path": "scripts/prefabs/ruinsnightmare_horn_circular_attack_2hm.lua",
+    "size": 13596,
+    "sha256": "f84d5121eeddff45761ff2af56f262c674235cd75efbfcf6b19e0348ef66d3e0"
+  },
+  {
+    "path": "scripts/prefabs/shadow_teleport2hm.lua",
+    "size": 1074,
+    "sha256": "f2789e48647a8ed019985e37e3c54ef9b9336a53e3141a72770cb2b1aa3ef1df"
+  },
+  {
+    "path": "scripts/prefabs/shadowchessicon2hm.lua",
+    "size": 1352,
+    "sha256": "2d83df9f62a8a1013c8ac102dc2511573292d8f3368efc05f9d41af183b54ae9"
+  },
+  {
+    "path": "scripts/prefabs/shadowhutch2hm.lua",
+    "size": 21042,
+    "sha256": "44c5840247080b5335016acdc7a695061c845cbb6da170d7e5920d185969a417"
+  },
+  {
+    "path": "scripts/prefabs/shadowmeteor2hm.lua",
+    "size": 10008,
+    "sha256": "1336d72548242d87fd393253af20b0b33f117ff0d1733ab2be0962ef582d503f"
+  },
+  {
+    "path": "scripts/prefabs/shadowskittish2hm.lua",
+    "size": 2029,
+    "sha256": "d7af6d9a91a1870d3535619bea5f296c306bab4828489ec068bdce2569f5415f"
+  },
+  {
+    "path": "scripts/prefabs/shadowvault2hm.lua",
+    "size": 2110,
+    "sha256": "2e6effe21c50469811404d16a34459df523c66ff1407c1e2c1b6f3565e53f6a9"
+  },
+  {
+    "path": "scripts/prefabs/sharkboi_attackfx2hm.lua",
+    "size": 5306,
+    "sha256": "f18f312bfdf4637b6897421a39672f8f1ad1af2add12cf09814ddb843f69d02e"
+  },
+  {
+    "path": "scripts/prefabs/sharkboi_icefx2hm.lua",
+    "size": 1617,
+    "sha256": "759f26a6ad4f65005e6a319d212b3262d11c61c11e5df1f5c32a3a6f2435d2b0"
+  },
+  {
+    "path": "scripts/prefabs/spiderbag2hm.lua",
+    "size": 1828,
+    "sha256": "bd585e42b033d30d576e436f4eda3b8e5a079f766e918d0d440379e4edad3dfd"
+  },
+  {
+    "path": "scripts/prefabs/stalker_shield2hm.lua",
+    "size": 1562,
+    "sha256": "440e89a4f7f4412b100cefe102cb5be41976ac963062a695057fe6ec037b06ea"
+  },
+  {
+    "path": "scripts/prefabs/sword_vortex2hm.lua",
+    "size": 5806,
+    "sha256": "6d6f6ad83384da2a022118d974f37c3317f841e377f61c857cf58a5aa1e74141"
+  },
+  {
+    "path": "scripts/prefabs/tomb_plant2hm.lua",
+    "size": 14945,
+    "sha256": "7c0d9e060d9d168a0387d080b4866bf0a99e8776e20685f4d064da2f704c4d80"
+  },
+  {
+    "path": "scripts/prefabs/tomb_weed2hm.lua",
+    "size": 5627,
+    "sha256": "d1b48a77707129271a61b87a154e5f039e4528be83f6e5d22ba8649c93d9f003"
+  },
+  {
+    "path": "scripts/prefabs/torchfireprojectile2hm.lua",
+    "size": 4509,
+    "sha256": "17ef6ddeaa72d1d7374a8a89bf3e3ca53dc9b4bd1e218b1bec53eb50dd7091d5"
+  },
+  {
+    "path": "scripts/prefabs/townportaltalisman2hm.lua",
+    "size": 2459,
+    "sha256": "9e25e3a955a19456514280ed8b4a75ff49704612a2c6082444bf646b1eb621c3"
+  },
+  {
+    "path": "scripts/prefabs/tropicalfishbuff2hm.lua",
+    "size": 5890,
+    "sha256": "9ff1180ca4ae02d3374b80776e0604c5942b389fce6230d0eb865421b19e3723"
+  },
+  {
+    "path": "scripts/prefabs/walrus_camp2hm.lua",
+    "size": 14536,
+    "sha256": "4e671b855057c1211370aadfc02f0f30fc64bd5b91d27ba140953f5bdfa28c28"
+  },
+  {
+    "path": "scripts/prefabs/watch_weapon_horn2hm.lua",
+    "size": 7740,
+    "sha256": "d7ce7af5bfffc0d680b48a47795a32f2d01f994592c1f0d97fe4861da4a8e4dd"
+  },
+  {
+    "path": "scripts/prefabs/winona_toolbox2hm.lua",
+    "size": 1803,
+    "sha256": "b3d1bed3c2511f1ce4a0661b55ded398942fccff2a19957d7d8ead06990b73ab"
+  },
+  {
+    "path": "scripts/prefabs/wx78_toolbox.lua",
+    "size": 1086,
+    "sha256": "07eeef132179097ace451e690ee8ef5c86f1811985e4d8e297496b32cc8c7e08"
+  },
+  {
+    "path": "scripts/prefabs2hm.lua",
+    "size": 3816,
+    "sha256": "4f1739ed435d830b97a4b74a44bb55d6786bf45fc8ac038c5f234add960bfd77"
+  },
+  {
+    "path": "scripts/progressivecombat2hm.lua",
+    "size": 8818,
+    "sha256": "e896328fe4af8f62b35131180a761ba36580df1544ea46100064cb9065adf8d1"
+  },
+  {
+    "path": "scripts/recipes2hm.lua",
+    "size": 3228,
+    "sha256": "49f99a77be8e3c1a96f00c2b47daac716e687218b7b7666d1510e5e3f390ff9b"
+  },
+  {
+    "path": "scripts/seasonwiki2hm.lua",
+    "size": 525,
+    "sha256": "6feb8b5aa685d16334c2180bd282538282dc7b6cc0adc0608a13f441123eced9"
+  },
+  {
+    "path": "scripts/shadowvaultconfig2hm.lua",
+    "size": 7667,
+    "sha256": "702910e767cdfa651775786b02e5f82bd26f2eaf2f3827991162b0a21feff15e"
+  },
+  {
+    "path": "scripts/shadowvaultcourier2hm.lua",
+    "size": 3907,
+    "sha256": "736dc91b3aceeb0dbbeea3c6c5bdc564de0667dfa36975e83fe7ddedd7df3534"
+  },
+  {
+    "path": "scripts/shadowvaultdurable2hm.lua",
+    "size": 2364,
+    "sha256": "a01c3ad52f4a8aa0a8c3ebf7280be5f267062aa1ade01284542bfe22ec9418d8"
+  },
+  {
+    "path": "scripts/shadowvaultio2hm.lua",
+    "size": 1088,
+    "sha256": "5bff960379c75b4ee2f7a522ac3180fcd3814c9a3c950c62a475ebe2be25a7bc"
+  },
+  {
+    "path": "scripts/shadowvaultitems2hm.lua",
+    "size": 6608,
+    "sha256": "7fac5972c681a9cc0ed05b5606feba88686f0b87ece41adbdae9e1ac4fb94425"
+  },
+  {
+    "path": "scripts/shadowvaultjournal2hm.lua",
+    "size": 30891,
+    "sha256": "ee9078e69c73aeae7d1e43b0fe9e0bdf672de2ea6ec53ed2f74400096885c8f4"
+  },
+  {
+    "path": "scripts/shadowvaultnative2hm.lua",
+    "size": 19088,
+    "sha256": "5ea2b6e5ee4a5a2999b29d6b05254549d107c653259fc664202571e2c755ef6f"
+  },
+  {
+    "path": "scripts/shadowvaulttransport2hm.lua",
+    "size": 8319,
+    "sha256": "b43a1bd1831d199880e074deaf4579ad25ebb9f097da302a4c2b0f7b5bbbb6b1"
+  },
+  {
+    "path": "scripts/simplechatbot2hm_util.lua",
+    "size": 5910,
+    "sha256": "5866ab5928c9029c939f614c79f9d1bfb06a629db6cdc7b37389d1ee4014f764"
+  },
+  {
+    "path": "scripts/stategraphs/SGcrabking2hm.lua",
+    "size": 35075,
+    "sha256": "6e3c4d59d1fd7bf1fd8ae7b4b5534eca0cc7a0f93fd17aedfce637df57d0e76b"
+  },
+  {
+    "path": "scripts/stategraphs/SGcrabking2hmclaw.lua",
+    "size": 9375,
+    "sha256": "462b33acc11af2ea259749edde77af5b9ffd0e340d062ace19098156ed02c2b4"
+  },
+  {
+    "path": "scripts/stategraphs/SGklaus2hm.lua",
+    "size": 41135,
+    "sha256": "b87383da65c2bcdef5f360531a2b233c0db09330bbed577d9f38054b0b1abd5d"
+  },
+  {
+    "path": "scripts/upvaluehacker2hm.lua",
+    "size": 5292,
+    "sha256": "e931498a5e7f05489ae378d199e835b0f7a57dec951848360c1fa405d202df45"
+  },
+  {
+    "path": "scripts/utils/bbgoat_upvaluehelper.lua",
+    "size": 10875,
+    "sha256": "04f64fd2f17267ac8e890678c2b324117ed51e92dbc2f7b5d90bc605027f7e4d"
+  },
+  {
+    "path": "scripts/wixieconfig2hm.lua",
+    "size": 3959,
+    "sha256": "232264da0372f9d133e21fcbb499ec5335653de2e4c5620549c4d0118431bf43"
+  },
+  {
+    "path": "scripts/worldexchangeprotocol2hm.lua",
+    "size": 13098,
+    "sha256": "4a8dd9b810bb461942639a6b0ca1eadf73a7cdb6f0ac3d331b383e8d666e3d6e"
+  },
+  {
+    "path": "scripts/worldexchangerpc2hm.lua",
+    "size": 917,
+    "sha256": "61fff2b92776cdbcabd3d148f37cdd89c3c42919362e751c6f4e1ebeec199118"
+  },
+  {
+    "path": "scripts/worldexchangestore2hm.lua",
+    "size": 13377,
+    "sha256": "fcff49927d66a233f6145ffcee47dddf1c1a29462b9bd08692adbfef20dde5e4"
+  },
+  {
+    "path": "shadow_nerf.lua",
+    "size": 11466,
+    "sha256": "34cdf35fcd3fab9acec68c31e2710bb269311dbd607163f9c98d6b43851a8bd7"
+  },
+  {
+    "path": "shadowworld.lua",
+    "size": 85123,
+    "sha256": "24628fb56f73b1f9da937a9d97980904d3f861b9fd2eec5697fc8e5a71b03087"
+  },
+  {
+    "path": "tech/ancient_altar.lua",
+    "size": 7728,
+    "sha256": "b5b603c5d82947ca1380ee329c8139c1fc71fb4fb7669e276c6b3c43d35832ae"
+  },
+  {
+    "path": "tech/ancient_statue.lua",
+    "size": 4634,
+    "sha256": "e9236db59fe06a9302886fbe1b852514359beb4947986a1e65053304c6396dba"
+  },
+  {
+    "path": "tech/axe_pickaxe.lua",
+    "size": 630,
+    "sha256": "530da67db080c55e44bd38c62438eaf138a41540786e72b1768e391d2c15509d"
+  },
+  {
+    "path": "tech/cave_entrance.lua",
+    "size": 25593,
+    "sha256": "789e655c9cde5ce4a0dc93defbcd645c795f9fb0f374217acf50084de5381b49"
+  },
+  {
+    "path": "tech/cheap_wrap.lua",
+    "size": 1725,
+    "sha256": "dc225aac3c6e5563cc2e3fe1651d6cb5dba5a0b6f99c26c8df3c68eb40de65ea"
+  },
+  {
+    "path": "tech/clockwork_guard.lua",
+    "size": 5514,
+    "sha256": "cdc3dd7ba0b0d20053979244eda8d7e5bc84b554f1b7fc52509c5ea2540a6a4e"
+  },
+  {
+    "path": "tech/common.lua",
+    "size": 6470,
+    "sha256": "d6f3846dc1ba5e19678a7b78f6598e795760cb5fb9ec4373871540711074fe2e"
+  },
+  {
+    "path": "tech/distilledknowledge.lua",
+    "size": 8200,
+    "sha256": "943ae5a97c6acb9704249e4c8d400c920368c6ab95dfe70185e2c761a3c7df4e"
+  },
+  {
+    "path": "tech/moonrockidol.lua",
+    "size": 7906,
+    "sha256": "6552cfac45420812dc490bb7a866d587e0d386dd4189d1ab42d38b83abfe1c0c"
+  },
+  {
+    "path": "tech/oceanlife.lua",
+    "size": 35768,
+    "sha256": "c6797f62545007c83c4eadbe491cf9d8e2a4c33020b1e3c67ef79794a5f03c62"
+  },
+  {
+    "path": "tech/prototyper.lua",
+    "size": 10584,
+    "sha256": "8fbf72ae37bf2dbf2d1c6f1dd31b7e8e9fb3ba471bad82a4fef81b6ec5ee72f9"
+  },
+  {
+    "path": "tech/prototyperlevel.lua",
+    "size": 17665,
+    "sha256": "bd0399b91d854502298d13c4808d6d9dffaf754e4c783f4d9611d7df26bef2bd"
+  },
+  {
+    "path": "tech/refine.lua",
+    "size": 4505,
+    "sha256": "ffe8694554c9cabbebeacca1c822730909e381817b5687f8a921b20d372fc8fd"
+  },
+  {
+    "path": "tech/rocks.lua",
+    "size": 2508,
+    "sha256": "44892746483c46517e899b3b9dda2dc8e4171a31d00e2301b480100be4e4083b"
+  },
+  {
+    "path": "tech/sleep.lua",
+    "size": 4271,
+    "sha256": "15b8c4be05fe04ab443293cc9dd388cceeb7b26858a38abe840bd5fe655bcb71"
+  },
+  {
+    "path": "tech/structure.lua",
+    "size": 223,
+    "sha256": "736578069024680989cf6e9ff8d147dbf428c9e666ae4afc6e0c233e8a0a70b9"
+  },
+  {
+    "path": "weather/autumn.lua",
+    "size": 4466,
+    "sha256": "abb602881c9f0a4ad3918cb0964ff0c1bb37bff42c8993a5e664b053085a701d"
+  },
+  {
+    "path": "weather/dusk.lua",
+    "size": 17637,
+    "sha256": "e664065a3a016d0e319f899ee4c661a9551d4c8073ca76d8f098a2525a9320ef"
+  },
+  {
+    "path": "weather/moonisland.lua",
+    "size": 18428,
+    "sha256": "20d6a1a67a08f58a84151f7c849c181561b096d697791d64e30d51a339d7b9a4"
+  },
+  {
+    "path": "weather/moonlight.lua",
+    "size": 8659,
+    "sha256": "585cd14f952fd8532b0312ef3cc7f861cafef91046248e964d4e61e6787b8d09"
+  },
+  {
+    "path": "weather/rain.lua",
+    "size": 6778,
+    "sha256": "6f0f7fc1a75017ea26072073eb8acb44e7f11c13bb0177611358cc866340983c"
+  },
+  {
+    "path": "weather/sandstorm.lua",
+    "size": 2937,
+    "sha256": "80f675d5b48296ba7aa7df320464955f35425eac83c3bc43f14a5475731a4bd8"
+  },
+  {
+    "path": "weather/seasons.lua",
+    "size": 33334,
+    "sha256": "3b929bf0c3e91e19cec507b0654785fd15ac648dc97492ac0ba73af98f640022"
+  },
+  {
+    "path": "weather/summer.lua",
+    "size": 2355,
+    "sha256": "7e68faf92452d0b12e83a32df0da83890cbb1078ef3e0d19f00dbcb1f0a321fd"
+  },
+  {
+    "path": "weather/temperature.lua",
+    "size": 20371,
+    "sha256": "6dcdebb24c08b55c7b548b8a8e543badd381bcf60c7bd6b0daa396b4a84f7f7a"
+  },
+  {
+    "path": "weather/weather.lua",
+    "size": 850,
+    "sha256": "9595ee2bb9da4365ad53d77736d5c54615b3c77fc3d9d02726539471c26667bd"
+  },
+  {
+    "path": "weather/winter.lua",
+    "size": 5399,
+    "sha256": "2e88ad4c747ed8dceb73faf2a084f73d2f4abd866860f66015eb312173935897"
+  }
+]

@@ -1,0 +1,32 @@
+# 永不妥协测试版 Wiki 维护
+
+公开测试版工坊 ID 为 3193922031，社区汉化补丁 ID 为 3597225156。站点读取已生成的 `snapshot.json`，正常构建与发布只需要 Node.js 22。刷新快照时才需要解析器、已下载的工坊目录和原版简中名称表。
+
+## 更新流程
+
+1. 从 Steam 更新两个对应的工坊目录。把游戏 `data/databundles/scripts.zip` 内的 `scripts/languages/chinese_s.po` 解包到临时目录。
+2. 在 Wiki 根目录运行下方命令。检查模式会列出与快照不符的源码路径。抽取会解析配方的加载调用和条件，引用必须指向有代码的行。正文仍需人工核对实际加载入口、配置默认值、注册条件、后续覆盖与原版继承值。补丁用于核对术语，游戏规则以测试版本体为准。
+3. 修订 `articles.mjs` 或对应的角色、专属物品、料理与宝石学模块，更新受影响的正文和引用行号。确认版本后更新 `auditedVersion` 与 `auditedCnVersion`。去掉 `--check` 重新生成快照，再执行构建与检查。
+4. 同步 Wiki 文件到公开仓库。构建检查会核对双入口、词条与配置链接、索引覆盖以及脚本语法。
+
+```powershell
+npm ci --prefix um-beta
+node um-beta/extract.mjs --check '<测试版 3193922031 目录>' '<汉化 3597225156 目录>' '<chinese_s.po 路径>'
+node um-beta/extract.mjs '<测试版 3193922031 目录>' '<汉化 3597225156 目录>' '<chinese_s.po 路径>'
+node build.mjs
+node check.mjs
+```
+
+`snapshot.json` 包含版本、实际菜单、预设表、可静态读取的制作与兑换注册、晶洞宝石池权重、用到的名称以及来源文件哈希。晶洞表按权重计算单次抽取概率，地图位置和采集方式在 `gemology-sources.mjs` 核对。配方覆盖已加载配方文件内的顶层调用与条件分支，并应用薇希配方内的静态制作条件与产量覆盖。循环生成、动态材料和烹饪规则由正文另行核对。
+
+提交原创词条、索引数据和构建文件。工坊 Lua、完整翻译表、台词、原始 TEX 和动画留在本地。原版物品图标按 prefab ID 复用本站现有素材。
+
+## 更新贴图
+
+从本机测试版目录按 XML 图集坐标裁切库存图标、图鉴图和角色头像。配方与材料按 prefab ID 选图，原版缺图从本机游戏图集补齐。`items.mjs` 控制首页「新增物品」分类收录，更新收录后先重新生成快照，再导出贴图。发布目录只包含网页用的缩略图。
+
+```powershell
+python um-beta/export-artwork.py '<测试版 3193922031 目录>' '<DST data/databundles/images.zip 路径>'
+node build.mjs
+node check.mjs
+```

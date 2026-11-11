@@ -1,0 +1,60 @@
+{
+  "date": "2026-11-11",
+  "um_version": "6.0.3.9",
+  "um_workshop_id": "3193922031",
+  "steamcmd_validate_completed": true,
+  "shadowworld_version": "2.8.15.0.22",
+  "rows": [
+    {
+      "mode": "um",
+      "normal_calls": 1018,
+      "normal_light_hits": 437,
+      "invalid_arguments": 0,
+      "checks": 16,
+      "dedicated": true,
+      "build": "762172",
+      "normal_and_reload_passed": true,
+      "artificial_control": "native_crash_reproduced_with_deliberately_wrong_argument",
+      "raw_result": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-dfyvbfoj\\queen-torch-result.json",
+      "native_logs": [
+        "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-dfyvbfoj\\Master-1.log",
+        "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-dfyvbfoj\\Master-2.log"
+      ]
+    },
+    {
+      "mode": "combined",
+      "normal_calls": 1023,
+      "normal_light_hits": 459,
+      "invalid_arguments": 0,
+      "checks": 16,
+      "dedicated": true,
+      "build": "762172",
+      "normal_and_reload_passed": true,
+      "artificial_control": "native_crash_reproduced_with_deliberately_wrong_argument",
+      "raw_result": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-whtz0c65\\queen-torch-result.json",
+      "native_logs": [
+        "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-whtz0c65\\Master-1.log",
+        "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-whtz0c65\\Master-2.log"
+      ]
+    }
+  ],
+  "source_sha256": {
+    "modinfo.lua": "4202afc0776b6d11eb1a5899ae7f100df18c86f7bbdaabb930b5f2c01b7dc981",
+    "scripts/brains/dreadeyebrain.lua": "d62cc247d866829ae29d62e6324668e21e1ff4468a13b6ac2b13b47ecb2dcced",
+    "scripts/brains/trepidationbrain.lua": "71953ebe4a916b5750acc0f04f4065060df6e34303573e8dfd0d18f33610705a",
+    "scripts/brains/viperlingbrain.lua": "78aa176181f63bebe9eceb7ee768acdce4012ace66e19accf563b1be10da07de",
+    "scripts/prefabs/dreadeye.lua": "ce604e6179436886a719657d5c805c711da294007124fb654b275db96bc19718"
+  },
+  "engine_source_sha256": {
+    "braincommon.lua": "c80926f86291013ceb81ad946dd784f09e99dcc836bca612a5bdbd5a558312cd",
+    "queen_torch.lua": "0d48b3ab6f7e89fc519f48f67208414babefc74035d7c6cdcb9053d52142dad9",
+    "runaway.lua": "15ab82fdcac164c56f6bddd9bf09def68c4759b05e4ad0f38828019be164f551"
+  },
+  "current_game_code_modified": false,
+  "artificial_control_is_not_current_gameplay_reproduction": true,
+  "limits": [
+    "Windows x64 dedicated offline surface shard; real AI and entities, scripted native player entity without human client.",
+    "UM defaults; combined enables UM patch and easy/hard mode, disables Shadow World creature clones and supermonster options. No adjustment mod loaded.",
+    "No real client rendering, full user modlist, cave shard, or long-duration soak covered."
+  ]
+}

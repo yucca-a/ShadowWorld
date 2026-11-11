@@ -1,0 +1,1983 @@
+{
+  "version": "2.8.14.97.4",
+  "date": "2026-11-04",
+  "method": "静态核对当前模组的加载条件、运行分支、数值与本机原版 scripts.zip。只改 Wiki，未修改模组脚本，未启动游戏实测。",
+  "articles": [
+    {
+      "id": "night-vision",
+      "title": "角色夜视",
+      "category": "characters",
+      "sections": 5,
+      "source": [
+        "content/common/monster_nightvision.lua",
+        "content/common/role_nightvision.lua",
+        "content/weather/dusk.lua",
+        "content/modmain.lua"
+      ],
+      "configKeys": [
+        "Monster Night Vision",
+        "wathom nightvision",
+        "Webber Night Version",
+        "Wurt Night Version",
+        "Wonkey Night Version",
+        "dusk_change"
+      ]
+    },
+    {
+      "id": "wixie",
+      "title": "维希的幽闭恐惧与兼容",
+      "category": "characters",
+      "sections": 4,
+      "source": [
+        "content/easy_role/wixie_easy.lua",
+        "content/scripts/wixieconfig2hm.lua",
+        "content/role/walter.lua",
+        "content/modmain.lua"
+      ],
+      "configKeys": [
+        "Wixie No Claustrophobia",
+        "wixie",
+        "enable easy mode",
+        "role_easy",
+        "enable hard mode",
+        "role_nerf"
+      ]
+    },
+    {
+      "id": "walter",
+      "title": "沃尔特的弹弓兼容",
+      "category": "characters",
+      "sections": 4,
+      "source": [
+        "content/common/walter_wixie_slingshot.lua",
+        "content/scripts/wixieconfig2hm.lua",
+        "content/modmain.lua"
+      ],
+      "configKeys": [
+        "Walter Use Wixie Slingshot",
+        "walter"
+      ]
+    },
+    {
+      "id": "wanda",
+      "title": "旺达的衰老与恢复",
+      "category": "characters",
+      "sections": 5,
+      "source": [
+        "content/easy_role/wanda_easy.lua",
+        "content/role/regen.lua",
+        "content/role/wanda.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/components/oldager.lua",
+        "DST scripts.zip/scripts/prefabs/wanda.lua"
+      ],
+      "configKeys": [
+        "wanda strengthen",
+        "Wanda Don't Auto Drop Age",
+        "Ageless Watch Help Temperature",
+        "regen_danger",
+        "wanda"
+      ]
+    },
+    {
+      "id": "frost-shrine",
+      "title": "寒霜之祠",
+      "category": "buildings",
+      "sections": 6,
+      "source": [
+        "content/scripts/recipes2hm.lua",
+        "content/scripts/prefabs/frostshrine2hm.lua",
+        "content/epic/sharkboi.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "sharkboi"
+      ]
+    },
+    {
+      "id": "mourning-tomb",
+      "title": "哀悼之穴",
+      "category": "buildings",
+      "sections": 7,
+      "source": [
+        "content/scripts/recipes2hm.lua",
+        "content/scripts/prefabs/player_tomb2hm.lua",
+        "content/scripts/prefabs/tomb_plant2hm.lua",
+        "content/scripts/prefabs/tomb_weed2hm.lua",
+        "content/easy_other/easy_structures.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "player_tomb"
+      ]
+    },
+    {
+      "id": "science-machine",
+      "title": "科学机器",
+      "category": "buildings",
+      "sections": 9,
+      "source": [
+        "content/easy_other/easy_structures.lua",
+        "content/tech/prototyper.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Science Machine Refine Materials",
+        "enable hard mode",
+        "other_change",
+        "Harder Prototyper Recipe"
+      ]
+    },
+    {
+      "id": "alchemy-engine",
+      "title": "炼金引擎",
+      "category": "buildings",
+      "sections": 14,
+      "source": [
+        "content/easy_other/easy_structures.lua",
+        "content/tech/prototyper.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Alchemy Engine Redeem Gold Nugget",
+        "enable hard mode",
+        "other_change",
+        "Harder Prototyper Recipe"
+      ]
+    },
+    {
+      "id": "prestihatitator",
+      "title": "灵子分解器",
+      "category": "buildings",
+      "sections": 9,
+      "source": [
+        "content/easy_other/easy_structures.lua",
+        "content/tech/prototyper.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Shadow Manipulator Break Down Objects",
+        "enable hard mode",
+        "other_change",
+        "Harder Prototyper Recipe"
+      ]
+    },
+    {
+      "id": "shadow-manipulator",
+      "title": "暗影操控器",
+      "category": "buildings",
+      "sections": 8,
+      "source": [
+        "content/easy_other/easy_structures.lua",
+        "content/tech/prototyper.lua",
+        "content/tech/moonrockidol.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Prestihatitator Redeem shadowmagic Tag",
+        "enable hard mode",
+        "other_change",
+        "Harder Prototyper Recipe",
+        "moonrockidol"
+      ]
+    },
+    {
+      "id": "terra-tamper",
+      "title": "土地夯实器",
+      "category": "buildings",
+      "sections": 9,
+      "source": [
+        "content/easy_other/easy_structures.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua",
+        "原版 scripts.zip：scripts/prefabs/archive_lockbox.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Terra Firma Tamper Redeem Desert Stone"
+      ]
+    },
+    {
+      "id": "tackle-station",
+      "title": "钓具容器",
+      "category": "buildings",
+      "sections": 12,
+      "source": [
+        "content/easy_other/easy_structures.lua",
+        "content/easy_other/easy_items.lua",
+        "content/tech/prototyper.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Tackle Receptacle Use Fish Redeem",
+        "Tackle Box Can Hold Role's Item",
+        "meatrack_dry",
+        "enable hard mode",
+        "other_change",
+        "Harder Prototyper Recipe"
+      ]
+    },
+    {
+      "id": "cartography-desk",
+      "title": "制图桌",
+      "category": "buildings",
+      "sections": 9,
+      "source": [
+        "content/easy_other/easy_structures.lua",
+        "content/tech/prototyper.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Cartographer's Desk Make Blueprint",
+        "enable hard mode",
+        "other_change",
+        "Harder Prototyper Recipe"
+      ]
+    },
+    {
+      "id": "lazy-deserter",
+      "title": "懒人传送塔",
+      "category": "buildings",
+      "sections": 9,
+      "source": [
+        "content/easy_other/easy_structures.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua",
+        "原版 scripts.zip：scripts/prefabs/antlion.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "townportal use sandstone activate",
+        "Terra Firma Tamper Redeem Desert Stone"
+      ]
+    },
+    {
+      "id": "dragonfly-furnace",
+      "title": "龙鳞火炉",
+      "category": "buildings",
+      "sections": 10,
+      "source": [
+        "content/easy_other/easy_structures.lua",
+        "content/food/cooking.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua",
+        "原版 scripts.zip：scripts/prefabs/dragonfly.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "dragonfly furnace stewer",
+        "enable hard mode",
+        "Portable Crock Pot Multi",
+        "food_change",
+        "cooking_change"
+      ]
+    },
+    {
+      "id": "mushroom-lights",
+      "title": "蘑菇灯与菌伞灯",
+      "category": "buildings",
+      "sections": 6,
+      "source": [
+        "content/easy_other/easy_structures.lua",
+        "content/epic/toadstool.lua",
+        "content/shadowworld.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua",
+        "原版 scripts.zip：scripts/prefabs/toadstool.lua",
+        "原版 scripts.zip：scripts/prefabs/mushroom_light.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "mushroom_light",
+        "enable hard mode",
+        "monster_change",
+        "toadstool",
+        "Shadow World"
+      ]
+    },
+    {
+      "id": "drying-rack",
+      "title": "晾肉架",
+      "category": "buildings",
+      "sections": 9,
+      "source": [
+        "content/easy_other/easy_structures.lua",
+        "content/scripts/prefabs/dryplants2hm.lua",
+        "content/food/fooddata.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "meatrack_dry",
+        "enable hard mode",
+        "food_change",
+        "fooddata_change"
+      ]
+    },
+    {
+      "id": "mannequin-followers",
+      "title": "假人与随从交换",
+      "category": "buildings",
+      "sections": 7,
+      "source": [
+        "content/easy_other/easy_structures.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "mannequin swap follower"
+      ]
+    },
+    {
+      "id": "upgraded-tents",
+      "title": "帐篷、睡袋与危险入睡",
+      "category": "buildings",
+      "sections": 9,
+      "source": [
+        "content/easy_other/easy_mechanics.lua",
+        "content/tech/sleep.lua",
+        "content/scripts/components/repairable2hm.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua",
+        "原版 scripts.zip：scripts/tuning.lua",
+        "原版 scripts.zip：scripts/prefabs/tent.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Sleep In Tent Even Danger",
+        "The tent supports multiple people sharing it",
+        "enable hard mode",
+        "other_change",
+        "sleepingbag"
+      ]
+    },
+    {
+      "id": "prototype-costs",
+      "title": "科技建筑制作成本",
+      "category": "buildings",
+      "sections": 6,
+      "source": [
+        "content/tech/prototyper.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "other_change",
+        "Harder Prototyper Recipe",
+        "Cartographer's Desk Make Blueprint"
+      ]
+    },
+    {
+      "id": "cave-docks",
+      "title": "洞穴码头地皮",
+      "category": "buildings",
+      "sections": 7,
+      "source": [
+        "content/easy_other/easy_mechanics.lua",
+        "content/tech/oceanlife.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua",
+        "原版 scripts.zip：scripts/stategraphs/SGmonkeyqueen.lua",
+        "原版 scripts.zip：scripts/components/dockmanager.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Use Dock kit in Cave",
+        "enable hard mode",
+        "other_change",
+        "oceanlife"
+      ]
+    },
+    {
+      "id": "terra-chest",
+      "title": "泰拉箱子与升级箱返还",
+      "category": "buildings",
+      "sections": 5,
+      "source": [
+        "content/easy_other/easy_structures.lua",
+        "content/epic/daywalker2.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua",
+        "原版 scripts.zip：scripts/prefabs/treasurechest.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Terra Easter egg",
+        "daywalker2"
+      ]
+    },
+    {
+      "id": "ice-eye-farming",
+      "title": "冰眼结晶器与农场",
+      "category": "buildings",
+      "sections": 9,
+      "source": [
+        "content/easy_other/lunar_shadow_items.lua",
+        "content/food/farm.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua",
+        "原版 scripts.zip：scripts/prefabs/deerclopseyeball_sentryward.lua",
+        "原版 scripts.zip：scripts/components/lunarthrall_plantspawner.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "lunar shadow items",
+        "enable hard mode",
+        "food_change",
+        "farm"
+      ]
+    },
+    {
+      "id": "science-level-rules",
+      "title": "科技等级与万物百科",
+      "category": "buildings",
+      "sections": 7,
+      "source": [
+        "content/tech/prototyperlevel.lua",
+        "content/modmain.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "other_change",
+        "Harder Prototyper Level"
+      ]
+    },
+    {
+      "id": "archive-puzzle-changes",
+      "title": "远古档案馆解谜",
+      "category": "buildings",
+      "sections": 8,
+      "source": [
+        "content/tech/distilledknowledge.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/prefabs/archive_lockbox.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "other_change",
+        "Harder Distilled Knowledge"
+      ]
+    },
+    {
+      "id": "shadow-door-purification",
+      "title": "暗影之门与彩虹宝石净化",
+      "category": "buildings",
+      "sections": 9,
+      "source": [
+        "content/tech/moonrockidol.lua",
+        "content/scripts/components/repairable2hm.lua",
+        "content/scripts/prefabs/oceanshadowcreature2hm.lua",
+        "content/monster/oceanshadow.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "other_change",
+        "moonrockidol",
+        "enter gift 2",
+        "monster_change",
+        "oceanshadow"
+      ]
+    },
+    {
+      "id": "role-wilson",
+      "title": "威尔逊",
+      "category": "characters",
+      "sections": 6,
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/wilson_easy.lua",
+        "content/easy_role/skilltree_common.lua",
+        "content/easy_role/rightaction.lua",
+        "content/easy_role/rightselfaction.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "wilson_easy",
+        "Wilson 1 Science Bonus",
+        "Wilson Tech Bonus",
+        "Wilson Skill Unlock",
+        "Wilson Right Dodge",
+        "Wilson Right Self Everything Encyclopedia",
+        "ctrl disable right",
+        "right self need ctrl"
+      ]
+    },
+    {
+      "id": "role-willow",
+      "title": "薇洛",
+      "category": "characters",
+      "sections": 8,
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/willow_easy.lua",
+        "content/role/willow.lua",
+        "content/easy_role/rightselfaction.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "enable hard mode",
+        "role_nerf",
+        "willow_easy",
+        "Willow Attack Dry/Burning Enemy",
+        "Willow Right Self Pyrokinetics Explained",
+        "Willow Fire Weapon Attack",
+        "willow_improve",
+        "willow",
+        "right self need ctrl"
+      ]
+    },
+    {
+      "id": "role-wolfgang",
+      "title": "沃尔夫冈",
+      "category": "characters",
+      "sections": 4,
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/wolfgang_easy.lua",
+        "content/role/wolfgang.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "enable hard mode",
+        "role_nerf",
+        "wolfgang_easy",
+        "Wolfgang break Powerup/down",
+        "Wolfgang Strong Battle Speedup",
+        "Wolfgang Eat Food For Mightiness",
+        "Wolfgang Pause Drain When Satiated",
+        "wolfgang"
+      ]
+    },
+    {
+      "id": "role-wendy",
+      "title": "温蒂",
+      "category": "characters",
+      "sections": 10,
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/wendy_easy.lua",
+        "content/role/wendy.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "enable hard mode",
+        "role_nerf",
+        "wendy_easy",
+        "Wendy Low HP Abigail Damage",
+        "Pipspook Give Random Ghostly Elixir",
+        "Abigail Level Protect",
+        "Wendy Share Light From Abigail",
+        "Wendy Share Debuff From Abigail",
+        "wendy elixir_container",
+        "wendy"
+      ]
+    },
+    {
+      "id": "role-wx78",
+      "title": "WX-78",
+      "category": "characters",
+      "sections": 11,
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/wx78_easy.lua",
+        "content/role/wx78.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "enable hard mode",
+        "role_nerf",
+        "wx78_easy",
+        "WX-78 Safe Remove Module",
+        "WX-78 Integrated Upgrade Module Level",
+        "WX-78 Eat Gears InCrease Data",
+        "wx78_module_pack",
+        "WX-78 Drone Optimization",
+        "wx-78",
+        "Random Sized",
+        "right self need ctrl"
+      ]
+    },
+    {
+      "id": "role-wickerbottom",
+      "title": "薇克巴顿",
+      "category": "characters",
+      "sections": 11,
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/wickerbottom_easy.lua",
+        "content/role/wickerbottom.lua",
+        "content/easy_role/rightselfaction.lua",
+        "content/scripts/prefabs/book_temperature_buff2hm.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "enable hard mode",
+        "role_nerf",
+        "wickerbottom_easy",
+        "Wickerbottom Is Not Insomniac",
+        "Wickerbottom No Sanity Dapperness",
+        "Wickerbottom Read Book Less Use",
+        "Wickerbottom Use Staff",
+        "Wickerbottom Daily Book",
+        "Wickerbottom Temperature Book",
+        "Knowledge is power",
+        "Wickerbottom Repair Book With Papyrus",
+        "Wickerbottom Touch Astral Altar Unlock Celestial",
+        "wickerbottom",
+        "right self need ctrl",
+        "plant_change",
+        "animal_change"
+      ]
+    },
+    {
+      "id": "role-woodie",
+      "title": "伍迪",
+      "category": "characters",
+      "sections": 6,
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/woodie_easy.lua",
+        "content/ray/suijishengwuapi.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "woodie_easy",
+        "Woodie Strong Stomach Monster Meat",
+        "Woodie Full Moon Not Become",
+        "Woodie Hunger Wereness",
+        "Woodie Right Self Close Transform",
+        "Woodie Moose Stronger Charge",
+        "Woodie Moose Random Scale",
+        "Random Sized"
+      ]
+    },
+    {
+      "id": "role-wes",
+      "title": "韦斯",
+      "category": "characters",
+      "sections": 6,
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/wes_easy.lua",
+        "content/easy_role/rightaction.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "wes_easy",
+        "Wes Normal Data Attack Work",
+        "Wes Right Dodge Collide Balloon",
+        "Balloon Stackable Per 50 Damage",
+        "Equip Balloon Increase Speed",
+        "Equip Balloon Summon Tornado",
+        "right self need ctrl"
+      ]
+    },
+    {
+      "id": "role-waxwell",
+      "title": "麦斯威尔",
+      "category": "characters",
+      "sections": 5,
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/waxwell_easy.lua",
+        "content/role/waxwell.lua",
+        "content/easy_role/rightaction.lua",
+        "content/easy_role/rightselfaction.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "enable hard mode",
+        "role_nerf",
+        "waxwell_easy",
+        "Maxwell Normal Health",
+        "Maxwell Eat Petals Get Dark Petals",
+        "Maxwell Unlock Dark Sword/Armor",
+        "Maxwell Right Lunge",
+        "right Lunge need ctrl",
+        "Maxwell Attacked Disappear",
+        "Maxwell Right Self Sleepytime Stories",
+        "maxwell",
+        "right self need ctrl"
+      ]
+    },
+    {
+      "id": "role-wigfrid",
+      "title": "薇格弗德",
+      "category": "characters",
+      "sections": 9,
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/wigfrid_easy.lua",
+        "content/role/wigfrid.lua",
+        "content/easy_role/rightaction.lua",
+        "content/easy_role/rightselfaction.lua",
+        "content/scripts/prefabs/battlesongbuffs.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "enable hard mode",
+        "role_nerf",
+        "wigfrid_easy",
+        "Wigfrid Inspiration Not Drop",
+        "Wigfrid can eat any",
+        "Wigfrid Ride Right Dodge",
+        "Wigfrid Right Self Reprise",
+        "Rude Interlude Provide Battle Helm",
+        "Startling Soliloquy Provide Battle Spear",
+        "battlesong_durability_sanitygain",
+        "aoespell change",
+        "Valkyrie thunder sprints without shaking",
+        "Charged Elding Spear negative buff",
+        "wigfrid",
+        "Wilson Right Dodge",
+        "right self need ctrl"
+      ]
+    },
+    {
+      "id": "role-webber",
+      "title": "韦伯",
+      "category": "characters",
+      "sections": 9,
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/webber_easy.lua",
+        "content/role/webber.lua",
+        "content/common/role_nightvision.lua",
+        "content/easy_role/rightselfaction.lua",
+        "content/scripts/components/hattrickparent2hm.lua",
+        "content/scripts/components/hattrickchild2hm.lua",
+        "content/scripts/components/removeleaveinventory2hm.lua",
+        "content/scripts/prefabs/spiderbag2hm.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "enable hard mode",
+        "role_nerf",
+        "webber_easy",
+        "Webber Eat Meat Lead Wild Spider",
+        "Webber Eat Switcherdoodle Switch Spider",
+        "Webber Murder Spider Get Switcherdoodle",
+        "Webber 200 Sanity",
+        "Webber Right Self Overcoming Arachnophobia",
+        "Webber Night Version",
+        "Webber Uprade SpiderDen SpiderQueen",
+        "Spider Help Work",
+        "Hat Trick",
+        "webber",
+        "right self need ctrl"
+      ]
+    },
+    {
+      "id": "role-winona",
+      "title": "薇诺娜",
+      "category": "characters",
+      "sections": 6,
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/winona_easy.lua",
+        "content/easy_role/rightaction.lua",
+        "content/easy_role/rightselfaction.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "winona_easy",
+        "Winona No Hungry Builder",
+        "Winona Hammer Drop All Loot",
+        "Winona Rotating Weapon Perpetual Attack",
+        "Winona Control Chess",
+        "Winona Right Self Hide Structures",
+        "right self need ctrl"
+      ]
+    },
+    {
+      "id": "role-warly",
+      "title": "沃利",
+      "category": "characters",
+      "sections": 7,
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/warly_easy.lua",
+        "content/easy_role/rightselfaction.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "enable hard mode",
+        "role_nerf",
+        "warly_easy",
+        "Warly Eat Food Double Health Sanity",
+        "Warly Food Memory Only Sanity",
+        "Warly Use Perishable Weapon",
+        "Warly Free Cook Per Day",
+        "Warly Food Collect",
+        "Warly Right Self Action",
+        "Warly Right Self Horticulture Abridged",
+        "warly",
+        "right self need ctrl"
+      ]
+    },
+    {
+      "id": "role-walter",
+      "title": "沃尔特",
+      "category": "characters",
+      "sections": 8,
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/walter_easy.lua",
+        "content/role/walter.lua",
+        "content/common/walter_wixie_slingshot.lua",
+        "content/easy_role/rightaction.lua",
+        "content/easy_role/attackaction.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "enable hard mode",
+        "role_nerf",
+        "walter_easy",
+        "Walter No Damage Lose Sanity",
+        "Walter Has Other Pet",
+        "Walter Throw Slingshot First Attack",
+        "Walter Right Dodge Longer",
+        "Walter Hide Woby",
+        "Walter Ride Better",
+        "Walter press Ctrl can't Dodge",
+        "Walter Use Wixie Slingshot",
+        "walter",
+        "ctrl disable right"
+      ]
+    },
+    {
+      "id": "role-wortox",
+      "title": "沃拓克斯",
+      "category": "characters",
+      "sections": 7,
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/wortox_easy.lua",
+        "content/role/wortox.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "enable hard mode",
+        "role_nerf",
+        "wortox_easy",
+        "Wortox Eat Food Normal",
+        "Wortox Has No Soul Limit",
+        "Wortox Free Blink",
+        "Wortox Use Soul Attack",
+        "Wortox damage upgrade",
+        "Wortox Auto Receive Soul",
+        "wortox"
+      ]
+    },
+    {
+      "id": "role-wormwood",
+      "title": "沃姆伍德",
+      "category": "characters",
+      "sections": 10,
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/wormwood_easy.lua",
+        "content/role/wormwood.lua",
+        "content/scripts/components/tempequip2hm.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "enable hard mode",
+        "role_nerf",
+        "wormwood_easy",
+        "Wormwood Eat Food Normal",
+        "Wormwood Right Self To Hide",
+        "Wormwood Regrow Farm Plant",
+        "Wormwood TendTo Farm Plant Reduce Grow Time",
+        "Wormwood Soul Heal Soil",
+        "Wormwood Photosynthesis",
+        "Wormwood Eat Rewards Equip",
+        "Wormwood Eat Seeds Debuff",
+        "Wormwood Thorns Generate Spiny Bindweed",
+        "armor_bramble damage",
+        "wormwood_eat_fire",
+        "wormwood",
+        "right self need ctrl"
+      ]
+    },
+    {
+      "id": "role-wurt",
+      "title": "沃特",
+      "category": "characters",
+      "sections": 8,
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/wurt_easy.lua",
+        "content/role/wurt.lua",
+        "content/common/role_nightvision.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "enable hard mode",
+        "role_nerf",
+        "wurt_easy",
+        "Wurt Eat Food Lead Wild Merm",
+        "Wurt Eat Food Loyalty Follower",
+        "Mermking Won't Hungry",
+        "Trade Fish with Merm",
+        "Wurt can eat any",
+        "Wurt Can Craft Book Fish",
+        "Wurt Night Version",
+        "wurt_merm_stronger",
+        "wurt",
+        "right self need ctrl"
+      ]
+    },
+    {
+      "id": "role-wanda",
+      "title": "旺达",
+      "category": "characters",
+      "sections": 9,
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/wanda_easy.lua",
+        "content/role/wanda.lua",
+        "content/easy_role/rightaction.lua",
+        "content/easy_role/wanda_dreadwatch2hm.lua",
+        "content/scripts/prefabs/watch_weapon_horn2hm.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "enable hard mode",
+        "role_nerf",
+        "wanda_easy",
+        "Wanda Don't Auto Drop Age",
+        "Ageless Watch Help Temperature",
+        "wanda strengthen",
+        "pocketwatch_heal2hm",
+        "pocketwatch strengthen",
+        "pocketwatch_weapon at start",
+        "wanda Eat Petals Get Dark Petals",
+        "Wanda Right Wrapback",
+        "Wanda Right Wrapfront",
+        "right Wrapback need ctrl",
+        "Wanda Right Self Backtrek",
+        "Wanda Resurrect Self",
+        "Wanda Dread Watch",
+        "wanda",
+        "right self need ctrl"
+      ]
+    },
+    {
+      "id": "role-wonkey",
+      "title": "芜猴",
+      "category": "characters",
+      "sections": 8,
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/wonkey_easy.lua",
+        "content/common/role_nightvision.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "wonkey_easy",
+        "Start With Wonkey Disable Transform",
+        "Wonkey Run Wait Time",
+        "Wonkey Right Self summon the powder_monkey",
+        "Wonkey Night Version",
+        "Wonkey Attack Steal item",
+        "Wonkey Toss Poop",
+        "Wonkey Remove Curse",
+        "right self need ctrl"
+      ]
+    },
+    {
+      "id": "role-wathom",
+      "title": "沃托姆",
+      "category": "characters",
+      "sections": 5,
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/wathom_easy.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "other_role_easy",
+        "wathom upgrade",
+        "enable hard mode",
+        "role_nerf"
+      ]
+    },
+    {
+      "id": "role-wixie",
+      "title": "维希",
+      "category": "characters",
+      "sections": 5,
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/wixie_easy.lua",
+        "content/role/walter.lua",
+        "development/维希独立配置与幽闭恐惧兼容.md",
+        "content/common/walter_wixie_slingshot.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "enable hard mode",
+        "role_nerf",
+        "Wixie No Claustrophobia",
+        "wixie"
+      ]
+    },
+    {
+      "id": "boss-deerclops",
+      "title": "独眼巨鹿",
+      "category": "creatures",
+      "sections": 9,
+      "source": [
+        "content/epic/deerclops.lua",
+        "content/scripts/prefabs/mod_hardmode_stafflight.lua",
+        "content/easy_other/lunar_shadow_items.lua",
+        "content/extra/extra.lua",
+        "DST scripts.zip/scripts/prefabs/deerclops.lua",
+        "DST scripts.zip/scripts/components/deerclopsspawner.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "deerclops",
+        "epic_armor_5",
+        "extra_change",
+        "boss_health",
+        "boss_damage",
+        "boss_attackspeed",
+        "boss_speed",
+        "lunar shadow items",
+        "Shadow World"
+      ]
+    },
+    {
+      "id": "boss-antlion",
+      "title": "蚁狮",
+      "category": "creatures",
+      "sections": 10,
+      "source": [
+        "content/epic/antlion.lua",
+        "content/extra/extra.lua",
+        "DST scripts.zip/scripts/prefabs/antlion.lua",
+        "DST scripts.zip/scripts/prefabs/antlion_spawner.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "antlion",
+        "epic_armor_5",
+        "extra_change",
+        "boss_health",
+        "boss_damage",
+        "boss_attackspeed",
+        "Shadow World",
+        "Turf-Raiser Helm Plant Tree Cone"
+      ]
+    },
+    {
+      "id": "boss-bearger",
+      "title": "熊獾",
+      "category": "creatures",
+      "sections": 8,
+      "source": [
+        "content/epic/bearger.lua",
+        "content/scripts/prefabs/beargerrangeattackfx2hm.lua",
+        "content/easy_other/lunar_shadow_items.lua",
+        "DST scripts.zip/scripts/prefabs/bearger.lua",
+        "DST scripts.zip/scripts/prefabs/sleepcloud.lua",
+        "DST scripts.zip/scripts/prefabs/sporecloud.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "bearger",
+        "epic_armor_5",
+        "extra_change",
+        "boss_health",
+        "boss_damage",
+        "boss_attackspeed",
+        "lunar shadow items",
+        "Shadow World"
+      ]
+    },
+    {
+      "id": "boss-dragonfly",
+      "title": "龙蝇",
+      "category": "creatures",
+      "sections": 8,
+      "source": [
+        "content/epic/dragonfly.lua",
+        "content/common/projectile.lua",
+        "content/scripts/prefabs/torchfireprojectile2hm.lua",
+        "content/scripts/prefabs/mod_hardmode_stafflight.lua",
+        "DST scripts.zip/scripts/prefabs/dragonfly.lua",
+        "DST scripts.zip/scripts/prefabs/dragonfly_spawner.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "dragonfly",
+        "epic_armor_5",
+        "extra_change",
+        "boss_health",
+        "boss_damage",
+        "boss_attackspeed"
+      ]
+    },
+    {
+      "id": "boss-beequeen",
+      "title": "蜂王",
+      "category": "creatures",
+      "sections": 8,
+      "source": [
+        "content/epic/beequeen.lua",
+        "DST scripts.zip/scripts/prefabs/beequeen.lua",
+        "DST scripts.zip/scripts/prefabs/beequeenhive.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "beequeen",
+        "epic_armor_5",
+        "extra_change",
+        "boss_health",
+        "boss_damage",
+        "boss_attackspeed",
+        "hivehat"
+      ]
+    },
+    {
+      "id": "boss-malbatross",
+      "title": "邪天翁",
+      "category": "creatures",
+      "sections": 8,
+      "source": [
+        "content/epic/malbatross.lua",
+        "content/scripts/prefabs/malbatross_feather2hm.lua",
+        "content/common/projectile.lua",
+        "原版 scripts.zip：scripts/prefabs/malbatross.lua",
+        "原版 scripts.zip：scripts/components/malbatrossspawner.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "malbatross"
+      ]
+    },
+    {
+      "id": "boss-klaus",
+      "title": "克劳斯与魔法鹿",
+      "category": "creatures",
+      "sections": 10,
+      "source": [
+        "content/epic/klaus.lua",
+        "content/scripts/stategraphs/SGklaus2hm.lua",
+        "原版 scripts.zip：scripts/prefabs/klaus.lua",
+        "原版 scripts.zip：scripts/prefabs/klaus_sack.lua",
+        "原版 scripts.zip：scripts/components/klaussackloot.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "klaus",
+        "Shadow World"
+      ]
+    },
+    {
+      "id": "boss-crabking",
+      "title": "帝王蟹",
+      "category": "creatures",
+      "sections": 9,
+      "source": [
+        "content/epic/crabking.lua",
+        "content/epic/crabking_deprecated.lua",
+        "content/scripts/prefabs/crabking2hm.lua",
+        "content/scripts/stategraphs/SGcrabking2hm.lua",
+        "原版 scripts.zip：scripts/prefabs/crabking.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "crabking",
+        "epic_armor_5"
+      ]
+    },
+    {
+      "id": "boss-frostjaw-combat",
+      "title": "大霜鲨",
+      "category": "creatures",
+      "sections": 8,
+      "source": [
+        "content/epic/sharkboi.lua",
+        "content/scripts/brains/sharkboibrain2hm.lua",
+        "原版 scripts.zip：scripts/prefabs/sharkboi.lua",
+        "原版 scripts.zip：scripts/components/sharkboimanager.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "sharkboi",
+        "Shadow World"
+      ]
+    },
+    {
+      "id": "boss-shadow-chess",
+      "title": "暗影棋子",
+      "category": "creatures",
+      "sections": 9,
+      "source": [
+        "content/epic/shadowchesspieces.lua",
+        "原版 scripts.zip：scripts/prefabs/shadowchesspieces.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "shadowchesspieces",
+        "Shadow World",
+        "enable easy mode"
+      ]
+    },
+    {
+      "id": "boss-eyes",
+      "title": "恐怖之眼与双子魔眼",
+      "category": "creatures",
+      "sections": 7,
+      "source": [
+        "content/epic/eyeofterror.lua",
+        "原版 scripts.zip：scripts/prefabs/eyeofterror.lua",
+        "原版 scripts.zip：scripts/prefabs/terrarium.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "eyeofterror"
+      ]
+    },
+    {
+      "id": "boss-scrappy-werepig",
+      "title": "拾荒疯猪",
+      "category": "creatures",
+      "sections": 8,
+      "source": [
+        "content/epic/daywalker2.lua",
+        "content/scripts/brains/daywalker2brainPG.lua",
+        "原版 scripts.zip：scripts/prefabs/daywalker2.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "daywalker2",
+        "Shadow World",
+        "lunar shadow items"
+      ]
+    },
+    {
+      "id": "boss-toadstool",
+      "title": "毒菌蟾蜍",
+      "category": "creatures",
+      "sections": 9,
+      "source": [
+        "content/epic/toadstool.lua",
+        "原版 scripts.zip：scripts/prefabs/toadstool.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "toadstool",
+        "enable easy mode",
+        "Shadow World"
+      ]
+    },
+    {
+      "id": "boss-celestial-champion",
+      "title": "天体英雄",
+      "category": "creatures",
+      "sections": 10,
+      "source": [
+        "content/epic/alterguardian.lua",
+        "原版 scripts.zip：scripts/prefabs/alterguardian_phase1.lua",
+        "原版 scripts.zip：scripts/prefabs/alterguardian_phase2.lua",
+        "原版 scripts.zip：scripts/prefabs/alterguardian_phase3.lua",
+        "原版 scripts.zip：scripts/prefabs/alterguardian_phase3dead.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "alterguardian",
+        "old_alterguardian",
+        "banicetiles",
+        "moonisland",
+        "Shadow World"
+      ]
+    },
+    {
+      "id": "boss-celestial-descendant",
+      "title": "天体后裔",
+      "category": "creatures",
+      "sections": 9,
+      "source": [
+        "content/epic/alterguardian_phase4_lunarrift.lua",
+        "content/scripts/brains/alterguardian_phase4_lunarriftbrainYf.lua",
+        "原版 scripts.zip：scripts/prefabs/alterguardian_phase4_lunarrift.lua",
+        "原版 scripts.zip：scripts/stategraphs/SGwagboss_robot.lua",
+        "原版 scripts.zip：scripts/components/health.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "alterguardian_phase4",
+        "Shadow World",
+        "extra_change",
+        "boss_health"
+      ]
+    },
+    {
+      "id": "boss-ancient-guardian",
+      "title": "远古守护者",
+      "category": "creatures",
+      "sections": 10,
+      "source": [
+        "content/epic/minotaur.lua",
+        "content/epic/minotaur_old.lua",
+        "原版 scripts.zip：scripts/prefabs/minotaur.lua",
+        "原版 scripts.zip：scripts/stategraphs/SGminotaur.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "minotaur"
+      ]
+    },
+    {
+      "id": "boss-fuelweaver",
+      "title": "远古织影者",
+      "category": "creatures",
+      "sections": 9,
+      "source": [
+        "content/epic/atriumstalker.lua",
+        "原版 scripts.zip：scripts/prefabs/stalker.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "atriumstalker"
+      ]
+    },
+    {
+      "id": "boss-lunar-possession",
+      "title": "月亮附身与变异巨兽",
+      "category": "creatures",
+      "sections": 7,
+      "source": [
+        "content/epic/lunarepic.lua",
+        "content/epic/deerclops.lua",
+        "content/epic/bearger.lua",
+        "content/monster/hound.lua",
+        "content/easy_other/lunar_shadow_items.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "gestalt",
+        "Shadow World",
+        "deerclops",
+        "bearger",
+        "warg",
+        "enable easy mode",
+        "lunar shadow items"
+      ]
+    },
+    {
+      "id": "boss-hooded-widow",
+      "title": "黑寡妇与蛛茧",
+      "category": "creatures",
+      "sections": 9,
+      "source": [
+        "content/epic/um_hoodedwidow.lua",
+        "永不妥协正式版 workshop-2039181790：scripts/prefabs/hoodedwidow.lua、init/init_tuning.lua",
+        "永不妥协测试版 workshop-3193922031：scripts/prefabs/hoodedwidow.lua、init/init_tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "UM Widow"
+      ]
+    },
+    {
+      "id": "boss-pig",
+      "title": "猪猪 Boss",
+      "category": "creatures",
+      "sections": 7,
+      "source": [
+        "content/epic/pig_boss.lua",
+        "content/epic/poor_armor.lua",
+        "content/scripts/prefabs/mod_hardmode_stafflight.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "pig_boss",
+        "poor_armor"
+      ]
+    }
+  ],
+  "sharedArticles": [
+    "armor",
+    "mechanic-extra-stats",
+    "mechanic-extra-defense"
+  ],
+  "sources": [
+    {
+      "file": "content/common/monster_nightvision.lua",
+      "sha256": "5c8abc72145f9654cc16731ccc03e45d0093dc96f459ea55a326f4cc65fe57e9"
+    },
+    {
+      "file": "content/common/role_nightvision.lua",
+      "sha256": "1e84724cca4a4442da65bf806e615b52d79292a9999841cf5e2da1f5f2d1d29d"
+    },
+    {
+      "file": "content/weather/dusk.lua",
+      "sha256": "47e054eaf21c0452a9457246aabf165696ab6cf6ba97f48bd488bd77eb9e668d"
+    },
+    {
+      "file": "content/modmain.lua",
+      "sha256": "5eacb3c2409edca3548b71fc5e393a10042f50abfaba24ade9179bc8a10b58c6"
+    },
+    {
+      "file": "content/easy_role/wixie_easy.lua",
+      "sha256": "34fc48cb795d8a18bfb20e6639b43cc1e3e410c0f5ab997b02d72770ebc72857"
+    },
+    {
+      "file": "content/scripts/wixieconfig2hm.lua",
+      "sha256": "ad15b9ba08887de294884d31bb87698956f94a66622492a2adf0eff247f0efe9"
+    },
+    {
+      "file": "content/role/walter.lua",
+      "sha256": "27f29670fbfb4ed68381886adccbed2fd903a8a78ea4f83cae87d0c28d920026"
+    },
+    {
+      "file": "content/common/walter_wixie_slingshot.lua",
+      "sha256": "f5b15bff749a30f04aed88381cfb42c876600484dae0447521a4cc803e9d49a3"
+    },
+    {
+      "file": "content/easy_role/wanda_easy.lua",
+      "sha256": "b128554599473f23a38f87d8514c6f94f3f6e142d79831cb247cd21096989e00"
+    },
+    {
+      "file": "content/role/regen.lua",
+      "sha256": "1918f474b0289b4728fc2cd5e04bd234870b65ecd90bd5641352cf41474b8224"
+    },
+    {
+      "file": "content/role/wanda.lua",
+      "sha256": "9889386b04fa1ade55f401274cb2b225a8164c4ce4ab924fd27665f7b44e1b62"
+    },
+    {
+      "file": "content/scripts/recipes2hm.lua",
+      "sha256": "49f99a77be8e3c1a96f00c2b47daac716e687218b7b7666d1510e5e3f390ff9b"
+    },
+    {
+      "file": "content/scripts/prefabs/frostshrine2hm.lua",
+      "sha256": "71c96219c87f8c9a868acff9f205667fa463deee21034b076383711011364b52"
+    },
+    {
+      "file": "content/epic/sharkboi.lua",
+      "sha256": "c6447906fee28ed30b32c0378fb64b2bb1225e6801176ef046d90f9edee24c3b"
+    },
+    {
+      "file": "content/scripts/prefabs/player_tomb2hm.lua",
+      "sha256": "3a14e0479565356797edd779d8f76c103a8708cbffd4193677bb47b80d77051b"
+    },
+    {
+      "file": "content/scripts/prefabs/tomb_plant2hm.lua",
+      "sha256": "7c0d9e060d9d168a0387d080b4866bf0a99e8776e20685f4d064da2f704c4d80"
+    },
+    {
+      "file": "content/scripts/prefabs/tomb_weed2hm.lua",
+      "sha256": "d1b48a77707129271a61b87a154e5f039e4528be83f6e5d22ba8649c93d9f003"
+    },
+    {
+      "file": "content/easy_other/easy_structures.lua",
+      "sha256": "a6a7b1ddd784700e4a2974a6c07491bb885d67b0193e040e1d95634ed7af63ea"
+    },
+    {
+      "file": "content/tech/prototyper.lua",
+      "sha256": "8fbf72ae37bf2dbf2d1c6f1dd31b7e8e9fb3ba471bad82a4fef81b6ec5ee72f9"
+    },
+    {
+      "file": "content/tech/moonrockidol.lua",
+      "sha256": "6552cfac45420812dc490bb7a866d587e0d386dd4189d1ab42d38b83abfe1c0c"
+    },
+    {
+      "file": "content/easy_other/easy_items.lua",
+      "sha256": "201d56747143203ccf49cd5158ae6dc85894c12b1cf2779d75869a3d26efbc8c"
+    },
+    {
+      "file": "content/food/cooking.lua",
+      "sha256": "c815b2ec14f864977e9495e6b906fdd4fb5f18ca0daa7bd3c5aa7b0cedd4a589"
+    },
+    {
+      "file": "content/epic/toadstool.lua",
+      "sha256": "9a206f0d1ec8c37fcfc98a820ae136bd143628d0faa33457c89a01d8c11dab64"
+    },
+    {
+      "file": "content/shadowworld.lua",
+      "sha256": "89a57cca5194c41860bd60c2a2b8886ad36bc90dcad2026e716952e6537cd018"
+    },
+    {
+      "file": "content/scripts/prefabs/dryplants2hm.lua",
+      "sha256": "78196238cf1f49b05f3759b2713bf1634d3df2be760944b772d92ee4c26ab911"
+    },
+    {
+      "file": "content/food/fooddata.lua",
+      "sha256": "f94321d71f2e1eecec771d05819c4fe4aa3e062e6a9b2c005be7106719604b2c"
+    },
+    {
+      "file": "content/easy_other/easy_mechanics.lua",
+      "sha256": "02b0aad2267fbc8aa30e42004a6883e54e88f796bca280fc8fb9a72c9526f054"
+    },
+    {
+      "file": "content/tech/sleep.lua",
+      "sha256": "15b8c4be05fe04ab443293cc9dd388cceeb7b26858a38abe840bd5fe655bcb71"
+    },
+    {
+      "file": "content/scripts/components/repairable2hm.lua",
+      "sha256": "22aeae3bb04724b52a201f672bc6210f2d30a60232a0dcb6fbfb20273eb4b261"
+    },
+    {
+      "file": "content/tech/oceanlife.lua",
+      "sha256": "c6797f62545007c83c4eadbe491cf9d8e2a4c33020b1e3c67ef79794a5f03c62"
+    },
+    {
+      "file": "content/epic/daywalker2.lua",
+      "sha256": "095b7d8d401effd4cc86e44766c9fa76e467892f7e922b7d833bf8a6cc2c608b"
+    },
+    {
+      "file": "content/easy_other/lunar_shadow_items.lua",
+      "sha256": "6b0b5b24ceffd749a7e6daf0051f94e6029ec39838c8a6147f6ef47848c0a974"
+    },
+    {
+      "file": "content/food/farm.lua",
+      "sha256": "446280982911bf3333b18d3fc26bd07f51228ef7638a664ae5e1971b5e4af986"
+    },
+    {
+      "file": "content/tech/prototyperlevel.lua",
+      "sha256": "bd0399b91d854502298d13c4808d6d9dffaf754e4c783f4d9611d7df26bef2bd"
+    },
+    {
+      "file": "content/tech/distilledknowledge.lua",
+      "sha256": "943ae5a97c6acb9704249e4c8d400c920368c6ab95dfe70185e2c761a3c7df4e"
+    },
+    {
+      "file": "content/scripts/prefabs/oceanshadowcreature2hm.lua",
+      "sha256": "1873a948a971040128a8f0f387435599fa91a9254cdf07bc2407ed2ffa6746d9"
+    },
+    {
+      "file": "content/monster/oceanshadow.lua",
+      "sha256": "f551c08b0fe3f16d59c340fe886541817f1090a26357dadd7574a66a756aa869"
+    },
+    {
+      "file": "content/modinfo.lua",
+      "sha256": "18809baa750ebf8b162e7f3b6ded58fdc6135854e95e3e2d94a35423d9145480"
+    },
+    {
+      "file": "content/easy_role/wilson_easy.lua",
+      "sha256": "5aaa48de2dc01b05d52c65fd6831b1dba4053b79003aff97cb4620911b826337"
+    },
+    {
+      "file": "content/easy_role/skilltree_common.lua",
+      "sha256": "91fd9430d9a7599f336bfb91cb1c79dea1d37381f6dfffdafc5e45100389c568"
+    },
+    {
+      "file": "content/easy_role/rightaction.lua",
+      "sha256": "f5192a017f783eef93121d9420cdab9ea8019b10da1bd75aa0d28f30d1d4d69c"
+    },
+    {
+      "file": "content/easy_role/rightselfaction.lua",
+      "sha256": "49e37964f6c9e27c59f744a99deacca323a55066638ce8fa1f94d5cecabff2ba"
+    },
+    {
+      "file": "content/easy_role/willow_easy.lua",
+      "sha256": "34414bb1d42e7724841bdd2f06b9b3f522b76a2869cca63ed400cfe0e37b08ff"
+    },
+    {
+      "file": "content/role/willow.lua",
+      "sha256": "4c272f3ea9208a37e18bb417e17f87a0a22a8f15fced703cece7b765cfaf2dbd"
+    },
+    {
+      "file": "content/easy_role/wolfgang_easy.lua",
+      "sha256": "fdbc9e49118eb92f4a0c9f4b2de8a46792b74fe8956fa52934752f00e4cee15e"
+    },
+    {
+      "file": "content/role/wolfgang.lua",
+      "sha256": "17a0d4373b4bdf8f5181fedc044c0a54f994de7046f5b7aaca3104d3b2498c0a"
+    },
+    {
+      "file": "content/easy_role/wendy_easy.lua",
+      "sha256": "910b5e61b114131bb52c4d5259b30315f17b526d6edde0fa8cabd997c34f8b98"
+    },
+    {
+      "file": "content/role/wendy.lua",
+      "sha256": "a76e84ffd9d43e85d6e0ba9baa2a73cec19c46e37f755321fd771e4fb431242f"
+    },
+    {
+      "file": "content/easy_role/wx78_easy.lua",
+      "sha256": "0ed49feef7e86d6d9a50b0e1739fea74e6cdeca9850c882c2bceadfc0da5a526"
+    },
+    {
+      "file": "content/role/wx78.lua",
+      "sha256": "4b472c3b2a3890c7462094ac8bbc208fbcc9b3a572c2f6d9302606e99f5cde51"
+    },
+    {
+      "file": "content/easy_role/wickerbottom_easy.lua",
+      "sha256": "49c0d01371ee71f7267093f00e3f9bdef5a03b7512f65ec21ea10fc510ffbb1c"
+    },
+    {
+      "file": "content/role/wickerbottom.lua",
+      "sha256": "cc7086ec5f4ad6eb337f182d9e3755a8d031bc50e5ef8ffc7b9157b3a8ef53a4"
+    },
+    {
+      "file": "content/scripts/prefabs/book_temperature_buff2hm.lua",
+      "sha256": "7e9a7ae121969dd59c5258a26ca06d904a3582aa6fa2a7da69c87808f89aa831"
+    },
+    {
+      "file": "content/easy_role/woodie_easy.lua",
+      "sha256": "eb75434e64cb49d58f24c5397bf4a58ecf105f8abc15ab481f9afb7c75552aec"
+    },
+    {
+      "file": "content/ray/suijishengwuapi.lua",
+      "sha256": "e6bb2a6df5abdcac586f8db86c953da415c94e6b6a063862421e32396b2d9fc8"
+    },
+    {
+      "file": "content/easy_role/wes_easy.lua",
+      "sha256": "67310060b2e4d78c0c9a5e84ae5c8bd90916efb6ba40154e0bd78de32762ecee"
+    },
+    {
+      "file": "content/easy_role/waxwell_easy.lua",
+      "sha256": "d9e2f1feced8555119c413fdd9678f6f455b7a530f10483f4f7b151f2fdd8965"
+    },
+    {
+      "file": "content/role/waxwell.lua",
+      "sha256": "5869ee6c98b6e22864fb06f7d42c4dd8f7108b0fdb82189c1c1c76c65e981b07"
+    },
+    {
+      "file": "content/easy_role/wigfrid_easy.lua",
+      "sha256": "75f9f27172e73d28ab58a78fcb95e363e7f62d49d1afc2846e1ec89b500d7ab0"
+    },
+    {
+      "file": "content/role/wigfrid.lua",
+      "sha256": "c38f0174d61c8089a3ab556128fa4a9ed1216135d7df406561d3dc28cce09109"
+    },
+    {
+      "file": "content/scripts/prefabs/battlesongbuffs.lua",
+      "sha256": "512fc77e4af9eef466b019ea882c8ed6b7589e94fdc75dca8b7ee9f7b36ea645"
+    },
+    {
+      "file": "content/easy_role/webber_easy.lua",
+      "sha256": "9184f791f5c24d8dc1c1a4a205b419fba88cb3054f004bb6b66f14ac44ba9447"
+    },
+    {
+      "file": "content/role/webber.lua",
+      "sha256": "26b1e485fe866f6d9cfc1ab3fc2ea32cb404f77abf3a31590b1d2f9b27ed9e86"
+    },
+    {
+      "file": "content/scripts/components/hattrickparent2hm.lua",
+      "sha256": "50fcbec25582618a5079a286a7bfaa00e36c0a2f36fbf2d1d639019805d3e8b1"
+    },
+    {
+      "file": "content/scripts/components/hattrickchild2hm.lua",
+      "sha256": "55297a8b8c7d3dff2a8ae732a7d6fc426b2e365e1025865f70d3d23e72e205e7"
+    },
+    {
+      "file": "content/scripts/components/removeleaveinventory2hm.lua",
+      "sha256": "5f59b326f2ead78fd98c6f11e265ddfb005fb7c949b379c733fffd4361856f1c"
+    },
+    {
+      "file": "content/scripts/prefabs/spiderbag2hm.lua",
+      "sha256": "bd585e42b033d30d576e436f4eda3b8e5a079f766e918d0d440379e4edad3dfd"
+    },
+    {
+      "file": "content/easy_role/winona_easy.lua",
+      "sha256": "a2006bb3bfd33f4446ee341a0d53a53f3804f871847d4b7fdc577f213c5a8a61"
+    },
+    {
+      "file": "content/easy_role/warly_easy.lua",
+      "sha256": "cc41310b82e6e16c84bbf13b1f1a1cbfdb692eaf079bc800f8b17d7a68a0c116"
+    },
+    {
+      "file": "content/easy_role/walter_easy.lua",
+      "sha256": "9e1debd51964ea74cec03a7b40f7d348537187d49238267c59adfd64f677a950"
+    },
+    {
+      "file": "content/easy_role/attackaction.lua",
+      "sha256": "80d0d922d9caefd78b84db3d089bf4cc4748ef72f619a206942a4cd2d81935b2"
+    },
+    {
+      "file": "content/easy_role/wortox_easy.lua",
+      "sha256": "9c3860d607d037558574f72690a02dfde36508f8d316a5031f33bc22d42ca34f"
+    },
+    {
+      "file": "content/role/wortox.lua",
+      "sha256": "860997fe14a304ebdfa0be763aef865794cff73028a8fa532e182fbf7514ce91"
+    },
+    {
+      "file": "content/easy_role/wormwood_easy.lua",
+      "sha256": "35f24df2d286aa2b58a7a4466ded7b7ed8c9355a0cdc51bcb18cbcc5e0ec2e99"
+    },
+    {
+      "file": "content/role/wormwood.lua",
+      "sha256": "612d9bb9ab80ca5bb1a1065e8de13923e9bf2c55f3dddabd8db7af3ade805e13"
+    },
+    {
+      "file": "content/scripts/components/tempequip2hm.lua",
+      "sha256": "417b785a554fb83a08b39be9d87ed8e087e7fb18fcb8ac6f587ce38dae3936b9"
+    },
+    {
+      "file": "content/easy_role/wurt_easy.lua",
+      "sha256": "b425244bd158de516aba620364fe49129340cd82c599fc06a8ab765ae59a586e"
+    },
+    {
+      "file": "content/role/wurt.lua",
+      "sha256": "8b81a459be90e155f11b194bd092eced66b83e9f6148dd5f1eed71a8b5a0c1a8"
+    },
+    {
+      "file": "content/easy_role/wanda_dreadwatch2hm.lua",
+      "sha256": "6daa77f2d80af6e223f81af841e677004aedbdca7d3026eb58c545619a8dfc24"
+    },
+    {
+      "file": "content/scripts/prefabs/watch_weapon_horn2hm.lua",
+      "sha256": "d7ce7af5bfffc0d680b48a47795a32f2d01f994592c1f0d97fe4861da4a8e4dd"
+    },
+    {
+      "file": "content/easy_role/wonkey_easy.lua",
+      "sha256": "0a2acb08363e61cdd95fac94d9a06be25976ce701af468180d7d213fb2656bb6"
+    },
+    {
+      "file": "content/easy_role/wathom_easy.lua",
+      "sha256": "c616f366c793fc0490f0e9949a2ac914a7a214f803074bec3c163dde04f539f3"
+    },
+    {
+      "file": "content/epic/deerclops.lua",
+      "sha256": "406ba56a07d62405d8e309ba5edf2966b45cf52de1490e85f58bd9c5b98b2e8a"
+    },
+    {
+      "file": "content/scripts/prefabs/mod_hardmode_stafflight.lua",
+      "sha256": "f8dd471fd27a99531ea57bcce2f2a31ab78593cb55d4914535289d7f5a095286"
+    },
+    {
+      "file": "content/extra/extra.lua",
+      "sha256": "8099650350d9730cb089d8f1d84830a788a15a246caa82ce4ac2a5388e5e690e"
+    },
+    {
+      "file": "content/epic/antlion.lua",
+      "sha256": "aec66c7e11692422043ac441aa9232d40af4a898d0813ddade062d7aed43a99f"
+    },
+    {
+      "file": "content/epic/bearger.lua",
+      "sha256": "f9e8e891bfdc0215f13024a73e640c3c12e5426e0fcd8c6ab37fbbf189e2c91b"
+    },
+    {
+      "file": "content/scripts/prefabs/beargerrangeattackfx2hm.lua",
+      "sha256": "54528d59333d9f98f092879e1397f89ca042722b348d4e03b4dddb0f079b525c"
+    },
+    {
+      "file": "content/epic/dragonfly.lua",
+      "sha256": "6e2b7cd56c67570d593e92733a144c4390d36d88c19b3f1a22cfd7df13a5451f"
+    },
+    {
+      "file": "content/common/projectile.lua",
+      "sha256": "86f4d9ec9ddb7ec9d071d13baa3a42420d924d02588560aad052ab577e285b8d"
+    },
+    {
+      "file": "content/scripts/prefabs/torchfireprojectile2hm.lua",
+      "sha256": "17ef6ddeaa72d1d7374a8a89bf3e3ca53dc9b4bd1e218b1bec53eb50dd7091d5"
+    },
+    {
+      "file": "content/epic/beequeen.lua",
+      "sha256": "afa12d0b69ec63c105733e8457142427e3bca804ef20b651b16985e900664fc5"
+    },
+    {
+      "file": "content/epic/malbatross.lua",
+      "sha256": "feee3e011309935aa55c669c4d68ecd97884c2c76b1c47408dc779f1c0311e75"
+    },
+    {
+      "file": "content/scripts/prefabs/malbatross_feather2hm.lua",
+      "sha256": "e7e344b814f47af9f5888d2d60612b56e7d8e9ca02b583a2efc95805d4abb16d"
+    },
+    {
+      "file": "content/epic/klaus.lua",
+      "sha256": "c68656708c77342164495e3910a444d07f6a8b144fcad5f3f2a3908f01e497f3"
+    },
+    {
+      "file": "content/scripts/stategraphs/SGklaus2hm.lua",
+      "sha256": "b87383da65c2bcdef5f360531a2b233c0db09330bbed577d9f38054b0b1abd5d"
+    },
+    {
+      "file": "content/epic/crabking.lua",
+      "sha256": "30aaafb07f0d0e3dd3a935a8a40ba8252e30823ac62fa8d0bc9f646b3f2ac1df"
+    },
+    {
+      "file": "content/epic/crabking_deprecated.lua",
+      "sha256": "102a155ac06563ab19dd748d17b2794ccd373bae569908197796263cc9a59182"
+    },
+    {
+      "file": "content/scripts/prefabs/crabking2hm.lua",
+      "sha256": "dcda50615e7e01b4fb350cffe2f338f186780fef33b610d987e750eac5521610"
+    },
+    {
+      "file": "content/scripts/stategraphs/SGcrabking2hm.lua",
+      "sha256": "6e3c4d59d1fd7bf1fd8ae7b4b5534eca0cc7a0f93fd17aedfce637df57d0e76b"
+    },
+    {
+      "file": "content/scripts/brains/sharkboibrain2hm.lua",
+      "sha256": "fb38192e1125eeb742d115a6d36e5cec4cd7b7e2b42285a54d15bec30b490227"
+    },
+    {
+      "file": "content/epic/shadowchesspieces.lua",
+      "sha256": "3cd13538996ecc18bb589a73b0e8d1c5bc3633b2d540d011eb062be8cdff805a"
+    },
+    {
+      "file": "content/epic/eyeofterror.lua",
+      "sha256": "4bc31e1dfc03cdb49e61b4b943257559e83521cc03454a518781f9f09f9953f6"
+    },
+    {
+      "file": "content/scripts/brains/daywalker2brainPG.lua",
+      "sha256": "405f9f50bfadab07eb0c8064c36351070a8dd0cd6779f8046dd9df8bcbe5804c"
+    },
+    {
+      "file": "content/epic/alterguardian.lua",
+      "sha256": "fda966ba15268956585581f0795e52bf2032157593ad34edfb2269ec756ce5fa"
+    },
+    {
+      "file": "content/epic/alterguardian_phase4_lunarrift.lua",
+      "sha256": "178724f78f20ef9c3face6b5f46e0f05bc4e5c675a7d548f9b89844d2e6f935e"
+    },
+    {
+      "file": "content/scripts/brains/alterguardian_phase4_lunarriftbrainYf.lua",
+      "sha256": "4695b4c6a2e575fd4c929a70a693aa78ff6434511e65196a99df79c457f67541"
+    },
+    {
+      "file": "content/epic/minotaur.lua",
+      "sha256": "a990afa43b88b63ba75fa374196e31e65117f1f772ed65bf8b550e9d10ab1801"
+    },
+    {
+      "file": "content/epic/minotaur_old.lua",
+      "sha256": "704452e6cad7db135b75d90380a7f42a4388d9e149a2f923b5eadc68d63009c1"
+    },
+    {
+      "file": "content/epic/atriumstalker.lua",
+      "sha256": "1cf193230630df544a0606ae0a20cb6382ec5e090ca086289189deb3b5d98d10"
+    },
+    {
+      "file": "content/epic/lunarepic.lua",
+      "sha256": "8edf6d0c96b7465a2f2f0526eca2110b1f7b7c73c45c010332ed94a774938fa0"
+    },
+    {
+      "file": "content/monster/hound.lua",
+      "sha256": "2e389baa602ec8f97945f4b2de77e65389ae3c29bd2fc1212ccdb247c8d925dc"
+    },
+    {
+      "file": "content/epic/um_hoodedwidow.lua",
+      "sha256": "5df75c90afb023333461001be8c70d1863b9dc66e1f8b152c8eed356fe7da3e5"
+    },
+    {
+      "file": "content/epic/pig_boss.lua",
+      "sha256": "da84a778e071e5cc74538f8b594d5c568dc4b50ac4f6facec9250e61e07fe343"
+    },
+    {
+      "file": "content/epic/poor_armor.lua",
+      "sha256": "a57fc01563d9f3d50d689add34c9f429bd47079f75cd743620d993eeabcd47d6"
+    },
+    {
+      "file": "content/extra/frostjaw_trade.lua",
+      "sha256": "511107f1988c9ee648b576164a4d0f3442a1c274249cbb334ca2075c8832b89d"
+    }
+  ]
+}

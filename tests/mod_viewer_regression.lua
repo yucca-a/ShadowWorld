@@ -15,6 +15,7 @@ end
 function IsTableEmpty(value) return next(value) == nil end
 GLOBAL = {GetModConfigData = native_getconfig}
 CONTROL_PRIMARY, CONTROL_SECONDARY, CONTROL_CANCEL, CONTROL_MAP = 1, 2, 3, 4
+local wikiURL = "https://cuilian-wiki.pages.dev/"
 
 local function setup(settings)
     settings = settings or {}
@@ -57,6 +58,11 @@ local function setup(settings)
     end
     AddClassPostConstruct = function(name, fn) state.hooks[name] = fn end
     modimport = function(path) table.insert(state.imports, path) end
+    VisitURL = function(url, use_overlay)
+        state.opened_url = url
+        state.use_overlay = use_overlay
+    end
+    if wiki_source then package.loaded.seasonwiki2hm = assert(loadstring(wiki_source))() end
 
     local default_options = {
         {name = "enabled", default = true, saved = true, options = {{data = false}, {data = true}}},
@@ -143,7 +149,13 @@ local host = state.host()
 check(host.btn2hm ~= nil, "offline HUD must display the icon without a server listing")
 check(host.btn2hm.tooltip:find("显示模组", 1, true), "button tooltip is available")
 local screen, list = open_mod(state, host, "World Mod")
-equal(#list.items, 2, "only loaded world mods shown, excluding disabled/client-only mods")
+equal(#list.items, wiki_source and 3 or 2, "only loaded world mods and the wiki shown")
+if wiki_source then
+    equal(list.items[1].text, "打开淬炼之季 Wiki", "wiki action is at the top of the panel")
+    list.items[1].onclick()
+    equal(state.opened_url, wikiURL, "panel opens the production wiki")
+    equal(state.use_overlay, false, "panel requests the default browser")
+end
 equal(value(screen, "enabled"), false, "saved false must survive")
 equal(value(screen, "amount"), 0, "saved zero must survive instead of local saved 99")
 equal(value(screen, "mode"), "world", "world configuration is displayed")
@@ -173,7 +185,7 @@ state.listing = {mods_description = {{mod_name = "worldmod", modinfo_name = "Adv
 state.load()
 host = state.host()
 screen, list = open_mod(state, host, "Advertised Mod")
-equal(#list.items, 1, "online advertised mod list is preserved")
+equal(#list.items, wiki_source and 2 or 1, "online advertised mod list is preserved")
 equal(value(screen, "enabled"), false, "network false is preserved")
 equal(value(screen, "amount"), 7, "online settings win over locally saved settings")
 equal(value(screen, "mode"), "network", "advertised configuration displayed")
@@ -210,6 +222,31 @@ for _, settings in ipairs({{enabled = false}, {openmods = false}, {dedicated = t
     state = setup(settings)
     state.load()
     equal(#state.imports, 0, "disabled/dedicated environments must not import the viewer")
+    if wiki_source then
+        equal(state.hooks["screens/consolescreen"] ~= nil, not settings.dedicated, "wiki console shortcut is independent of the viewer icon")
+    end
+end
+if wiki_source then
+    for _, remote in ipairs({false, true}) do
+        state = setup({client = remote, enabled = false})
+        state.load()
+        local command, executed = "  /wiki  ", nil
+        local console = {console_edit = {GetString = function() return command end}, toggle_remote_execute = remote,
+            Run = function(self) executed = {command, self.toggle_remote_execute} end}
+        state.hooks["screens/consolescreen"](console)
+        console:Run()
+        equal(state.opened_url, wikiURL, "console opens the wiki in local and remote modes")
+        equal(state.use_overlay, false, "console requests the default browser")
+        equal(executed, nil, "wiki shortcut bypasses ordinary console dispatch")
+        state.opened_url = nil
+        for _, ordinary in ipairs({"/wikidata", "print('/wiki')", ""}) do
+            command = ordinary
+            console:Run()
+            equal(executed[1], ordinary, "ordinary commands still use original console dispatch")
+            equal(executed[2], remote, "ordinary commands retain remote mode")
+        end
+        equal(state.opened_url, nil, "ordinary commands do not open the wiki")
+    end
 end
 state = setup({enabled = false, openmods = true})
 state.load()

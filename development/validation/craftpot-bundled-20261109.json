@@ -1,0 +1,516 @@
+{
+  "date": "2026-11-09",
+  "status": "Published to existing Steam Workshop item 3832182265 as 2.8.15.0.16",
+  "issue": "Five-slot cooking preview absent with Craft Pot embedded in 群鸟绘卷·秋.",
+  "causes": [
+    "The previous class hook only targeted widgets/foodcrafting; the bundled widget is widgets/craftpot/foodcrafting.",
+    "The bundled container hook explicitly rejects containers whose slot count differs from four, so patching recipe math alone cannot open the panel."
+  ],
+  "changes": [
+    "Detect compatible preview interfaces on the actual HUD, including controls created after HUD construction; guard against repeated wrapping.",
+    "Open the existing preview for five-slot cookpot/portablecookpot, coalesce item events until the next frame, and release listeners/tasks on close.",
+    "Keep full/partial five-slot prediction and furnace raw-tag rules; dedicated servers skip all client hooks."
+  ],
+  "production": {
+    "file": "content/common/food_util.lua",
+    "sha256": "f79b61f393a8deddcebb7b753baad584a06fa2d236edc87bd93505b8363687a0"
+  },
+  "client_mods": [
+    {
+      "name": "群鸟绘卷·秋",
+      "workshop_id": "3161120380",
+      "version": "11.33",
+      "dependency": "群鸟绘卷·春 3161117403 12.1"
+    },
+    {
+      "name": "Craft Pot",
+      "workshop_id": "727774324",
+      "version": "0.15.0"
+    },
+    {
+      "name": "Craft Pot (Refresh)",
+      "workshop_id": "3822775840",
+      "version": "1.0"
+    }
+  ],
+  "before_fix": {
+    "result_file": "work/vault-hardened-hosted-cjiofofv/craftpot-client-result.json",
+    "kind": "bundled",
+    "status": "reproduced",
+    "helper_sha256": "41c83b7f24c14a37ad940be12bf930b85de2aa134a515b7b166c8300710f6a9e",
+    "fixture_sha256": "760d6faec2a494a452912646d8d215f12ae772ba5eec27222b91e85141e4bf8a",
+    "cases": [
+      {
+        "visible": 0,
+        "index": 1,
+        "passed": false,
+        "full": false,
+        "hooked": false,
+        "open": false,
+        "widget": true,
+        "count": 4,
+        "icons": 0,
+        "expected": "meatballs",
+        "kind": "case",
+        "prefab": "cookpot",
+        "actual": []
+      },
+      {
+        "visible": 0,
+        "index": 2,
+        "passed": false,
+        "full": true,
+        "hooked": false,
+        "open": false,
+        "widget": true,
+        "count": 5,
+        "icons": 0,
+        "expected": "meatballs",
+        "kind": "case",
+        "prefab": "cookpot",
+        "actual": []
+      },
+      {
+        "visible": 0,
+        "index": 3,
+        "passed": false,
+        "full": false,
+        "hooked": false,
+        "open": false,
+        "widget": true,
+        "count": 4,
+        "icons": 0,
+        "expected": "meatballs",
+        "kind": "case",
+        "prefab": "cookpot",
+        "actual": []
+      },
+      {
+        "visible": 0,
+        "index": 4,
+        "passed": false,
+        "full": true,
+        "hooked": false,
+        "open": false,
+        "widget": true,
+        "count": 5,
+        "icons": 0,
+        "expected": "meatballs",
+        "kind": "case",
+        "prefab": "portablecookpot",
+        "actual": []
+      },
+      {
+        "visible": 1,
+        "index": 5,
+        "passed": false,
+        "full": true,
+        "hooked": false,
+        "open": true,
+        "widget": true,
+        "count": 4,
+        "icons": 1,
+        "expected": "bonestew",
+        "kind": "case",
+        "prefab": "dragonflyfurnace",
+        "actual": [
+          "meatballs"
+        ]
+      },
+      {
+        "visible": 1,
+        "index": 6,
+        "passed": false,
+        "full": true,
+        "hooked": false,
+        "open": false,
+        "widget": true,
+        "count": 5,
+        "icons": 1,
+        "expected": "meatballs",
+        "kind": "case",
+        "prefab": "cookpot",
+        "actual": [
+          "meatballs"
+        ]
+      }
+    ]
+  },
+  "fixed_clients": [
+    {
+      "result_file": "work/vault-hardened-hosted-u__yr5dy/craftpot-client-result.json",
+      "kind": "bundled",
+      "status": "passed",
+      "helper_sha256": "f79b61f393a8deddcebb7b753baad584a06fa2d236edc87bd93505b8363687a0",
+      "fixture_sha256": "760d6faec2a494a452912646d8d215f12ae772ba5eec27222b91e85141e4bf8a",
+      "cases": [
+        {
+          "visible": 52,
+          "index": 1,
+          "passed": true,
+          "full": false,
+          "hooked": true,
+          "open": true,
+          "widget": true,
+          "count": 4,
+          "icons": 6,
+          "expected": "meatballs",
+          "kind": "case",
+          "prefab": "cookpot",
+          "actual": []
+        },
+        {
+          "visible": 1,
+          "index": 2,
+          "passed": true,
+          "full": true,
+          "hooked": true,
+          "open": true,
+          "widget": true,
+          "count": 5,
+          "icons": 1,
+          "expected": "meatballs",
+          "kind": "case",
+          "prefab": "cookpot",
+          "actual": [
+            "meatballs"
+          ]
+        },
+        {
+          "visible": 52,
+          "index": 3,
+          "passed": true,
+          "full": false,
+          "hooked": true,
+          "open": true,
+          "widget": true,
+          "count": 4,
+          "icons": 6,
+          "expected": "meatballs",
+          "kind": "case",
+          "prefab": "cookpot",
+          "actual": []
+        },
+        {
+          "visible": 1,
+          "index": 4,
+          "passed": true,
+          "full": true,
+          "hooked": true,
+          "open": true,
+          "widget": true,
+          "count": 5,
+          "icons": 1,
+          "expected": "meatballs",
+          "kind": "case",
+          "prefab": "portablecookpot",
+          "actual": [
+            "meatballs"
+          ]
+        },
+        {
+          "visible": 1,
+          "index": 5,
+          "passed": true,
+          "full": true,
+          "hooked": true,
+          "open": true,
+          "widget": true,
+          "count": 4,
+          "icons": 1,
+          "expected": "bonestew",
+          "kind": "case",
+          "prefab": "dragonflyfurnace",
+          "actual": [
+            "bonestew"
+          ]
+        },
+        {
+          "visible": 1,
+          "index": 6,
+          "passed": true,
+          "full": true,
+          "hooked": true,
+          "open": true,
+          "widget": true,
+          "count": 5,
+          "icons": 1,
+          "expected": "meatballs",
+          "kind": "case",
+          "prefab": "cookpot",
+          "actual": [
+            "meatballs"
+          ]
+        }
+      ]
+    },
+    {
+      "result_file": "work/vault-hardened-hosted-mf31cru_/craftpot-client-result.json",
+      "kind": "classic",
+      "status": "passed",
+      "helper_sha256": "f79b61f393a8deddcebb7b753baad584a06fa2d236edc87bd93505b8363687a0",
+      "fixture_sha256": "760d6faec2a494a452912646d8d215f12ae772ba5eec27222b91e85141e4bf8a",
+      "cases": [
+        {
+          "visible": 52,
+          "index": 1,
+          "passed": true,
+          "full": false,
+          "hooked": true,
+          "open": true,
+          "widget": true,
+          "count": 4,
+          "icons": 6,
+          "expected": "meatballs",
+          "kind": "case",
+          "prefab": "cookpot",
+          "actual": []
+        },
+        {
+          "visible": 1,
+          "index": 2,
+          "passed": true,
+          "full": true,
+          "hooked": true,
+          "open": true,
+          "widget": true,
+          "count": 5,
+          "icons": 1,
+          "expected": "meatballs",
+          "kind": "case",
+          "prefab": "cookpot",
+          "actual": [
+            "meatballs"
+          ]
+        },
+        {
+          "visible": 52,
+          "index": 3,
+          "passed": true,
+          "full": false,
+          "hooked": true,
+          "open": true,
+          "widget": true,
+          "count": 4,
+          "icons": 6,
+          "expected": "meatballs",
+          "kind": "case",
+          "prefab": "cookpot",
+          "actual": []
+        },
+        {
+          "visible": 1,
+          "index": 4,
+          "passed": true,
+          "full": true,
+          "hooked": true,
+          "open": true,
+          "widget": true,
+          "count": 5,
+          "icons": 1,
+          "expected": "meatballs",
+          "kind": "case",
+          "prefab": "portablecookpot",
+          "actual": [
+            "meatballs"
+          ]
+        },
+        {
+          "visible": 1,
+          "index": 5,
+          "passed": true,
+          "full": true,
+          "hooked": true,
+          "open": true,
+          "widget": true,
+          "count": 4,
+          "icons": 1,
+          "expected": "bonestew",
+          "kind": "case",
+          "prefab": "dragonflyfurnace",
+          "actual": [
+            "bonestew"
+          ]
+        },
+        {
+          "visible": 1,
+          "index": 6,
+          "passed": true,
+          "full": true,
+          "hooked": true,
+          "open": true,
+          "widget": true,
+          "count": 5,
+          "icons": 1,
+          "expected": "meatballs",
+          "kind": "case",
+          "prefab": "cookpot",
+          "actual": [
+            "meatballs"
+          ]
+        }
+      ]
+    },
+    {
+      "result_file": "work/vault-hardened-hosted-uno8rso9/craftpot-client-result.json",
+      "kind": "refresh",
+      "status": "passed",
+      "helper_sha256": "f79b61f393a8deddcebb7b753baad584a06fa2d236edc87bd93505b8363687a0",
+      "fixture_sha256": "9e4f7f91c297a19b409501647d514830a9e1d14effa0ceca3a7d540484da854b",
+      "cases": [
+        {
+          "visible": 54,
+          "index": 1,
+          "passed": true,
+          "full": false,
+          "hooked": false,
+          "open": true,
+          "widget": true,
+          "count": 4,
+          "icons": 6,
+          "expected": "meatballs",
+          "kind": "case",
+          "prefab": "cookpot",
+          "actual": []
+        },
+        {
+          "visible": 1,
+          "index": 2,
+          "passed": true,
+          "full": true,
+          "hooked": false,
+          "open": true,
+          "widget": true,
+          "count": 5,
+          "icons": 1,
+          "expected": "meatballs",
+          "kind": "case",
+          "prefab": "cookpot",
+          "actual": [
+            "meatballs"
+          ]
+        },
+        {
+          "visible": 54,
+          "index": 3,
+          "passed": true,
+          "full": false,
+          "hooked": false,
+          "open": true,
+          "widget": true,
+          "count": 4,
+          "icons": 6,
+          "expected": "meatballs",
+          "kind": "case",
+          "prefab": "cookpot",
+          "actual": []
+        },
+        {
+          "visible": 1,
+          "index": 4,
+          "passed": true,
+          "full": true,
+          "hooked": false,
+          "open": true,
+          "widget": true,
+          "count": 5,
+          "icons": 1,
+          "expected": "meatballs",
+          "kind": "case",
+          "prefab": "portablecookpot",
+          "actual": [
+            "meatballs"
+          ]
+        },
+        {
+          "visible": 1,
+          "index": 5,
+          "passed": true,
+          "full": true,
+          "hooked": false,
+          "open": true,
+          "widget": true,
+          "count": 4,
+          "icons": 1,
+          "expected": "bonestew",
+          "kind": "case",
+          "prefab": "dragonflyfurnace",
+          "actual": [
+            "bonestew"
+          ]
+        },
+        {
+          "visible": 1,
+          "index": 6,
+          "passed": true,
+          "full": true,
+          "hooked": false,
+          "open": true,
+          "widget": true,
+          "count": 5,
+          "icons": 1,
+          "expected": "meatballs",
+          "kind": "case",
+          "prefab": "cookpot",
+          "actual": [
+            "meatballs"
+          ]
+        }
+      ]
+    }
+  ],
+  "intermediate_evidence": {
+    "file": "work/vault-hardened-hosted-9jnvzu85/craftpot-client-result.json",
+    "finding": "Interface-only patch reached the bundled widget, but ordinary and portable five-slot pots still did not open its panel; this exposed the separate four-slot opening gate."
+  },
+  "native_server": {
+    "file": "work/native-five-slot-beta-g2rkeiju/result.json",
+    "checks": 98,
+    "cases": 4,
+    "result": {
+      "pass": true,
+      "arguments": {
+        "edition": "beta",
+        "stats": true,
+        "patch_off": true,
+        "mode": -3,
+        "baseline": false,
+        "disk": false
+      },
+      "runs": [
+        {
+          "phase": "normal",
+          "pass": true,
+          "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-five-slot-beta-g2rkeiju\\normal.log",
+          "checks": [
+            "[00:00:33]: [FIVE_SLOT_TEST]\tPASS\trules\t\t",
+            "[00:00:33]: [FIVE_SLOT_TEST]\tPASS\tcookpot\t\t",
+            "[00:00:33]: [FIVE_SLOT_TEST]\tPASS\tportablecookpot\t\t",
+            "[00:00:33]: [FIVE_SLOT_TEST]\tPASS\tdragonflyfurnace_remains_four_ingredients\t\t",
+            "[00:00:33]: [FIVE_SLOT_TEST] RESULT\tcases=4\tchecks=98\tfailures=0\t"
+          ]
+        }
+      ],
+      "limitation": "Real server components/entities/save files and server-side replica metadata. No rendered client or arbitrary third-party mod combinations."
+    }
+  },
+  "local_regressions": [
+    {
+      "command": "tests/run_cooking_preview_tests.py",
+      "checks": 28,
+      "passed": true
+    },
+    {
+      "command": "tests/run_five_slot_routing_tests.py",
+      "checks": 190,
+      "passed": true,
+      "all_content_lua51_compiled": true
+    }
+  ],
+  "harness_correction": {
+    "discarded_run": "work/vault-hardened-hosted-toqpg4ce/craftpot-client-result.json",
+    "reason": "Refresh entries keep ready on the entry itself, while classic entries keep readytocook on entry.recipe. The initial probe incorrectly read only entry.recipe. Corrected the probe and reran Refresh successfully without production changes."
+  },
+  "scope": "All game runs used disposable copied mods/configuration/saves and automatically connected rendered native clients. Client variants ran sequentially. No player world was modified. Client checks inspect live panel/widget/icon state; no manual mouse or screenshot acceptance, arbitrary mod combination coverage is claimed.",
+  "publication": "development/releases/v2.8.15.0.16-publication.json"
+}

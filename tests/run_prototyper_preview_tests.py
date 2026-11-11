@@ -10,6 +10,7 @@ parser.add_argument('--source-ref')
 parser.add_argument('--preview-source', default="D:/SteamLibrary/steamapps/workshop/content/322330/3161117403/scripts/util/entutil.lua")
 args=parser.parse_args()
 lua=LuaRuntime(unpack_returned_tuples=True)
+lua.globals().package.path = str(ROOT/'content/scripts/?.lua').replace('\\','/') + ';' + lua.globals().package.path
 with ZipFile("D:/SteamLibrary/steamapps/common/Don't Starve Together/data/databundles/scripts.zip") as z:
     lua.execute(z.read('scripts/dumper.lua').decode('utf-8-sig'))
 source=(subprocess.check_output(['git','show',f'{args.source_ref}:content/easy_other/easy_structures.lua'],cwd=ROOT).decode('utf-8-sig') if args.source_ref else (ROOT/'content/easy_other/easy_structures.lua').read_text(encoding='utf-8-sig'))

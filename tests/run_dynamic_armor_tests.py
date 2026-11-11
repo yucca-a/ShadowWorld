@@ -39,6 +39,7 @@ for field, path in {
     "integration_source": "content/epic/dynamic_armor.lua",
     "config_source": "content/modinfo.lua",
     "legacy_source": "content/epic/epic_armor.lua",
+    "modeconfig_source": "content/scripts/combatconfig2hm.lua",
 }.items():
     source = (ROOT / path).read_text(encoding="utf-8-sig")
     lua.eval("function(s) return assert(loadstring(s)) end")(source)

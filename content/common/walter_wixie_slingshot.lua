@@ -2,6 +2,33 @@
 -- Restore his own equipment independently of every optional character upgrade.
 if not (TUNING.DSTU and TUNING.WIXIE_HEALTH) then return end
 local wixieWeapons = GetModConfigData("Walter Use Wixie Slingshot")
+-- UM replaces the vanilla recipe as well as its item. Restore a distinct
+-- Walter round independently of the permission to use Wixie's weapons.
+local walterGlass = "slingshotammo_moonglass_walter2hm"
+local walterGlassTag = "walter_moonglass2hm"
+STRINGS.NAMES.SLINGSHOTAMMO_MOONGLASS_WALTER2HM = TUNING.isCh2hm and "玻璃弹（沃尔特）" or "Moonglass Rounds (Walter)"
+STRINGS.RECIPE_DESC.SLINGSHOTAMMO_MOONGLASS_WALTER2HM = TUNING.isCh2hm and "沃尔特的圆形玻璃弹。" or "Walter's round moonglass ammunition."
+local function GlassCraftState(recipe, doer)
+    return doer.components.skilltreeupdater and doer.components.skilltreeupdater:IsActivated("walter_ammo_efficiency") and
+        "domediumaction" or nil
+end
+local function GlassCraftCount(recipe, doer)
+    return doer.components.skilltreeupdater and doer.components.skilltreeupdater:IsActivated("walter_ammo_efficiency") and
+        recipe.numtogive * 1.5 or nil
+end
+AddRecipe2(walterGlass, {Ingredient("moonglass", 1)}, TECH.CELESTIAL_THREE, {
+    builder_tag = walterGlassTag,
+    builder_skill = "walter_ammo_shattershots",
+    sg_state = GlassCraftState,
+    numtogive = 20,
+    override_numtogive_fn = GlassCraftCount,
+    no_deconstruction = true,
+    allowautopick = true,
+    force_hint = true,
+    station_tag = "celestial_station",
+    atlas = "images/inventoryimages3.xml",
+    image = "slingshotammo_moonglass.tex",
+}, {"CHARACTER", "WEAPONS", "CRAFTING_STATION"})
 local nativeSlingshots = {slingshot = true, slingshotex = true, slingshot999ex = true, slingshot2 = true, slingshot2ex = true}
 local wixieSlingshots = {slingshot_gnasher = true, slingshot_matilda = true, slingshot_claire = true, slingshot_jessie = true, slingshot_sling = true}
 -- UM replaces the honey and moonglass ammo prefabs as well as adding new ones.
@@ -115,6 +142,7 @@ local function RestoreNativeCharge(sg)
 end
 
 AddPrefabPostInit("walter", function(inst)
+    inst:AddTag(walterGlassTag)
     inst:AddTag("pebblemaker")
     inst:AddTag("slingshot_sharpshooter")
     inst:AddTag("allow_special_point_action_on_impassable")

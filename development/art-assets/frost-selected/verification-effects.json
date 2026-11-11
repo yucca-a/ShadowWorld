@@ -1,0 +1,19 @@
+{
+  "pass": true,
+  "exit_code": 0,
+  "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\frost-station-effects\\native-check-20261104-211239\\native.log",
+  "checks": [
+    "[00:00:00]: Could not load mod_config_data/modconfiguration_FrostArtProbe_CLIENT\t",
+    "[00:00:04]: Could not load mod_config_data/modconfiguration_FrostArtProbe\t",
+    "[00:00:05]: Could not load mod_config_data/modconfiguration_FrostArtProbe\t",
+    "[00:00:15]: Could not find anim [idle_loop] in bank [sewing_mannequin]",
+    "[00:00:22]: [FROST_ART_PROBE] PASS: native proximity/multiplayer/ghost/disconnect; temperature trade; refusal; hammer; build; active removal\t"
+  ],
+  "limitation": "Nullrenderer native smoke test; not a client visual screenshot.",
+  "lua_lifecycle_checks": 17,
+  "scope": "Existing trader/upgrade behavior; proximity cosmetics only; no new tech tree.",
+  "files": {
+    "content/scripts/frostshrinefx2hm.lua": "b9f443c905b957c413de30ed0c7e6ab6f270b2533d7fad3a2a1ddad7dfb0b2fb",
+    "content/scripts/prefabs/frostshrine2hm.lua": "8c222b4d9ea654cc5ca5d5b29c22d63e0b73dacd6391ecf515ae85e25efda806"
+  }
+}

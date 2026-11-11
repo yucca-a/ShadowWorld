@@ -1,0 +1,30 @@
+{
+  "method": "Original frozen UM 6.0.3.9 Lua51 callbacks with stubbed engine/scheduler; not native server timing or affected-save reproduction.",
+  "production_fixes_applied": false,
+  "workshop_adjust_enabled": false,
+  "source_hashes": {
+    "init/init_weather/init_thicket.lua": "2d0269fc4c2151af65b31eac37b4b9cbea5112511f7a40ed2a378a8b4a8f44e9",
+    "scripts/prefabs/um_ocupus_eyetacle.lua": "02e678265969a4fbb65ee9832d6a623ad4ce507f5da2c96897aaf8cf44ac8402",
+    "scripts/prefabs/um_ocupus.lua": "276450b552d32011119221b770cdbd14aacabdc64b4f2970dee7516c94461c55",
+    "scripts/prefabs/hooded_fern.lua": "e37511b87110a86ba01566abd9567e6f0f9e9559dcd774a5386b8bc2e48f152d"
+  },
+  "observations": {
+    "watchers_before": 100,
+    "watchers_after_target_leaves": 99,
+    "watcher_reference_cleared": true,
+    "cancelled_movement_reference_remains": true,
+    "stored_eye_references": 797,
+    "live_eyes": 6,
+    "fern_wall_add_calls": 16,
+    "fern_wall_remove_calls": 32,
+    "thicket_queries": 600,
+    "thicket_triggers": 100,
+    "original_updates": 600
+  },
+  "limits": [
+    "Repeated long-range checks use one constant nearby boat and 100 direct callback invocations; real scheduling and entity lifetimes limit impact.",
+    "Birth cycles invalidate prior eye stubs; retained references are not proof of growing live entity counts.",
+    "Thicket actors and fern responses are synthetic; query counts are not CPU savings or FPS measurements.",
+    "Two unregister calls demonstrate non-idempotence; actual callback ordering and pathfinder semantics need native coverage before a fix."
+  ]
+}

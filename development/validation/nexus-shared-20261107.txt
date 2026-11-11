@@ -1,0 +1,26 @@
+后续说明：动态减伤已合入咸鱼新数值，本记录中的动态参数和 121 项结果为合入前版本；见 xianyu-dynamic-armor-20261107.txt。
+
+2026-11-07 本地待发布：暗影／钓具空间并发共享、动态减伤微光
+版本号保留 2.8.15.0.5，本轮没有上传工坊。
+
+暗影与钓具各层独立页保留；地面和洞穴能同时打开同一页。主世界保管持久物品，其他层使用原生 prefab 的临时显示容器，原生界面、预测、格位及现有按钮继续使用。存取经过独立日志确认，冲突点击保留原格标识，避免取走随后换入的另一件物品。
+显示容器不参与制作，远端材料需先取出。跨层存取需要确认，不能承诺零延迟。云青松及骷髅箱等特殊容器仍使用上一版的原生整页交接，以保留模组容量、升级和开关箱规则。
+动态减伤不再生成闪烁红盾，使用随减伤强度平滑变化的淡红微光；不增加灯光、光晕或音效。实际渲染客户端已确认显示与清除正常，121 项数学／组件回归通过。
+
+各用例状态与冻结目录：
+four_shard_final: passed；work/nexus-shared-four-latest.json
+client_four_rounds: passed；work/nexus-shared-client-final.json
+client_latest_counted: passed；work/nexus-shared-client-counted.json
+old_journal_upgrade: passed；work/vault-hardened-hosted-m0y3lpng/native-upgrade-result.json
+native_save_upgrade: passed；work/vault-hardened-hosted-e2s2_0dk/native-owner-upgrade-result.json
+special_native_mods: passed；work/vault-hardened-hosted-9my7u28n/native-special-result.json
+shared_multimod_server: passed；work/nexus-shared-multimod-server.json
+armour_client: passed；work/nexus-armour-client.json
+multimod_client_migration: failed；work/nexus-shared-special-client.json
+baseline_multimod_client_migration: failed；work/nexus-special-baseline-client.json
+
+四层测试包含同时打开、同一叠争抢（含洞穴先取）、指定数量取出、逐个放入、不同格并行及正常保存重启。真实客户端包含跨层往返、原生界面比例、礼盒图标及内容、快捷存取、拆叠合堆、交换、耐久和附身帽私人空间。
+旧暂存式存档和上一版原生存档分别验证礼盒、工具耐久、保存重启及物品计数。特殊容器测试搭配本机已有妥协测试版、棱镜、勋章，不额外订阅模组。
+多模组客户端跨界连接检查不能计为通过；改动前代码同样在洞穴握手阶段失败，两组服务端均记录 failed (178) / Incoming migration for a player that is already on this server。结果不能归因于本次共享改动，也不能据此宣称该组合的客户端跨界已经验证通过。两次客户端在连接断开后清理，未操作正式游戏。新旧代码的对照结果保留在 JSON。直接加入洞穴的尝试被游戏转回地面，也不计作洞穴验证。未因本次测试修改用户正式世界或正在运行的游戏。
+
+JSON 保存当前核心文件哈希、冻结输入与当前源码差异，不能把历史版本的成功结果当作最终源码逐字相同的证据。未进行突然崩溃／断网等极端实测。

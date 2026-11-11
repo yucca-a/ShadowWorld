@@ -1,0 +1,38 @@
+[
+  {
+    "path": "index.html",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "path": "settings.html",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "path": "eyeturret.html",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "path": "role-wendy.html",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "path": "boss-deerclops.html",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "path": "styles.css",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "path": "app.js",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "path": "search-index.js",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "path": "assets/icons/modicon.png",
+    "error": "HTTP Error 403: Forbidden"
+  }
+]

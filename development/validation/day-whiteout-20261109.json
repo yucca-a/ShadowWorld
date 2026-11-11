@@ -1,0 +1,75 @@
+{
+  "date": "2026-11-09",
+  "status": "Investigation; intermittent symptom not reproduced; root cause unconfirmed; no production fix applied.",
+  "user_report": {
+    "symptom": "Probabilistic white scene after dawn, resembles daytime mole hat filter",
+    "reentering_game": "restores normal picture",
+    "unknown": [
+      "whether HUD stays visible",
+      "whether removing nightvision circuit helps",
+      "client-only mods",
+      "client graphics state"
+    ]
+  },
+  "archive": {
+    "file": "D:\\Users\\Yucca\\Downloads\\DSTCamp_存档_IA_20261109_152808.zip",
+    "sha256": "5da31920f32eca8581099cafb818d0c930f01ffe0ed5183637eb4e4d24e15f8b",
+    "server_lua_error_counts": {
+      "IA/Caves/server_log.txt": 0,
+      "IA/Caves/backup/server_log/server_log_2026-11-08-15-05-18.txt": 0,
+      "IA/Caves/backup/server_log/server_log_2026-11-08-15-16-08.txt": 5,
+      "IA/Caves/backup/server_log/server_log_2026-11-08-15-50-29.txt": 0,
+      "IA/Caves/backup/server_log/server_log_2026-11-08-20-12-17.txt": 0,
+      "IA/Caves/backup/server_log/server_log_2026-11-09-09-38-17.txt": 0,
+      "IA/Caves/backup/server_log/server_log_2026-11-09-12-08-33.txt": 0,
+      "IA/Caves/backup/server_log/server_log_2026-11-09-12-47-43.txt": 0,
+      "IA/Caves/backup/server_log/server_log_2026-11-09-14-19-24.txt": 0,
+      "IA/Master/server_log.txt": 0,
+      "IA/Master/backup/server_log/server_log_2026-11-08-15-05-18.txt": 0,
+      "IA/Master/backup/server_log/server_log_2026-11-08-15-16-08.txt": 4,
+      "IA/Master/backup/server_log/server_log_2026-11-08-15-50-27.txt": 0,
+      "IA/Master/backup/server_log/server_log_2026-11-08-18-18-28.txt": 0,
+      "IA/Master/backup/server_log/server_log_2026-11-08-20-12-15.txt": 0,
+      "IA/Master/backup/server_log/server_log_2026-11-09-09-38-16.txt": 0,
+      "IA/Master/backup/server_log/server_log_2026-11-09-12-08-31.txt": 0,
+      "IA/Master/backup/server_log/server_log_2026-11-09-12-47-42.txt": 0,
+      "IA/Master/backup/server_log/server_log_2026-11-09-13-56-18.txt": 0,
+      "IA/Master/backup/server_log/server_log_2026-11-09-14-16-05.txt": 0
+    },
+    "client_log_present": false
+  },
+  "observations": [
+    "Saved player is WX-78 with one level-1 nightvision circuit, charge level 12, and wx78_circuitry_betabuffs_1 skill saved. Latest head item is yoth_knighthat; no molehat occurs in the inspected player snapshots.",
+    "Server log reports ShadowWorld 2.8.15.0.14. Monster Night Vision and wathom nightvision are false. dusk_change is false; the installed Hamlet module also makes weather/dusk.lua return early.",
+    "WX78 Mechanical Ascension 2.034 night_main=false and light2_main=false. Its MainSwitch prevents the relevant circuit overrides from loading.",
+    "All Abilities 1.0.49 wx78_recipes=false; that module also explicitly skips WX-78 in its player postinit.",
+    "WX-78 12 Circuit Slots 2.2.2 does not contain nightvision/palette overrides.",
+    "Native PlayerVision uses mole_vision_off_cc.tex for daytime if night vision remains active without the no-filter flag. This matches the reported appearance but does not identify who leaves it active."
+  ],
+  "priority_hypothesis": "Transient client nightvision/palette state or another visual mod; relog recovery is consistent with reconstruction of client state, not proof of a particular mod conflict.",
+  "validation": {
+    "native_methods": {
+      "checks": 4000,
+      "passed": true,
+      "cycles": 800,
+      "scope": "Executes actual native WX-78 night callback and PlayerVision with current ShadowWorld guard; entity/network/time simulated. Not original archive live reproduction or rendered client verification."
+    },
+    "tested_guard_sha256": "b42e20a7187e3fd89888d462f6bdb3ccb9adae134ea438981f2f926ec0a42a68",
+    "guard_matches_published_15": true,
+    "diagnostic_logger": {
+      "command": "client_mods/tests/run_day_vision_audit_tests.py",
+      "passed": true,
+      "checks": 14,
+      "scope": "Native PlayerVision with simulated local player/timers; logging behavior, unchanged vision state, return values, attachment after migration, bounded history, injected logging/trace failures."
+    }
+  },
+  "diagnostic_bundle": {
+    "path": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\day-whiteout-20261109\\白屏诊断_本地客户端模组.zip",
+    "sha256": "f2dd3522f858c831c68a18a9f68d0e8e62a4feaf98196f3c9d676a045c631bb0",
+    "client_only": true,
+    "server_install_required": false,
+    "purpose": "Capture recent playervision callers and dawn state; no automatic palette repair, save modification, upload, or Workshop publication."
+  },
+  "next_evidence": "Enable temporary local client diagnostic mod; preserve the client_log.txt from the affected run before another game launch overwrites it. Direct low-level renderer calls bypassing playervision are not fully traced.",
+  "limits": "No live original-save/server/client reproduction or visual confirmation. Native-method repetitions are simulated transitions, not 800 in-game days. Local downloaded mod versions match the named three server-log versions, but the archive contains neither those mod sources nor the affected client-only mod list."
+}

@@ -85,6 +85,7 @@ if modconfigs("boss_damagetake2") or modconfigs("notboss_damagetake2") or modcon
             local oldSetMaxHealth = self.SetMaxHealth
             self.SetMaxHealth = function(self, amount)
                 local inst = self.inst
+                if inst:HasTag("swc2hm") then return oldSetMaxHealth(self, amount) end
                 if inst:HasTag("epic") or inst:HasTag("shadowchesspiece") or inst:HasTag("crabking") then
                     if modconfigs("boss_health") then return oldSetMaxHealth(self, amount * modconfigs("boss_health")) end
                 elseif not modconfigs("notboss_range") or inst:HasTag("hostile") then

@@ -215,6 +215,7 @@ local slingshotammos = {
     "slingshotammo_slow_proj",
     "slingshotammo_poop_proj",
     "slingshotammo_moonglass_proj",
+    "slingshotammo_moonglass_walter2hm_proj",
     "slingshotammo_dreadstone_proj",
     "slingshotammo_gunpowder_proj",
     "slingshotammo_lunarplanthusk_proj",

@@ -1,0 +1,68 @@
+刮地皮头盔源码审计（2026-11-08，修复前快照）
+
+后续：用户确认修复前三项，保留伍迪的原生露西转化差异。自动装瓶也接回原生组件。
+修复和后续验证见同目录 antlionhat-compat-fixes-20261108.txt；下文保留当时的审计事实与复现数据。
+
+范围与方式
+- 当前淬炼版 content/ 的 406 个 Lua 文件、本机原版为爽工坊 2886753796 的 357 个 Lua 文件，进行工具/工作事件/装备查询的全局检索。
+- 本机原版 modinfo.lua 标示 2.8.14.111；这是本地安装副本，不代表工坊最新版本。
+- 两份源码各有 26 个文件包含手部装备查询；工作回调/工作事件相关文件分别为 22、23 个。
+- 重点阅读头盔完整执行分支、所有相关工作回调、工具增强和玩家工作监听，并对照游戏原生 actions.lua、entityscript.lua、bufferedaction.lua、workable、tool、finiteuses、trap、bottler、deployable、farmtiller、wateryprotection 等。
+- 检索游戏原生 14 个包含 NET/CHOP/DIG/MINE/HAMMER 工具注册的 prefab 源文件，另查 TILL/TERRAFORM/施肥/种植等动作。
+- 沿用已完成的雕像修复；本轮没有继续修改玩法代码，只增加审计夹具与记录。
+
+确认问题一：自动陷阱错误处理没有 inventoryitem 的猎物（优先修复）
+- 位置：content/easy_other/easy_equipments.lua 的 doautotrap，约 1060—1095 行。
+- 普通陷阱按 smallcreature 标签找目标。目标没有 inventoryitem 时，头盔移除目标，重新 SpawnPrefab(ent.prefab)，再尝试 inventory:GiveItem。
+- 青蛙是 smallcreature，且不是背包物品；重新生成的活蛙同样不能进入背包。
+- 原生对照：trap:DoSpring 按 inventoryitem.trappable 或 lootdropper.trappable 确定捕获产物，发送 ontrapped，再由 Harvest 发送 harvesttrap 并交付产物。
+- 实测普通陷阱得到蛙腿，ontrapped/harvesttrap 各一次；头盔删除原蛙又生成一只活蛙，背包没有蛙腿，也没有上述两个事件。
+- 头盔仍消耗陷阱和自身耐久；残留活蛙可在后续周期继续被重复处理。
+- 原版为爽安装副本中已有同一 SpawnPrefab(ent.prefab) 分支（约 1056 行），不是本轮雕像修复新增。
+- 建议沿用原生 Trap 捕获/收获接口和已有分身免疫钩子，保留快速捕获，移除自行克隆猎物的处理。
+
+确认问题二：暗影斧的工作扣理智与实际工具脱节
+- 游戏源：scripts/prefabs/shadow_battleaxe.lua：OnEquip 第 58 行注册 working，OnUnequip 第 75 行移除；OnOwnerWorking 第 384—395 行。
+- OnOwnerWorking 对 woodcutter 角色扣 TUNING.SANITY_MED，不核对工作动作或实际工具。
+- 伍迪手持暗影斧砍一次，扣 15 理智；将暗影斧放在头盔中，实际砍 10 次，扣 0 理智。
+- 反向情况：伍迪手持暗影斧，头盔内放普通镐，执行 10 次采矿，扣 150 理智；手持手杖执行同样的镐采矿，扣 0。
+- 头盔已传递正确的原生 bufferedaction，但该监听没有读取它，所以不会自动受益于雕像修复。
+- 当前淬炼版和原版为爽对暗影斧的伤害/吸血等改动没有修正这一工作监听。
+- 建议沿用原生工作事件和实际动作工具，保证实际暗影斧作业的代价生效，同时排除未使用的手持暗影斧。
+
+确认问题三：亮茄粉碎者批量耕地重复计算工具消耗
+- 位置：content/easy_other/easy_equipments.lua 约 607、638 行，仅在 prefab 为 multitool_axe_pickaxe 且增强开启时设置/清除 oldtill2hm。
+- content/easy_other/lunar_shadow_items.lua 699—748 行的 NewTill 使用相同 oldtill2hm 开关；789—809 行将 NewTill 和每次 TILL 消耗 4 挂到 pickaxe_lunarplant。
+- 没有该开关时，头盔的逐点批量耕地又调用了工具自己的整片批量耕地处理，重复重建土堆并结算额外消耗。
+- 同一测试地块、同一位置，三种工具均形成 8 个土堆：
+  farm_hoe：工具消耗 8，头盔消耗约 0.8。
+  multitool_axe_pickaxe：工具消耗 32，头盔消耗约 0.8。
+  pickaxe_lunarplant：工具消耗 60，头盔消耗约 0.8。
+- 两件多用工具的单次 TILL 基础消耗均为 4；亮茄粉碎者的额外 28 来自未屏蔽的批量处理。
+- 本场景只比较同一几何条件下的结果，没有要求玩家脚下等受阻位置一定能形成 9 个土堆。
+- 两份为爽源码均存在只识别 multitool_axe_pickaxe 的该分支。
+- 建议复用已有 oldtill2hm，按工具已有的批量耕地机制处理，不再单独写死一种 prefab。
+
+同类行为差异：伍迪的普通斧头转化露西
+- 游戏源：scripts/prefabs/woodie.lua 681—705 行 onworked，检查 CHOP 后读取 GetEquippedItem(HANDS)，命中 possessable_axe 时替换为 lucy 并装备到手。
+- 实测伍迪无露西时，手持普通斧头砍一次会生成并装备露西；普通斧头放头盔中砍 10 次，仍是普通斧头，手部为空。
+- 这是和雕像相同的手部查询依赖，但原生转化后会主动装备露西；不能不加区分地照搬到头盔，否则会改变玩家手部装备。
+- 应明确自动工具的转化行为，优先保持物品容器归属；本轮未修改。
+
+兼容隐患与排除项
+- 自动装瓶没有调用 messagebottleempty.components.bottler:Bottle，而是自行扣瓶、删恶液、生成 gelblob_bottle。当前与原生产物一致；原生装瓶回调调用 1 次，头盔为 0。记录为兼容隐患，不作为已发生的产物错误。
+- 蜘蛛当前具有 inventoryitem：普通陷阱和头盔都可得到活蜘蛛。它不符合“青蛙重生而没有捕获产物”的问题，但头盔仍跳过 ontrapped/harvesttrap。先前仅按 smallcreature 标签推断它与青蛙相同，已由原生对照排除。
+- 浇水调用 wateryprotection:SpreadProtectionAtPoint，原生该方法仍执行 onspreadprotectionfn，水壶正常扣水；不能据“没走 POUR_WATER 动作”判定漏扣水。
+- 种植/部署使用原生组件；Deploy 内部仍调用 CanDeploy，并发送部署/种植事件。
+- 施肥、工具基础效率、finiteuses 的 efficientuser/modifyuseconsumption、恐怖盾牌捕虫的 Armor.OnUsedAsItem，均已有实际工具或原生组件链，不应一律改成装备查询代理。
+- 亮茄套装的相关装备回调主要调整战斗伤害，不属于头盔采矿/耕地效果丢失。
+- 薇诺娜锤击和贝爷采收减半等工作逻辑通过原生 working/WorkedBy_Internal 接收执行者；未发现同类手部身份错误。
+- 手部工具优先、手持工具自动作业排除 HAMMER 是现有头盔策略，未作为缺陷修改。
+
+复现与结果
+- work/python-3.12.8/python.exe tests/run_native_antlionhat_tools.py --audit
+- 完整当前淬炼版，真实工具、角色、头盔和原生组件，独立复制世界；15 组对照、35 项检查完成。
+- 审计测试通过表示完成对照/复现，不表示新增问题已修复。
+- 结果：work/vault-hardened-hosted-jfv66zu2/antlionhat-tools-result.json
+- 同目录保存输入清单、原生日志；测试进程已停止，不访问正式玩家存档。
+- 不涉及真实客户端输入、网络预测或所有第三方模组组合；未发布工坊。

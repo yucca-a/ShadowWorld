@@ -1,0 +1,6 @@
+{
+  "name": "wiki-um-beta-refresh",
+  "private": true,
+  "type": "module",
+  "dependencies": { "luaparse": "0.3.1" }
+}

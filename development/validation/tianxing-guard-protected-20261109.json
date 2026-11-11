@@ -1,0 +1,44 @@
+{
+  "version": "0.1.1",
+  "protection": "Encrypted Lua source payloads with a portable Lua5.1 runtime loader and corruption checksum. Key material is necessarily shipped in the loader; this raises reading cost, not irreversible secrecy.",
+  "protected_files": [
+    "modmain.lua",
+    "scripts/tianxing_guard.lua",
+    "scripts/tianxing_guard_watch.lua"
+  ],
+  "plain_metadata": "modinfo.lua required by native empty-environment metadata loading",
+  "private_source": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\tianxing_guard_private\\source",
+  "tests": {
+    "guard": 25,
+    "countdown": 16,
+    "protection": 7,
+    "modmain_config": [
+      "on",
+      "off",
+      "default"
+    ],
+    "native_checks": 12,
+    "native_server": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\client-assist-patch-hod_nnmq",
+    "real_kicks": 1,
+    "client_announcements": 15,
+    "errors": 0
+  },
+  "limitations": [
+    "Windows original build762172 tested; portable source loader avoids bytecode ABI dependencies, Linux not individually tested.",
+    "Previously distributed plaintext cannot be withdrawn.",
+    "Runtime source can be recovered by a determined reader."
+  ],
+  "installed": "D:\\SteamLibrary\\steamapps\\common\\Don't Starve Together\\mods\\tianxing_guard",
+  "backup": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\tianxing-before-protected-4oqiycdd\\tianxing_guard",
+  "package": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\server_mods\\天行卫-加密封装-0.1.1.zip",
+  "published_id": "3836529679",
+  "workshop_update": "Published; Steam official GetPublishedFileDetails confirmed public version:0.1.1 and protected-release description",
+  "hashes": {
+    "modinfo.lua": "a8f4a588c637609aec9fb28daa0cf4c254d3f09e0d5e66817cb8b4b48a833af3",
+    "modmain.lua": "3b6bc51e39279875ed1befb9f7bd1eb917ee6c72964052fd4da0cd57111ab5b0",
+    "README.md": "2e8dbc195d9d6d12fe7778a19435a7c7d4c7e0eac3f9090038a5e7763fb45e28",
+    "scripts\\tianxing_guard.lua": "1e634a4575d048d7b4c466f240295e668150f30c75cc85dcb2fa66daf034eda0",
+    "scripts\\tianxing_guard_watch.lua": "0eba4ed8dece93bec1b42db40cc41d42ae579e5ddc6a76a43ae0279d7e6448ea"
+  },
+  "remote_verification": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\workshop\\tianxing_guard\\remote-verification.json"
+}

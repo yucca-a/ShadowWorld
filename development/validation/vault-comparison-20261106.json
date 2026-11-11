@@ -1,0 +1,5096 @@
+{
+  "date": "2026-11-06",
+  "game_build": 761239,
+  "archive_sha256": "9d26b4f14988a97973709e2e9be1c3652c3aa94382b3234b89ea6ef25063931e",
+  "scope": "Frozen Workshop implementations; actual native dedicated servers with scripted native player entities. No real client UI, WAN emulator, or production saves.",
+  "integrity": {
+    "hosted": {
+      "checked_files": 438,
+      "changed_files": []
+    },
+    "xianyu": {
+      "checked_files": 438,
+      "changed_files": []
+    },
+    "working_content": {
+      "checked_files": 438,
+      "changed_files": []
+    }
+  },
+  "cases": [
+    {
+      "variant": "hosted",
+      "scenario": "complex",
+      "evidence": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-hosted-8dxy0w6v\\result.json",
+      "checks": [
+        {
+          "name": "baseline",
+          "expected": {
+            "gold": 17,
+            "axe": 1,
+            "bundle": 1,
+            "armor": 1
+          },
+          "actual": {
+            "armor": 1,
+            "bundle": 1,
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "quiescent": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "bundle",
+              "data": {
+                "nested": [
+                  {
+                    "data": {
+                      "stackable": {
+                        "stack": 23
+                      }
+                    },
+                    "x": 0,
+                    "prefab": "goldnugget",
+                    "z": 0
+                  },
+                  {
+                    "data": {
+                      "finiteuses": {
+                        "uses": 31
+                      }
+                    },
+                    "x": 0,
+                    "prefab": "axe",
+                    "z": 0
+                  }
+                ],
+                "count": 1,
+                "padding": 100000,
+                "prefab": "bundle"
+              }
+            },
+            {
+              "token": "armor",
+              "data": {
+                "count": 1,
+                "prefab": "armorwood",
+                "percent": 0.37
+              }
+            }
+          ]
+        },
+        {
+          "name": "stale_slot_request",
+          "expected": {
+            "gold": 17,
+            "axe": 1,
+            "bundle": 1,
+            "armor": 1
+          },
+          "actual": {
+            "armor": 1,
+            "bundle": 1,
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "quiescent": true,
+          "stale_rejected": false,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "bundle",
+              "data": {
+                "nested": [
+                  {
+                    "data": {
+                      "stackable": {
+                        "stack": 23
+                      }
+                    },
+                    "x": 0,
+                    "prefab": "goldnugget",
+                    "z": 0
+                  },
+                  {
+                    "data": {
+                      "finiteuses": {
+                        "uses": 31
+                      }
+                    },
+                    "x": 0,
+                    "prefab": "axe",
+                    "z": 0
+                  }
+                ],
+                "count": 1,
+                "padding": 100000,
+                "prefab": "bundle"
+              }
+            },
+            {
+              "token": "armor",
+              "data": {
+                "count": 1,
+                "prefab": "armorwood",
+                "percent": 0.37
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            }
+          ]
+        },
+        {
+          "name": "large_nested_bundle_chunk_loss",
+          "expected": {
+            "gold": 17,
+            "axe": 1,
+            "bundle": 1,
+            "armor": 1
+          },
+          "actual": {
+            "armor": 1,
+            "gold": 17,
+            "bundle": 1,
+            "axe": 1
+          },
+          "conserved": true,
+          "quiescent": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "armor",
+              "data": {
+                "count": 1,
+                "prefab": "armorwood",
+                "percent": 0.37
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "bundle",
+              "data": {
+                "nested": [
+                  {
+                    "prefab": "goldnugget",
+                    "x": 0,
+                    "data": {
+                      "stackable": {
+                        "stack": 23
+                      }
+                    },
+                    "z": 0
+                  },
+                  {
+                    "prefab": "axe",
+                    "x": 0,
+                    "data": {
+                      "finiteuses": {
+                        "uses": 31
+                      }
+                    },
+                    "z": 0
+                  }
+                ],
+                "count": 1,
+                "padding": 100000,
+                "prefab": "bundle"
+              }
+            }
+          ]
+        },
+        {
+          "name": "large_nested_bundle_recovered",
+          "expected": {
+            "gold": 17,
+            "axe": 1,
+            "bundle": 1,
+            "armor": 1
+          },
+          "actual": {
+            "armor": 1,
+            "gold": 17,
+            "bundle": 1,
+            "axe": 1
+          },
+          "conserved": true,
+          "quiescent": true,
+          "completed": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "armor",
+              "data": {
+                "count": 1,
+                "prefab": "armorwood",
+                "percent": 0.37
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "bundle",
+              "data": {
+                "nested": [
+                  {
+                    "prefab": "goldnugget",
+                    "x": 0,
+                    "data": {
+                      "stackable": {
+                        "stack": 23
+                      }
+                    },
+                    "z": 0
+                  },
+                  {
+                    "prefab": "axe",
+                    "x": 0,
+                    "data": {
+                      "finiteuses": {
+                        "uses": 31
+                      }
+                    },
+                    "z": 0
+                  }
+                ],
+                "count": 1,
+                "padding": 100000,
+                "prefab": "bundle"
+              }
+            }
+          ]
+        },
+        {
+          "name": "armor_properties",
+          "expected": {
+            "gold": 17,
+            "axe": 1,
+            "bundle": 1,
+            "armor": 1
+          },
+          "actual": {
+            "gold": 17,
+            "armor": 1,
+            "bundle": 1,
+            "axe": 1
+          },
+          "conserved": true,
+          "quiescent": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "bundle",
+              "data": {
+                "nested": [
+                  {
+                    "prefab": "goldnugget",
+                    "x": 0,
+                    "data": {
+                      "stackable": {
+                        "stack": 23
+                      }
+                    },
+                    "z": 0
+                  },
+                  {
+                    "prefab": "axe",
+                    "x": 0,
+                    "data": {
+                      "finiteuses": {
+                        "uses": 31
+                      }
+                    },
+                    "z": 0
+                  }
+                ],
+                "count": 1,
+                "padding": 100000,
+                "prefab": "bundle"
+              }
+            },
+            {
+              "token": "armor",
+              "data": {
+                "count": 1,
+                "prefab": "armorwood",
+                "percent": 0.37
+              }
+            }
+          ]
+        },
+        {
+          "name": "complex_items_reload",
+          "expected": {
+            "gold": 17,
+            "axe": 1,
+            "bundle": 1,
+            "armor": 1
+          },
+          "actual": {
+            "gold": 17,
+            "armor": 1,
+            "bundle": 1,
+            "axe": 1
+          },
+          "conserved": true,
+          "quiescent": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "bundle",
+              "data": {
+                "nested": [
+                  {
+                    "prefab": "goldnugget",
+                    "x": 0,
+                    "data": {
+                      "stackable": {
+                        "stack": 23
+                      }
+                    },
+                    "z": 0
+                  },
+                  {
+                    "prefab": "axe",
+                    "x": 0,
+                    "data": {
+                      "finiteuses": {
+                        "uses": 31
+                      }
+                    },
+                    "z": 0
+                  }
+                ],
+                "count": 1,
+                "padding": 100000,
+                "prefab": "bundle"
+              }
+            },
+            {
+              "token": "armor",
+              "data": {
+                "count": 1,
+                "prefab": "armorwood",
+                "percent": 0.37
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "variant": "hosted",
+      "scenario": "dup_cut",
+      "evidence": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-hosted-tab94e11\\result.json",
+      "checks": [
+        {
+          "name": "baseline",
+          "expected": {
+            "gold": 17
+          },
+          "actual": {
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "completed_before_partial_save",
+          "expected": {
+            "gold": 17
+          },
+          "actual": {
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "after_partial_save_crash_reload",
+          "expected": {
+            "gold": 17
+          },
+          "actual": {
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "variant": "hosted",
+      "scenario": "interrupted",
+      "evidence": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-hosted-befwyffp\\result.json",
+      "checks": [
+        {
+          "name": "baseline",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            }
+          ]
+        },
+        {
+          "name": "blackhole_pending",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 1
+          },
+          "quiescent": false,
+          "physical_count_is_final": false,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            }
+          ]
+        },
+        {
+          "name": "blackhole_recovered",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "lost_final_ack",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 1
+          },
+          "quiescent": false,
+          "physical_count_is_final": false,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "pending_crash_recovered",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "variant": "hosted",
+      "scenario": "loss_cut",
+      "evidence": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-hosted-rpb3zpx8\\result.json",
+      "checks": [
+        {
+          "name": "baseline",
+          "expected": {
+            "gold": 17
+          },
+          "actual": {
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "completed_before_partial_save",
+          "expected": {
+            "gold": 17
+          },
+          "actual": {
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "after_partial_save_crash_reload",
+          "expected": {
+            "gold": 17
+          },
+          "actual": {
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "variant": "hosted",
+      "scenario": "matrix",
+      "evidence": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-hosted-gpyo4w_5\\result.json",
+      "checks": [
+        {
+          "name": "baseline",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            }
+          ]
+        },
+        {
+          "name": "withdraw",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "seconds": 6.421999999991385,
+          "completed": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "deposit",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "seconds": 6.4060000000172295,
+          "completed": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "duplicate_race_1",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 6.9689999999827705,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "duplicate_return_1",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "duplicate_race_2",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 6.98399999999674,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "duplicate_return_2",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "duplicate_race_3",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 7.296999999991385,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "duplicate_return_3",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "loss_race_1",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 7.155999999988126,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "loss_return_1",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "loss_race_2",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 5.953000000008615,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "loss_return_2",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "loss_race_3",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 9.610000000015134,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "loss_return_3",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "reorder_race_1",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 9.796000000002095,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "reorder_return_1",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "reorder_race_2",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 7.360000000015134,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "reorder_return_2",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "reorder_race_3",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 7.375,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "reorder_return_3",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "none_race_1",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 5.98499999998603,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "none_return_1",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "none_race_2",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 5.827999999979511,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "none_return_2",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "none_race_3",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 7.25,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "none_return_3",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "full_inventory",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 1,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": false,
+          "physical_count_is_final": false,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "full_inventory_recovered",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "durability_withdraw",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            }
+          ]
+        },
+        {
+          "name": "restart_four_shards",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "offline_pages",
+          "page_count": 4,
+          "pending": {
+            "Master": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": []
+        }
+      ],
+      "additional_native_save_callbacks": {
+        "Master": 77,
+        "Caves": 57,
+        "Layer3": 57,
+        "Layer4": 57
+      },
+      "request_attempts": 1800,
+      "race_count": 12,
+      "race_settle_seconds_median": 7.202999999994063,
+      "every_race_one_winner": true
+    },
+    {
+      "variant": "hosted",
+      "scenario": "offline_rollback",
+      "evidence": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-hosted-lj2q_3e4\\result.json",
+      "checks": [
+        {
+          "name": "baseline",
+          "expected": {
+            "gold": 17,
+            "axe": 1,
+            "offline_rocks": 23
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            }
+          ]
+        },
+        {
+          "name": "withdraw",
+          "expected": {
+            "gold": 17,
+            "axe": 1,
+            "offline_rocks": 23
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "seconds": 5.48399999999674,
+          "completed": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "deposit",
+          "expected": {
+            "gold": 17,
+            "axe": 1,
+            "offline_rocks": 23
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "seconds": 5.64100000000326,
+          "completed": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "offline_rollback_access",
+          "expected": {
+            "gold": 17,
+            "axe": 1,
+            "offline_rocks": 23
+          },
+          "actual": {
+            "offline_rocks": 23,
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "offline_rocks",
+              "data": {
+                "count": 23,
+                "prefab": "rocks"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "variant": "hosted",
+      "scenario": "rollback",
+      "evidence": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-hosted-to114c8p\\result.json",
+      "checks": [
+        {
+          "name": "baseline",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            }
+          ]
+        },
+        {
+          "name": "withdraw",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "seconds": 5.48399999999674,
+          "completed": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "deposit",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "seconds": 5.64100000000326,
+          "completed": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "coordinated_rollback",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "variant": "hosted",
+      "scenario": "smoke",
+      "evidence": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-hosted-socl8qcv\\result.json",
+      "checks": [
+        {
+          "name": "baseline",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            }
+          ]
+        },
+        {
+          "name": "withdraw",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "seconds": 5.48499999998603,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "deposit",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "seconds": 5.5,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "variant": "hosted",
+      "scenario": "torn_save",
+      "evidence": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-hosted-l7405nsw\\result.json",
+      "checks": [
+        {
+          "name": "baseline",
+          "expected": {
+            "gold": 17
+          },
+          "actual": {
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "completed_before_partial_save",
+          "expected": {
+            "gold": 17
+          },
+          "actual": {
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "after_partial_save_crash_reload",
+          "expected": {
+            "gold": 17
+          },
+          "actual": {
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "variant": "xianyu",
+      "scenario": "complex",
+      "evidence": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-xianyu-y0q8xe2z\\result.json",
+      "checks": [
+        {
+          "name": "baseline",
+          "expected": {
+            "gold": 17,
+            "axe": 1,
+            "bundle": 1,
+            "armor": 1
+          },
+          "actual": {
+            "armor": 1,
+            "bundle": 1,
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "bundle",
+              "data": {
+                "nested": [
+                  {
+                    "data": {
+                      "stackable": {
+                        "stack": 23
+                      }
+                    },
+                    "x": 0,
+                    "prefab": "goldnugget",
+                    "z": 0
+                  },
+                  {
+                    "data": {
+                      "finiteuses": {
+                        "uses": 31
+                      }
+                    },
+                    "x": 0,
+                    "prefab": "axe",
+                    "z": 0
+                  }
+                ],
+                "count": 1,
+                "padding": 100000,
+                "prefab": "bundle"
+              }
+            },
+            {
+              "token": "armor",
+              "data": {
+                "count": 1,
+                "prefab": "armorwood",
+                "percent": 0.37
+              }
+            }
+          ]
+        },
+        {
+          "name": "stale_slot_request",
+          "expected": {
+            "gold": 17,
+            "axe": 1,
+            "bundle": 1,
+            "armor": 1
+          },
+          "actual": {
+            "armor": 1,
+            "bundle": 1,
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "stale_rejected": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "bundle",
+              "data": {
+                "nested": [
+                  {
+                    "data": {
+                      "stackable": {
+                        "stack": 23
+                      }
+                    },
+                    "x": 0,
+                    "prefab": "goldnugget",
+                    "z": 0
+                  },
+                  {
+                    "data": {
+                      "finiteuses": {
+                        "uses": 31
+                      }
+                    },
+                    "x": 0,
+                    "prefab": "axe",
+                    "z": 0
+                  }
+                ],
+                "count": 1,
+                "padding": 100000,
+                "prefab": "bundle"
+              }
+            },
+            {
+              "token": "armor",
+              "data": {
+                "count": 1,
+                "prefab": "armorwood",
+                "percent": 0.37
+              }
+            }
+          ]
+        },
+        {
+          "name": "large_nested_bundle_chunk_loss",
+          "expected": {
+            "gold": 17,
+            "axe": 1,
+            "bundle": 1,
+            "armor": 1
+          },
+          "actual": {
+            "armor": 1,
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": false,
+          "pending": {
+            "Master": 1,
+            "Caves": 0
+          },
+          "quiescent": false,
+          "physical_count_is_final": false,
+          "interpretation": "Pending serialized transfer/escrow; physical entities alone cannot establish loss. Compare post-recovery check.",
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "armor",
+              "data": {
+                "count": 1,
+                "prefab": "armorwood",
+                "percent": 0.37
+              }
+            }
+          ]
+        },
+        {
+          "name": "large_nested_bundle_recovered",
+          "expected": {
+            "gold": 17,
+            "axe": 1,
+            "bundle": 1,
+            "armor": 1
+          },
+          "actual": {
+            "armor": 1,
+            "axe": 1,
+            "gold": 17,
+            "bundle": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "armor",
+              "data": {
+                "count": 1,
+                "prefab": "armorwood",
+                "percent": 0.37
+              }
+            },
+            {
+              "token": "bundle",
+              "data": {
+                "nested": [
+                  {
+                    "prefab": "goldnugget",
+                    "x": 0,
+                    "data": {
+                      "stackable": {
+                        "stack": 23
+                      }
+                    },
+                    "z": 0
+                  },
+                  {
+                    "prefab": "axe",
+                    "x": 0,
+                    "data": {
+                      "finiteuses": {
+                        "uses": 31
+                      }
+                    },
+                    "z": 0
+                  }
+                ],
+                "count": 1,
+                "padding": 100000,
+                "prefab": "bundle"
+              }
+            }
+          ]
+        },
+        {
+          "name": "armor_properties",
+          "expected": {
+            "gold": 17,
+            "axe": 1,
+            "bundle": 1,
+            "armor": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17,
+            "armor": 1,
+            "bundle": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "bundle",
+              "data": {
+                "nested": [
+                  {
+                    "prefab": "goldnugget",
+                    "x": 0,
+                    "data": {
+                      "stackable": {
+                        "stack": 23
+                      }
+                    },
+                    "z": 0
+                  },
+                  {
+                    "prefab": "axe",
+                    "x": 0,
+                    "data": {
+                      "finiteuses": {
+                        "uses": 31
+                      }
+                    },
+                    "z": 0
+                  }
+                ],
+                "count": 1,
+                "padding": 100000,
+                "prefab": "bundle"
+              }
+            },
+            {
+              "token": "armor",
+              "data": {
+                "count": 1,
+                "prefab": "armorwood",
+                "percent": 0.37
+              }
+            }
+          ]
+        },
+        {
+          "name": "complex_items_reload",
+          "expected": {
+            "gold": 17,
+            "axe": 1,
+            "bundle": 1,
+            "armor": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1,
+            "armor": 1,
+            "bundle": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "bundle",
+              "data": {
+                "nested": [
+                  {
+                    "prefab": "goldnugget",
+                    "x": 0,
+                    "data": {
+                      "stackable": {
+                        "stack": 23
+                      }
+                    },
+                    "z": 0
+                  },
+                  {
+                    "prefab": "axe",
+                    "x": 0,
+                    "data": {
+                      "finiteuses": {
+                        "uses": 31
+                      }
+                    },
+                    "z": 0
+                  }
+                ],
+                "count": 1,
+                "padding": 100000,
+                "prefab": "bundle"
+              }
+            },
+            {
+              "token": "armor",
+              "data": {
+                "count": 1,
+                "prefab": "armorwood",
+                "percent": 0.37
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "variant": "xianyu",
+      "scenario": "dup_cut",
+      "evidence": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-xianyu-vtiz54zv\\result.json",
+      "checks": [
+        {
+          "name": "baseline",
+          "expected": {
+            "gold": 17
+          },
+          "actual": {
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "completed_before_partial_save",
+          "expected": {
+            "gold": 17
+          },
+          "actual": {
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "after_partial_save_crash_reload",
+          "expected": {
+            "gold": 17
+          },
+          "actual": {
+            "gold": 34
+          },
+          "conserved": false,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "variant": "xianyu",
+      "scenario": "interrupted",
+      "evidence": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-xianyu-6612cd_o\\result.json",
+      "checks": [
+        {
+          "name": "baseline",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            }
+          ]
+        },
+        {
+          "name": "blackhole_pending",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 1
+          },
+          "quiescent": false,
+          "physical_count_is_final": false,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            }
+          ]
+        },
+        {
+          "name": "blackhole_recovered",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "lost_final_ack",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 1
+          },
+          "quiescent": false,
+          "physical_count_is_final": false,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "pending_crash_recovered",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "variant": "xianyu",
+      "scenario": "loss_cut",
+      "evidence": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-xianyu-l2wsypjt\\result.json",
+      "checks": [
+        {
+          "name": "baseline",
+          "expected": {
+            "gold": 17
+          },
+          "actual": {
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "completed_before_partial_save",
+          "expected": {
+            "gold": 17
+          },
+          "actual": {
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "after_partial_save_crash_reload",
+          "expected": {
+            "gold": 17
+          },
+          "actual": {
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "variant": "xianyu",
+      "scenario": "matrix",
+      "evidence": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-xianyu-xh61d6vj\\result.json",
+      "checks": [
+        {
+          "name": "baseline",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            }
+          ]
+        },
+        {
+          "name": "withdraw",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "seconds": 2.484000000025844,
+          "completed": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "deposit",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "seconds": 2.4689999999827705,
+          "completed": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "duplicate_race_1",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 3.312999999994645,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "duplicate_return_1",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "duplicate_race_2",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 3.3280000000086147,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "duplicate_return_2",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "duplicate_race_3",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 3.3440000000118744,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "duplicate_return_3",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "loss_race_1",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 3.3280000000086147,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "loss_return_1",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "loss_race_2",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 7.0,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "loss_return_2",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "loss_race_3",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 6.984000000025844,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "loss_return_3",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "reorder_race_1",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 4.562999999994645,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "reorder_return_1",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "reorder_race_2",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 4.562999999994645,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "reorder_return_2",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "reorder_race_3",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 4.578000000008615,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "reorder_return_3",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "none_race_1",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 3.3589999999967404,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "none_return_1",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "none_race_2",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 3.3439999999827705,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "none_return_2",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "none_race_3",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "attempts": 150,
+          "seconds": 3.3589999999967404,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "none_return_3",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "full_inventory",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "full_inventory_recovered",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "durability_withdraw",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            }
+          ]
+        },
+        {
+          "name": "restart_four_shards",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0,
+            "Layer3": 0,
+            "Layer4": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "offline_pages",
+          "page_count": 2,
+          "pending": {
+            "Master": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": []
+        }
+      ],
+      "additional_native_save_callbacks": {
+        "Master": 0,
+        "Caves": 0,
+        "Layer3": 0,
+        "Layer4": 0
+      },
+      "request_attempts": 1800,
+      "race_count": 12,
+      "race_settle_seconds_median": 3.3589999999967404,
+      "every_race_one_winner": true
+    },
+    {
+      "variant": "xianyu",
+      "scenario": "offline_rollback",
+      "evidence": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-xianyu-6am716b3\\result.json",
+      "checks": [
+        {
+          "name": "baseline",
+          "expected": {
+            "gold": 17,
+            "axe": 1,
+            "offline_rocks": 23
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            }
+          ]
+        },
+        {
+          "name": "withdraw",
+          "expected": {
+            "gold": 17,
+            "axe": 1,
+            "offline_rocks": 23
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "seconds": 1.8590000000258442,
+          "completed": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "deposit",
+          "expected": {
+            "gold": 17,
+            "axe": 1,
+            "offline_rocks": 23
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "seconds": 1.8599999999860302,
+          "completed": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "offline_rollback_access",
+          "expected": {
+            "gold": 17,
+            "axe": 1,
+            "offline_rocks": 23
+          },
+          "actual": {
+            "offline_rocks": 23,
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "offline_rocks",
+              "data": {
+                "count": 23,
+                "prefab": "rocks"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "variant": "xianyu",
+      "scenario": "player_exit",
+      "evidence": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-xianyu-6kectx26\\result.json",
+      "checks": [
+        {
+          "name": "baseline",
+          "expected": {
+            "gold": 17
+          },
+          "actual": {
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "completed_before_partial_save",
+          "expected": {
+            "gold": 17
+          },
+          "actual": {
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "after_partial_save_crash_reload",
+          "expected": {
+            "gold": 17
+          },
+          "actual": {
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "variant": "xianyu",
+      "scenario": "rollback",
+      "evidence": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-xianyu-soi292vt\\result.json",
+      "checks": [
+        {
+          "name": "baseline",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            },
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            }
+          ]
+        },
+        {
+          "name": "withdraw",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "axe": 1,
+            "gold": 17
+          },
+          "conserved": true,
+          "seconds": 1.8589999999967404,
+          "completed": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "deposit",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "seconds": 1.8589999999967404,
+          "completed": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "coordinated_rollback",
+          "expected": {
+            "gold": 17,
+            "axe": 1
+          },
+          "actual": {
+            "gold": 17,
+            "axe": 1
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "axe",
+              "data": {
+                "count": 1,
+                "uses": 43,
+                "prefab": "axe"
+              }
+            },
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "variant": "xianyu",
+      "scenario": "torn_save",
+      "evidence": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-xianyu-bszjg43g\\result.json",
+      "checks": [
+        {
+          "name": "baseline",
+          "expected": {
+            "gold": 17
+          },
+          "actual": {
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "completed_before_partial_save",
+          "expected": {
+            "gold": 17
+          },
+          "actual": {
+            "gold": 17
+          },
+          "conserved": true,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": [
+            {
+              "token": "gold",
+              "data": {
+                "count": 17,
+                "prefab": "goldnugget"
+              }
+            }
+          ]
+        },
+        {
+          "name": "after_partial_save_crash_reload",
+          "expected": {
+            "gold": 17
+          },
+          "actual": {},
+          "conserved": false,
+          "pending": {
+            "Master": 0,
+            "Caves": 0
+          },
+          "quiescent": true,
+          "physical_count_is_final": true,
+          "properties": []
+        }
+      ]
+    }
+  ],
+  "excluded": [
+    {
+      "result": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-hosted-oxc9c3m1\\result.json",
+      "reason": "Harness setup/runtime failure; excluded from implementation comparison"
+    },
+    {
+      "result": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-xianyu-eu0l5el3\\result.json",
+      "reason": "Harness setup/runtime failure; excluded from implementation comparison"
+    },
+    {
+      "result": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-xianyu-z1w3apj0\\result.json",
+      "reason": "Harness setup/runtime failure; excluded from implementation comparison"
+    },
+    {
+      "result": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-xianyu-fdfuet59\\result.json",
+      "reason": "Harness setup/runtime failure; excluded from implementation comparison"
+    },
+    {
+      "result": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-xianyu-o9j402fk\\result.json",
+      "reason": "Harness setup/runtime failure; excluded from implementation comparison"
+    },
+    {
+      "result": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-hosted-bippl1bp\\result.json",
+      "reason": "Harness setup/runtime failure; excluded from implementation comparison"
+    },
+    {
+      "result": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-hosted-gpyo4w_5\\result.json",
+      "check": "offline_local_roundtrip",
+      "reason": "Superseded by corrected offline_rollback fixture; native GiveItem previous-container routing was misused"
+    },
+    {
+      "result": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-compare-xianyu-xh61d6vj\\result.json",
+      "check": "offline_local_roundtrip",
+      "reason": "Superseded by corrected offline_rollback fixture; native GiveItem previous-container routing was misused"
+    }
+  ],
+  "protocol_model": {
+    "hosted": {
+      "completed": 999,
+      "seeds": 1000,
+      "cancelled": 1,
+      "checks": 8993
+    },
+    "xianyu": {
+      "completed": 1000,
+      "seeds": 1000,
+      "packets": 5191,
+      "independent_save_cuts": [
+        {
+          "saved_master": false,
+          "total": 17,
+          "expected": 17,
+          "saved_source": false
+        },
+        {
+          "saved_master": true,
+          "total": 34,
+          "expected": 17,
+          "saved_source": false
+        },
+        {
+          "saved_master": false,
+          "total": 0,
+          "expected": 17,
+          "saved_source": true
+        },
+        {
+          "saved_master": true,
+          "total": 17,
+          "expected": 17,
+          "saved_source": true
+        }
+      ],
+      "dropped": 1851
+    },
+    "scope": "Actual Lua protocol modules; simulated I/O and checkpoints; hosted exchanges two snapshots, xianyu transfers one payload. Native game cases are separate."
+  },
+  "limitations": [
+    "Burst attempts are not all successful transfers.",
+    "Latency includes harness polling and settling; not a production throughput benchmark.",
+    "Native SaveGame calls deliberately split save timing to inject failures; not a measured frequency of normal server failures.",
+    "In-flight serialized records must not be counted as destroyed physical items.",
+    "No long-duration soak, complete mod compatibility matrix, real client UI, or arbitrary old-save repair certification."
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "project_id": "appgprj_6aeab300ca58819193ec146fbf0d4571",
+  "url": "https://tempered-season-wiki.stormy-ant-2734.chatgpt.site",
+  "version_id": "appgprj_6aeab300ca58819193ec146fbf0d4571~appgver_b6758ca137b08191a50f5c27ea3ce203",
+  "deployment_id": "appgdep_6aeac9573b7081919849932bec9fd190",
+  "status": "succeeded",
+  "commit_sha": "f13e31936d9d50097e6c3016fadcbc12c2c95c33",
+  "updated_at": "2026-11-04T05:58:12.306098+00:00",
+  "audience": "owner-private (preserved)",
+  "source_directory": "wiki",
+  "checkout_directory": "work/tempered-season-site",
+  "reference": "https://qineko.wiki/ws/",
+  "changes": [
+    "Added a mod introduction and three clear reading paths to the home page",
+    "Refined shared typography, spacing, sidebar routes, navigation filtering and article cards",
+    "Added configuration reading guidance, mode filters, summary previews and default badges",
+    "Added article breadcrumbs, readable introductions, section navigation, related configuration shortcuts and adjacent articles"
+  ],
+  "validation": {
+    "build": "passed",
+    "static_check": "250 pages; 112015 local links and anchors; 424 settings / 3322 choices; 671 searchable entries; JavaScript syntax",
+    "browser": "Verified home routes, category/reset filters, sidebar search, config mode filters and accordions, item-to-config anchors, global search, mobile drawer, 390px mobile layout, 1280px desktop and 1600px contents sidebar, dark mode; no new console errors after selector fix",
+    "content": "247 articles and all 424 configurations retained"
+  },
+  "screenshots": [
+    "development/wiki-preview-v4-home-20261104.jpg",
+    "development/wiki-preview-v4-config-20261104.jpg",
+    "development/wiki-preview-v4-item-20261104.jpg"
+  ]
+}

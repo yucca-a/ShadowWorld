@@ -1,0 +1,42 @@
+{
+  "status": "local repair, not published",
+  "published_version": "2.8.15.0.7",
+  "upstream_local_source_version": "2.8.14.112",
+  "unit_assertions": 108,
+  "dynamic_armor_regression": 190,
+  "combat_regression": 129,
+  "native": {
+    "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-ekacicxi",
+    "edition": "UM beta",
+    "result": {
+      "native_error": "attempt to concatenate",
+      "time": 1.8666667640209,
+      "shard": "1",
+      "rows": [
+        {
+          "cause": "unnamed_health_source_audit2hm",
+          "current": 375,
+          "method": "DoDelta",
+          "maximum": 500
+        },
+        {
+          "cause": "unnamed_health_source_audit2hm",
+          "current": 375,
+          "method": "SetPercent",
+          "maximum": 500
+        },
+        {
+          "current": 375,
+          "method": "SetVal",
+          "maximum": 500
+        }
+      ],
+      "native_name_crashed": true,
+      "kind": "health_cause"
+    },
+    "status": "passed"
+  },
+  "source_sha256": "819d4478995485ad8290244928216ad37a4790fdac740fb0a5196a2f067d2516",
+  "upstream_sha256": "f83c7b5721441f4e5807ae2f5d64866e86071b05594dc7719bef5a85500d06a0",
+  "other_bugfix_hooks_unchanged_from_release": true
+}

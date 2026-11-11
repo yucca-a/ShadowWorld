@@ -87,16 +87,19 @@ return Class(function(self, inst)
     end
 
     function self:AddMoonstormNodes(node_indices, firstnode)
-        if type(node_indices) ~= "table" then node_indice = {node_indices} end
+        if type(node_indices) ~= "table" then node_indices = {node_indices} end
         if #node_indices <= 0 then return end
         for _, v in ipairs(node_indices) do
-            _active_moonstorm_nodes[v] = true
+            local node = TheWorld.topology.nodes[v]
+            if node and node.cent and not _active_moonstorm_nodes[v] then
+                _active_moonstorm_nodes[v] = true
 
-            local marker = SpawnPrefab("moonstormmarker2hm")
-            --   local center = TheWorld.topology.nodes[firstnode].cent
-            local center = TheWorld.topology.nodes[v].cent
-            marker.Transform:SetPosition(center[1], 0, center[2])
-            table.insert(_mapmarkers, marker)
+                local marker = SpawnPrefab("moonstormmarker2hm")
+                --   local center = TheWorld.topology.nodes[firstnode].cent
+                local center = node.cent
+                marker.Transform:SetPosition(center[1], 0, center[2])
+                table.insert(_mapmarkers, marker)
+            end
         end
         self._moonstorm_nodes:set(convertlist(_active_moonstorm_nodes))
         TheWorld:PushEvent("moonislandstormchanged", {stormtype = STORM_TYPES.MOONSTORM, setting = true})

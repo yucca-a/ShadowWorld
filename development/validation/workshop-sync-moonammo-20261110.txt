@@ -1,0 +1,68 @@
+工坊同步与沃尔特玻璃弹补缺（2026-11-10）
+
+结果
+本地准备版本 2.8.15.0.22，尚未上传工坊。
+工坊 3832182265 重新下载得到 2.8.15.0.20；本地此前为未发布的 2.8.15.0.21。
+三方共同基线是已发布 2.8.15.0.19；合并前双侧完整备份位于 backups/merges/workshop-moonammo-20261110-221556。
+
+同步内容
+接受 epic/alterguardian.lua 中两处团队改动：
+- 天体 -5 模式的速度平方阈值 100 -> 144，即注释中的 10 -> 12 单位/秒。
+- 三阶段初始化分身设置时尊重 inst.disablesw2hm。
+工坊同一文件把腿靴处理换回了直接移除/补加 slipperyfeet 组件的旧逻辑。
+保留本地 bootlegnonslip2hm 辅助模块，避免重新引入裂隙表/大漩涡传送崩溃。
+已按字节验证：工坊 alterguardian.lua 仅将此旧腿靴片段换成本地 helper 后，与合并结果完全相同。
+原有 .20 模块索引修复、.21 性能模块与配置未被工坊 .20 覆盖；没有删除本地文件或覆盖二进制素材。
+mod.manifest 重新生成，版本不回退到工坊 .20，而准备为 .22。
+
+玻璃弹缺失原因
+正式版与测试版都使用 slingshotammo_moonglass 作为维希尖刺玻璃弹，覆盖原版同名物品及配方。
+淬炼 common/walter_wixie_slingshot.lua 有意禁止沃尔特制作/使用维希专属弹药，不随使用维希弹弓开关解除。
+原版圆形玻璃弹因此需要独立的物品、配方和弹丸，不能只解除尖刺弹的制作限制。
+
+修复
+新增 slingshotammo_moonglass_walter2hm（圆形玻璃弹）及其 _proj、_proj_secondary 两个弹丸。
+直接调用当前游戏原生 scripts/prefabs/slingshotammo.lua 返回的玻璃弹/弹丸构造器，不复制原版命中与技能效果。
+世界动画 build 保持 slingshotammo；背包及配方显式使用 images/inventoryimages3.xml 中原版 slingshotammo_moonglass.tex。
+显式图集避免妥协同名尖刺图标的注册覆盖圆形图标。
+新增配方仅沃尔特拥有 walter_moonglass2hm 标签；仍需 walter_ammo_shattershots 与 CELESTIAL_THREE 科技。
+材料为 1 玻璃，基础 20 发，walter_ammo_efficiency 后 30 发，保留原版制作动作和月岛工作站参数。
+维希原 slingshotammo_moonglass 配方、wixieammo build、专属弹药限制和已有存档物品保持原身份。
+沃尔特圆形弹配方不依赖「沃尔特可使用维希弹弓」或可选角色增强开关。
+开权限后圆形弹也支持维希弹弓的 _secondary 命名入口，按其 powerlevel 计算伤害，保留原生玻璃命中效果。
+淬炼已有沃尔特主弹丸射程削弱列表同步加入新的主弹丸，避免借新物品绕过原有规则。
+新 prefab 总是注册，使关闭妥协后的既有圆形弹仍可读取；没有为玩家自动转换原有尖刺弹。
+
+同时修复的权限问题
+淬炼 tech/prototyperlevel.lua 的自定义 KnowsRecipe 忽略了原版 no_builder_tag / no_builder_skill。
+开启角色增强的原生测试中，维希尖刺配方因此会对沃尔特显示为已知，尽管后续 DoBuild 拦截仍在。
+服务端与客户端均补齐禁止标签、禁止技能检查；缺失技能组件时安全拒绝需要技能的配方。
+保留自由建造及其他已有科技计算规则，不通过授予沃尔特维希专属制作权限解决圆弹缺失。
+
+最终验证
+四组原生隔离专服全部通过，均使用最终 483 文件内容：
+- 测试版，维希弹弓权限开启：work/vault-hardened-hosted-nsjtc4fs，38 项断言，含实际维希 LaunchSpit 路径、二级弹丸及二倍伤害。
+- 正式版，维希弹弓权限开启：work/vault-hardened-hosted-qfyne4_4，38 项断言，含上述二级弹丸路径。
+- 测试版，权限关闭且角色增强总开关关闭：work/vault-hardened-hosted-bor9hhdr，33 项断言及 6 项冷重载检查。
+- 正式版，权限关闭且角色增强总开关关闭：work/vault-hardened-hosted-i2rwxopl，33 项断言及 6 项冷重载检查。
+共 154 项原生断言，检查配方角色/技能锁、20/30 制作数量、圆形与尖刺 build、库存图集、装填、普通射击命中、单发消耗。
+四组均作实际 GetSaveRecord/SpawnSaveRecord 身份和数量恢复；关闭权限的两组另正常保存关服重启。
+冷重载后圆形弹仍为新 prefab 的 7 发，原尖刺弹仍为原 prefab 的 11 发，两者没有互相转换。
+技能由隔离夹具暂时跳过 XP 校验注入，制作测试先 UnlockRecipe，以隔离角色/技能和物品功能；不是玩家技能加点/月岛祭坛界面验收。
+没有启动图形客户端；图标与外观检查依据原生图集元数据、实际 inventoryitem 图集/图片字段及实际 AnimState build。
+
+离线回归
+维希/沃尔特既有行为与新增配方 729 项；实际服务端/客户端权限函数 14 项。
+已有妥协性能 332 项、兼容 115 项、牛铃保管 18 项、五格锅路由 190 项、月火斩/防滑 49 项通过。
+原生模块索引 15 项、配置界面 32588 项通过；419 个生产 Lua 文件语法检查通过，483 个路径索引完整。
+此前性能模块没有改动；本轮没有为工坊两处天体参数改动另做在线玩法验证。
+
+中途检查记录
+v3h7dn0f：射击已造成伤害，但夹具在猪人万圣节延迟初始化之前记录绝对生命值，误判未命中；改为观察实际 attacked 事件及伤害。
+piaaw018：角色增强开启时暴露真实 no_builder_tag 漏检，已修复双端并增加权限回归。
+gxhkhv27、zkazbx1b、e6o9l5xe、i8usq3qj、w8cc8mr8、dgaz968m 为较早中间版本检查，不混入最终四组数量。
+最终原生输入清单、日志/内容 SHA-256、工坊备份与合并证明见同名 JSON。
+
+发布
+更新日志草稿 workshop/update-notes-2.8.15.0.22-draft.txt 包含本次补缺及先前未发布内容。
+本地更新包 backups/releases/v2.8.15.0.22-content.zip；本轮未上传创意工坊。

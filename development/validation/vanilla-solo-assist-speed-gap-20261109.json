@@ -1,0 +1,35 @@
+{
+  "version": "0.2.3",
+  "date": "2026-11-09",
+  "question": "User save slower than prior speed test",
+  "run": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\client-assist-patch-_nsyo_rv\\result.json",
+  "conditions": {
+    "native_player_collisions": true,
+    "movement_prediction": false,
+    "full_client_mod_loaded": true,
+    "input": "fixed camera-projected analogue direction; not physical keyboard",
+    "duration_seconds": 3,
+    "server_remote_authority": false
+  },
+  "baseline": {
+    "dx": 16.165100097656,
+    "dz": 1.8229370117188
+  },
+  "fast": {
+    "dx": 33.088348388672,
+    "dz": 1.8212280273438
+  },
+  "limitations": [
+    "Single isolated-world sample; not user save reproduction.",
+    "Earlier highest speed measurements cleared collision mask.",
+    "Current delivered Direction reads analogue direction controls only; mouse click-to-walk unsupported.",
+    "Server correction distance checks can reject proposed positions; four iterations is not a fixed speed multiplier.",
+    "No production code or user settings changed in this diagnostic turn."
+  ],
+  "server_logs": [
+    "[00:00:55]: [VANILLA_CRAFT_TEST] PREDICTION_PHASE\tbaseline\tdx=16.165100097656\tdz=1.8229370117188\tremote=false\t",
+    "[00:00:58]: [VANILLA_CRAFT_TEST] PREDICTION_PHASE\tfast\tdx=33.088348388672\tdz=1.8212280273438\tremote=true\t",
+    "[00:01:01]: [VANILLA_CRAFT_TEST] PREDICTION_PHASE\toff\tdx=0.16372680664063\tdz=0.0087890625\tremote=nil\t",
+    "[00:01:01]: [VANILLA_CRAFT_TEST] RESULT\tfailures=0\t"
+  ]
+}

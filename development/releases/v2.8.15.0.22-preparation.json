@@ -1,0 +1,11 @@
+{
+  "prepared": "2.8.15.0.22",
+  "upstream": "2.8.15.0.20",
+  "published": true,
+  "archive": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\backups\\releases\\v2.8.15.0.22-content.zip",
+  "archive_sha256": "ad2aafc72c669d015631fc5b9e13ee465bee2b23461e54160bcba0f40eec60bb",
+  "content_files": 483,
+  "lua_files": 419,
+  "native_assertions": 154,
+  "publication": "development/releases/v2.8.15.0.22-publication.json"
+}

@@ -1,0 +1,9 @@
+{
+  "scope": "Files edited for this vault hardening; unrelated workspace edits excluded",
+  "sha256": {
+    "scripts/components/shadowvault2hm.lua": "49ff2df3d65c1741dd7c050afa2f1c77ed30186548fe7e264e6b3fc6d03d130e",
+    "scripts/shadowvaultconfig2hm.lua": "07ca04a27f649f8dacc4a17b443634ed28df8eacfb1c007a9a74834027728a54",
+    "scripts/widgets/shadowvaultpanel2hm.lua": "10bd576f3f7f5678a3c4ba36e71ebd521939a05535425b682f73cc7ad64e9dea",
+    "easy_other/shadowvault.lua": "be50d57400af70535cacba845f53d72b0342123d4c355bc0f6f1b8246239e0c7"
+  }
+}

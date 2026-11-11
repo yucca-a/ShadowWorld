@@ -1,0 +1,85 @@
+{
+  "version": "0.1.0",
+  "date": "2026-11-09",
+  "server_build": 762172,
+  "mod": "天行卫（服务端防护）",
+  "changes": [
+    "LOOKAT no longer applies remote position snaps, retaining action execution.",
+    "MAPDELIVER_MAP requires a real mapdeliverable, native pending authorization for this player, and non-busy state.",
+    "Sustained abnormal request patterns start 5 announcements at 5/4/3/2/1 seconds; only a new continuing violation after deadline kicks.",
+    "auto_kick defaults true; false still blocks and announces without kicking."
+  ],
+  "regression": {
+    "native_method_guard_checks": 25,
+    "watch_countdown_checks": 16,
+    "actual_modmain_config_cases": [
+      "true",
+      "false",
+      "default"
+    ],
+    "metadata_empty_environment": "passed"
+  },
+  "native_test": {
+    "run": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\client-assist-patch-n86llx62",
+    "server_checks_passed": 12,
+    "checks": [
+      "[00:00:51]: [VANILLA_CRAFT_TEST] GUARD_CHECK\tPASS\tactual server mod hooks attached\t",
+      "[00:00:58]: [VANILLA_CRAFT_TEST] GUARD_CHECK\tPASS\tlegitimate equipment speed multiplier preserved\t",
+      "[00:01:02]: [VANILLA_CRAFT_TEST] GUARD_CHECK\tPASS\tclient turbo no longer gains abnormal server distance\t",
+      "[00:01:09]: [VANILLA_CRAFT_TEST] GUARD_CHECK\tPASS\tstopped abnormal movement within grace remains connected\t",
+      "[00:01:09]: [VANILLA_CRAFT_TEST] GUARD_CHECK\tPASS\tmovement correction attempts actively blocked\t",
+      "[00:01:13]: [VANILLA_CRAFT_TEST] GUARD_CHECK\tPASS\tauto recovery cannot break frozen control\t",
+      "[00:01:13]: [VANILLA_CRAFT_TEST] GUARD_CHECK\tPASS\treal auto recovery attempts rejected\t",
+      "[00:01:20]: [VANILLA_CRAFT_TEST] GUARD_CHECK\tPASS\tstopped auto recovery within grace remains connected\t",
+      "[00:01:20]: [VANILLA_CRAFT_TEST] GUARD_CHECK\tPASS\tnormal native inspect still runs\t",
+      "[00:01:20]: [VANILLA_CRAFT_TEST] GUARD_CHECK\tPASS\tnative delivery creates real pending authorization\t",
+      "[00:01:21]: [VANILLA_CRAFT_TEST] GUARD_CHECK\tPASS\tauthorized native map delivery executes\t",
+      "[00:01:27]: [VANILLA_CRAFT_TEST] GUARD_CHECK\tPASS\tdisconnect only after final continued-violation stage\t"
+    ],
+    "server_announcements": 15,
+    "client_chat_announcements": 15,
+    "real_kicks": 1,
+    "kick_confirmation": true,
+    "warnings": [
+      "[00:01:00]: [TianxingGuard] Warning:\t【天行卫】Yucca行为异常：触发快速移动辅助（重复移动预测／观察校正）检测。若持续异常将被移出；倒计时5秒。\t",
+      "[00:01:01]: [TianxingGuard] Warning:\t【天行卫】Yucca行为异常：触发快速移动辅助（重复移动预测／观察校正）检测。若持续异常将被移出；倒计时4秒。\t",
+      "[00:01:02]: [TianxingGuard] Warning:\t【天行卫】Yucca行为异常：触发快速移动辅助（重复移动预测／观察校正）检测。若持续异常将被移出；倒计时3秒。\t",
+      "[00:01:03]: [TianxingGuard] Warning:\t【天行卫】Yucca行为异常：触发快速移动辅助（重复移动预测／观察校正）检测。若持续异常将被移出；倒计时2秒。\t",
+      "[00:01:04]: [TianxingGuard] Warning:\t【天行卫】Yucca行为异常：触发快速移动辅助（重复移动预测／观察校正）检测。若持续异常将被移出；倒计时1秒。\t",
+      "[00:01:11]: [TianxingGuard] Warning:\t【天行卫】Yucca行为异常：触发自动解控辅助（重复伪造地图投递）检测。若持续异常将被移出；倒计时5秒。\t",
+      "[00:01:12]: [TianxingGuard] Warning:\t【天行卫】Yucca行为异常：触发自动解控辅助（重复伪造地图投递）检测。若持续异常将被移出；倒计时4秒。\t",
+      "[00:01:13]: [TianxingGuard] Warning:\t【天行卫】Yucca行为异常：触发自动解控辅助（重复伪造地图投递）检测。若持续异常将被移出；倒计时3秒。\t",
+      "[00:01:14]: [TianxingGuard] Warning:\t【天行卫】Yucca行为异常：触发自动解控辅助（重复伪造地图投递）检测。若持续异常将被移出；倒计时2秒。\t",
+      "[00:01:15]: [TianxingGuard] Warning:\t【天行卫】Yucca行为异常：触发自动解控辅助（重复伪造地图投递）检测。若持续异常将被移出；倒计时1秒。\t",
+      "[00:01:21]: [TianxingGuard] Warning:\t【天行卫】Yucca行为异常：触发快速移动辅助（重复移动预测／观察校正）检测。若持续异常将被移出；倒计时5秒。\t",
+      "[00:01:22]: [TianxingGuard] Warning:\t【天行卫】Yucca行为异常：触发快速移动辅助（重复移动预测／观察校正）检测。若持续异常将被移出；倒计时4秒。\t",
+      "[00:01:23]: [TianxingGuard] Warning:\t【天行卫】Yucca行为异常：触发快速移动辅助（重复移动预测／观察校正）检测。若持续异常将被移出；倒计时3秒。\t",
+      "[00:01:24]: [TianxingGuard] Warning:\t【天行卫】Yucca行为异常：触发快速移动辅助（重复移动预测／观察校正）检测。若持续异常将被移出；倒计时2秒。\t",
+      "[00:01:25]: [TianxingGuard] Warning:\t【天行卫】Yucca行为异常：触发快速移动辅助（重复移动预测／观察校正）检测。若持续异常将被移出；倒计时1秒。\t"
+    ],
+    "kicks": [
+      "[00:01:26]: [TianxingGuard] Kick:\tOU_76561199500702609\t快速移动辅助（重复移动预测／观察校正）\t"
+    ],
+    "lua_errors": 0,
+    "native_delivery_and_inspection": "passed",
+    "normal_equipment_speed": "passed",
+    "stop_within_grace": "both speed and recovery remained connected",
+    "continued_violation": "native TheNet:Kick disconnected the real client"
+  },
+  "limitations": [
+    "Targets these two current behavior paths, not arbitrary unknown cheats or server-authorized speed changes.",
+    "Normal inspect correction totals alone are not punishment evidence; separate sustained-pattern thresholds are used.",
+    "Test used an isolated single-shard offline server with a non-authority client; full mod combinations and cross-shard announcement delivery were not individually tested.",
+    "No existing player world settings or save files changed. Enable in the desired world server-mod list and on both shards."
+  ],
+  "installed": "D:\\SteamLibrary\\steamapps\\common\\Don't Starve Together\\mods\\tianxing_guard",
+  "backup": null,
+  "package": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\server_mods\\天行卫-服务端防护-0.1.0.zip",
+  "hashes": {
+    "modinfo.lua": "874918c73d814cf1750cdf4859c44d18d2e3919880d697b18bab48cc4a48f24f",
+    "modmain.lua": "bd3cacb3486e0ef45d1a13aed235254bb5a9cfe19f770f64951e0486cbeb8266",
+    "README.md": "27568b18a229833c13435818d7f4cc05abb8aa2aaa6eb1f90c0f518fadd48753",
+    "scripts\\tianxing_guard.lua": "af386bbc9f5305843747942fe27a9c693dee595cab59d07391b0555195d01e1b",
+    "scripts\\tianxing_guard_watch.lua": "18e4b470c9480e8ac0907319f2bff93f76ab0387997a6708686cf3a52760e520"
+  }
+}

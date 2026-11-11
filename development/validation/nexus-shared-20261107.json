@@ -1,0 +1,264 @@
+{
+  "date": "2026-11-07",
+  "published": false,
+  "version": "2.8.15.0.5",
+  "design": {
+    "concurrent_families": [
+      "shadow",
+      "tacklestation2hm"
+    ],
+    "storage": "persistent master-owned native pages with disposable native prefab views on secondary shards",
+    "ui": "unmodified native ContainerWidget, InvSlot, ItemTile and existing buttons",
+    "transactions": "native gestures coordinated through durable per-item transfers; clicked slot tokens prevent raced item substitution",
+    "dynamic_specials": "original whole-page native handoff retained for mod upgrade/capacity managers",
+    "visual": "gentle red ColourAdder tint, smoothed by resistance; no forcefield animation, bloom, light or sound"
+  },
+  "limitations": [
+    "Remote materials must be withdrawn before crafting; preview items cannot be consumed as independent goods.",
+    "Cross-shard transfers require network and durable confirmation; native prediction is retained but zero latency is not claimed.",
+    "Skull and cloud pine remain exclusive across shards; this change enables simultaneous use for shadow and tackle only.",
+    "Both current and pre-change code stalled at the same UM + Legion + Medal cave authentication stage, before character initialization. This remains an unresolved test-environment or existing-compatibility issue, not a passing client migration case.",
+    "Current local Medal registers no unique native pocket family; no claim that every Medal addon was exercised.",
+    "No abrupt-crash or intentional-disconnect tests were added in this change."
+  ],
+  "unit_results": {
+    "shared_view_assertions": 46,
+    "preview_custody_assertions": 10,
+    "dynamic_armor_assertions": 121,
+    "lua51_content_files": 383,
+    "journal_custody_assertions": 26
+  },
+  "reports": {
+    "four_shard_final": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-mbdc6et9",
+      "cases": [
+        {
+          "race_round": 1,
+          "winner": "Master"
+        },
+        {
+          "race_round": 2,
+          "winner": "Caves"
+        },
+        {
+          "race_round": 3,
+          "winner": "Caves"
+        },
+        {
+          "race_round": 4,
+          "winner": "Caves"
+        },
+        "counted_take_and_put_one",
+        "parallel_different_slots",
+        "normal_save_restart_all_views_reopen"
+      ],
+      "status": "passed",
+      "report": "work/nexus-shared-four-latest.json",
+      "frozen_core_missing": [],
+      "core_changes_after_frozen_test": [
+        "scripts/shadowvaultshared2hm.lua",
+        "easy_other/shadowvaultshared.lua"
+      ]
+    },
+    "client_four_rounds": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-g4u6p2_6",
+      "status": "passed",
+      "blackhole": false,
+      "rounds": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "client_log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-g4u6p2_6\\real-client.log",
+      "report": "work/nexus-shared-client-final.json",
+      "frozen_core_missing": [],
+      "core_changes_after_frozen_test": [
+        "scripts/shadowvaultconfig2hm.lua",
+        "scripts/shadowvaultnative2hm.lua",
+        "scripts/shadowvaultshared2hm.lua",
+        "easy_other/shadowvaultshared.lua"
+      ]
+    },
+    "client_latest_counted": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-2_dksyll",
+      "status": "passed",
+      "blackhole": false,
+      "rounds": [
+        1,
+        2
+      ],
+      "client_log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-2_dksyll\\real-client.log",
+      "report": "work/nexus-shared-client-counted.json",
+      "frozen_core_missing": [],
+      "core_changes_after_frozen_test": [
+        "easy_other/shadowvaultshared.lua"
+      ]
+    },
+    "old_journal_upgrade": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-m0y3lpng",
+      "checks": [
+        "old_journal_gift",
+        "native_master_edits",
+        "old_items_transfer_to_caves",
+        "native_caves_restart_while_borrowed",
+        "returned_once_after_restart"
+      ],
+      "status": "passed",
+      "report": "work/vault-hardened-hosted-m0y3lpng/native-upgrade-result.json",
+      "frozen_core_missing": [],
+      "core_changes_after_frozen_test": [
+        "scripts/shadowvaultconfig2hm.lua",
+        "scripts/shadowvaultnative2hm.lua",
+        "scripts/shadowvaultshared2hm.lua",
+        "easy_other/shadowvaultshared.lua"
+      ]
+    },
+    "native_save_upgrade": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-e2s2_0dk",
+      "checks": [
+        "old_journal_gift",
+        "native_master_edits",
+        "old_items_transfer_to_caves",
+        "native_caves_restart_while_borrowed",
+        "returned_once_after_restart"
+      ],
+      "status": "passed",
+      "report": "work/vault-hardened-hosted-e2s2_0dk/native-owner-upgrade-result.json",
+      "frozen_core_missing": [],
+      "core_changes_after_frozen_test": [
+        "scripts/shadowvaultshared2hm.lua",
+        "easy_other/shadowvaultshared.lua"
+      ]
+    },
+    "special_native_mods": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-9my7u28n",
+      "cases": [
+        {
+          "family": "skull",
+          "prefab": "skullchest",
+          "slots": 12,
+          "rounds": 2
+        },
+        {
+          "family": "cloudpine_l1",
+          "prefab": "cloudpine_box_l1",
+          "slots": 4,
+          "rounds": 2
+        },
+        {
+          "family": "cloudpine_l2",
+          "prefab": "cloudpine_box_l2",
+          "slots": 12,
+          "rounds": 2
+        },
+        {
+          "family": "cloudpine_l3",
+          "prefab": "cloudpine_box_l3",
+          "slots": 24,
+          "rounds": 2
+        },
+        {
+          "family": "cloudpine_l4",
+          "prefab": "cloudpine_box_l4",
+          "slots": 30,
+          "rounds": 2
+        }
+      ],
+      "restart": "passed",
+      "status": "passed",
+      "report": "work/vault-hardened-hosted-9my7u28n/native-special-result.json",
+      "frozen_core_missing": [],
+      "core_changes_after_frozen_test": [
+        "scripts/shadowvaultconfig2hm.lua",
+        "scripts/shadowvaultnative2hm.lua",
+        "scripts/shadowvaultshared2hm.lua",
+        "easy_other/shadowvaultshared.lua"
+      ]
+    },
+    "shared_multimod_server": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-poxus287",
+      "cases": [
+        "shared_native_round_1",
+        "shared_native_round_2",
+        "shared_native_round_3",
+        "native_stack_returns_to_one_and_merges"
+      ],
+      "status": "passed",
+      "report": "work/nexus-shared-multimod-server.json",
+      "frozen_core_missing": [],
+      "core_changes_after_frozen_test": [
+        "easy_other/shadowvaultshared.lua"
+      ]
+    },
+    "armour_client": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-mkogbxqh",
+      "status": "passed",
+      "blackhole": false,
+      "rounds": [
+        1
+      ],
+      "client_log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-mkogbxqh\\real-client.log",
+      "report": "work/nexus-armour-client.json",
+      "frozen_core_missing": [],
+      "core_changes_after_frozen_test": [
+        "scripts/shadowvaultconfig2hm.lua",
+        "scripts/shadowvaultjournal2hm.lua",
+        "scripts/shadowvaultnative2hm.lua",
+        "scripts/shadowvaultshared2hm.lua",
+        "scripts/components/shadowvault2hm.lua",
+        "easy_other/shadowvault.lua",
+        "easy_other/shadowvaultshared.lua"
+      ]
+    },
+    "multimod_client_migration": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-2jtg7ntn",
+      "status": "failed",
+      "blackhole": false,
+      "error": "Traceback (most recent call last):\n  File \"D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\tests\\run_vault_client_travel.py\", line 81, in <module>\n    raw=src.read(entry)\nTimeoutError: real client did not finish interaction rounds; D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-2jtg7ntn\\real-client.log\n",
+      "report": "work/nexus-shared-special-client.json",
+      "frozen_core_missing": [],
+      "core_changes_after_frozen_test": [
+        "scripts/shadowvaultconfig2hm.lua",
+        "scripts/shadowvaultnative2hm.lua",
+        "scripts/shadowvaultshared2hm.lua",
+        "easy_other/shadowvaultshared.lua"
+      ]
+    },
+    "baseline_multimod_client_migration": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-zm3s5ytw",
+      "status": "failed",
+      "blackhole": false,
+      "error": "Traceback (most recent call last):\n  File \"D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\tests\\run_vault_client_travel.py\", line 79, in <module>\n    with zipfile.ZipFile(GAME/'data/databundles/scripts.zip') as src,zipfile.ZipFile(bundles/'scripts.zip','w',zipfile.ZIP_DEFLATED,compresslevel=1) as dst:\n                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: client exited: 4294967295\n",
+      "report": "work/nexus-special-baseline-client.json",
+      "frozen_core_missing": [],
+      "core_changes_after_frozen_test": [
+        "scripts/shadowvaultshared2hm.lua",
+        "easy_other/shadowvaultshared.lua"
+      ]
+    }
+  },
+  "current_core_sha256": {
+    "easy_other/containersort.lua": "e8a43d712c9b5cf7cb0cd5f43e61055cc05bf0a1cb85c4f88e06f76c19dd7fd1",
+    "easy_other/shadowvault.lua": "08468cf81f96396c6433db06cef14e675f31b81f760b2d3b5e156fde90ba65f6",
+    "easy_other/shadowvaultshared.lua": "34061a51b76b0348ce34cc585df40578c29ae082d30cf1af4af6fd88dc5b7222",
+    "epic/dynamic_armor.lua": "e556fd4678babe82ce653cdfeb83087b796e7453aa4f6cae3a4e55e66cade437",
+    "scripts/components/dynamicarmor2hm.lua": "c2282d2ec3c69b7543e5934a7ad59c79e4043af5977edf67d04bd24ff5abe770",
+    "scripts/components/shadowvault2hm.lua": "54686c41e006d96e139e06861fe74a724e4a58d778286cd8d5ecf44cc6fce0b3",
+    "scripts/components/shadowvaultissued2hm.lua": "db4cd5cdfab29887c44703211386fce84e44fbe207215cb781dc194451ac0534",
+    "scripts/components/shadowvaultticket2hm.lua": "a748a3b7522b2c20aa451ddc0fda2d09732cee4698fc3292e7e57c58abce70f5",
+    "scripts/prefabs/dynamicarmor_indicator2hm.lua": "b03738d3e0d32f6f3c88d9f700a44b53056bb5974283bf429b86bf632fb8f1b5",
+    "scripts/prefabs/shadowvault2hm.lua": "6ffe198297d28651c24d5ee1be01b2ffffb1da2be55dd2a7b89671b83695b5f6",
+    "scripts/shadowvaultconfig2hm.lua": "141125715f3db8a41450acd1412cdb20b44b09a63ae69a069dde883db8820ca6",
+    "scripts/shadowvaultcourier2hm.lua": "736dc91b3aceeb0dbbeea3c6c5bdc564de0667dfa36975e83fe7ddedd7df3534",
+    "scripts/shadowvaultdurable2hm.lua": "7011952bdd81d06881e1d4644a701ae036d1fbd718bd13d20245b9a596919346",
+    "scripts/shadowvaultio2hm.lua": "5bff960379c75b4ee2f7a522ac3180fcd3814c9a3c950c62a475ebe2be25a7bc",
+    "scripts/shadowvaultitems2hm.lua": "7fac5972c681a9cc0ed05b5606feba88686f0b87ece41adbdae9e1ac4fb94425",
+    "scripts/shadowvaultjournal2hm.lua": "d78341ccefc0127840461382cc1de432fd9ae94bc7e3bfa95872af7563f05546",
+    "scripts/shadowvaultnative2hm.lua": "30e83691a3e7b491119fef8b2a841f62650c1ff389f68c14941538521a297c36",
+    "scripts/shadowvaultshared2hm.lua": "46d478a6ef8e36123e8381a81d19176561e7ab87059d68d151a5fa464821efba",
+    "scripts/shadowvaulttransport2hm.lua": "b43a1bd1831d199880e074deaf4579ad25ebb9f097da302a4c2b0f7b5bbbb6b1"
+  },
+  "status": "passed_with_documented_limits",
+  "follow_up_dynamic_armor": "xianyu-dynamic-armor-20261107.json"
+}

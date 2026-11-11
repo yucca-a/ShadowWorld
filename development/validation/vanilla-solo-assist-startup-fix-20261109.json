@@ -1,0 +1,22 @@
+{
+  "version": "0.2.1",
+  "date": "2026-11-09",
+  "cause": "modinfo.lua was evaluated with an empty metadata environment and called unavailable string.char; Lua failure occurred during startup before a world loaded.",
+  "change": "Static 48-key option list; no string, tostring, or other library calls in metadata. Gameplay core unchanged.",
+  "test_gap_fixed": "Previous metadata test executed in full Lua globals. It now extracts actual installed-game ModIndex:InitializeModInfo and RunInEnvironment, exercising the real empty environment and reproducing the old failure.",
+  "validation": {
+    "regression_checks": 42,
+    "native_metadata_loader": "fixed passes; old string.char fails as expected",
+    "actual_client_UI": "Verified real game reached main menu and opened client-mod settings: version0.2.1, speed level and F6/F7 settings shown. Returned to main menu.",
+    "mod_enabled": false,
+    "mode": "Offline; online login and in-world play not re-verified for this metadata-only fix."
+  },
+  "backup": "work/solo-assist-startup-fix",
+  "old_download_link": "0.2.0.zip now contains the fixed 0.2.1 package; broken archive retained only in diagnostic backup.",
+  "source_manifest": {
+    "modinfo.lua": "1113a66cc5466e86fcd9fdf2991da71463bd65b899e39d5692cdb05f33f5e1e1",
+    "modmain.lua": "47001cc211f355be4832a519799a740c24050b84e03d75a4568db237c852f92e",
+    "README.md": "fecc11583f0a1854f190da4d6c36f0d91f9955ccc646a0d13e28f7c0c235c703",
+    "scripts\\soloassist2hm.lua": "1e42dc05dc695588a682e2a7e6c01d1deca46bf2d96d98c07cf6ca42a863d7e2"
+  }
+}

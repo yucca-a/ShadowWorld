@@ -1,0 +1,27 @@
+{
+  "project_id": "appgprj_6aeab300ca58819193ec146fbf0d4571",
+  "url": "https://tempered-season-wiki.stormy-ant-2734.chatgpt.site",
+  "version_id": "appgprj_6aeab300ca58819193ec146fbf0d4571~appgver_f68aa2a808bc81919a2f6ee58671756e",
+  "deployment_id": "appgdep_6aeac49cb7808191b469c258ead80db8",
+  "status": "succeeded",
+  "commit_sha": "a9e5338ff6b9b331d331ab8f7fbebf527b118e1e",
+  "updated_at": "2026-11-04T05:38:02.016247+00:00",
+  "audience": "owner-private (preserved)",
+  "source_directory": "wiki",
+  "checkout_directory": "work/tempered-season-site",
+  "reference": "https://qineko.wiki/ws/",
+  "changes": [
+    "Reference-aligned floating search, icon sidebar, grid background and continuous article cards",
+    "Responsive mobile header, navigation drawer, bookmarks and reading controls",
+    "Preserved 247 articles, 424 settings and 3322 choices"
+  ],
+  "validation": {
+    "build": "passed",
+    "static_check": "250 pages, 110225 local links and anchors, 671 searchable entries",
+    "browser": "Desktop and mobile layout, filtering, bookmarks, theme/font controls, configuration details and cross-page search passed; no console errors or broken loaded images"
+  },
+  "screenshots": [
+    "development/wiki-preview-v3-20261104.jpg",
+    "development/wiki-preview-v3-mobile-20261104.jpg"
+  ]
+}

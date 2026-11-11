@@ -1,0 +1,1019 @@
+{
+  "date": "2026-11-07",
+  "published": false,
+  "base_release": "2.8.15.0.8",
+  "syntax_files": 388,
+  "source_changes": [
+    {
+      "file": "common/common.lua",
+      "sha256": "da991914188046063da36f41d1cec5810dbb002b5d2127459f6dadd61eecdbc1"
+    },
+    {
+      "file": "easy_other/containersort.lua",
+      "sha256": "bfd5d9547adea968bfee0866c28995f6aa83b2e98a7a39258fc4b0f76a24c9ba"
+    },
+    {
+      "file": "easy_other/easy_equipments.lua",
+      "sha256": "3585b7cef9b2d23f9c1b144017c61f4b663fc75ad093410cb064574c2847062b"
+    },
+    {
+      "file": "easy_other/easy_items.lua",
+      "sha256": "96030ab4f139d1055cf2c141b0ac58fc567d6485cc80b0a404f9c354abc21db5"
+    },
+    {
+      "file": "easy_other/easy_structures.lua",
+      "sha256": "1370e08746f031c1a7b0d1ca8e7b5b21905da00655813e108dc00a72145a706f"
+    },
+    {
+      "file": "easy_other/lunar_shadow_items.lua",
+      "sha256": "5c2d96105b3019a53bfdfa7def33f6ecb24f64859d50615d05058492a720f5dc"
+    },
+    {
+      "file": "easy_role/rightaction.lua",
+      "sha256": "6c0ced86f8c032b3309fed4666db47decffccf43cd0251ac8c8b32a3876c6007"
+    },
+    {
+      "file": "easy_role/walter_easy.lua",
+      "sha256": "0e22e1474507252421f5df1819c1f6181e8b2abf78e739484be00a4311085fe1"
+    },
+    {
+      "file": "easy_role/wormwood_easy.lua",
+      "sha256": "08431c7625f36483b01b655811c7a3a1fbebaf5780a97abd39142286dea8a054"
+    },
+    {
+      "file": "easy_role/wx78_easy.lua",
+      "sha256": "1db982aacb775a6b6e8990e1f1c338adceae290502bc2746c6abeb274b3509aa"
+    },
+    {
+      "file": "epic/crabking.lua",
+      "sha256": "44e7aa063a9cd839a1bb54549537c84b2d78482cf8231097e1bc1e84852783df"
+    },
+    {
+      "file": "epic/klaus.lua",
+      "sha256": "fd4d866d52422c8c35dd15b363ccc5f0d88e39d70dca5f18adede17b8c49e764"
+    },
+    {
+      "file": "epic/sharkboi.lua",
+      "sha256": "27272cb04fa07698f198c4cb99217df2319922a72c933ae91756a8c2aff12f64"
+    },
+    {
+      "file": "modmain.lua",
+      "sha256": "ee0a26ef852ae542e07bbdc57b24b6b8d9c42eb45d79d5fd19fc2d7529b17f53"
+    },
+    {
+      "file": "role/death.lua",
+      "sha256": "dbb6aa085a9a8b09aa746a214aa3ad4c4026cb66a2cf5d7b9847ceae18676d56"
+    },
+    {
+      "file": "role/soul.lua",
+      "sha256": "87e41d975c6a9a1f45eb9f989301c64d936041dfcfd4716c7c27fd3ac411fda3"
+    },
+    {
+      "file": "scripts/brains/powdermonkeybrainP.lua",
+      "sha256": "f48c8fe7e8ebb12ffe359224fa50aed6d327619458666ca161ff40eef3bd6914"
+    },
+    {
+      "file": "scripts/brains/primematebrainP.lua",
+      "sha256": "23bae5c1906457479b152ada418d7c6b1428ee16ceab41abe63b4fda8b6c459b"
+    },
+    {
+      "file": "scripts/brains/wagdrone_rollingbrain2hm.lua",
+      "sha256": "8d615dac40a29fae4b4bddcb0ebfdb3dcab0e1a215cc84d71868e9f0561f4571"
+    },
+    {
+      "file": "scripts/components/moonstorms2hm.lua",
+      "sha256": "796611d1ea4e7e7b22fa57f1ad6ecdad7ec31fd17d8646365c9ad4ea09364e74"
+    },
+    {
+      "file": "scripts/gemstaffcompat2hm.lua",
+      "sha256": "1269f0e37dbbc2499c7d000aa0de720db17dff0dd195e1124d7364d90f6a11ba"
+    },
+    {
+      "file": "scripts/prefabs/klaus2hm.lua",
+      "sha256": "556e705ed6a8625bc10eeb5f6afe2e69d34ddf77e722c21d207b7e4e60bc8fb9"
+    },
+    {
+      "file": "scripts/rpcguard2hm.lua",
+      "sha256": "fc268e9c906d210d17018d3ed6cf0b8a029d11bcbd54b0bbd269e77d60ef47fd"
+    },
+    {
+      "file": "scripts/upvaluehacker2hm.lua",
+      "sha256": "1b00f73b498465eb20bf34f79a71915df50edc481592f8418e5f59d81bf87b2b"
+    },
+    {
+      "file": "tech/distilledknowledge.lua",
+      "sha256": "af199b9966ad5568110ed369344bb7ad67b6be3c1e3a912cc33f4addf6b729b0"
+    },
+    {
+      "file": "weather/seasons.lua",
+      "sha256": "243f09a995ab43af9e05058f50d8e29fe6afc8191a5baab62f526117d5a0eaa6"
+    }
+  ],
+  "regression": [
+    {
+      "test": "gem_staff",
+      "exit_code": 0,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\crash-audit-20261107\\gem_staff.log"
+    },
+    {
+      "test": "crash_audit",
+      "exit_code": 0,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\crash-audit-20261107\\crash_audit.log"
+    },
+    {
+      "test": "health_cause",
+      "exit_code": 0,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\crash-audit-20261107\\health_cause.log"
+    },
+    {
+      "test": "weapon_infusion_view",
+      "exit_code": 0,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\crash-audit-20261107\\weapon_infusion_view.log"
+    },
+    {
+      "test": "vault_journal",
+      "exit_code": 0,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\crash-audit-20261107\\vault_journal.log"
+    },
+    {
+      "test": "dynamic_armor",
+      "exit_code": 0,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\crash-audit-20261107\\dynamic_armor.log"
+    },
+    {
+      "test": "combat_progressive",
+      "exit_code": 0,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\crash-audit-20261107\\combat_progressive.log"
+    },
+    {
+      "test": "wixie",
+      "exit_code": 0,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\crash-audit-20261107\\wixie.log"
+    },
+    {
+      "test": "frostjaw",
+      "exit_code": 0,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\crash-audit-20261107\\frostjaw.log"
+    },
+    {
+      "test": "propagator",
+      "exit_code": 0,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\crash-audit-20261107\\propagator.log"
+    },
+    {
+      "test": "multiplayer_feedback",
+      "exit_code": 0,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\crash-audit-20261107\\multiplayer_feedback.log"
+    },
+    {
+      "test": "epic_ruin",
+      "exit_code": 0,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\crash-audit-20261107\\epic_ruin.log"
+    },
+    {
+      "test": "frostshrine_fx",
+      "exit_code": 0,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\crash-audit-20261107\\frostshrine_fx.log"
+    },
+    {
+      "test": "eyeturret",
+      "exit_code": 0,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\crash-audit-20261107\\eyeturret.log"
+    },
+    {
+      "test": "monster_nightvision",
+      "exit_code": 0,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\crash-audit-20261107\\monster_nightvision.log"
+    },
+    {
+      "test": "prototyper_preview",
+      "exit_code": 0,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\crash-audit-20261107\\prototyper_preview.log"
+    },
+    {
+      "test": "skilltree",
+      "exit_code": 0,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\crash-audit-20261107\\skilltree.log"
+    },
+    {
+      "test": "trap",
+      "exit_code": 0,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\crash-audit-20261107\\trap.log"
+    },
+    {
+      "test": "wanda_regen",
+      "exit_code": 0,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\crash-audit-20261107\\wanda_regen.log"
+    },
+    {
+      "test": "fire_spread",
+      "exit_code": 0,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\crash-audit-20261107\\fire_spread.log"
+    },
+    {
+      "test": "mod_viewer",
+      "exit_code": 0,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\crash-audit-20261107\\mod_viewer.log"
+    }
+  ],
+  "native": {
+    "baseline": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-llgq0fru",
+      "mods": [
+        "1378549454",
+        "3193922031",
+        "3750536829"
+      ],
+      "label": "baseline",
+      "status": "passed"
+    },
+    "baseline-expanded": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-4ygf45wo",
+      "mods": [
+        "1378549454",
+        "3193922031",
+        "3750536829",
+        "1392778117",
+        "3191348907",
+        "3645179905",
+        "3645181516",
+        "3609984563"
+      ],
+      "label": "baseline-expanded",
+      "status": "passed"
+    },
+    "fixed-wrapped": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-lvo07pbf",
+      "mods": [
+        "1378549454",
+        "3193922031",
+        "3750536829"
+      ],
+      "label": "fixed-wrapped",
+      "result": {
+        "private_helper": true,
+        "compat": true,
+        "time": 0.46666669100523,
+        "shard": "1",
+        "kind": "gem_staff",
+        "passed": true,
+        "rows": [
+          {
+            "ok": true,
+            "dictionary": false,
+            "loot": {
+              "boards": 3
+            },
+            "uses": 1,
+            "removed": true
+          },
+          {
+            "ok": true,
+            "dictionary": true,
+            "loot": {
+              "goldnugget": 2,
+              "boards": 3
+            },
+            "uses": 1,
+            "removed": true
+          }
+        ]
+      },
+      "status": "passed"
+    },
+    "fixed-expanded": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-laopjh41",
+      "mods": [
+        "1378549454",
+        "3193922031",
+        "3750536829",
+        "1392778117",
+        "3191348907",
+        "3645179905",
+        "3645181516",
+        "3609984563"
+      ],
+      "label": "fixed-expanded",
+      "result": {
+        "private_helper": true,
+        "compat": true,
+        "time": 0.53333336114883,
+        "shard": "1",
+        "kind": "gem_staff",
+        "passed": true,
+        "rows": [
+          {
+            "ok": true,
+            "dictionary": false,
+            "loot": {
+              "boards": 3
+            },
+            "uses": 1,
+            "removed": true
+          },
+          {
+            "ok": true,
+            "dictionary": true,
+            "loot": {
+              "goldnugget": 2,
+              "boards": 3
+            },
+            "uses": 1,
+            "removed": true
+          }
+        ]
+      },
+      "status": "passed"
+    },
+    "audit-vanilla": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-okih6zsr",
+      "mods": [],
+      "label": "audit-vanilla",
+      "smoke": {
+        "time": 5.1666669361293,
+        "shard": "1",
+        "rows": [
+          {
+            "name": "bad_container_rpcs",
+            "passed": true
+          },
+          {
+            "name": "bad_shard_data",
+            "passed": true
+          },
+          {
+            "name": "furnace_cook_preserves_ruby",
+            "passed": true
+          },
+          {
+            "name": "spawn_nightsword",
+            "passed": true
+          },
+          {
+            "name": "save_nightsword",
+            "passed": true
+          },
+          {
+            "name": "spawn_glasscutter",
+            "passed": true
+          },
+          {
+            "name": "save_glasscutter",
+            "passed": true
+          },
+          {
+            "name": "spawn_eyebrellahat",
+            "passed": true
+          },
+          {
+            "name": "save_eyebrellahat",
+            "passed": true
+          },
+          {
+            "name": "spawn_wx78",
+            "passed": true
+          },
+          {
+            "name": "save_wx78",
+            "passed": true
+          },
+          {
+            "name": "spawn_wormwood",
+            "passed": true
+          },
+          {
+            "name": "save_wormwood",
+            "passed": true
+          },
+          {
+            "name": "spawn_walter",
+            "passed": true
+          },
+          {
+            "name": "save_walter",
+            "passed": true
+          },
+          {
+            "name": "spawn_archive_orchestrina_small",
+            "passed": true
+          },
+          {
+            "name": "save_archive_orchestrina_small",
+            "passed": true
+          },
+          {
+            "name": "spawn_archive_orchestrina_main",
+            "passed": true
+          },
+          {
+            "name": "save_archive_orchestrina_main",
+            "passed": true
+          },
+          {
+            "name": "spawn_honey_trail",
+            "passed": true
+          },
+          {
+            "name": "spawn_knight",
+            "passed": true
+          },
+          {
+            "name": "save_knight",
+            "passed": true
+          },
+          {
+            "name": "spawn_bishop",
+            "passed": true
+          },
+          {
+            "name": "save_bishop",
+            "passed": true
+          },
+          {
+            "name": "spawn_rook",
+            "passed": true
+          },
+          {
+            "name": "save_rook",
+            "passed": true
+          },
+          {
+            "name": "spawn_crabking",
+            "passed": true
+          },
+          {
+            "name": "save_crabking",
+            "passed": true
+          },
+          {
+            "name": "spawn_klaus",
+            "passed": true
+          },
+          {
+            "name": "save_klaus",
+            "passed": true
+          },
+          {
+            "name": "spawn_klaus2hm",
+            "passed": true
+          },
+          {
+            "name": "save_klaus2hm",
+            "passed": true
+          },
+          {
+            "name": "spawn_sharkboi",
+            "passed": true
+          },
+          {
+            "name": "save_sharkboi",
+            "passed": true
+          },
+          {
+            "name": "spawn_wagdrone_rolling",
+            "passed": true
+          },
+          {
+            "name": "save_wagdrone_rolling",
+            "passed": true
+          },
+          {
+            "name": "spawn_prime_mate",
+            "passed": true
+          },
+          {
+            "name": "save_prime_mate",
+            "passed": true
+          },
+          {
+            "name": "spawn_powder_monkey",
+            "passed": true
+          },
+          {
+            "name": "save_powder_monkey",
+            "passed": true
+          },
+          {
+            "name": "spawn_tacklestation",
+            "passed": true
+          },
+          {
+            "name": "save_tacklestation",
+            "passed": true
+          },
+          {
+            "name": "spawn_chester",
+            "passed": true
+          },
+          {
+            "name": "save_chester",
+            "passed": true
+          },
+          {
+            "name": "spawn_tophat",
+            "passed": true
+          },
+          {
+            "name": "save_tophat",
+            "passed": true
+          },
+          {
+            "name": "spawn_researchlab2",
+            "passed": true
+          },
+          {
+            "name": "save_researchlab2",
+            "passed": true
+          },
+          {
+            "name": "spawn_winona_toolbox",
+            "passed": true
+          },
+          {
+            "name": "save_winona_toolbox",
+            "passed": true
+          }
+        ],
+        "passed": true,
+        "kind": "crash_audit"
+      },
+      "status": "passed"
+    },
+    "audit-beta-expanded": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-q401gc02",
+      "mods": [
+        "1378549454",
+        "3193922031",
+        "3750536829",
+        "1392778117",
+        "3191348907",
+        "3645179905",
+        "3645181516",
+        "3609984563"
+      ],
+      "label": "audit-beta-expanded",
+      "result": {
+        "private_helper": true,
+        "compat": true,
+        "time": 0.53333336114883,
+        "shard": "1",
+        "kind": "gem_staff",
+        "passed": true,
+        "rows": [
+          {
+            "ok": true,
+            "dictionary": false,
+            "loot": {
+              "boards": 3
+            },
+            "uses": 1,
+            "removed": true
+          },
+          {
+            "ok": true,
+            "dictionary": true,
+            "loot": {
+              "goldnugget": 2,
+              "boards": 3
+            },
+            "uses": 1,
+            "removed": true
+          }
+        ]
+      },
+      "smoke": {
+        "time": 5.4000002816319,
+        "shard": "1",
+        "rows": [
+          {
+            "name": "bad_container_rpcs",
+            "passed": true
+          },
+          {
+            "name": "bad_shard_data",
+            "passed": true
+          },
+          {
+            "name": "furnace_cook_preserves_ruby",
+            "passed": true
+          },
+          {
+            "name": "spawn_nightsword",
+            "passed": true
+          },
+          {
+            "name": "save_nightsword",
+            "passed": true
+          },
+          {
+            "name": "spawn_glasscutter",
+            "passed": true
+          },
+          {
+            "name": "save_glasscutter",
+            "passed": true
+          },
+          {
+            "name": "spawn_eyebrellahat",
+            "passed": true
+          },
+          {
+            "name": "save_eyebrellahat",
+            "passed": true
+          },
+          {
+            "name": "spawn_wx78",
+            "passed": true
+          },
+          {
+            "name": "save_wx78",
+            "passed": true
+          },
+          {
+            "name": "spawn_wormwood",
+            "passed": true
+          },
+          {
+            "name": "save_wormwood",
+            "passed": true
+          },
+          {
+            "name": "spawn_walter",
+            "passed": true
+          },
+          {
+            "name": "save_walter",
+            "passed": true
+          },
+          {
+            "name": "spawn_archive_orchestrina_small",
+            "passed": true
+          },
+          {
+            "name": "save_archive_orchestrina_small",
+            "passed": true
+          },
+          {
+            "name": "spawn_archive_orchestrina_main",
+            "passed": true
+          },
+          {
+            "name": "save_archive_orchestrina_main",
+            "passed": true
+          },
+          {
+            "name": "spawn_honey_trail",
+            "passed": true
+          },
+          {
+            "name": "spawn_knight",
+            "passed": true
+          },
+          {
+            "name": "save_knight",
+            "passed": true
+          },
+          {
+            "name": "spawn_bishop",
+            "passed": true
+          },
+          {
+            "name": "save_bishop",
+            "passed": true
+          },
+          {
+            "name": "spawn_rook",
+            "passed": true
+          },
+          {
+            "name": "save_rook",
+            "passed": true
+          },
+          {
+            "name": "spawn_crabking",
+            "passed": true
+          },
+          {
+            "name": "save_crabking",
+            "passed": true
+          },
+          {
+            "name": "spawn_klaus",
+            "passed": true
+          },
+          {
+            "name": "save_klaus",
+            "passed": true
+          },
+          {
+            "name": "spawn_klaus2hm",
+            "passed": true
+          },
+          {
+            "name": "save_klaus2hm",
+            "passed": true
+          },
+          {
+            "name": "spawn_sharkboi",
+            "passed": true
+          },
+          {
+            "name": "save_sharkboi",
+            "passed": true
+          },
+          {
+            "name": "spawn_wagdrone_rolling",
+            "passed": true
+          },
+          {
+            "name": "save_wagdrone_rolling",
+            "passed": true
+          },
+          {
+            "name": "spawn_prime_mate",
+            "passed": true
+          },
+          {
+            "name": "save_prime_mate",
+            "passed": true
+          },
+          {
+            "name": "spawn_powder_monkey",
+            "passed": true
+          },
+          {
+            "name": "save_powder_monkey",
+            "passed": true
+          },
+          {
+            "name": "spawn_tacklestation",
+            "passed": true
+          },
+          {
+            "name": "save_tacklestation",
+            "passed": true
+          },
+          {
+            "name": "spawn_chester",
+            "passed": true
+          },
+          {
+            "name": "save_chester",
+            "passed": true
+          },
+          {
+            "name": "spawn_tophat",
+            "passed": true
+          },
+          {
+            "name": "save_tophat",
+            "passed": true
+          },
+          {
+            "name": "spawn_researchlab2",
+            "passed": true
+          },
+          {
+            "name": "save_researchlab2",
+            "passed": true
+          },
+          {
+            "name": "spawn_winona_toolbox",
+            "passed": true
+          },
+          {
+            "name": "save_winona_toolbox",
+            "passed": true
+          }
+        ],
+        "passed": true,
+        "kind": "crash_audit"
+      },
+      "status": "passed"
+    },
+    "audit-stable": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-1xbjf_pg",
+      "mods": [
+        "2039181790"
+      ],
+      "label": "audit-stable",
+      "smoke": {
+        "time": 5.2666669413447,
+        "shard": "1",
+        "rows": [
+          {
+            "name": "bad_container_rpcs",
+            "passed": true
+          },
+          {
+            "name": "bad_shard_data",
+            "passed": true
+          },
+          {
+            "name": "furnace_cook_preserves_ruby",
+            "passed": true
+          },
+          {
+            "name": "spawn_nightsword",
+            "passed": true
+          },
+          {
+            "name": "save_nightsword",
+            "passed": true
+          },
+          {
+            "name": "spawn_glasscutter",
+            "passed": true
+          },
+          {
+            "name": "save_glasscutter",
+            "passed": true
+          },
+          {
+            "name": "spawn_eyebrellahat",
+            "passed": true
+          },
+          {
+            "name": "save_eyebrellahat",
+            "passed": true
+          },
+          {
+            "name": "spawn_wx78",
+            "passed": true
+          },
+          {
+            "name": "save_wx78",
+            "passed": true
+          },
+          {
+            "name": "spawn_wormwood",
+            "passed": true
+          },
+          {
+            "name": "save_wormwood",
+            "passed": true
+          },
+          {
+            "name": "spawn_walter",
+            "passed": true
+          },
+          {
+            "name": "save_walter",
+            "passed": true
+          },
+          {
+            "name": "spawn_archive_orchestrina_small",
+            "passed": true
+          },
+          {
+            "name": "save_archive_orchestrina_small",
+            "passed": true
+          },
+          {
+            "name": "spawn_archive_orchestrina_main",
+            "passed": true
+          },
+          {
+            "name": "save_archive_orchestrina_main",
+            "passed": true
+          },
+          {
+            "name": "spawn_honey_trail",
+            "passed": true
+          },
+          {
+            "name": "spawn_knight",
+            "passed": true
+          },
+          {
+            "name": "save_knight",
+            "passed": true
+          },
+          {
+            "name": "spawn_bishop",
+            "passed": true
+          },
+          {
+            "name": "save_bishop",
+            "passed": true
+          },
+          {
+            "name": "spawn_rook",
+            "passed": true
+          },
+          {
+            "name": "save_rook",
+            "passed": true
+          },
+          {
+            "name": "spawn_crabking",
+            "passed": true
+          },
+          {
+            "name": "save_crabking",
+            "passed": true
+          },
+          {
+            "name": "spawn_klaus",
+            "passed": true
+          },
+          {
+            "name": "save_klaus",
+            "passed": true
+          },
+          {
+            "name": "spawn_klaus2hm",
+            "passed": true
+          },
+          {
+            "name": "save_klaus2hm",
+            "passed": true
+          },
+          {
+            "name": "spawn_sharkboi",
+            "passed": true
+          },
+          {
+            "name": "save_sharkboi",
+            "passed": true
+          },
+          {
+            "name": "spawn_wagdrone_rolling",
+            "passed": true
+          },
+          {
+            "name": "save_wagdrone_rolling",
+            "passed": true
+          },
+          {
+            "name": "spawn_prime_mate",
+            "passed": true
+          },
+          {
+            "name": "save_prime_mate",
+            "passed": true
+          },
+          {
+            "name": "spawn_powder_monkey",
+            "passed": true
+          },
+          {
+            "name": "save_powder_monkey",
+            "passed": true
+          },
+          {
+            "name": "spawn_tacklestation",
+            "passed": true
+          },
+          {
+            "name": "save_tacklestation",
+            "passed": true
+          },
+          {
+            "name": "spawn_chester",
+            "passed": true
+          },
+          {
+            "name": "save_chester",
+            "passed": true
+          },
+          {
+            "name": "spawn_tophat",
+            "passed": true
+          },
+          {
+            "name": "save_tophat",
+            "passed": true
+          },
+          {
+            "name": "spawn_researchlab2",
+            "passed": true
+          },
+          {
+            "name": "save_researchlab2",
+            "passed": true
+          },
+          {
+            "name": "spawn_winona_toolbox",
+            "passed": true
+          },
+          {
+            "name": "save_winona_toolbox",
+            "passed": true
+          }
+        ],
+        "passed": true,
+        "kind": "crash_audit"
+      },
+      "status": "passed"
+    }
+  },
+  "limitations": [
+    "Original reporter had 25 mods; unavailable mods were not downloaded. Installed related combination was tested with defaults.",
+    "Reported missing SpawnLootPrefab chain reproduced using installed Gem Core callback and native staff closures with constructor wrapping; exact external wrapper in reporter world remains unknown.",
+    "Unknown/ambiguous staff replacement skips only Gem Core legacy dictionary deconstruction adapter; existing spell retained and diagnostic logged.",
+    "Server/headless tests do not constitute full client UI or all mod configuration verification.",
+    "All-world, all-future-mod-combination zero crashes is not claimed."
+  ],
+  "previous_archive_recovery": "Previously verified affected archive restores automatically with release .8 after both shards restart, retaining original save and vault journals. New fix is not published."
+}

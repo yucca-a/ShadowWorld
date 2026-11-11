@@ -1,0 +1,55 @@
+{
+  "date": "2026-11-07",
+  "published": false,
+  "version": "2.8.15.0.5",
+  "archive": "D:\\Users\\Yucca\\Downloads\\3832182265.zip",
+  "archive_sha256": "ed09f4a9f83601f02833e5d679de45e69314bb50f7b6ecafddf71d581cc7db31",
+  "archive_review": {
+    "changed_from_published": [
+      "mod.manifest",
+      "modinfo.lua",
+      "scripts/components/dynamicarmor2hm.lua"
+    ],
+    "missing_from_archive": [],
+    "new_files": [],
+    "substantive_changes": [
+      "dynamic armor balance",
+      "dynamic armor configuration hover"
+    ]
+  },
+  "merge": {
+    "threshold": 0.2,
+    "limit": 0.3,
+    "per_hit_cap": 0.1,
+    "cooling": "max(0.02 * maxhealth / sqrt(extra_health_multiplier), 400) pressure HP/sec",
+    "numeric_logic_matches_archive": true,
+    "retained_visual": "dynamicarmor_indicator2hm; smoothed ColourAdder red tint",
+    "shadow_core_changes_since_prior_validation": []
+  },
+  "checks": {
+    "dynamic_armor_assertions": 176,
+    "progressive_combat_assertions": 109,
+    "epic_ruin_variants": 4,
+    "lua51_files": 383,
+    "client": {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-pvbyt0mt",
+      "status": "passed",
+      "blackhole": false,
+      "rounds": [
+        1
+      ],
+      "client_log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-pvbyt0mt\\real-client.log"
+    }
+  },
+  "initial_fixture_attempt": {
+    "report": "work/xianyu-dynamic-armour-client-first-fixture.json",
+    "result": "failed assertion because test assumed 1M max HP but configured boss health multiplier produced 2M. Fixture now reads actual final max HP; production code unchanged for this correction."
+  },
+  "sha256": {
+    "scripts/components/dynamicarmor2hm.lua": "9de98201c23bece9d017cb2016a9b1f191c587ca78342c2d5026a7d8fbccdca5",
+    "epic/dynamic_armor.lua": "e556fd4678babe82ce653cdfeb83087b796e7453aa4f6cae3a4e55e66cade437",
+    "scripts/prefabs/dynamicarmor_indicator2hm.lua": "b03738d3e0d32f6f3c88d9f700a44b53056bb5974283bf429b86bf632fb8f1b5",
+    "modinfo.lua": "30464f8782523b83092f097417b4e83842a467b34356df40dee5a9a4d6aea3f4"
+  },
+  "status": "passed"
+}

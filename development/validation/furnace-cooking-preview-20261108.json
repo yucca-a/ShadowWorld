@@ -1,0 +1,45 @@
+{
+  "date": "2026-11-08",
+  "published": false,
+  "source_sha256": {
+    "content/common/food_util.lua": "41c83b7f24c14a37ad940be12bf930b85de2aa134a515b7b166c8300710f6a9e",
+    "content/food/cooking.lua": "f2c770bf821d457be876dcf6b160cbacdb02a4b9075014799f83226db19dc19e",
+    "content/easy_other/easy_structures.lua": "e652ad956d907c6435ffa41d6db58fe949ae1ec3a0ae59b040cb28ec82fa97ab",
+    "tests/run_cooking_preview_tests.py": "93248d3fa306c4c130db62f09159e3f55abf037688d6c362be06bf1e94feec7c",
+    "tests/native/five_slot_cooking_fixture.lua": "ddd055e4dc23a1be81541153adc48b536c896d08e5b4f9ac86c3e7c936c025f2"
+  },
+  "actual_craftpot_method_checks": 16,
+  "routing_and_fuel_ui_checks": 190,
+  "native": {
+    "pass": true,
+    "arguments": {
+      "edition": "beta",
+      "stats": true,
+      "patch_off": true,
+      "mode": -3,
+      "baseline": false,
+      "disk": false
+    },
+    "runs": [
+      {
+        "phase": "normal",
+        "pass": true,
+        "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-five-slot-beta-obr46z8k\\normal.log",
+        "checks": [
+          "[00:00:33]: [FIVE_SLOT_TEST]\tPASS\trules\t\t",
+          "[00:00:33]: [FIVE_SLOT_TEST]\tPASS\tcookpot\t\t",
+          "[00:00:33]: [FIVE_SLOT_TEST]\tPASS\tportablecookpot\t\t",
+          "[00:00:33]: [FIVE_SLOT_TEST]\tPASS\tdragonflyfurnace_remains_four_ingredients\t\t",
+          "[00:00:33]: [FIVE_SLOT_TEST] RESULT\tcases=4\tchecks=98\tfailures=0\t"
+        ]
+      }
+    ],
+    "limitation": "Real server components/entities/save files and server-side replica metadata. No rendered client or arbitrary third-party mod combinations."
+  },
+  "notes": [
+    "No new production module: common/food_util.lua hosts the shared cooker rules interface.",
+    "Final native run matches all three modified production files byte for byte.",
+    "Craft Pot math uses actual classic and refreshed methods with mock recipes and widgets; no rendered-client acceptance.",
+    "Food spoilage remains global as explicitly requested."
+  ]
+}

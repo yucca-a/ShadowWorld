@@ -1,0 +1,58 @@
+{
+  "kind": "minimal_consistency_model_not_a_native_game_crash_test",
+  "requirement": "Recover only vault/escrow, leave native world/player progress untouched, and guarantee conservation under independent rollback/crash.",
+  "conclusion": "A vault-only snapshot restore is insufficient. Strict recovery needs authoritative durable evidence of delivery and subsequent native effects, or restrictions/reconciliation outside vault custody.",
+  "cases": [
+    {
+      "vault_snapshot": "before_withdraw",
+      "external_snapshot": "before_withdraw",
+      "vault_units": 17,
+      "units_or_effects_outside_vault": 0,
+      "total": 17,
+      "conserved": true
+    },
+    {
+      "vault_snapshot": "before_withdraw",
+      "external_snapshot": "after_withdraw_or_saved_use",
+      "vault_units": 17,
+      "units_or_effects_outside_vault": 17,
+      "total": 34,
+      "conserved": false
+    },
+    {
+      "vault_snapshot": "after_withdraw",
+      "external_snapshot": "before_withdraw",
+      "vault_units": 0,
+      "units_or_effects_outside_vault": 0,
+      "total": 0,
+      "conserved": false
+    },
+    {
+      "vault_snapshot": "after_withdraw",
+      "external_snapshot": "after_withdraw_or_saved_use",
+      "vault_units": 0,
+      "units_or_effects_outside_vault": 17,
+      "total": 17,
+      "conserved": true
+    }
+  ],
+  "important_boundary": "The model demonstrates the inconsistent snapshot combinations; it is not a proof against every possible redesigned game engine or a claim that a journal can never help.",
+  "source_findings": [
+    {
+      "file": "content/scripts/components/shadowvault2hm.lua",
+      "function": "Vault:Deliver",
+      "finding": "GiveItem transfers custody to native inventory and removes the escrow row."
+    },
+    {
+      "file": "work/game-source/scripts/components/shardtransactionsteps.lua",
+      "function": "HandleTransactionInitialization / HandleTransactionFinalization / OnSave",
+      "finding": "Native transfer changes live records/items; transaction state is returned by OnSave. Receipt is not a cross-shard atomic disk commit."
+    },
+    {
+      "file": "content/scripts/shadowvaultsnapshot2hm.lua",
+      "function": "Bootstrap / RestorePlayers",
+      "finding": "Current implementation restores world and player images, so it does not meet the newly requested isolation boundary."
+    }
+  ],
+  "no_production_logic_changed": true
+}

@@ -1,0 +1,1313 @@
+{
+  "version": "2.8.14.97.4",
+  "date": "2026-11-04",
+  "method": "静态核对当前模组加载条件、运行分支、数值与本机原版 scripts.zip；未修改模组脚本，未启动游戏实测。",
+  "articles": [
+    {
+      "id": "food-values",
+      "title": "食物属性削减",
+      "category": "food",
+      "sections": 8,
+      "source": [
+        "content/food/fooddata.lua",
+        "content/food/cooking.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/tuning.lua",
+        "原版 scripts.zip：scripts/components/edible.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "food_change",
+        "fooddata_change",
+        "cooking_change"
+      ]
+    },
+    {
+      "id": "crop-growth",
+      "title": "农作物生长速度",
+      "category": "food",
+      "sections": 7,
+      "source": [
+        "content/food/farm_plant.lua",
+        "content/food/plant.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/prefabs/farm_plant_defs.lua",
+        "原版 scripts.zip：scripts/prefabs/farm_plants.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "food_change",
+        "farm_plant_change",
+        "plant_change"
+      ]
+    },
+    {
+      "id": "resource-regrowth",
+      "title": "植物与动物再生",
+      "category": "food",
+      "sections": 9,
+      "source": [
+        "content/food/plant.lua",
+        "content/food/animal.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "food_change",
+        "plant_change",
+        "animal_change",
+        "Boulderbough"
+      ]
+    },
+    {
+      "id": "random-seeds",
+      "title": "随机种子与干种子",
+      "category": "food",
+      "sections": 7,
+      "source": [
+        "content/food/seeds.lua",
+        "content/scripts/prefabs/dryseeds2hm.lua",
+        "content/modmain.lua",
+        "content/food/fooddata.lua",
+        "原版 scripts.zip：scripts/prefabs/farm_plants.lua",
+        "原版 scripts.zip：scripts/components/disappears.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "food_change",
+        "Seeds Weed Chance",
+        "fooddata_change"
+      ]
+    },
+    {
+      "id": "celestial-onion",
+      "title": "天体洋葱",
+      "category": "food",
+      "sections": 10,
+      "source": [
+        "content/scripts/prefabs/onion_celestial2hm.lua",
+        "content/epic/alterguardian.lua",
+        "content/scripts/components/persistent2hm.lua",
+        "content/common/bugfix.lua",
+        "content/modmain.lua",
+        "content/food/fooddata.lua",
+        "原版 scripts.zip：scripts/components/health.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "alterguardian",
+        "food_change",
+        "fooddata_change"
+      ]
+    },
+    {
+      "id": "small-candy",
+      "title": "小糖豆",
+      "category": "food",
+      "sections": 11,
+      "source": [
+        "content/scripts/foodsdata2hm.lua",
+        "content/scripts/prefabs/food2hm.lua",
+        "content/common/food_util.lua",
+        "content/scripts/prefabs/healthregenbuff2hm.lua",
+        "content/easy_other/easy_structures.lua",
+        "content/epic/beargerfur_sack_lunar_seed2hm.lua",
+        "content/scripts/entergift2hm.lua",
+        "content/tech/moonrockidol.lua",
+        "content/modmain.lua",
+        "content/food/fooddata.lua",
+        "content/food/cooking.lua",
+        "原版 scripts.zip：scripts/cooking.lua",
+        "原版 scripts.zip：scripts/components/stewer.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "food_change",
+        "fooddata_change",
+        "enable easy mode",
+        "Alchemy Engine Redeem Gold Nugget",
+        "other_change",
+        "moonrockidol",
+        "enter gift 2",
+        "cooking_change"
+      ]
+    },
+    {
+      "id": "carrot-cake",
+      "title": "猪鼻胡萝卜蛋糕",
+      "category": "food",
+      "sections": 10,
+      "source": [
+        "content/scripts/foodsdata2hm.lua",
+        "content/scripts/prefabs/food2hm.lua",
+        "content/common/food_util.lua",
+        "content/scripts/prefabs/gulumi_bless2hm.lua",
+        "content/monster/pigman.lua",
+        "content/epic/beargerfur_sack_lunar_seed2hm.lua",
+        "content/modmain.lua",
+        "content/food/fooddata.lua",
+        "原版 scripts.zip：scripts/tuning.lua",
+        "原版 scripts.zip：scripts/components/stewer.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "food_change",
+        "fooddata_change",
+        "monster_change",
+        "pigman"
+      ]
+    },
+    {
+      "id": "four-season-fish-soup",
+      "title": "四季鱼汤",
+      "category": "food",
+      "sections": 11,
+      "source": [
+        "content/scripts/foodsdata2hm.lua",
+        "content/scripts/prefabs/food2hm.lua",
+        "content/common/food_util.lua",
+        "content/scripts/prefabs/tropicalfishbuff2hm.lua",
+        "content/epic/beargerfur_sack_lunar_seed2hm.lua",
+        "content/modmain.lua",
+        "content/food/fooddata.lua",
+        "原版 scripts.zip：scripts/prefabs/oceanfishdef.lua",
+        "原版 scripts.zip：scripts/components/moistureimmunity.lua",
+        "原版 scripts.zip：scripts/components/moisture.lua",
+        "原版 scripts.zip：scripts/components/debuffable.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "food_change",
+        "fooddata_change"
+      ]
+    },
+    {
+      "id": "dried-vegetables",
+      "title": "蔬菜干与生命上限",
+      "category": "food",
+      "sections": 8,
+      "source": [
+        "content/easy_other/easy_structures.lua",
+        "content/scripts/prefabs/dryplants2hm.lua",
+        "content/modmain.lua",
+        "content/food/fooddata.lua",
+        "content/food/cooking.lua",
+        "原版 scripts.zip：scripts/tuning.lua",
+        "原版 scripts.zip：scripts/components/stackable.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "meatrack_dry",
+        "enable hard mode",
+        "food_change",
+        "fooddata_change",
+        "cooking_change"
+      ]
+    },
+    {
+      "id": "fire-cooking",
+      "title": "任意火焰烹饪",
+      "category": "food",
+      "sections": 6,
+      "source": [
+        "content/easy_other/easy_mechanics.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/components/cookable.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Use Fire To Cook"
+      ]
+    },
+    {
+      "id": "monster-meat-purification",
+      "title": "净化怪物食材",
+      "category": "food",
+      "sections": 10,
+      "source": [
+        "content/easy_other/easy_mechanics.lua",
+        "content/food/cooking.lua",
+        "content/food/fooddata.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/prefabs/spidergland.lua",
+        "原版 scripts.zip：scripts/prefabs/meats.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Spider Gland Can Heal Monster Meat",
+        "enable hard mode",
+        "food_change",
+        "fooddata_change",
+        "cooking_change"
+      ]
+    },
+    {
+      "id": "portable-spicer-batches",
+      "title": "便携调味站批量调味",
+      "category": "food",
+      "sections": 7,
+      "source": [
+        "content/easy_other/easy_structures.lua",
+        "content/food/cooking.lua",
+        "content/modmain.lua",
+        "content/common/food_util.lua",
+        "原版 scripts.zip：scripts/recipes.lua",
+        "原版 scripts.zip：scripts/prefabs/portablespicer.lua",
+        "原版 scripts.zip：scripts/spicedfoods.lua",
+        "原版 scripts.zip：scripts/components/stewer.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "dragonfly furnace stewer",
+        "Portable Crock Pot Multi",
+        "enable hard mode",
+        "food_change",
+        "cooking_change"
+      ]
+    },
+    {
+      "id": "hard-food-system",
+      "title": "困难模式食物系统总开关",
+      "category": "food",
+      "sections": 5,
+      "source": [
+        "content/modmain.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "food_change",
+        "fooddata_change",
+        "cooking_change",
+        "birds_change",
+        "oceanfish_change",
+        "container_live",
+        "animal_change",
+        "beefalo",
+        "koalefant",
+        "plant_change",
+        "action_change",
+        "Seeds Weed Chance",
+        "farm",
+        "nutrient",
+        "farm_plant_change"
+      ]
+    },
+    {
+      "id": "fuel-cooking",
+      "title": "燃料烹饪与五格锅",
+      "category": "food",
+      "sections": 12,
+      "source": [
+        "content/food/cooking.lua",
+        "content/food/fooddata.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/tuning.lua",
+        "原版 scripts.zip：scripts/cooking.lua",
+        "原版 scripts.zip：scripts/components/stewer.lua",
+        "原版 scripts.zip：scripts/prefabs/portablecookpot.lua",
+        "原版 scripts.zip：scripts/recipes.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "food_change",
+        "cooking_change",
+        "fooddata_change",
+        "Tackle Receptacle Use Fish Redeem"
+      ]
+    },
+    {
+      "id": "living-container",
+      "title": "动物箱庭：活物会吃箱内食物",
+      "category": "food",
+      "sections": 9,
+      "source": [
+        "content/food/container_live.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/components/eater.lua",
+        "原版 scripts.zip：scripts/components/edible.lua",
+        "原版 scripts.zip：scripts/components/container.lua",
+        "原版 scripts.zip：scripts/components/inventory.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "food_change",
+        "container_live"
+      ]
+    },
+    {
+      "id": "creature-elites",
+      "title": "精英怪物",
+      "category": "creatures",
+      "sections": 5,
+      "source": [
+        "content/modmain.lua",
+        "content/monster/supermonster.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "rangesupermonster",
+        "specialsupermonster"
+      ]
+    },
+    {
+      "id": "creature-walls",
+      "title": "无阻可挡",
+      "category": "creatures",
+      "sections": 4,
+      "source": [
+        "content/modmain.lua",
+        "content/monster/wall.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "wall_destroy"
+      ]
+    },
+    {
+      "id": "creature-boss-truce",
+      "title": "Boss 反互伤",
+      "category": "creatures",
+      "sections": 3,
+      "source": [
+        "content/modmain.lua",
+        "content/monster/boss_nofight.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "boss_no_fight"
+      ]
+    },
+    {
+      "id": "creature-combat-calm",
+      "title": "战斗镇定与无端仇恨",
+      "category": "creatures",
+      "sections": 3,
+      "source": [
+        "content/modmain.lua",
+        "content/monster/calmfire.lua",
+        "content/common/common.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "calmfire",
+        "nosrctarget"
+      ]
+    },
+    {
+      "id": "creature-moving-attack",
+      "title": "移动攻击与洞穴生物",
+      "category": "creatures",
+      "sections": 5,
+      "source": [
+        "content/modmain.lua",
+        "content/monster/moveattack.lua",
+        "DST scripts.zip/scripts/tuning.lua",
+        "DST scripts.zip/scripts/prefabs/slurtle.lua",
+        "DST scripts.zip/scripts/prefabs/bramblefx.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "moveattack"
+      ]
+    },
+    {
+      "id": "creature-flying",
+      "title": "空袭攻击",
+      "category": "creatures",
+      "sections": 2,
+      "source": [
+        "content/modmain.lua",
+        "content/monster/flying.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "flyingattack"
+      ]
+    },
+    {
+      "id": "creature-bees",
+      "title": "杀人蜂与果蝇",
+      "category": "creatures",
+      "sections": 8,
+      "source": [
+        "content/monster/bee.lua",
+        "content/monster/fruitfly.lua",
+        "content/common/projectile.lua",
+        "content/common/common.lua",
+        "content/extra/fruitfly2hm.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/prefabs/bee.lua",
+        "DST scripts.zip/scripts/prefabs/fruitfly.lua",
+        "DST scripts.zip/scripts/prefabs/blowdart.lua",
+        "DST scripts.zip/scripts/components/projectile.lua",
+        "DST scripts.zip/scripts/components/farming_manager.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "bee",
+        "fruitfly",
+        "extra_change"
+      ]
+    },
+    {
+      "id": "creature-hounds",
+      "title": "猎犬、座狼与附身座狼",
+      "category": "creatures",
+      "sections": 8,
+      "source": [
+        "content/monster/hound.lua",
+        "content/extra/extra.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/prefabs/hound.lua",
+        "DST scripts.zip/scripts/prefabs/houndmound.lua",
+        "DST scripts.zip/scripts/prefabs/warg.lua",
+        "DST scripts.zip/scripts/prefabs/warglet.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "warg",
+        "extra_change",
+        "notboss_speed",
+        "notboss_attackspeed",
+        "Shadow World"
+      ]
+    },
+    {
+      "id": "creature-walrus",
+      "title": "海象父子",
+      "category": "creatures",
+      "sections": 6,
+      "source": [
+        "content/monster/walrus.lua",
+        "content/scripts/prefabs/walrus_camp2hm.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/prefabs/walrus.lua",
+        "DST scripts.zip/scripts/prefabs/walrus_camp.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "walrus",
+        "animal_change",
+        "extra_change",
+        "notboss_speed"
+      ]
+    },
+    {
+      "id": "creature-clockworks",
+      "title": "发条生物与损坏装置",
+      "category": "creatures",
+      "sections": 10,
+      "source": [
+        "content/monster/chess.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/prefabs/knight.lua",
+        "DST scripts.zip/scripts/prefabs/bishop.lua",
+        "DST scripts.zip/scripts/prefabs/rook.lua",
+        "DST scripts.zip/scripts/prefabs/chessjunk.lua",
+        "DST scripts.zip/scripts/prefabs/clockwork_common.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "chess",
+        "extra_change",
+        "notboss_attackspeed",
+        "Shadow World"
+      ]
+    },
+    {
+      "id": "creature-tentacle",
+      "title": "触手与大触手",
+      "category": "creatures",
+      "sections": 7,
+      "source": [
+        "content/monster/tentacle.lua",
+        "content/monster/common.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/prefabs/tentacle.lua",
+        "DST scripts.zip/scripts/prefabs/tentacle_pillar.lua",
+        "DST scripts.zip/scripts/prefabs/deciduous_root.lua",
+        "DST scripts.zip/scripts/prefabs/ivy_snare.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "tentacle"
+      ]
+    },
+    {
+      "id": "creature-spiders",
+      "title": "蜘蛛巢与蜘蛛女王",
+      "category": "creatures",
+      "sections": 8,
+      "source": [
+        "content/monster/spider.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/prefabs/spider.lua",
+        "DST scripts.zip/scripts/prefabs/spiderden.lua",
+        "DST scripts.zip/scripts/prefabs/spiderqueen.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "spider"
+      ]
+    },
+    {
+      "id": "creature-pigman",
+      "title": "猪人、兔人与梦魇疯猪",
+      "category": "creatures",
+      "sections": 11,
+      "source": [
+        "content/monster/pigman.lua",
+        "content/common/common.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/prefabs/pigman.lua",
+        "DST scripts.zip/scripts/prefabs/bunnyman.lua",
+        "DST scripts.zip/scripts/prefabs/daywalker.lua",
+        "DST scripts.zip/scripts/prefabs/daywalker2.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "pigman",
+        "pig_boss",
+        "extra_change",
+        "boss_speed",
+        "daywalker2"
+      ]
+    },
+    {
+      "id": "creature-otter",
+      "title": "水獭",
+      "category": "creatures",
+      "sections": 7,
+      "source": [
+        "content/monster/otter.lua",
+        "content/common/newstate.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/prefabs/otter.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "otter"
+      ]
+    },
+    {
+      "id": "creature-shark",
+      "title": "岩石大白鲨",
+      "category": "creatures",
+      "sections": 6,
+      "source": [
+        "content/monster/shark.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/prefabs/shark.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "shark",
+        "sharkboi"
+      ]
+    },
+    {
+      "id": "creature-monkeys",
+      "title": "穴居猴与暗影猴",
+      "category": "creatures",
+      "sections": 7,
+      "source": [
+        "content/monster/monkey.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/prefabs/monkey.lua",
+        "DST scripts.zip/scripts/prefabs/monkeyprojectile.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "monkey"
+      ]
+    },
+    {
+      "id": "creature-krampus",
+      "title": "坎普斯",
+      "category": "creatures",
+      "sections": 7,
+      "source": [
+        "content/monster/krampus.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/prefabs/krampus.lua",
+        "DST scripts.zip/scripts/components/kramped.lua",
+        "DST scripts.zip/scripts/stategraphs/SGkrampus.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "krampus",
+        "warg"
+      ]
+    },
+    {
+      "id": "creature-brightshade",
+      "title": "亮茄与食人花",
+      "category": "creatures",
+      "sections": 8,
+      "source": [
+        "content/modmain.lua",
+        "content/monster/lunarthrall_plant.lua",
+        "content/monster/common.lua",
+        "原版 scripts.zip：scripts/prefabs/lunarthrall_plant.lua",
+        "原版 scripts.zip：scripts/components/lunarthrall_plantspawner.lua",
+        "原版 scripts.zip：scripts/prefabs/abigail.lua",
+        "原版 scripts.zip：scripts/prefabs/abigailforcefield.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "lunarthrall_plant",
+        "moonisland"
+      ]
+    },
+    {
+      "id": "creature-shadowthrall",
+      "title": "墨荒与暗影裂隙",
+      "category": "creatures",
+      "sections": 10,
+      "source": [
+        "content/modmain.lua",
+        "content/monster/shadowthrall.lua",
+        "content/common/common.lua",
+        "content/common/projectile.lua",
+        "原版 scripts.zip：scripts/prefabs/shadowthrall_hands.lua",
+        "原版 scripts.zip：scripts/prefabs/shadowthrall_wings.lua",
+        "原版 scripts.zip：scripts/prefabs/shadowthrall_horns.lua",
+        "原版 scripts.zip：scripts/prefabs/fused_shadeling.lua",
+        "原版 scripts.zip：scripts/components/shadowthrallmanager.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "shadowthrall",
+        "shadow_rift"
+      ]
+    },
+    {
+      "id": "creature-crawling-horror",
+      "title": "爬行恐惧",
+      "category": "creatures",
+      "sections": 10,
+      "source": [
+        "content/modmain.lua",
+        "content/monster/crawlingshadow.lua",
+        "content/common/common.lua",
+        "content/scripts/prefabs/mod_hardmode_shadow_pillar.lua",
+        "原版 scripts.zip：scripts/prefabs/shadowcreature.lua",
+        "原版 scripts.zip：scripts/prefabs/nightmarecreature.lua",
+        "原版 scripts.zip：scripts/prefabs/shadow_pillar.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "crawlingshadow",
+        "shadowbeak",
+        "oceanshadow"
+      ]
+    },
+    {
+      "id": "creature-terrorbeak",
+      "title": "恐怖尖喙",
+      "category": "creatures",
+      "sections": 9,
+      "source": [
+        "content/modmain.lua",
+        "content/monster/shadowbeak.lua",
+        "content/monster/crawlingshadow.lua",
+        "content/monster/common.lua",
+        "content/scripts/prefabs/mod_hardmode_shadow_trap.lua",
+        "原版 scripts.zip：scripts/prefabs/shadowcreature.lua",
+        "原版 scripts.zip：scripts/prefabs/nightmarecreature.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "shadowbeak",
+        "crawlingshadow",
+        "extra_change",
+        "notboss_speed",
+        "notboss_attackspeed"
+      ]
+    },
+    {
+      "id": "creature-terrorclaw",
+      "title": "恐怖利爪",
+      "category": "creatures",
+      "sections": 9,
+      "source": [
+        "content/modmain.lua",
+        "content/monster/oceanshadow.lua",
+        "content/scripts/prefabs/oceanshadowcreature2hm.lua",
+        "content/scripts/brains/nightmarecreaturebrain2hm.lua",
+        "content/common/projectile.lua",
+        "content/monster/crawlingshadow.lua",
+        "原版 scripts.zip：scripts/prefabs/oceanshadowcreature.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "oceanshadow",
+        "crawlingshadow",
+        "shadowbeak",
+        "extra_change",
+        "notboss_speed",
+        "notboss_attackspeed"
+      ]
+    },
+    {
+      "id": "creature-lurking-nightmare",
+      "title": "潜伏梦魇",
+      "category": "creatures",
+      "sections": 9,
+      "source": [
+        "content/modmain.lua",
+        "content/monster/ruinsnightmare.lua",
+        "content/scripts/prefabs/ruinsnightmare_horn_attack2hm.lua",
+        "content/scripts/prefabs/ruinsnightmare_horn_circular_attack_2hm.lua",
+        "content/monster/crawlingshadow.lua",
+        "原版 scripts.zip：scripts/prefabs/nightmarecreature.lua",
+        "原版 scripts.zip：scripts/stategraphs/SGruinsnightmare.lua",
+        "原版 scripts.zip：scripts/stategraph.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "ruinsnightmare",
+        "shadowbeak",
+        "crawlingshadow",
+        "oceanshadow",
+        "extra_change",
+        "notboss_speed"
+      ]
+    },
+    {
+      "id": "creature-shadow-leech",
+      "title": "寄生暗影",
+      "category": "creatures",
+      "sections": 7,
+      "source": [
+        "content/modmain.lua",
+        "content/monster/shadowleech.lua",
+        "原版 scripts.zip：scripts/prefabs/shadow_leech.lua",
+        "原版 scripts.zip：scripts/stategraphs/SGshadow_leech.lua",
+        "原版 scripts.zip：scripts/components/shadowcreaturespawner.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "shadowleech",
+        "extra_change",
+        "notboss_speed"
+      ]
+    },
+    {
+      "id": "creature-centipede",
+      "title": "巨荒蜈蚣",
+      "category": "creatures",
+      "sections": 9,
+      "source": [
+        "content/modmain.lua",
+        "content/monster/shadowthrall_centipede.lua",
+        "原版 scripts.zip：scripts/prefabs/shadowthrall_centipede.lua",
+        "原版 scripts.zip：scripts/components/centipedebody.lua",
+        "原版 scripts.zip：scripts/stategraphs/SGshadowthrall_centipede.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "shadowthrall_centipede",
+        "Shadow World"
+      ]
+    },
+    {
+      "id": "creature-mimicreep",
+      "title": "拟态蠕虫",
+      "category": "creatures",
+      "sections": 6,
+      "source": [
+        "content/modmain.lua",
+        "content/monster/mimicreep.lua",
+        "content/monster/shadowleech.lua",
+        "原版 scripts.zip：scripts/components/shadowthrall_mimics.lua",
+        "原版 scripts.zip：scripts/components/itemmimic.lua",
+        "原版 scripts.zip：scripts/prefabs/itemmimic_data.lua",
+        "原版 scripts.zip：scripts/prefabs/itemmimic_revealed.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "mimicreep",
+        "shadowleech"
+      ]
+    },
+    {
+      "id": "creature-treeguards",
+      "title": "树精、毒桦栗树与蘑菇地精",
+      "category": "creatures",
+      "sections": 9,
+      "source": [
+        "content/epic/leif.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/prefabs/leif.lua",
+        "DST scripts.zip/scripts/prefabs/mushgnome.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "leif"
+      ]
+    },
+    {
+      "id": "creature-poor-armor",
+      "title": "劣质装甲",
+      "category": "creatures",
+      "sections": 7,
+      "source": [
+        "content/modmain.lua",
+        "content/epic/poor_armor.lua",
+        "content/common/common.lua",
+        "content/epic/pig_boss.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "poor_armor",
+        "pig_boss"
+      ]
+    },
+    {
+      "id": "creature-glommer-insects",
+      "title": "格罗姆",
+      "category": "creatures",
+      "sections": 3,
+      "source": [
+        "content/modmain.lua",
+        "content/easy_other/easy_living_things.lua",
+        "content/food/glommer.lua",
+        "DST scripts.zip/scripts/tuning.lua",
+        "DST scripts.zip/scripts/prefabs/glommer.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Glommer Eat Near Insects"
+      ]
+    },
+    {
+      "id": "creature-birds-retaliation",
+      "title": "鸟类与笼鸟喂养",
+      "category": "creatures",
+      "sections": 4,
+      "source": [
+        "content/modmain.lua",
+        "content/food/birds.lua",
+        "DST scripts.zip/scripts/tuning.lua",
+        "DST scripts.zip/scripts/prefabs/birds.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "food_change",
+        "birds_change"
+      ]
+    },
+    {
+      "id": "creature-oceanfish-behavior",
+      "title": "海鱼",
+      "category": "creatures",
+      "sections": 7,
+      "source": [
+        "content/modmain.lua",
+        "content/food/oceanfish.lua",
+        "DST scripts.zip/scripts/tuning.lua",
+        "DST scripts.zip/scripts/prefabs/oceanfishingbobber.lua",
+        "DST scripts.zip/scripts/components/oceanfishinghook.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "food_change",
+        "oceanfish_change"
+      ]
+    },
+    {
+      "id": "creature-beefalo-bonding",
+      "title": "皮弗娄牛",
+      "category": "creatures",
+      "sections": 5,
+      "source": [
+        "content/modmain.lua",
+        "content/food/beefalo.lua",
+        "DST scripts.zip/scripts/tuning.lua",
+        "DST scripts.zip/scripts/prefabs/beefalo.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "food_change",
+        "beefalo"
+      ]
+    },
+    {
+      "id": "creature-koalefant-herds",
+      "title": "大象群与钢羊",
+      "category": "creatures",
+      "sections": 8,
+      "source": [
+        "content/food/koalefant.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/prefabs/koalefant.lua",
+        "DST scripts.zip/scripts/prefabs/spat.lua",
+        "DST scripts.zip/scripts/components/hunter.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "food_change",
+        "koalefant",
+        "animal_change"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "file": "content/food/fooddata.lua",
+      "sha256": "f94321d71f2e1eecec771d05819c4fe4aa3e062e6a9b2c005be7106719604b2c"
+    },
+    {
+      "file": "content/food/cooking.lua",
+      "sha256": "c815b2ec14f864977e9495e6b906fdd4fb5f18ca0daa7bd3c5aa7b0cedd4a589"
+    },
+    {
+      "file": "content/modmain.lua",
+      "sha256": "5eacb3c2409edca3548b71fc5e393a10042f50abfaba24ade9179bc8a10b58c6"
+    },
+    {
+      "file": "content/food/farm_plant.lua",
+      "sha256": "2ab29f179a3717114254f535f77227043d31c899874c3aaaa8a8664345c67f4b"
+    },
+    {
+      "file": "content/food/plant.lua",
+      "sha256": "82a3c4a050221fcd69032e45e1914e38174cf0149f614db4b824f8ed5d6b2da5"
+    },
+    {
+      "file": "content/food/animal.lua",
+      "sha256": "cb14af69912f9cf146a7de697153c2d30cfa9a800d13e7dbd373e3962548ddcc"
+    },
+    {
+      "file": "content/food/seeds.lua",
+      "sha256": "bfedef30ccf1a2a70728c1a2cdd6817799a2aa657cb712778a3f8ab7798b7465"
+    },
+    {
+      "file": "content/scripts/prefabs/dryseeds2hm.lua",
+      "sha256": "cbbcb43f8d0b4f0f86f9827858a06843cb6fadba948a88672ebe7ec23095411f"
+    },
+    {
+      "file": "content/scripts/prefabs/onion_celestial2hm.lua",
+      "sha256": "bbe25b1a923b00509b7c150b1c8a676e0b66cdb1d8a1ee5f79ac64da28a61f96"
+    },
+    {
+      "file": "content/epic/alterguardian.lua",
+      "sha256": "fda966ba15268956585581f0795e52bf2032157593ad34edfb2269ec756ce5fa"
+    },
+    {
+      "file": "content/scripts/components/persistent2hm.lua",
+      "sha256": "5c23d809f3fe4d813eb923eabbbb3bdf6126575761d32abb80c4546f01e404c5"
+    },
+    {
+      "file": "content/common/bugfix.lua",
+      "sha256": "e3ff1ee02c388f9ddb96ae5d7f559d456f0b20f0607a1efa22eb39ebe1734fa0"
+    },
+    {
+      "file": "content/scripts/foodsdata2hm.lua",
+      "sha256": "dfbe06f4f3aa99876f245baef531e6d247c1545896c225be9e97bbd16d215326"
+    },
+    {
+      "file": "content/scripts/prefabs/food2hm.lua",
+      "sha256": "0c167d3ebad7b58b0fd82994dd344a4fe9ab8edc6e0f6507cdc6a86659e5bede"
+    },
+    {
+      "file": "content/common/food_util.lua",
+      "sha256": "85daee9726f9178d08a3d542cd8617a5a1e955a074d391e928c02372169285bb"
+    },
+    {
+      "file": "content/scripts/prefabs/healthregenbuff2hm.lua",
+      "sha256": "8a4744d8276216b01fd8634f6940c24adbbe4b206ce63d56d725e069d064c357"
+    },
+    {
+      "file": "content/easy_other/easy_structures.lua",
+      "sha256": "a6a7b1ddd784700e4a2974a6c07491bb885d67b0193e040e1d95634ed7af63ea"
+    },
+    {
+      "file": "content/epic/beargerfur_sack_lunar_seed2hm.lua",
+      "sha256": "f7a60d9f626046daf4cdcfc42390ae4a900134b94fdc025906055278a95535c1"
+    },
+    {
+      "file": "content/scripts/entergift2hm.lua",
+      "sha256": "ac1e25daeb64c13836c14751d0675869902e16e75afc3d8a736a795c41239f7d"
+    },
+    {
+      "file": "content/tech/moonrockidol.lua",
+      "sha256": "6552cfac45420812dc490bb7a866d587e0d386dd4189d1ab42d38b83abfe1c0c"
+    },
+    {
+      "file": "content/scripts/prefabs/gulumi_bless2hm.lua",
+      "sha256": "cd3214a873894c10928e5b8f24cabe5750fbb1e6b7cf80df658492fa5df0ae71"
+    },
+    {
+      "file": "content/monster/pigman.lua",
+      "sha256": "ccd12a5b876e26a81fb2afbe9116a5e475a619eaefe29c035b2b413a5858f121"
+    },
+    {
+      "file": "content/scripts/prefabs/tropicalfishbuff2hm.lua",
+      "sha256": "9ff1180ca4ae02d3374b80776e0604c5942b389fce6230d0eb865421b19e3723"
+    },
+    {
+      "file": "content/scripts/prefabs/dryplants2hm.lua",
+      "sha256": "78196238cf1f49b05f3759b2713bf1634d3df2be760944b772d92ee4c26ab911"
+    },
+    {
+      "file": "content/easy_other/easy_mechanics.lua",
+      "sha256": "02b0aad2267fbc8aa30e42004a6883e54e88f796bca280fc8fb9a72c9526f054"
+    },
+    {
+      "file": "content/food/container_live.lua",
+      "sha256": "8081f26c3601187c093b05755b0140d0a9205f14b74dedd99341fdeaa6ebef88"
+    },
+    {
+      "file": "content/monster/supermonster.lua",
+      "sha256": "8aa7bac1e5a4d7cd15d12ed43df10da6b3e915e48268573e7a12f2f6c7c63be9"
+    },
+    {
+      "file": "content/monster/wall.lua",
+      "sha256": "d6070e15ea90f548e49ad6e781f1571d15b24dd7a26c7f0da5e6e133a58a358f"
+    },
+    {
+      "file": "content/monster/boss_nofight.lua",
+      "sha256": "00acb1c5760ba557f7135a7ce351b1ab1b7fcbadfa4f49f57f65635fe7b2ed6d"
+    },
+    {
+      "file": "content/monster/calmfire.lua",
+      "sha256": "508c4c7358e9f9504568abc2bd4561c103a9429bc56aa920696562fd95214f46"
+    },
+    {
+      "file": "content/common/common.lua",
+      "sha256": "12fa1f91da2dc4ad6472236c2a34d37aca8753332e880147834f8d6388e7d0b4"
+    },
+    {
+      "file": "content/monster/moveattack.lua",
+      "sha256": "826a4e3b7fff316b99f8f59aa59d60873ee77f3c122d635016210b1ad6904ad6"
+    },
+    {
+      "file": "content/monster/flying.lua",
+      "sha256": "de12d85a2c8f3c150ff0c1775104420281d1190b7b8b0c46dd3633056ec30ede"
+    },
+    {
+      "file": "content/monster/bee.lua",
+      "sha256": "2726085f38d5135b0b59e849c9f41aa9cb04651a8f27d6ad0494c4e3b1a68a4c"
+    },
+    {
+      "file": "content/monster/fruitfly.lua",
+      "sha256": "4f5ab77dd5847c26bb1d1538fbae848eeebbeb8726e1795326bcec8cd2e69154"
+    },
+    {
+      "file": "content/common/projectile.lua",
+      "sha256": "86f4d9ec9ddb7ec9d071d13baa3a42420d924d02588560aad052ab577e285b8d"
+    },
+    {
+      "file": "content/extra/fruitfly2hm.lua",
+      "sha256": "d2267caa4afbae17c5114a5818f09ab7d716ac723aac9190f5821fc2abb9d0d4"
+    },
+    {
+      "file": "content/monster/hound.lua",
+      "sha256": "2e389baa602ec8f97945f4b2de77e65389ae3c29bd2fc1212ccdb247c8d925dc"
+    },
+    {
+      "file": "content/extra/extra.lua",
+      "sha256": "8099650350d9730cb089d8f1d84830a788a15a246caa82ce4ac2a5388e5e690e"
+    },
+    {
+      "file": "content/monster/walrus.lua",
+      "sha256": "b5f333b353f44e6ae31ab706c7ce19644f493415d736b5135f8fe4ea4927714f"
+    },
+    {
+      "file": "content/scripts/prefabs/walrus_camp2hm.lua",
+      "sha256": "4e671b855057c1211370aadfc02f0f30fc64bd5b91d27ba140953f5bdfa28c28"
+    },
+    {
+      "file": "content/monster/chess.lua",
+      "sha256": "4938c1950886b40ce073dcda18435aea8cc55a6e4ce7ad520bae087046e22039"
+    },
+    {
+      "file": "content/monster/tentacle.lua",
+      "sha256": "1d8c3a2bb0e4ea19ca918c9baa8a448f6eb12b546d17435db9e484bd4f1e4a08"
+    },
+    {
+      "file": "content/monster/common.lua",
+      "sha256": "aacf900b02c75938f27d8d9af1f6a19724b3a581cd9db7ef9c5db49a5f46aa93"
+    },
+    {
+      "file": "content/monster/spider.lua",
+      "sha256": "c0fae16ba5e75f6d80ed0cb3362692a9b633e2ca19b7eed2ad9764b6943cc33c"
+    },
+    {
+      "file": "content/monster/otter.lua",
+      "sha256": "8b365dc21f1545959a3f7c844df77ec87df5554a60dc31d0aaf9ead2ef1a7af6"
+    },
+    {
+      "file": "content/common/newstate.lua",
+      "sha256": "dd5f6d461fccbfa83d7e1f367c33742ed2bf1c40b3795ca05532816441213e16"
+    },
+    {
+      "file": "content/monster/shark.lua",
+      "sha256": "82917809a5f8333011938905a6db83777276b8e1aa2786764fb45d0bdb38249e"
+    },
+    {
+      "file": "content/monster/monkey.lua",
+      "sha256": "cbd399006764b49e75d9737fbf19a865fa477b0a029db560e194cac1f52c4cc5"
+    },
+    {
+      "file": "content/monster/krampus.lua",
+      "sha256": "03fe0de4e20ba2732920856eb33271c734ea9686cc76a47265d80a48d322a1d5"
+    },
+    {
+      "file": "content/monster/lunarthrall_plant.lua",
+      "sha256": "57f13d28d719428ff3d3595c47ba0b3b884e69e7169d91ad3f73bc87cd267412"
+    },
+    {
+      "file": "content/monster/shadowthrall.lua",
+      "sha256": "2d87c490f1b51374143ee28f982fa0768b3ae12d6d3e04aa2a07075a4a7c54f7"
+    },
+    {
+      "file": "content/monster/crawlingshadow.lua",
+      "sha256": "1a5efbc14854188421281a970425dd510602d29a3112981959b56d2bc1d5e01a"
+    },
+    {
+      "file": "content/scripts/prefabs/mod_hardmode_shadow_pillar.lua",
+      "sha256": "6e49b43df47c0a34f333c75e8189f99b24428243c43060f9749a79ed8b6476fc"
+    },
+    {
+      "file": "content/monster/shadowbeak.lua",
+      "sha256": "314b1eb0e63325f822422ad91fa662d2ac1d6d58b71d68a9ec87a63ab4745ab4"
+    },
+    {
+      "file": "content/scripts/prefabs/mod_hardmode_shadow_trap.lua",
+      "sha256": "a272caf9bd041ace4026be3f442e6eded75395c8ff33aabe4b40d2590812715e"
+    },
+    {
+      "file": "content/monster/oceanshadow.lua",
+      "sha256": "f551c08b0fe3f16d59c340fe886541817f1090a26357dadd7574a66a756aa869"
+    },
+    {
+      "file": "content/scripts/prefabs/oceanshadowcreature2hm.lua",
+      "sha256": "1873a948a971040128a8f0f387435599fa91a9254cdf07bc2407ed2ffa6746d9"
+    },
+    {
+      "file": "content/scripts/brains/nightmarecreaturebrain2hm.lua",
+      "sha256": "413286a10dee3857d8f2f5547c1604bca7e71c691f93d459ab60588cee142930"
+    },
+    {
+      "file": "content/monster/ruinsnightmare.lua",
+      "sha256": "f62fcbf4b7cae74b56968a1d08ea76bd027530a09bc5c2258e61fbaf3e43b4b2"
+    },
+    {
+      "file": "content/scripts/prefabs/ruinsnightmare_horn_attack2hm.lua",
+      "sha256": "af3154d1e26e7da669c17e09726f20edba010cf9267bea81d9b5a10beae0a648"
+    },
+    {
+      "file": "content/scripts/prefabs/ruinsnightmare_horn_circular_attack_2hm.lua",
+      "sha256": "f84d5121eeddff45761ff2af56f262c674235cd75efbfcf6b19e0348ef66d3e0"
+    },
+    {
+      "file": "content/monster/shadowleech.lua",
+      "sha256": "aa5a5c1e6c2ff08571f1b9fd399cbb131808048664d305b4cdaa396ad1f1421f"
+    },
+    {
+      "file": "content/monster/shadowthrall_centipede.lua",
+      "sha256": "fb40f7bc84f3ed211e540054dd0277494e3e7bedc8630f1fe6ef3df0c0241aec"
+    },
+    {
+      "file": "content/monster/mimicreep.lua",
+      "sha256": "5c13469e58058c3d371e3bf376d713ab1bc48b812480578b8086fc3cbd834dd0"
+    },
+    {
+      "file": "content/epic/leif.lua",
+      "sha256": "444115041cc784e8bcd3d7a6cf88aca7fc8caacec4cf50588ca550ffadd64955"
+    },
+    {
+      "file": "content/epic/poor_armor.lua",
+      "sha256": "a57fc01563d9f3d50d689add34c9f429bd47079f75cd743620d993eeabcd47d6"
+    },
+    {
+      "file": "content/epic/pig_boss.lua",
+      "sha256": "da84a778e071e5cc74538f8b594d5c568dc4b50ac4f6facec9250e61e07fe343"
+    },
+    {
+      "file": "content/easy_other/easy_living_things.lua",
+      "sha256": "653c8b830a99df138aaf55b7976fdb753bd63d6a513bb733ff32fa75a1fd55a8"
+    },
+    {
+      "file": "content/food/glommer.lua",
+      "sha256": "dc92000ed4448cbcc623bf023b042c16dc307acb8760250f013c64dbf1d4ab35"
+    },
+    {
+      "file": "content/food/birds.lua",
+      "sha256": "3f15f7886a64122485d7d91f951b17195e7e206861c145ef7309bf64fda06dc6"
+    },
+    {
+      "file": "content/food/oceanfish.lua",
+      "sha256": "6a9ca294974920904b88da60228a5c4d4c51185136b624c7b0c8bddf81f71b02"
+    },
+    {
+      "file": "content/food/beefalo.lua",
+      "sha256": "a74028f594ab38314c735349a98a53aefed04d0e9e14cf4f43b9017b990a28ce"
+    },
+    {
+      "file": "content/food/koalefant.lua",
+      "sha256": "cd0c6ed19e7c7484eae5b77cc2b9799763eee6bfe58bbdc95677d3a12d6c0a05"
+    }
+  ]
+}

@@ -1,0 +1,328 @@
+{
+  "date": "2026-11-08",
+  "published": false,
+  "routing_ui_checks": 190,
+  "all_content_lua51_syntax": true,
+  "source_sha256": {
+    "content/food/cooking.lua": "917026789e1ec89ff5162035b8bcd9e4b0aab3625af5a5b9cae6906518ad3b1f",
+    "content/easy_other/um_patch.lua": "f6683b998866f3a06c442afd6225c0792619ead3b077d76b1daa2d11e891360d",
+    "content/easy_other/um_food_stats.lua": "bcdebae95d9af26c1f7d6424afb1246401bcc041a7e8dcd82bd1973cb64b14f5",
+    "content/modmain.lua": "50c3e0883e7a6247a34b789f7fdbc371978bd60599bf8fa40322722b4d7621eb",
+    "content/modinfo.lua": "4d81c1734705a9cc611bf07df6d52187733183f21e1dea63b1361c2294a68ce2",
+    "tests/run_five_slot_routing_tests.py": "8affaadc887fd817da6d8e20e92c47182ba5a7b08fdcf2920e02d97cbdcc0018",
+    "tests/run_native_five_slot_tests.py": "9566621519dace9ea414191a62c5cb36d5f21a858f7a9eeaa82f158696383b5e",
+    "tests/native/five_slot_cooking_fixture.lua": "cb891f4f836becee28728fbec6cdb240519ce831696b2002ae928b7efaf62bb9"
+  },
+  "um_dynamic_source_sha256": "7e92e3b0a9711afde65a9ccc6585f779e11fa58c43b41830cc783beb8d7649ea",
+  "native_results": {
+    "historical_fifth_ingredient_failure": {
+      "pass": false,
+      "arguments": {
+        "edition": "beta",
+        "stats": true,
+        "patch_off": false,
+        "mode": -3,
+        "baseline": true,
+        "disk": false
+      },
+      "runs": [
+        {
+          "phase": "normal",
+          "pass": false,
+          "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-five-slot-beta-wu_yjaww\\normal.log",
+          "checks": [
+            "[00:00:38]: [FIVE_SLOT_TEST]\tFAIL\trules\t[string \"../mods/ShadowWorldLocal/five_slot_fixture....\"]:24: pot definitions are independent\t",
+            "[00:00:38]: [FIVE_SLOT_TEST]\tFAIL\tcookpot\t[string \"../mods/workshop-3193922031/init/init_food/...\"]:50: attempt to index field '?' (a nil value)\t",
+            "[00:00:38]: [FIVE_SLOT_TEST]\tFAIL\tportablecookpot\t[string \"../mods/workshop-3193922031/init/init_food/...\"]:50: attempt to index field '?' (a nil value)\t",
+            "[00:00:38]: [FIVE_SLOT_TEST] RESULT\tcases=3\tchecks=23\tfailures=3\t"
+          ]
+        }
+      ],
+      "limitation": "Real server components/entities/save files and server-side replica metadata. No rendered client or arbitrary third-party mod combinations.",
+      "tested_hashes": {
+        "food\\cooking.lua": "14af8e9b4d4a878801d261c7d0c911c070d3dba7ea36c421ba1522ae49428fc1",
+        "easy_other\\um_patch.lua": "f6683b998866f3a06c442afd6225c0792619ead3b077d76b1daa2d11e891360d",
+        "easy_other\\um_food_stats.lua": "bcdebae95d9af26c1f7d6424afb1246401bcc041a7e8dcd82bd1973cb64b14f5",
+        "five_slot_fixture.lua": "c6332af163770b36aeba25ffcc50f170341db639a8f35a464fd54f440f95e2ae"
+      }
+    },
+    "beta_dynamic_five_optional_patch_off": {
+      "pass": true,
+      "arguments": {
+        "edition": "beta",
+        "stats": true,
+        "patch_off": true,
+        "mode": -3,
+        "baseline": false,
+        "disk": false
+      },
+      "runs": [
+        {
+          "phase": "normal",
+          "pass": true,
+          "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-five-slot-beta-vvxhfgsa\\normal.log",
+          "checks": [
+            "[00:00:32]: [FIVE_SLOT_TEST]\tPASS\trules\t\t",
+            "[00:00:32]: [FIVE_SLOT_TEST]\tPASS\tcookpot\t\t",
+            "[00:00:32]: [FIVE_SLOT_TEST]\tPASS\tportablecookpot\t\t",
+            "[00:00:32]: [FIVE_SLOT_TEST]\tPASS\tdragonflyfurnace_remains_four_ingredients\t\t",
+            "[00:00:32]: [FIVE_SLOT_TEST] RESULT\tcases=4\tchecks=94\tfailures=0\t"
+          ]
+        }
+      ],
+      "limitation": "Real server components/entities/save files and server-side replica metadata. No rendered client or arbitrary third-party mod combinations.",
+      "tested_hashes": {
+        "food\\cooking.lua": "917026789e1ec89ff5162035b8bcd9e4b0aab3625af5a5b9cae6906518ad3b1f",
+        "easy_other\\um_patch.lua": "f6683b998866f3a06c442afd6225c0792619ead3b077d76b1daa2d11e891360d",
+        "easy_other\\um_food_stats.lua": "bcdebae95d9af26c1f7d6424afb1246401bcc041a7e8dcd82bd1973cb64b14f5",
+        "five_slot_fixture.lua": "cb891f4f836becee28728fbec6cdb240519ce831696b2002ae928b7efaf62bb9"
+      }
+    },
+    "beta_dynamic_five_cold_restart": {
+      "pass": true,
+      "arguments": {
+        "edition": "beta",
+        "stats": true,
+        "patch_off": false,
+        "mode": -3,
+        "baseline": false,
+        "disk": true
+      },
+      "runs": [
+        {
+          "phase": "seed",
+          "pass": true,
+          "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-five-slot-beta-1oywu2q1\\seed.log",
+          "checks": [
+            "[00:00:37]: [FIVE_SLOT_TEST]\tPASS\trules\t\t",
+            "[00:00:37]: [FIVE_SLOT_TEST]\tPASS\tcookpot\t\t",
+            "[00:00:37]: [FIVE_SLOT_TEST]\tPASS\tportablecookpot\t\t",
+            "[00:00:37]: [FIVE_SLOT_TEST] SEED_SAVED\t"
+          ]
+        },
+        {
+          "phase": "verify",
+          "pass": true,
+          "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-five-slot-beta-1oywu2q1\\verify.log",
+          "checks": [
+            "[00:00:36]: [FIVE_SLOT_TEST]\tPASS\tcold_reload_ingredients\t\t",
+            "[00:00:36]: [FIVE_SLOT_TEST]\tPASS\tcold_reload_finished\t\t",
+            "[00:00:36]: [FIVE_SLOT_TEST]\tPASS\tcold_reload_cooking\t\t",
+            "[00:00:36]: [FIVE_SLOT_TEST] RESULT\tcases=3\tchecks=37\tfailures=0\t"
+          ]
+        }
+      ],
+      "limitation": "Real server components/entities/save files and server-side replica metadata. No rendered client or arbitrary third-party mod combinations.",
+      "tested_hashes": {
+        "food\\cooking.lua": "bd2e8fb61ce6ce6e3919fd6a2988547bf4cdc553248105398b39ebe3f05d583f",
+        "easy_other\\um_patch.lua": "f6683b998866f3a06c442afd6225c0792619ead3b077d76b1daa2d11e891360d",
+        "easy_other\\um_food_stats.lua": "bcdebae95d9af26c1f7d6424afb1246401bcc041a7e8dcd82bd1973cb64b14f5",
+        "five_slot_fixture.lua": "91a89922a9b71d1cf7782a78f7eedf5fee1d083c29e675ac882ede81a8ced724"
+      }
+    },
+    "beta_dynamic_five_patch_off_cold_restart": {
+      "pass": true,
+      "arguments": {
+        "edition": "beta",
+        "stats": true,
+        "patch_off": true,
+        "mode": -3,
+        "baseline": false,
+        "disk": true
+      },
+      "runs": [
+        {
+          "phase": "seed",
+          "pass": true,
+          "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-five-slot-beta-45pi5jlt\\seed.log",
+          "checks": [
+            "[00:00:32]: [FIVE_SLOT_TEST]\tPASS\trules\t\t",
+            "[00:00:32]: [FIVE_SLOT_TEST]\tPASS\tcookpot\t\t",
+            "[00:00:32]: [FIVE_SLOT_TEST]\tPASS\tportablecookpot\t\t",
+            "[00:00:32]: [FIVE_SLOT_TEST] SEED_SAVED\t"
+          ]
+        },
+        {
+          "phase": "verify",
+          "pass": true,
+          "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-five-slot-beta-45pi5jlt\\verify.log",
+          "checks": [
+            "[00:00:32]: [FIVE_SLOT_TEST]\tPASS\tcold_reload_ingredients\t\t",
+            "[00:00:32]: [FIVE_SLOT_TEST]\tPASS\tcold_reload_finished\t\t",
+            "[00:00:32]: [FIVE_SLOT_TEST]\tPASS\tcold_reload_cooking\t\t",
+            "[00:00:32]: [FIVE_SLOT_TEST] RESULT\tcases=3\tchecks=37\tfailures=0\t"
+          ]
+        }
+      ],
+      "limitation": "Real server components/entities/save files and server-side replica metadata. No rendered client or arbitrary third-party mod combinations.",
+      "tested_hashes": {
+        "food\\cooking.lua": "917026789e1ec89ff5162035b8bcd9e4b0aab3625af5a5b9cae6906518ad3b1f",
+        "easy_other\\um_patch.lua": "f6683b998866f3a06c442afd6225c0792619ead3b077d76b1daa2d11e891360d",
+        "easy_other\\um_food_stats.lua": "bcdebae95d9af26c1f7d6424afb1246401bcc041a7e8dcd82bd1973cb64b14f5",
+        "five_slot_fixture.lua": "91a89922a9b71d1cf7782a78f7eedf5fee1d083c29e675ac882ede81a8ced724"
+      }
+    },
+    "beta_dynamic_disabled_five": {
+      "pass": true,
+      "arguments": {
+        "edition": "beta",
+        "stats": false,
+        "patch_off": true,
+        "mode": -3,
+        "baseline": false,
+        "disk": false
+      },
+      "runs": [
+        {
+          "phase": "normal",
+          "pass": true,
+          "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-five-slot-beta-1lfdr04q\\normal.log",
+          "checks": [
+            "[00:00:32]: [FIVE_SLOT_TEST]\tPASS\trules\t\t",
+            "[00:00:32]: [FIVE_SLOT_TEST]\tPASS\tcookpot\t\t",
+            "[00:00:32]: [FIVE_SLOT_TEST]\tPASS\tportablecookpot\t\t",
+            "[00:00:32]: [FIVE_SLOT_TEST] RESULT\tcases=3\tchecks=54\tfailures=0\t"
+          ]
+        }
+      ],
+      "limitation": "Real server components/entities/save files and server-side replica metadata. No rendered client or arbitrary third-party mod combinations.",
+      "tested_hashes": {
+        "food\\cooking.lua": "917026789e1ec89ff5162035b8bcd9e4b0aab3625af5a5b9cae6906518ad3b1f",
+        "easy_other\\um_patch.lua": "f6683b998866f3a06c442afd6225c0792619ead3b077d76b1daa2d11e891360d",
+        "easy_other\\um_food_stats.lua": "bcdebae95d9af26c1f7d6424afb1246401bcc041a7e8dcd82bd1973cb64b14f5",
+        "five_slot_fixture.lua": "91a89922a9b71d1cf7782a78f7eedf5fee1d083c29e675ac882ede81a8ced724"
+      }
+    },
+    "solo_five": {
+      "pass": true,
+      "arguments": {
+        "edition": "solo",
+        "stats": false,
+        "patch_off": false,
+        "mode": -3,
+        "baseline": false,
+        "disk": false
+      },
+      "runs": [
+        {
+          "phase": "normal",
+          "pass": true,
+          "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-five-slot-solo-xvj_iso6\\normal.log",
+          "checks": [
+            "[00:00:25]: [FIVE_SLOT_TEST]\tPASS\trules\t\t",
+            "[00:00:25]: [FIVE_SLOT_TEST]\tPASS\tcookpot\t\t",
+            "[00:00:25]: [FIVE_SLOT_TEST]\tPASS\tportablecookpot\t\t",
+            "[00:00:25]: [FIVE_SLOT_TEST] RESULT\tcases=3\tchecks=54\tfailures=0\t"
+          ]
+        }
+      ],
+      "limitation": "Real server components/entities/save files and server-side replica metadata. No rendered client or arbitrary third-party mod combinations.",
+      "tested_hashes": {
+        "food\\cooking.lua": "bd2e8fb61ce6ce6e3919fd6a2988547bf4cdc553248105398b39ebe3f05d583f",
+        "easy_other\\um_patch.lua": "f6683b998866f3a06c442afd6225c0792619ead3b077d76b1daa2d11e891360d",
+        "easy_other\\um_food_stats.lua": "bcdebae95d9af26c1f7d6424afb1246401bcc041a7e8dcd82bd1973cb64b14f5",
+        "five_slot_fixture.lua": "91a89922a9b71d1cf7782a78f7eedf5fee1d083c29e675ac882ede81a8ced724"
+      }
+    },
+    "stable_five": {
+      "pass": true,
+      "arguments": {
+        "edition": "stable",
+        "stats": false,
+        "patch_off": false,
+        "mode": -3,
+        "baseline": false,
+        "disk": false
+      },
+      "runs": [
+        {
+          "phase": "normal",
+          "pass": true,
+          "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-five-slot-stable-vmnqqt58\\normal.log",
+          "checks": [
+            "[00:00:35]: [FIVE_SLOT_TEST]\tPASS\trules\t\t",
+            "[00:00:35]: [FIVE_SLOT_TEST]\tPASS\tcookpot\t\t",
+            "[00:00:35]: [FIVE_SLOT_TEST]\tPASS\tportablecookpot\t\t",
+            "[00:00:35]: [FIVE_SLOT_TEST] RESULT\tcases=3\tchecks=54\tfailures=0\t"
+          ]
+        }
+      ],
+      "limitation": "Real server components/entities/save files and server-side replica metadata. No rendered client or arbitrary third-party mod combinations.",
+      "tested_hashes": {
+        "food\\cooking.lua": "bd2e8fb61ce6ce6e3919fd6a2988547bf4cdc553248105398b39ebe3f05d583f",
+        "easy_other\\um_patch.lua": "f6683b998866f3a06c442afd6225c0792619ead3b077d76b1daa2d11e891360d",
+        "easy_other\\um_food_stats.lua": "bcdebae95d9af26c1f7d6424afb1246401bcc041a7e8dcd82bd1973cb64b14f5",
+        "five_slot_fixture.lua": "91a89922a9b71d1cf7782a78f7eedf5fee1d083c29e675ac882ede81a8ced724"
+      }
+    },
+    "beta_dynamic_four_minus_quarter_patch_off": {
+      "pass": true,
+      "arguments": {
+        "edition": "beta",
+        "stats": true,
+        "patch_off": true,
+        "mode": -2,
+        "baseline": false,
+        "disk": false
+      },
+      "runs": [
+        {
+          "phase": "normal",
+          "pass": true,
+          "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-five-slot-beta-yf7pzte4\\normal.log",
+          "checks": [
+            "[00:00:38]: [FIVE_SLOT_TEST]\tPASS\trules\t\t",
+            "[00:00:38]: [FIVE_SLOT_TEST]\tPASS\tcookpot\t\t",
+            "[00:00:38]: [FIVE_SLOT_TEST]\tPASS\tportablecookpot\t\t",
+            "[00:00:38]: [FIVE_SLOT_TEST] RESULT\tcases=3\tchecks=56\tfailures=0\t"
+          ]
+        }
+      ],
+      "limitation": "Real server components/entities/save files and server-side replica metadata. No rendered client or arbitrary third-party mod combinations.",
+      "tested_hashes": {
+        "food\\cooking.lua": "bd2e8fb61ce6ce6e3919fd6a2988547bf4cdc553248105398b39ebe3f05d583f",
+        "easy_other\\um_patch.lua": "f6683b998866f3a06c442afd6225c0792619ead3b077d76b1daa2d11e891360d",
+        "easy_other\\um_food_stats.lua": "bcdebae95d9af26c1f7d6424afb1246401bcc041a7e8dcd82bd1973cb64b14f5",
+        "five_slot_fixture.lua": "91a89922a9b71d1cf7782a78f7eedf5fee1d083c29e675ac882ede81a8ced724"
+      }
+    },
+    "beta_dynamic_four_fuel": {
+      "pass": true,
+      "arguments": {
+        "edition": "beta",
+        "stats": true,
+        "patch_off": false,
+        "mode": -1,
+        "baseline": false,
+        "disk": false
+      },
+      "runs": [
+        {
+          "phase": "normal",
+          "pass": true,
+          "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-five-slot-beta-qhaumamy\\normal.log",
+          "checks": [
+            "[00:00:38]: [FIVE_SLOT_TEST]\tPASS\trules\t\t",
+            "[00:00:38]: [FIVE_SLOT_TEST]\tPASS\tcookpot\t\t",
+            "[00:00:38]: [FIVE_SLOT_TEST]\tPASS\tportablecookpot\t\t",
+            "[00:00:38]: [FIVE_SLOT_TEST] RESULT\tcases=3\tchecks=56\tfailures=0\t"
+          ]
+        }
+      ],
+      "limitation": "Real server components/entities/save files and server-side replica metadata. No rendered client or arbitrary third-party mod combinations.",
+      "tested_hashes": {
+        "food\\cooking.lua": "bd2e8fb61ce6ce6e3919fd6a2988547bf4cdc553248105398b39ebe3f05d583f",
+        "easy_other\\um_patch.lua": "f6683b998866f3a06c442afd6225c0792619ead3b077d76b1daa2d11e891360d",
+        "easy_other\\um_food_stats.lua": "bcdebae95d9af26c1f7d6424afb1246401bcc041a7e8dcd82bd1973cb64b14f5",
+        "five_slot_fixture.lua": "91a89922a9b71d1cf7782a78f7eedf5fee1d083c29e675ac882ede81a8ced724"
+      }
+    }
+  },
+  "notes": [
+    "Historical baseline deliberately retains fixed-four-row UM code and reproduces fifth-ingredient nil indexing in both pot types.",
+    "Final dynamic-enabled optional-patch-off native run and its cold restart use current cooking/UM compatibility source byte for byte.",
+    "Earlier passing modes predate a fuel-background-only change; the final actual widget wrapper was checked for both 4 and 5 slots. Each run records tested hashes.",
+    "The cold restart fixture predates only the additional furnace regression case, which passed in the final current-source normal run.",
+    "No rendered-client acceptance, production-save mutation or Workshop upload performed."
+  ]
+}

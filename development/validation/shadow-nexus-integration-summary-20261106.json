@@ -1,0 +1,114 @@
+{
+  "status": "passed",
+  "published": false,
+  "configuration_assertions": 913,
+  "native_checks": 8,
+  "native_old_modules_unloaded": true,
+  "changes": [
+    {
+      "path": "easy_other/shadowvault.lua",
+      "status": "modified",
+      "sha256": "e03872eb448f2a84fb5be85eece3f07a250971b0ff48ae56e6bba5954b0f3ed6"
+    },
+    {
+      "path": "easy_other/shadowvaultplayer.lua",
+      "status": "added",
+      "sha256": "33f466beb54a02ac465ebebeaabf29206796412a90e2664ac2cffc84d6268b7f"
+    },
+    {
+      "path": "easy_other/shadowvaultsnapshot.lua",
+      "status": "removed",
+      "sha256": null
+    },
+    {
+      "path": "easy_other/worldexchange.lua",
+      "status": "removed",
+      "sha256": null
+    },
+    {
+      "path": "easy_other/worldexchangefast.lua",
+      "status": "removed",
+      "sha256": null
+    },
+    {
+      "path": "modinfo.lua",
+      "status": "modified",
+      "sha256": "1c3c6eef9770b34648c393d949f4ea0fcd790007da14da26076e75f22afa328e"
+    },
+    {
+      "path": "modmain.lua",
+      "status": "modified",
+      "sha256": "2076b0c7a73350ce5aa8955aee900c317b8e7e7da2809744cc179f5c8c617885"
+    },
+    {
+      "path": "scripts/components/shadowvault2hm.lua",
+      "status": "modified",
+      "sha256": "388c4524f125559c3c6160b72d12d0e5607a575ef7ff6dc90b0244934a1e7327"
+    },
+    {
+      "path": "scripts/components/worldexchange2hm.lua",
+      "status": "modified",
+      "sha256": "a7263b5d856e4fb9af959abc66b2cfe5f9ab542d155cfdbcd27376cc2fab8365"
+    },
+    {
+      "path": "scripts/shadowvaultcourier2hm.lua",
+      "status": "modified",
+      "sha256": "736dc91b3aceeb0dbbeea3c6c5bdc564de0667dfa36975e83fe7ddedd7df3534"
+    },
+    {
+      "path": "scripts/shadowvaultio2hm.lua",
+      "status": "added",
+      "sha256": "5bff960379c75b4ee2f7a522ac3180fcd3814c9a3c950c62a475ebe2be25a7bc"
+    },
+    {
+      "path": "scripts/shadowvaultitems2hm.lua",
+      "status": "added",
+      "sha256": "bda6c0b23a421e3b477c30a75ffa32d14e8a1030898fde5fc3723e803dff5370"
+    },
+    {
+      "path": "scripts/shadowvaultjournal2hm.lua",
+      "status": "modified",
+      "sha256": "ba77edfbee9c0404a02feddd40627435a582b045ac35d2b314c8154351ade99d"
+    },
+    {
+      "path": "scripts/shadowvaultmovement2hm.lua",
+      "status": "removed",
+      "sha256": null
+    },
+    {
+      "path": "scripts/shadowvaultsnapshot2hm.lua",
+      "status": "removed",
+      "sha256": null
+    },
+    {
+      "path": "scripts/shadowvaultsnapshotcore2hm.lua",
+      "status": "removed",
+      "sha256": null
+    },
+    {
+      "path": "scripts/widgets/shadowvaultpanel2hm.lua",
+      "status": "modified",
+      "sha256": "6f147eb0d5732425f81474ab5eb92d35b4f263d81763ab29f6c6f768714b3429"
+    },
+    {
+      "path": "scripts/worldexchangecheckpoint2hm.lua",
+      "status": "removed",
+      "sha256": null
+    },
+    {
+      "path": "scripts/worldexchangeengine2hm.lua",
+      "status": "removed",
+      "sha256": null
+    },
+    {
+      "path": "scripts/worldexchangeinstant2hm.lua",
+      "status": "removed",
+      "sha256": null
+    },
+    {
+      "path": "scripts/worldexchangemaps2hm.lua",
+      "status": "removed",
+      "sha256": null
+    }
+  ]
+}

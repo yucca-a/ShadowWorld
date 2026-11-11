@@ -1,4 +1,5 @@
 local containers = require("containers")
+local RPCGuard = require("rpcguard2hm")
 local ImageButton = require "widgets/imagebutton"
 local CraftingMenuIngredients = require "widgets/redux/craftingmenu_ingredients"
 local Widget = require "widgets/widget"
@@ -8,9 +9,8 @@ local cooking = require("cooking")
 local IngredientCollectionNeeded = require("ingredientcollect2hm")
 require "widgets/widgetutil"
 local containercfg = GetModConfigData("Container Sort")
-local worldexchangemode = GetModConfigData("World Exchange")
-local worldexchangecfg = worldexchangemode ~= false
-local traditionalexchange = worldexchangemode == nil or worldexchangemode == "traditional"
+local worldexchangemode = require("exchangemode2hm").Normalize(GetModConfigData("World Exchange"))
+local worldexchangecfg = worldexchangemode ~= "off"
 local itemscfg = GetModConfigData("Items collect")
 local hasmultisortbtn = containercfg == -2 or containercfg == true
 local haslockbutton = containercfg == -3 or containercfg == -6 -- 2025.7.9 melon:新增无提示文字版
@@ -426,7 +426,17 @@ local function dosort(inst)
     container.ignoresound = false
     container.ignoreoverstacked = false
 end
+TUNING.util2hm.SortShadowVaultPage2hm = dosort
+TUNING.util2hm.ShadowBankSort = function(inst)
+    if inst and inst:IsValid() and inst.components.container and not inst.dcs2hm and not inst:HasTag("dcs2hm") and
+        not inst.components.container.readonlycontainer then dosort(inst) end
+end
 local function sortfn(player, inst)
+    if worldexchangemode=="xianyu" and inst:HasTag("shadowbankremote2hm") then
+        local service=TheWorld.components.shadowbank2hm
+        if service then return service:Action(player,"sort") end
+    end
+    if inst.shadowvault_mirror2hm then return inst.shadowvault_mirror2hm:Sort(player,inst)end
     if inst.components.container and not inst:HasTag("dcs2hm") and not inst.dcs2hm and not inst.components.container.usespecificslotsforitems and
         inst.components.container.acceptsstacks then
         dosort(inst)
@@ -585,8 +595,18 @@ local function multisortfn(player, inst)
         domultisort(inst, player)
     end
 end
+
+local function addcontainerbuttonrpc(name, fn)
+    AddModRPCHandler("MOD_HARDMODE", name, function(player, inst, ...)
+        -- 客户端传来的参数也可能是物品名或已移除的实体。
+        if RPCGuard.IsEntity(player) and RPCGuard.IsEntity(inst) then
+            return fn(player, inst, ...)
+        end
+    end)
+end
+
 -- 整理按钮和跨整按钮
-AddModRPCHandler("MOD_HARDMODE", "sortbtn2hm", sortfn)
+addcontainerbuttonrpc("sortbtn2hm", sortfn)
 local function sortbtnfn(inst, doer)
     if inst.components.container ~= nil then
         sortfn(doer, inst)
@@ -594,7 +614,7 @@ local function sortbtnfn(inst, doer)
         SendModRPCToServer(GetModRPC("MOD_HARDMODE", "sortbtn2hm"), inst)
     end
 end
-AddModRPCHandler("MOD_HARDMODE", "multisortbtn2hm", multisortfn)
+addcontainerbuttonrpc("multisortbtn2hm", multisortfn)
 local function multisortbtnfn(inst, doer)
     if inst.components.container ~= nil then
         multisortfn(doer, inst)
@@ -628,285 +648,78 @@ local function defaultbtnvalidfn(inst)
         not inst.dcs2hm and not inst:HasTag("exchangeloading2hm")
 end
 
--- 末影箱穿越：持久化事务服务，整箱交换与双层同步存档。
+-- 世界唯一容器穿越：在本层打开对应的真实原生空间。
+local function isshadowspace(inst)
+    return inst and inst:HasTag("pocketdimension_container") and
+        (worldexchangemode~="xianyu" or inst.prefab=="shadow_container" or inst.prefab=="shadowbank_container2hm" or inst.prefab=="tacklestation2hm" or inst.prefab=="shadowvaulttacklepage2hm" or inst.prefab=="shadowbank_tackle2hm" or inst:HasTag("shadowbankremote2hm"))
+end
 local function canexchange(player, inst)
     return worldexchangecfg and TheWorld.ismastersim and player and player:IsValid() and inst and inst:IsValid() and
-        inst:HasTag("pocketdimension_container") and inst.components.container and
+        isshadowspace(inst) and inst.components.container and
         inst.components.container.openlist[player] ~= nil
 end
--- The traditional tier reuses upstream-v2.8.14.95's three-message exchange
--- and optional pause button. Register its names in every mode; entry guards
--- prevent packets or clients from activating a different configured tier.
-local function traditionalready(peer)
-    local service = TheWorld.components.worldexchange2hm
-    if not service then return true end
-    service:Initialize()
-    if service.protocol and service.protocol.active then return false end
-    if service.engine then
-        local core = service.engine.core
-        return core and (peer and core:CanExchange(tostring(peer)) or (not peer and core:IsReady())) or false
-    end
-    return true
-end
-local function MakeTraditionalExchange()
-    local function exchangedestroydata(inst)
-        if inst.components.container then
-            local container = inst.components.container
-            for i = 1, container.numslots do
-                local item = container.slots[i]
-                if item ~= nil and item:IsValid() then item:PushEvent("player_despawn") end
-            end
-            container:DestroyContents()
-        end
-    end
-    local function exchangesenddata(inst, rpcname, world_id, name, confirm)
-        if inst.components.container and world_id and name then
-            local rpc = GetShardModRPC("MOD_HARDMODE", rpcname)
-            if confirm then
-                SendModRPCToShard(rpc, nil, world_id, name)
-            else
-                local containerdata = inst.components.container:OnSave()
-                containerdata.time2hm = os.time()
-                inst.exchangetmpdata2hm = containerdata
-                exchangedestroydata(inst)
-                SendModRPCToShard(rpc, nil, world_id, name, DataDumper(containerdata, nil, true))
-            end
-        end
-    end
-    local function exchangeapplydata(inst, containerdata)
-        if inst.components.container and containerdata then
-            exchangedestroydata(inst)
-            inst.components.container:OnLoad(containerdata)
-        end
-    end
-    local function exchangetaskend(inst)
-        if inst:HasTag("exchangeloading2hm") then inst:RemoveTag("exchangeloading2hm") end
-        if inst.containersendtask2hm then inst.containersendtask2hm = nil end
-        if inst.containerreceivetask2hm then inst.containerreceivetask2hm = nil end
-        if inst.exchangeconfirmtask2hm then inst.exchangeconfirmtask2hm = nil end
-        if inst.sendcontainerproxyplayer2hm then
-            local player = inst.sendcontainerproxyplayer2hm
-            if player and player:IsValid() and player.components.talker then
-                player.components.talker:Say((TUNING.isCh2hm and ("穿越世界超时中止(可暂停穿越=25秒)") or
-                    ("Exchange timeout invalid~(Pause game then exchange wait 25s)")))
-            end
-            inst.sendcontainerproxyplayer2hm = nil
-        end
-        if inst.sendcontainerproxydata2hm then inst.sendcontainerproxydata2hm = nil end
-        if inst.exchangetmpdata2hm then
-            exchangeapplydata(inst, inst.exchangetmpdata2hm)
-            inst.exchangetmpdata2hm = nil
-        end
-    end
-    AddShardModRPCHandler("MOD_HARDMODE", "exchangeconfirm2hm", function(shard_id, world_id, name)
-        if not traditionalexchange then return end
-        if TheShard and tostring(TheShard:GetShardId()) ~= tostring(shard_id) and tostring(TheShard:GetShardId()) == tostring(world_id) then
-            local container = TheWorld:GetPocketDimensionContainer(name)
-            if container and container:IsValid() and container.components.container and container.exchangetmpdata2hm and not container.containersendtask2hm and
-                not container.exchangeconfirmtask2hm and container.containerreceivetask2hm and container.sendcontainerproxydata2hm then
-                container.exchangetmpdata2hm = nil
-                container.containerreceivetask2hm:Cancel()
-                container.containerreceivetask2hm = nil
-                exchangeapplydata(container, container.sendcontainerproxydata2hm)
-                container.sendcontainerproxydata2hm = nil
-                if container:HasTag("exchangeloading2hm") then container:RemoveTag("exchangeloading2hm") end
-            end
-        end
-    end)
-    AddShardModRPCHandler("MOD_HARDMODE", "exchangeconfirmdata2hm", function(shard_id, world_id, name, containerdata)
-        if not traditionalexchange then return end
-        if TheShard and tostring(TheShard:GetShardId()) ~= tostring(shard_id) and tostring(TheShard:GetShardId()) == tostring(world_id) then
-            if TheNet:IsServerPaused() then
-                TheNet:SetServerPaused(false)
-                TheNet:Announce(TUNING.isCh2hm and "服务器已停止暂停" or "The server has stopped pausing")
-            end
-            local container = TheWorld:GetPocketDimensionContainer(name)
-            if container and container.cancelpausetask2hm then
-                container.cancelpausetask2hm:Cancel()
-                container.cancelpausetask2hm = nil
-            end
-            if container and container:IsValid() and container.components.container and container.exchangetmpdata2hm and container.containersendtask2hm and
-                not container.containerreceivetask2hm and not container.exchangeconfirmtask2hm and container.sendcontainerproxyplayer2hm and containerdata then
-                local success, data = RunInSandboxSafe(containerdata)
-                if success and data and data.time2hm and os.time() - data.time2hm < 400 then
-                    container:DoStaticTaskInTime(FRAMES * 1.5, exchangesenddata, "exchangeconfirm2hm", shard_id, name, true)
-                    container.exchangetmpdata2hm = nil
-                    container.containersendtask2hm:Cancel()
-                    container.containersendtask2hm = nil
-                    container.exchangeconfirmtask2hm = container:DoTaskInTime(0.25, exchangetaskend)
-                    exchangeapplydata(container, data)
-                    local player = container.sendcontainerproxyplayer2hm
-                    if player and player:IsValid() and player.components.talker then
-                        player.components.talker:Say((TUNING.isCh2hm and ("成功穿越世界" .. shard_id .. "啦") or
-                            ("SUCCESS to exchange with world " .. shard_id .. "~")))
-                    end
-                    container.sendcontainerproxyplayer2hm = nil
-                end
-            end
-        end
-    end)
-    AddShardModRPCHandler("MOD_HARDMODE", "exchangesenddata2hm", function(shard_id, world_id, name, containerdata)
-        if not traditionalexchange then return end
-        if TheShard and tostring(TheShard:GetShardId()) ~= tostring(shard_id) and tostring(TheShard:GetShardId()) == tostring(world_id) then
-            local container = TheWorld:GetPocketDimensionContainer(name)
-            if traditionalready(shard_id) and container and container:IsValid() and container.components.container and
-                not container.components.container.readonlycontainer and not container.dcs2hm and container.virtchest == nil and not container.containersendtask2hm and
-                not container.containerreceivetask2hm and not container.exchangeconfirmtask2hm and containerdata then
-                local success, data = RunInSandboxSafe(containerdata)
-                if success and data and data.time2hm and os.time() - data.time2hm < 350 then
-                    if not container:HasTag("exchangeloading2hm") then container:AddTag("exchangeloading2hm") end
-                    container.containerreceivetask2hm = container:DoTaskInTime(3, exchangetaskend)
-                    container.sendcontainerproxydata2hm = data
-                    container:DoStaticTaskInTime(FRAMES * 1.5, exchangesenddata, "exchangeconfirmdata2hm", shard_id, name)
-                end
-            end
-        end
-    end)
-    local function findcontainerproxyname(inst)
-        if TheWorld.PocketDimensionContainers then
-            for name, container in pairs(TheWorld.PocketDimensionContainers) do if container == inst then return name end end
-        end
-    end
-    local function findanotherworldid(inst)
-        if ShardList then
-            local shardids = {}
-            for world_id, v in pairs(ShardList) do
-                if TheShard and world_id ~= TheShard:GetShardId() and Shard_IsWorldAvailable(world_id) then
-                    table.insert(
-                        shardids, world_id)
-                end
-            end
-            local total = #shardids
-            if total == 1 then
-                return shardids[1]
-            elseif total > 1 then
-                inst.lastexchangeidx2hm = (inst.lastexchangeidx2hm or 0) + 1
-                if inst.lastexchangeidx2hm > total then inst.lastexchangeidx2hm = 1 end
-                return shardids[inst.lastexchangeidx2hm]
-            end
-        end
-    end
-    local function exchangefn(player, inst)
-        if not traditionalexchange or not canexchange(player, inst) then return end
-        if TheWorld.ismastersim and inst.components.container and not inst.components.container.readonlycontainer and not inst.dcs2hm and
-            not inst.containersendtask2hm and not inst.containerreceivetask2hm and
-            not inst.exchangeconfirmtask2hm and inst.virtchest == nil and player then
-            local name = findcontainerproxyname(inst)
-            local world_id = findanotherworldid(inst)
-            if world_id and name then
-                if not traditionalready(world_id) then return end
-                inst.sendcontainerproxyplayer2hm = player
-                inst.containersendtask2hm = inst:DoTaskInTime(1.5, exchangetaskend)
-                if not inst:HasTag("exchangeloading2hm") then inst:AddTag("exchangeloading2hm") end
-                exchangesenddata(inst, "exchangesenddata2hm", world_id, name)
-            elseif player and player:IsValid() and player.components.talker then
-                player.components.talker:Say((TUNING.isCh2hm and "找不到世界和容器穿越哎" or "Can't find another world's container to exchange."))
-            end
-        end
-    end
-    local function exchangevalidfn(inst)
-        return defaultbtnvalidfn(inst) and inst:HasTag("pocketdimension_container") and
-            not inst:HasTag("exchangeloading2hm")
-    end
-    local function checkbtnstatus(_inst, inst, btn)
-        if not (inst and inst:IsValid() and not exchangevalidfn(inst)) then
-            _inst.checkdisabletask2hm:Cancel()
-            _inst.checkdisabletask2hm = nil
-            if btn and btn.Enable then btn:Enable() end
-        end
-    end
-    local function exchangebtnfn(inst, doer, btn)
-        if btn and btn.Disable and btn.inst and not btn.inst.checkdisabletask2hm then
-            btn:Disable()
-            btn.inst.checkdisabletask2hm = btn.inst:DoPeriodicTask(0.1, checkbtnstatus, 0.5, inst, btn)
-        end
-        if inst.components.container and TheWorld.ismastersim then
-            exchangefn(doer, inst)
-        elseif inst.replica.container ~= nil then
-            SendModRPCToServer(GetModRPC("MOD_HARDMODE", "exchangebtn2hm"), inst)
-        end
-    end
-
-    local function checkpausebtnstatus(_inst, inst, btn)
-        _inst.checkdisabletask2hm:Cancel()
-        _inst.checkdisabletask2hm = nil
-        if btn and btn.Enable then btn:Enable() end
-    end
-    local function pausefn(player, inst)
-        if not traditionalexchange or not canexchange(player, inst) or not traditionalready() then return end
-        if TheWorld.ismastersim then
-            if TheNet:IsServerPaused() then
-                if inst.cancelpausetask2hm then
-                    inst.cancelpausetask2hm:Cancel()
-                    inst.cancelpausetask2hm = nil
-                end
-                TheNet:SetServerPaused(false)
-                TheNet:Announce(TUNING.isCh2hm and "服务器已停止暂停" or "The server has stopped pausing")
-            elseif not TheNet:IsServerPaused() then
-                if player and player:IsValid() then
-                    TheNet:Announce(TUNING.isCh2hm and "玩家 " .. (player.name or player.userid) .. " 使用了容器暂停按钮" or "Player " .. (player.name or player.userid) .. "use pause button in container")
-                end
-                TheNet:Announce(TUNING.isCh2hm and "服务器已暂停，30秒后超时自动解除" or "The server is paused, auto cancel pause after timeout 30 seconds")
-                SetServerPaused()
-                if inst.cancelpausetask2hm then
-                    inst.cancelpausetask2hm:Cancel()
-                    inst.cancelpausetask2hm = nil
-                end
-                inst.cancelpausetask2hm = inst:DoStaticTaskInTime(30, function(inst)
-                    if TheNet:IsServerPaused() then
-                        TheNet:SetServerPaused(false)
-                        TheNet:Announce(TUNING.isCh2hm and "服务器暂停超时已自动解除" or "The server pause has been lifted automatically")
-                    end
-                end)
-            end
-        end
-    end
-    AddModRPCHandler("MOD_HARDMODE", "pausebtn2hm", pausefn)
-    local function pausebtnfn(inst, doer, btn)
-        if btn and btn.Disable and btn.inst and not btn.inst.checkdisabletask2hm then
-            btn:Disable()
-            btn.inst.checkdisabletask2hm = btn.inst:DoPeriodicTask(0.2, checkpausebtnstatus, 1, inst, btn)
-        end
-        if TheWorld.ismastersim then
-            pausefn(doer, inst)
-        elseif not TheWorld.ismastersim then
-            SendModRPCToServer(GetModRPC("MOD_HARDMODE", "pausebtn2hm"), inst)
-        end
-    end
-
-    return {Request = exchangefn, Button = exchangebtnfn, PauseButton = pausebtnfn}
-end
-local traditional = MakeTraditionalExchange()
-
 local function exchangefn(player, inst)
-    if traditionalexchange then return traditional.Request(player, inst) end
-    if canexchange(player, inst) and TheWorld.components.worldexchange2hm then
-        TheWorld.components.worldexchange2hm:Request(player, inst)
+    if not canexchange(player,inst) then return end
+    local variants=TheWorld.components.exchangevariants2hm
+    if variants and not variants.ready then return end
+    if worldexchangemode=="classic" then
+        return TUNING.util2hm.ClassicExchange2hm(player,inst)
+    elseif worldexchangemode=="xianyu" then
+        local service=TheWorld.components.shadowbank2hm
+        if service then return service:Switch(player,inst) end
+    else
+        local service=TheWorld.components.shadowvault2hm
+        if service then return service:Request(player,inst) end
     end
 end
-AddModRPCHandler("MOD_HARDMODE", "exchangebtn2hm", exchangefn)
+addcontainerbuttonrpc("exchangebtn2hm", exchangefn)
 local function exchangevalidfn(inst)
-    return worldexchangecfg and defaultbtnvalidfn(inst) and inst:HasTag("pocketdimension_container") and not inst:HasTag("exchangeloading2hm")
+    return worldexchangecfg and defaultbtnvalidfn(inst) and isshadowspace(inst)
 end
 local function exchangebtnfn(inst, doer, btn)
-    if traditionalexchange then return traditional.Button(inst, doer, btn) end
     if TheWorld.ismastersim then exchangefn(doer, inst)
     else SendModRPCToServer(GetModRPC("MOD_HARDMODE", "exchangebtn2hm"), inst) end
 end
-local function exchangestatusfn(player, inst)
-    if canexchange(player, inst) and TheWorld.components.worldexchange2hm then
-        TheWorld.components.worldexchange2hm:Status(player)
+-- 为爽原版保留暂停辅助穿越；其余两种机制不需要该按钮。
+local function pausevalidfn(inst)
+    return worldexchangemode == "classic" and exchangevalidfn(inst)
+end
+local function pausefn(player, inst)
+    if worldexchangemode ~= "classic" or not canexchange(player, inst) then return end
+    local variants = TheWorld.components.exchangevariants2hm
+    if variants and not variants.ready then return end
+    if inst.cancelpausetask2hm then
+        inst.cancelpausetask2hm:Cancel()
+        inst.cancelpausetask2hm = nil
     end
+    if TheNet:IsServerPaused() then
+        TheNet:SetServerPaused(false)
+        TheNet:Announce(TUNING.isCh2hm and "服务器已停止暂停" or "Server resumed")
+        return
+    end
+    TheNet:SetServerPaused(true)
+    TheNet:Announce(TUNING.isCh2hm and "服务器已暂停，30秒后自动解除；再次点击可立即解除" or
+        "Server paused for up to 30 seconds; click again to resume")
+    -- 静态世界任务在暂停及容器被移除后仍能解除暂停。
+    inst.cancelpausetask2hm = TheWorld:DoStaticTaskInTime(30, function()
+        inst.cancelpausetask2hm = nil
+        if TheNet:IsServerPaused() then
+            TheNet:SetServerPaused(false)
+            TheNet:Announce(TUNING.isCh2hm and "服务器暂停超时已自动解除" or "Server resumed after pause timeout")
+        end
+    end)
 end
-AddModRPCHandler("MOD_HARDMODE", "exchangestatus2hm", exchangestatusfn)
-local function exchangestatusbtnfn(inst, doer, btn)
-    if traditionalexchange then return traditional.PauseButton(inst, doer, btn) end
-    if TheWorld.ismastersim then exchangestatusfn(doer, inst)
-    else SendModRPCToServer(GetModRPC("MOD_HARDMODE", "exchangestatus2hm"), inst) end
+addcontainerbuttonrpc("pausebtn2hm", pausefn)
+local function pausebtnfn(inst, doer)
+    if TheWorld.ismastersim then pausefn(doer, inst)
+    else SendModRPCToServer(GetModRPC("MOD_HARDMODE", "pausebtn2hm"), inst) end
 end
-local function exchangestatusvalidfn(inst)
-    return worldexchangecfg and inst and inst:HasTag("pocketdimension_container")
+local function exchangestatusfn(player, inst)
+    local service = TheWorld and TheWorld.components[worldexchangemode=="xianyu" and "shadowbank2hm" or "shadowvault2hm"]
+    if worldexchangemode=="classic" then return end
+    if canexchange(player, inst) and service then service:Status(player) end
 end
+addcontainerbuttonrpc("exchangestatus2hm", exchangestatusfn)
 
 -- 容器收集
 local function getfinalowner(inst)
@@ -1478,7 +1291,7 @@ local function realcollectfn(doer, inst)
     collectfn(doer, inst)
 end
 -- 收集/拾取按钮
-AddModRPCHandler("MOD_HARDMODE", "collectbtn2hm", realcollectfn)
+addcontainerbuttonrpc("collectbtn2hm", realcollectfn)
 local function collectbtnfn(inst, doer)
     if not hascollectbutton then return end
     if inst.components.container ~= nil then
@@ -1656,7 +1469,7 @@ local function lockfn(player, inst)
             player)
     end
 end
-AddModRPCHandler("MOD_HARDMODE", "lockbtn2hm", lockfn)
+addcontainerbuttonrpc("lockbtn2hm", lockfn)
 local lockbtninfo = {
     text1 = TUNING.isCh2hm and "锁定" or "Lock",
     text2 = TUNING.isCh2hm and "解锁" or "Unlock",
@@ -1708,7 +1521,7 @@ local function lockinspectfn(player, inst)
         dolockinspect(inst, player)
     end
 end
-AddModRPCHandler("MOD_HARDMODE", "lockinspect2hm", lockinspectfn)
+addcontainerbuttonrpc("lockinspect2hm", lockinspectfn)
 local function rightlockbtnfn(inst, doer)
     if not haslockbutton or not inst:HasTag("lockcontainer2hm") then return end
     if inst.components.container ~= nil then
@@ -1721,7 +1534,7 @@ end
 -- 衣柜换装
 local function reskinfn(player, inst) if inst.components.wardrobe then inst.components.wardrobe:BeginChanging(player) end end
 -- 换装按钮
-AddModRPCHandler("MOD_HARDMODE", "reskinbtn2hm", reskinfn)
+addcontainerbuttonrpc("reskinbtn2hm", reskinfn)
 local function reskinbtnfn(inst, doer)
     if inst.components.wardrobe ~= nil then
         reskinfn(doer, inst)
@@ -1793,7 +1606,7 @@ local function processstoreincontainers2hm(invobject, ents, proxyents, inst, src
                 end
             end
         end
-        for _, i in ipairs(toremove) do table.remove(ents, i) end
+        for i = #toremove, 1, -1 do table.remove(ents, toremove[i]) end
         toremove = {}
     end
     for master, v in pairs(proxyents) do
@@ -1833,7 +1646,7 @@ local function processstoreincontainers2hm(invobject, ents, proxyents, inst, src
             table.insert(toremove, i)
         end
     end
-    for _, i in ipairs(toremove) do table.remove(ents, i) end
+    for i = #toremove, 1, -1 do table.remove(ents, toremove[i]) end
     -- 其次，优先存放在有存放道具限制的容器（某些道具特殊处理）
     -- 暖石特殊处理，非夏天优先存放在冰箱，夏天额根据优先级优先存放在龙鳞火炉
     if invobject:HasTag("heatrock") and not TheWorld.state.issummer then
@@ -1849,7 +1662,7 @@ local function processstoreincontainers2hm(invobject, ents, proxyents, inst, src
                 end
             end
         end
-        for _, i in ipairs(toremove) do table.remove(ents, i) end
+        for i = #toremove, 1, -1 do table.remove(ents, toremove[i]) end
     end
     -- 有新鲜度的道具特殊处理
     local tmpentsindex = {}
@@ -1982,7 +1795,7 @@ local function store2hm(doer, item)
                     master.currentpocket2hm = v
                 end
             elseif v.components.container and not v.dcs2hm and (table.contains(storewhitelist, v.prefab) or
-                    ((isstackable or not v.components.container.infinitestacksize) and (not isbigsize or v.components.container.infinitestacksize) and
+                    ((not isbigsize or v.components.container.infinitestacksize) and
                         (not v.components.inventoryitem or v:HasTag("heavy")) and not v.components.health and not v.components.locomotor and
                         not v.components.stewer and v.components.container.canbeopened and not v.components.container.usespecificslotsforitems and
                         v.components.container.acceptsstacks and not table.contains(storeblacklist, v.prefab) and
@@ -2311,7 +2124,7 @@ local function storemeatbtnfn(inst, doer)
 end
 
 -- 一键收集
-AddModRPCHandler("MOD_HARDMODE", "collectmeatbtn2hm", findmeatracks)
+addcontainerbuttonrpc("collectmeatbtn2hm", findmeatracks)
 local function collectmeatbtnfn(inst, doer)
     if inst.components.container ~= nil then
         findmeatracks(doer, inst)
@@ -2337,7 +2150,7 @@ local function driedmeat(ents, doer, active_item)
                         if active_itemnums <= 0 then break end
                         if not v.components.container:GetItemInSlot(a) then
                             if active_itemnums == 1 then
-                                item = doer.components.inventory:GetActiveItem()
+                                local item = doer.components.inventory:GetActiveItem()
                                 if item ~= nil then
                                     local result
                                     if v.components.container:CanTakeItemInSlot(item, a) then
@@ -2421,7 +2234,7 @@ local function driedmeatbtnfn(inst, doer)
         SendModRPCToServer(GetModRPC("MOD_HARDMODE", "driedmeatbtn2hm"), inst)
     end
 end
-AddModRPCHandler("MOD_HARDMODE", "driedmeatbtn2hm", findcandriedmeatracks)
+addcontainerbuttonrpc("driedmeatbtn2hm", findcandriedmeatracks)
 local meatrackvalidfn = truefn
 
 -- 霜冻核心支持升级
@@ -2469,7 +2282,8 @@ local function upgradefn(player, inst)
     end
 end
 
-AddModRPCHandler("MOD_HARDMODE", "upgradebtn2hm", upgradefn)
+addcontainerbuttonrpc("upgradebtn2hm", upgradefn)
+if sharkboiupdate then TUNING.util2hm.UpgradeShadowVaultTackle2hm = upgradefn end
 local function upgradebtnfn(inst, doer, btn)
     if btn and btn.Disable and btn.inst and not btn.inst.checkdisabletask_2hm then
         btn:Disable()
@@ -2555,21 +2369,17 @@ Use Orange Amulet will Picktop Near Same Items]],
         },
         exchangebtn = {
             text = TUNING.isCh2hm and "穿越" or "PassW",
-            helptext = traditionalexchange and (TUNING.isCh2hm and "传统穿越：沿用为爽原有整箱交换，可配合暂停按钮" or
-                "Traditional upstream exchange; optional pause button") or
-                (TUNING.isCh2hm and "双界协同：地面与洞穴自动确认，无需其他玩家同意，无需每次保存世界" or
-                "Coordinated exchange: automatic shard confirmation; no player consent or save on each exchange"),
+            helptext = (TUNING.isCh2hm and "切换主世界保管的暗影空间，目标层离线时仍可在地面访问" or
+                "Switch master-owned shadow spaces; their shards may be offline"),
             fn = exchangebtnfn,
             validfn = exchangevalidfn
         },
         pausebtn = {
-            text = traditionalexchange and (TUNING.isCh2hm and "暂停" or "Pause") or (TUNING.isCh2hm and "状态" or "Status"),
-            helptext = traditionalexchange and (TUNING.isCh2hm and "传统穿越辅助暂停，30秒后自动解除" or
-                "Optional pause for traditional exchange; resumes automatically after 30 seconds") or
-                (TUNING.isCh2hm and "查看交换进度并重试通信；无需暂停服务器" or
-                "Check exchange progress and retry communication"),
-            fn = exchangestatusbtnfn,
-            validfn = exchangestatusvalidfn
+            text = TUNING.isCh2hm and "暂停" or "Pause Server",
+            helptext = TUNING.isCh2hm and "暂停辅助原版穿越，再次点击解除；30秒后自动解除" or
+                "Pause for original exchange; click again to resume, or wait 30 seconds",
+            fn = pausebtnfn,
+            validfn = pausevalidfn
         },
         reskinbtn = { text = TUNING.isCh2hm and "换装" or "Skin", fn = reskinbtnfn, validfn = reskinvalidfn },
         collectmeatbtn = { text = TUNING.isCh2hm and "收集" or "Collect", helptext = TUNING.isCh2hm and [[一键收集附近所有晾肉架中的产物放入物品栏(雨天会收集可风干物)
@@ -2721,6 +2531,12 @@ Use Orange Amulet will Picktop Near Same Items]],
             container.widget.poslist2hm = poslist
         end
     end
+    TUNING.util2hm.ShadowVaultButtonLayout2hm = function(prefab, widget, owner)
+        if not widget.poslist2hm then
+            addbuttoninfoforcontainerparams(prefab, {inst = owner, widget = widget, acceptsstacks = true})
+        end
+        return widget.poslist2hm
+    end
     local old_wsetup = containers.widgetsetup
     function containers.widgetsetup(container, prefab, data, ...)
         local result = old_wsetup(container, prefab, data, ...)
@@ -2752,6 +2568,17 @@ Use Orange Amulet will Picktop Near Same Items]],
     end
     -- 按钮添加
     local allbtnnewdir = { left = "top", top = "right", right = "down", down = "left" }
+    TUNING.util2hm.ShadowVaultButtonInfo2hm = btnlist
+    TUNING.util2hm.ShadowVaultButtonDirection2hm = function(button, prefab, update)
+        button.onrightclick2hm = function()
+            local directions = TUNING.TEMP2HM.btnotherdir
+            local direction = allbtnnewdir[directions[prefab] or "down"]
+            directions[prefab] = direction ~= "down" and direction or nil
+            SaveTemp2hm()
+            update()
+        end
+        SetButtonRightControl(button)
+    end
     local function addbutton(self, container, widget, doer, btnname, btninfo, idx, position)
         local btn = self:AddChild(ImageButton("images/ui.xml", "button_small.tex", "button_small_over.tex",
             "button_small_disabled.tex", nil, nil, { 1, 1 },
@@ -2781,11 +2608,18 @@ Use Orange Amulet will Picktop Near Same Items]],
         btn.btninfo2hm = btninfo
         if btninfo.helptext then btn:SetTooltip(btninfo.helptext) end
         if btninfo.fn ~= nil then btn:SetOnClick(function() btninfo.fn(container, doer, btn) end) end
+        if btnname == "exchangebutton2hm" and container:HasTag("shadowbanktackleremote2hm") then
+            btn.onrightclick2hm = function()
+                local view = TUNING.util2hm.shadowbankview2hm
+                if view then SendModRPCToServer(GetModRPC("MOD_HARDMODE", "shadowbankaction2hm"), "legacy", nil, nil, nil, view.session) end
+            end
+            SetButtonRightControl(btn)
+        end
         return btn
     end
     -- 按钮转向
     local btnnames = { "reskinbutton2hm", "exchangebutton2hm", "lockbutton2hm", "sortbutton2hm", "multisortbutton2hm",
-        "collectbutton2hm", "button", "pause2hm", "collectmeat_inventory_button2hm", "storemeatbutton2hm", "dryingitembutton2hm",
+        "collectbutton2hm", "button", "collectmeat_inventory_button2hm", "storemeatbutton2hm", "dryingitembutton2hm",
     "upgrade2hm", "privatespacebtn2hm"}
     local changebtndirtip
     local function supportchangebtnpos(self, btn, container)
@@ -2840,19 +2674,28 @@ Use Orange Amulet will Picktop Near Same Items]],
                     local pos1 = Vector3(pos.x + 98, pos.y, pos.z)
                     local pos2 = Vector3(pos.x + 168, pos.y, pos.z)
                     local pos3 = Vector3(pos.x + 238, pos.y, pos.z)
+                    local pos4 = Vector3(pos.x + 308, pos.y, pos.z)
                     if TUNING.DATA2HM.opensort then
                         addbutton(self.bottomrow, overflow.inst, widget, self.owner, "sortbutton2hm", btnlist.sortbtn,
                             nil, pos1)
                     end
                     if overflow.inst:HasTag("pocketdimension_container") then
-                        if worldexchangecfg and not TUNING.DSA_ONE_PLAYER_MODE then
+                        local hastravel = worldexchangecfg and isshadowspace(overflow.inst) and not TUNING.DSA_ONE_PLAYER_MODE
+                        if hastravel then
                             addbutton(self.bottomrow, overflow.inst, widget, self.owner, "exchangebutton2hm",
                                 btnlist.exchangebtn, nil,
                                 TUNING.DATA2HM.opensort and pos2 or pos1)
+                            if worldexchangemode == "classic" then
+                                addbutton(self.bottomrow, overflow.inst, widget, self.owner, "pausebutton2hm",
+                                    btnlist.pausebtn, nil, TUNING.DATA2HM.opensort and pos3 or pos2)
+                            end
                         end
-                        if container.prefab == "tacklestation2hm" and sharkboiupdate then
-                            addbutton(self, container, widget, doer, "upgrade2hm", btnlist.upgradebtn,
-                            TUNING.DATA2HM.opensort and 4 or 3)
+                        if overflow.inst.prefab == "tacklestation2hm" and sharkboiupdate then
+                            local positions = {pos1, pos2, pos3, pos4}
+                            local index = (TUNING.DATA2HM.opensort and 2 or 1) +
+                                (hastravel and (worldexchangemode == "classic" and 2 or 1) or 0)
+                            addbutton(self.bottomrow, overflow.inst, widget, self.owner, "upgrade2hm",
+                                btnlist.upgradebtn, nil, positions[index])
                         end
                     else
                         if haslockbutton then
@@ -2900,15 +2743,19 @@ Use Orange Amulet will Picktop Near Same Items]],
                 end
                 if container:HasTag("pocketdimension_container") then
                     if not TUNING.DSA_ONE_PLAYER_MODE then
-                        if worldexchangecfg then
+                        local hastravel = worldexchangecfg and isshadowspace(container)
+                        if hastravel then
                             addbutton(self, container, widget, doer, "exchangebutton2hm", btnlist.exchangebtn,
                                 TUNING.DATA2HM.opensort and 2 or 1)
-                            addbutton(self, container, widget, doer, "pause2hm", btnlist.pausebtn,
-                                TUNING.DATA2HM.opensort and 3 or 2)
+                            if worldexchangemode == "classic" then
+                                addbutton(self, container, widget, doer, "pausebutton2hm", btnlist.pausebtn,
+                                    TUNING.DATA2HM.opensort and 3 or 2)
+                            end
                         end
-                        if container.prefab == "tacklestation2hm" and sharkboiupdate then
+                        if (container.prefab == "tacklestation2hm" or container.prefab == "shadowvaulttacklepage2hm" or container.prefab == "shadowbank_tackle2hm" or container:HasTag("shadowbanktackleremote2hm")) and sharkboiupdate then
                             addbutton(self, container, widget, doer, "upgrade2hm", btnlist.upgradebtn,
-                            TUNING.DATA2HM.opensort and 4 or 3)
+                                (TUNING.DATA2HM.opensort and 2 or 1) +
+                                (hastravel and (worldexchangemode == "classic" and 2 or 1) or 0))
                         end
                     end
                 else
@@ -2938,14 +2785,11 @@ Use Orange Amulet will Picktop Near Same Items]],
                                            ((doer.HasTag ~= nil and doer:HasTag("usingmagiciantool")) or
                                                (doer.sg ~= nil and doer.sg.currentstate ~= nil and
                                                    (doer.sg.currentstate.name == "using_tophat" or doer.sg.currentstate.name == "start_using_tophat")))
-                if container.prefab == "shadow_container" and btnlist.privatespacebtn ~= nil and isusinghat2hm and
+                if (container.prefab == "shadow_container" or container.prefab == "shadowvaultpage2hm" or container.prefab=="shadowbank_container2hm" or container:HasTag("shadowbankremote2hm")) and btnlist.privatespacebtn ~= nil and isusinghat2hm and
                     TUNING.util2hm.CanUseMagicianPrivate2hm and TUNING.util2hm.CanUseMagicianPrivate2hm(doer) then
-                    local poslist = widget.poslist2hm
-                    if poslist ~= nil and poslist.positions ~= nil and poslist.positions[1] ~= nil then
-                        poslist.positions[4] = Vector3(poslist.positions[1].x, poslist.positions[1].y - 43, 0)
-                    end
-                    local prividx = TUNING.DSA_ONE_PLAYER_MODE and (TUNING.DATA2HM.opensort and 2 or 1) or
-                        (TUNING.DATA2HM.opensort and 4 or 3)
+                    local hastravel = not TUNING.DSA_ONE_PLAYER_MODE and worldexchangecfg and isshadowspace(container)
+                    local prividx = (TUNING.DATA2HM.opensort and 2 or 1) +
+                        (hastravel and (worldexchangemode == "classic" and 2 or 1) or 0)
                     supportchangebtnpos(self,
                         addbutton(self, container, widget, doer, "privatespacebtn2hm", btnlist.privatespacebtn, prividx),
                         container)
@@ -3004,6 +2848,7 @@ if itemscfg then
     if craftmenucollectsupport or hasitemscollect or foodingredientcollectsupport then
         -- 后面的doer和item都是可选的,主要用于ctrl alt右键道具收集道具
         collectrecipefn = function(inst, recipe_type, neednum, doer, item, forceitemtestfn)
+            if not RPCGuard.IsEntity(inst) or type(recipe_type) ~= "string" then return end
             if neednum ~= nil and neednum ~= false then
                 if type(neednum) ~= "number" or neednum ~= neednum or neednum == math.huge or neednum <= 0 then return end
                 neednum = math.ceil(neednum)
@@ -3244,9 +3089,11 @@ if itemscfg then
             end
         end
         local function searchcollectfn(doer, name, maybe)
+            if not RPCGuard.IsEntity(doer) or type(name) ~= "string" or name == "" then return end
             if doer and doer:IsValid() and doer.components.inventory and not doer:HasTag("playerghost") and doer.components.inventory.isvisible then
                 collectrecipefn(doer, name, nil, doer, nil, function(v)
-                    return maybe and (v.name and string.find(v.name, name) or string.find(v.prefab, name)) or
+                    return maybe and ((type(v.name) == "string" and string.find(v.name, name, 1, true)) or
+                        (type(v.prefab) == "string" and string.find(v.prefab, name, 1, true))) or
                         (v.name == name or v.prefab == name)
                 end)
             end
@@ -3492,12 +3339,15 @@ if itemscfg then
             "meat_cooked"
         }
         local function collectfoodingredientfn(doer, food, istag, neednum, toplayer, disabledatastr)
+            if not RPCGuard.IsEntity(doer) or type(food) ~= "string" or food == "" then return end
+            if neednum ~= nil and neednum ~= false and (not RPCGuard.IsFinite(neednum) or neednum <= 0) then return end
+            if disabledatastr ~= nil and type(disabledatastr) ~= "string" then return end
             if doer and doer:IsValid() and doer.components.inventory and not doer:HasTag("playerghost") and doer.components.inventory.isvisible then
                 if toplayer then
                     if istag then
                         collectrecipefn(doer, food, nil, doer, nil, function(v)
                             local data = cooking.ingredients[foodaliases[v.prefab] or v.prefab]
-                            return data ~= nil and data.tags[food] ~= nil and
+                            return data ~= nil and data.tags ~= nil and data.tags[food] ~= nil and
                                 (food == "monster" or data.tags.monster == nil)
                         end)
                     else
@@ -3506,7 +3356,7 @@ if itemscfg then
                     return
                 end
                 for container_inst in pairs(doer.components.inventory.opencontainers) do
-                    if container_inst:IsValid() and container_inst:HasTag("stewer") then
+                    if container_inst:IsValid() and container_inst:HasTag("stewer") and container_inst.components.container then
                         if container_inst.components.container.acceptsstacks then
                             neednum = nil
                         else
@@ -3517,8 +3367,11 @@ if itemscfg then
                             local limitnames = {}
                             if disabledatastr and string.len(disabledatastr) > 0 then
                                 local success, savedata = RunInSandboxSafe(disabledatastr)
-                                if success and savedata ~= nil and not IsTableEmpty(savedata) then
+                                if success and type(savedata) == "table" and not IsTableEmpty(savedata) then
                                     for index, element in pairs(savedata) do
+                                        if type(element) ~= "table" or (element.amt ~= nil and not RPCGuard.IsFinite(element.amt)) then return end
+                                        if element.name ~= nil and type(element.name) ~= "string" then return end
+                                        if element.tag ~= nil and type(element.tag) ~= "string" then return end
                                         if element.name then
                                             limitnames[element.name] = (limitnames[element.name] or 0) +
                                                 (element.amt or 0)
@@ -3704,7 +3557,7 @@ if itemscfg then
                         end
                     end
                 end
-                for _, i in ipairs(toremove) do table.remove(ents, i) end
+                for i = #toremove, 1, -1 do table.remove(ents, toremove[i]) end
                 toremove = {}
             end
             for master, v in pairs(proxyents) do
@@ -3749,7 +3602,7 @@ if itemscfg then
                     table.insert(toremove, i)
                 end
             end
-            for _, i in ipairs(toremove) do table.remove(ents, i) end
+            for i = #toremove, 1, -1 do table.remove(ents, toremove[i]) end
             -- 其次，优先存放在有存放道具限制的容器（某些道具特殊处理）
             -- 暖石特殊处理，非夏天优先存放在冰箱，夏天额根据优先级优先存放在龙鳞火炉
             if invobject:HasTag("heatrock") and not TheWorld.state.issummer then
@@ -3766,7 +3619,7 @@ if itemscfg then
                         end
                     end
                 end
-                for _, i in ipairs(toremove) do table.remove(ents, i) end
+                for i = #toremove, 1, -1 do table.remove(ents, toremove[i]) end
             end
             -- 有新鲜度的道具特殊处理
             local tmpentsindex = {}
@@ -3871,6 +3724,12 @@ if itemscfg then
             local owner = act.invobject.components.inventoryitem.owner
             local prevcontainer = owner and (owner.components.container or owner.components.inventory)
             if not prevcontainer then return end
+            local vault = TheWorld.components.shadowvault2hm
+            local issued_from_vault = act.invobject._shadowvault_use_until2hm
+            if vault and (not issued_from_vault or issued_from_vault < GetStaticTime()) and vault:QuickStore(inst, act.invobject) then
+                if danger and inst.components.hunger then inst.components.hunger:DoDelta(-0.2) end
+                return true
+            end
             -- 记录要存放道具的目的容器列表
             local isstackable = act.invobject.components.stackable ~= nil
             local isbigsize = isstackable and
@@ -3901,7 +3760,7 @@ if itemscfg then
                             master.currentpocket2hm = v
                         end
                     elseif v.components.container and not v.dcs2hm and (table.contains(storewhitelist, v.prefab) or
-                            ((isstackable or not v.components.container.infinitestacksize) and (not isbigsize or v.components.container.infinitestacksize) and
+                            ((not isbigsize or v.components.container.infinitestacksize) and
                                 (not v.components.inventoryitem or v:HasTag("heavy")) and not v.components.health and not v.components.locomotor and
                                 not v.components.stewer and v.components.container.canbeopened and not v.components.container.usespecificslotsforitems and
                                 v.components.container.acceptsstacks and not table.contains(storeblacklist, v.prefab) and
@@ -4023,7 +3882,13 @@ end
 local clientitemtransferimage2hmdist = 36 * 36
 local function clientitemtransferimage2hm(img, atlas, x, y, z, prevcontainer, prevslot, _x, _y, _z, currcontainer,
                                           currslot, userid, iscollectact)
-    if img and atlas and x and y and z and -x and _y and _z and userid and ThePlayer and ThePlayer.userid and ThePlayer.HUD and TheFrontEnd and ThePlayer.HUD ==
+    if type(img) ~= "string" or type(atlas) ~= "string" or type(userid) ~= "string" then return end
+    if (prevcontainer and type(prevcontainer) ~= "string") or (currcontainer and type(currcontainer) ~= "string") then return end
+    if (prevslot and (not RPCGuard.IsFinite(prevslot) or prevslot < 1 or prevslot % 1 ~= 0)) or
+        (currslot and (not RPCGuard.IsFinite(currslot) or currslot < 1 or currslot % 1 ~= 0)) then return end
+    if not (RPCGuard.IsFinite(x) and RPCGuard.IsFinite(y) and RPCGuard.IsFinite(z) and
+        RPCGuard.IsFinite(_x) and RPCGuard.IsFinite(_y) and RPCGuard.IsFinite(_z)) then return end
+    if ThePlayer and ThePlayer.userid and ThePlayer.HUD and TheFrontEnd and ThePlayer.HUD ==
         TheFrontEnd:GetActiveScreen() and ThePlayer.HUD.controls and ThePlayer.HUD.controls.inv and ThePlayer.HUD.controls.containers then
         local controls = ThePlayer.HUD.controls
         -- 自己取出道具,官方已有路径

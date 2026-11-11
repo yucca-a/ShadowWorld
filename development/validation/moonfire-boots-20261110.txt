@@ -1,0 +1,50 @@
+月火斩冷却与防滑腿靴传送崩溃修复（2026-11-10，未发布）
+
+输入依据
+用户提供 Downloads/日志1.txt、日志2.txt。两份栈均为 slipperyfeet 延迟初始化访问已失效的角色：
+原生 OnInit 经 IsOceanIceAtPoint 取空坐标，及妥测私有 OnInit 经 GetTileAtPoint 取空坐标。
+栈中同时存在 common/patch.lua 的旧 OnInit 包装及 3360553731 的额外包装。
+
+月火斩
+- 旧实现仅在 spell 回调中比较 _rightcd2hm；此时角色已进入 combat_leap_start、播放蓄力动画。
+  冷却回调提前返回而未触发 combat_leap，角色会留在起手／等待状态。
+- 改为原生 rechargeable，与铥矿棒格挡共用原生物品冷却圈机制。基础冷却仍为 10 秒。
+- 充能状态同步给预测端。冷却时关闭 spellcaster 的目标／地面／水面动作标签和瞄准圈，
+  服务端与预测端 CASTSPELL 路由均不进入起手状态；已排队的旧请求在起手 onenter 前回到 idle。
+- 普通 ATTACK 虽共用客户端起手状态，仍沿用原有普攻跳劈。校验目标成功才消耗技能冷却。
+- rechargeable 在物品组件加载前创建并设置容量，保存／加载保留冷却进度；充能完成恢复技能和瞄准。
+
+腿靴崩溃
+- bootleg2hm、bootleg_2hm 及“旧靴子防滑”分支原先通过 RemoveComponent 关闭滑倒，再在物品清理时 AddComponent。
+  角色移除过程中仍可能通过物品清理给将要退休的角色补回组件；新建的零延迟任务随后访问失效实体。
+  旧 common/patch 包装只检查 components.slipperyfeet 是否非空，且未覆盖妥测 inittask2。
+- 统一为 bootlegnonslip2hm：保持角色原生滑倒组件，只在携带防滑来源时抑制 DoDelta／SetCurrent 的积累。
+  同时记录多件防滑来源，最后一件离身恢复普通积累；物品清理不创建角色组件或任务。
+- 捕获并保护原生 inittask、妥协 inittask2 和附近冰面检查任务；执行前检查实体有效且组件仍为同一实例。
+  组件移除和实体退休都会清理任务；原生／妥协清理可能补排附近检查，因此最终再次取消。
+- 两种腿靴及 alterguardian.lua 的基础腿靴防滑分支使用同一套来源管理。
+
+验证
+work/python-3.12.8/python.exe tests/run_moonfire_boots_tests.py
+49 项：原生／妥协正式版／妥测真实 slipperyfeet 组件及回调各 11 项；服务端／预测端动作路由 16 项。
+检查多来源、直接赋值和累积抑制、最后一件移除恢复、重新携带清零、失效实体、旧组件回调隔离及任务清理。
+六个变更的生产 Lua 文件通过 Lua 5.1 编译。
+
+work/python-3.12.8/python.exe tests/run_native_moonfire_boots.py [--um none|stable|beta] [--before]
+- 妥测：work/vault-hardened-hosted-udaxbmcz/moonfire-boots-result.json，27＋13 项通过。
+- 单开淬炼：work/vault-hardened-hosted-u6grgh1t/moonfire-boots-result.json，27＋13 项通过。
+- 妥协正式版：work/vault-hardened-hosted-mycw5kvw/moonfire-boots-result.json，27＋13 项通过。
+- 旧代码对照：work/vault-hardened-hosted-qldi5rja/moonfire-boots-result.json，10 项成功复现旧行为。
+
+原生场景实际消耗天体宝珠升级、执行跳劈时间轴，检查 inventoryitem_classified 的 recharge／rechargetime
+原生冷却圈数据、重复服务端与预测端 CASTSPELL 拒绝、旧排队请求不播放 atk_leap_pre、操作可用、普通攻击、
+物品保存加载的充能百分比、自然等待冷却结束后恢复动作与瞄准。
+防滑场景使用实际两种腿靴和原生角色，检查保留同一组件、多来源生效与离身恢复；保留真正的原生／妥协
+初始化任务回调，退休旺达／薇格弗德实体后再次调用，旧版本产生空坐标错误，修复版不读取地图且任务清理干净。
+
+边界
+测试为仓库 work/ 下的一次性离线原生专服；未修改用户存档、未发布工坊。
+未人工验收客户端画面；冷却圈验证使用原生 ItemTile 对应的同步数据及原生充能事件。
+本机未安装日志中的 workshop-3360553731，未执行包含该模组的完整真人裂隙表／大漩涡跨层流程。
+本轮回归覆盖日志中的实际实体退休和两类原生／妥协初始化回调，另验证携带腿靴不会再删除、重建该组件。
+当前六个生产文件与三次成功修复验证的冻结输入逐字节一致，哈希及结果见同目录 moonfire-boots-20261110.json。

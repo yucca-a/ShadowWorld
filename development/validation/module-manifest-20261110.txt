@@ -1,0 +1,47 @@
+新增模块加载失败兼容修复（2026-11-10，本地准备 .20，未发布）
+
+日志确认的故障
+D:/Users/Yucca/Downloads/日志.txt 在 18:06:55 报错：
+shadowworld.lua:16: module 'shadowhalloween2hm' not found。
+调用链为 require -> shadowworld.lua -> modmain.lua -> LoadMods，游戏随后禁用淬炼。
+这是模组启动阶段的模块加载失败；这份日志没有显示存档实体反序列化或存档数据损坏。
+
+工坊包与本地源码核对
+重新通过 SteamCMD 下载工坊 .19 并 validate，478 个文件均存在，其中包含报错模块及本轮四个新增文件。
+与已归档 .19 源码逐文件比较，477 个文件完全相同，仅上传器生成的 mod.manifest 不同。
+工坊包的新索引正确覆盖全部 478 个文件。
+项目保留的旧 mod.manifest 则仅有 431 条，缺少当前 75 个路径，另有 28 条已废弃路径。
+因此修复同时补齐本地清单，避免源码直接安装／复制时带上陈旧索引。
+
+离线复现
+使用当前游戏 scripts/main.lua 中实际的 require 加载器，在本地 Lua 5.1 执行。
+文件索引门禁用已归档工坊 .18 的真实 mod.manifest 模拟；该索引尚无四个新增文件。
+shadowhalloween2hm.lua、bootlegnonslip2hm.lua 的真实源码均在测试文件集合内。
+加载器在旧索引下拒绝加载，产生相同的 module ... not found；索引注册后两个实际模块均可正常加载。
+这证明旧索引足以触发日志故障，但用户实际安装目录的文件／索引没有随日志提供，
+现场是索引缓存、文件未完整更新还是手动复制了旧索引，单凭这份日志不能进一步确认。
+
+修复内容
+1. modmain.lua 在首次 require 前，通过游戏原生 ManifestManager:AddFileToModManifest，
+   给本模组注册本轮四个新增模块路径。只对工坊模组执行，避免给本地无索引模组创建局部索引。
+   保留正常 require 缓存、重载记录和模块真实行为；真正缺文件仍报错，不静默跳过已有修复。
+2. 重建 content/mod.manifest，完整覆盖目前全部 478 个文件。
+3. 新增 tests/update_mod_manifest.py，写入或严格核对原生 MNFS 路径索引；
+   路径哈希算法已与真实下载包全部 478 条索引核对一致，核对不依赖索引条目的顺序。
+4. 发布流程增加源码索引和实际工坊下载包校验。已为 .19 发布记录补记此次真实下载核验结果。
+5. 本地版本准备为 2.8.15.0.20，日志草稿 workshop/update-notes-2.8.15.0.20-draft.txt。
+
+验证结果
+- run_module_manifest_tests.py：15 项，覆盖旧索引报错、注册后加载、幂等注册、原生重载记录、
+  万圣节真实行为、当前完整索引、无索引环境、本地模组及真正缺文件的错误路径。
+- 原有妥协兼容／牛铃打包、月火斩／腿靴、万圣节形态共 207 项全部继续通过。
+- 共 222 项本地检查通过，414 个生产 Lua 文件通过 Lua 5.1 编译，478 个路径全部入索引。
+- 相对已发布 .19，运行目录只改变 modmain.lua、mod.manifest、modinfo.lua；
+  modmain.lua 原有正文逐字节保留，其他全部源码与资源均保持一致。
+- 未启动游戏或测试服务器；未上传工坊，未推送 Git。
+
+备份
+backups/fixes/module-load-20261110-165438/
+包含 source-before.zip、source-before.manifest、真实 workshop-018.manifest、
+downloaded-019.zip、prepared-020.zip、checks.json 和各测试日志。
+同名 JSON 记录文件哈希、实际包核对和检查结果。

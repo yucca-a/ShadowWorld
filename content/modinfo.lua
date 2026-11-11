@@ -1,4 +1,4 @@
-version = "2.8.14.98.1"
+version = "2.8.15.0.23"
 -- Original authors: 繁花丶海棠 | 胜天一猫 | 小蓝鲸 | leo468
 author = "Yucca（维护）"
 forumthread = ""
@@ -58,54 +58,15 @@ QQ Group:]]
 --     auto_upload = false,
 --     lang = "CHI"
 -- }
--- 选项选择文本 左侧对齐或右侧对齐
--- 实现是在选择文本拼接空格达到总长度从而对齐
-local labellength = ({30, 30})[langid]
-local descriptionlength = ({18, 18})[langid]
-local function filllabel(i)
-    local str = ""
-    for index = 1, labellength - i do str = str .. " " end
-    return str
-end
-local function filldesc(i)
-    local str = ""
-    for index = 1, descriptionlength - i do str = str .. " " end
-    return str
-end
--- 预置默认字符串
-local disabletext = i18n({"禁用" .. filldesc(4), "Disable" .. filldesc(7)})
-local enabletext = i18n({filldesc(4) .. "启用", filldesc(6) .. "Enable"})
-local partenabletext = i18n({filldesc(4) .. "部分", filldesc(4) .. "Part"})
-local leftparttext = i18n({"部分" .. filldesc(4), "Part" .. filldesc(4)})
--- 小数的数值对齐时使用,支持0.001~9999.999
-local function numberdigits(num)
-    -- 必定有个位
-    local digits = 1
-    -- 小数部分
-    if num % 1 ~= 0 then
-        local newnum = num * 1000
-        if newnum % 10 ~= 0 then
-            digits = digits + 4
-        elseif newnum % 100 ~= 0 then
-            digits = digits + 3
-        else
-            digits = digits + 2
-        end
-    end
-    -- 整数部分
-    if num >= 1000 then
-        digits = digits + 3
-    elseif num >= 100 then
-        digits = digits + 2
-    elseif num >= 10 then
-        digits = digits + 1
-    end
-    return digits
-end
+-- 选项文字交给原生 Spinner 居中，不再通过前后空格模拟对齐。
+local disabletext = i18n({"禁用", "Disable"})
+local enabletext = i18n({"启用", "Enable"})
+local partenabletext = i18n({"部分", "Part"})
+local leftparttext = partenabletext
 local function forconfoption(conf, i, fillindex, enabledesc, index, newmax, enablehover)
     conf.options[i + fillindex] = {
         description = enabledesc and (enabledesc[i] or enabledesc) or
-            (index < 0 and (index == newmax and enabletext or partenabletext) or filldesc(numberdigits(index / 1000)) .. index / 1000),
+            (index < 0 and (index == newmax and enabletext or partenabletext) or ("" .. index / 1000)),
         hover = enablehover and enablehover[i] or enablehover,
         data = index / 1000
     }
@@ -178,8 +139,8 @@ local function item(key, label, hover, default, min, max, step, enablehover, dis
             -- 连续数字选项值显示(enabledesc[2] + i - 2),仅适用于item("More Skill Points", i18n({"技能点继续增加", "More Skill Points"})选项
             conf.options[i + 1] = {
                 description = enabledesc and
-                    (enabledesc[i] and ((-step + 1) > #enabledesc and (filldesc(numberdigits(enabledesc[i])) .. enabledesc[i]) or enabledesc[i]) or
-                        (enabledesc[2] and filldesc(numberdigits(enabledesc[2] + i - 2)) .. (enabledesc[2] + i - 2)) or enabledesc) or
+                    (enabledesc[i] and ((-step + 1) > #enabledesc and ("" .. enabledesc[i]) or enabledesc[i]) or
+                        (enabledesc[2] and ("" .. (enabledesc[2] + i - 2))) or enabledesc) or
                     (index == step and enabletext or partenabletext),
                 hover = enablehover and (enablehover[i] or enablehover[2] or enablehover) or index,
                 data = index
@@ -226,8 +187,8 @@ end
 local function spaceitem() return {name = "", label = "", hover = "", options = {{description = "", data = false}}, default = false} end
 configuration_options = {
     item("Language In Game", i18n({"本模组游戏内语言", "Mod Language In Game"}), nil, false, -1, -2, -1, {"简体中文", "English"},
-        i18n("自动设定", "Auto Setting"), {filldesc(8) .. "简体中文", filldesc(6) .. "English"},
-        filldesc(4) .. i18n({"自动", "Auto"})),
+        i18n("自动设定", "Auto Setting"), {"简体中文", "English"},
+        i18n({"自动", "Auto"})),
     item("Show Mod Icon In Game", i18n({"游戏内查看模组按钮", "Mods Info Flower Btn"}),
         i18n({"聊天区打字 `显示/隐藏/默认模组` 试试", "try chat input `show/hide/default mods` and enter"})),
     item("Disable Outdate Tip", i18n({"限制模组版本更新提示", "Limit Mods Outdate Tip"}), i18n(
@@ -251,16 +212,14 @@ configuration_options = {
     {
         name = "World Exchange",
         label = i18n({"穿越机制", "World Exchange Mode"}),
-        hover = i18n({"独立选择穿越方式，不影响整理收集；需开启容器按钮，地面与洞穴使用相同档位。切换后仍保留已有存档的恢复保护",
-            "Choose the exchange mode independently of sorting/collection. Requires container buttons and matching shard settings. Existing saves retain recovery protection after switching"}),
-        default = "traditional",
+        hover = i18n({"旧配置统一迁移到为爽原版，旧暗影枢纽物品自动送回各层原生空间；地面与洞穴须同时更新。之后可手动选择咸鱼版或暗影枢纽，各机制分别保留空间。",
+            "Legacy settings migrate to Original, returning old Nexus items to their native shard containers. Update all shards together. Later explicit mode selections retain separate storage."}),
+        default = "exchange_v1_original",
         options = {
-            {description = i18n({"关闭", "Off"}), data = false},
-            {description = i18n({"传统（默认）", "Traditional (default)"}), data = "traditional",
-                hover = i18n({"沿用为爽原有整箱交换和辅助暂停按钮", "Upstream whole-container exchange with its optional pause button"})},
-            {description = i18n({"双界协同（实验性）", "Coordinated (experimental)"}), data = "coordinated",
-                hover = i18n({"仅建议在配置较高的主机或服务器上启用，可解决旧版穿越因两层存档不同步导致的问题。",
-                    "Recommended only for higher-spec hosts or servers. Addresses old exchange issues caused by out-of-sync shard saves."})},
+            {description = i18n({"为爽原版（默认）", "Original (default)"}), data = "exchange_v1_original"},
+            {description = i18n({"咸鱼版", "Xianyu"}), data = "exchange_v1_xianyu"},
+            {description = i18n({"暗影枢纽", "Shadow Nexus"}), data = "exchange_v1_nexus"},
+            {description = i18n({"关闭空间切换", "Disable space switching"}), data = "exchange_v1_off"},
         },
     },
     item("Items collect", i18n({"道具快捷收集存放", "Items Collect/Store"}),
@@ -274,6 +233,59 @@ configuration_options = {
     --     item("simple chatbot", i18n({"千影小助手", "little QianYing"}), i18n({"召唤小助手来帮你吧", "call bot for help"})),
     --     spaceitem(),
     --     item("Server Paused", i18n({"服务器暂停/继续投票", "Vote for pause / resume"}, i18n({"投票暂停或继续", "Vote for pause / resume"}))),
+    item("difficulty_rating", i18n({"难度评级", "Difficulty Rating"}),
+        i18n({"按当前生效的模组配置查询难度评级，仅自己可见", "Privately rate the currently active mod settings"}),
+        true, nil, nil, nil,
+        i18n({"控制台或聊天输入 /nd 查询难度评级，仅自己可见", "Enter /nd in console or chat for a private difficulty rating"}),
+        i18n({"关闭难度评级及 /nd 查询", "Disable difficulty ratings and /nd queries"})),
+    headeritem(i18n({"贝爷生存", "Bear Grylls Survival"})),
+    item("贝爷求生", i18n({"贝爷求生", "Bear Grylls Survival"}),
+        i18n({"制作变慢、随机耐久、资源减半、制作不永久解锁科技、猪王不换金；允许磨刀与黑暗，默认关闭",
+            "Slower crafting, random durability, halved resources, no permanent crafting unlocks or Pig King gold; sharpening and darkness allowed"}), false, 1, 1, 1,
+        i18n({"启用贝爷求生", "Enable Bear Grylls Survival"}), i18n({"禁用贝爷求生", "Bear Grylls Survival"}), enabletext),
+    item("种地种树需要书", i18n({"种地种树需要书", "Farming And Planting Needs A Book"}),
+        i18n({"没有园艺/造林书籍时无法在农田播种或种植树木,每次消耗1点书耐久", "Cannot plant crops or trees without a gardening/silviculture book; each planting uses 1 book durability"}), false, 1, 1, 1,
+        i18n({"启用种地种树需要书", "Enable Farming And Planting Needs A Book"}), i18n({"禁用种地种树需要书", "Farming And Planting Needs A Book"}), enabletext),
+    item("做饭需要书", i18n({"做饭需要书", "Cooking Needs A Book"}),
+        i18n({"没有可用的烹饪指南时无法在烹饪锅做饭,每次烹饪消耗1点耐久", "Cannot cook without a usable cookbook; each cooking uses 1 durability"}), false, 1, 1, 1,
+        i18n({"启用做饭需要书", "Enable Cooking Needs A Book"}), i18n({"禁用做饭需要书", "Cooking Needs A Book"}), enabletext),
+    item("材料制造翻倍", i18n({"材料制造翻倍", "Double Craft Materials"}),
+        i18n({"制造配方所需材料数量翻倍,生存更艰难", "Recipe materials are doubled, making survival harder"}), false, 1, 1, 1,
+        i18n({"启用材料制造翻倍", "Enable Double Craft Materials"}), i18n({"禁用材料制造翻倍", "Double Craft Materials"}), enabletext),
+    item("低san采集失败", i18n({"低san采集失败", "Pick Fail At Low Sanity"}),
+        i18n({"理智越低采集越容易失败,精神见底时最高50%失败率", "Picking may fail more often at low sanity, up to 50% at zero"}), false, 1, 1, 1,
+        i18n({"启用低san采集失败", "Enable Pick Fail At Low Sanity"}), i18n({"禁用低san采集失败", "Pick Fail At Low Sanity"}), enabletext),
+    item("捡东西变慢", i18n({"捡东西变慢", "Slow Pickup"}),
+        i18n({"捡起/采摘/收获变为慢动作", "Pickup/Pick/Harvest become long actions"}), false, 1, 1, 1,
+        i18n({"启用捡东西变慢", "Enable Slow Pickup"}), i18n({"禁用捡东西变慢", "Slow Pickup"}), enabletext),
+    headeritem(i18n({"德爷生存", "Ed Stafford Survival"})),
+    item("德爷生存", i18n({"德爷生存", "Ed Stafford Survival"}),
+        i18n({"德爷极限求生模式总开关，默认关闭；子项仅在总开关开启时生效",
+            "Ed Stafford master switch, disabled by default; sub-options require this switch"}), false, 1, 1, 1,
+        i18n({"启用德爷生存", "Enable Ed Stafford Survival"}), i18n({"禁用德爷生存", "Ed Stafford Survival"}), enabletext),
+    item("料理禁止堆叠", i18n({"料理禁止堆叠", "No Food Stacking"}),
+        i18n({"料理不能继续堆叠；已有堆叠保留数量，拆分后每格一份", "Food cannot stack; existing saved stacks keep their count and cannot recombine after splitting"}), false, 1, 1, 1,
+        i18n({"启用料理禁止堆叠", "Enable No Food Stacking"}), i18n({"禁用料理禁止堆叠", "No Food Stacking"}), enabletext),
+    item("护甲失效", i18n({"护甲失效", "Armor Invalid"}),
+        i18n({"护甲不能再抵挡伤害,但被打也不会损失耐久\n开启后暗影生物不能主动伤害你",
+            "Armor no longer blocks damage,but loses no durability when hit\nShadow creatures cannot actively harm you while enabled"}), false, 1, 1, 1,
+        i18n({"启用护甲失效", "Enable Armor Invalid"}), i18n({"禁用护甲失效", "Armor Invalid"}), enabletext),
+    item("难以冻结", i18n({"难以冻结", "Hard To Freeze"}),
+        i18n({"冻结有23秒冷却 冻结强度大量减少",
+            "Freeze has 23s cooldown,freeze intensity greatly reduced"}), 1, 1, 1, 1,
+        i18n({"启用难以冻结", "Enable Hard To Freeze"}), i18n({"禁用难以冻结", "Hard To Freeze"}), enabletext),
+    item("下雨禁火", i18n({"下雨禁火", "No Fire In Rain"}),
+        i18n({"下雨时无法点燃火焰,火把瞬间熄灭",
+            "Cannot light fires in rain,torch goes out instantly"}), 1, 1, 1, 1,
+        i18n({"启用下雨禁火", "Enable No Fire In Rain"}), i18n({"禁用下雨禁火", "No Fire In Rain"}), enabletext),
+    item("火把传热", i18n({"火把传热", "Torch Heat"}),
+        i18n({"点燃的火把/打火机火焰是热源,附近玩家会变暖",
+            "Lit torch/lighter flames are heat sources,warms nearby players"}), 1, 1, 1, 1,
+        i18n({"启用火把传热", "Enable Torch Heat"}), i18n({"禁用火把传热", "Torch Heat"}), enabletext),
+    item("空挥武器", i18n({"空挥武器", "Swing In Place"}),
+        i18n({"在使用攻击的时候 玩家不会移动到最远攻击距离\n而是会原地挥刀",
+            "When attacking,the player will not move to the max attack range\nbut swing in place"}), false, 1, 1, 1,
+        i18n({"启用空挥武器", "Enable Swing In Place"}), i18n({"禁用空挥武器", "Swing In Place"}), enabletext),
     headeritem("Ray"),
     item("Random Sized", i18n({"随机生物大小", "Random biological size"}),
         i18n({"如生活调味料一般改变方方面面", "Change all aspects like seasoning in daily life"}), 1, 1, 1, 1,
@@ -298,7 +310,7 @@ configuration_options = {
     item("World Unlock", i18n({"地图解锁", "World Unlock"}),
         i18n({"遗忘地图开启时玩家可以使用特殊手段来解锁地图。", "Players can use special methods to unlock the map"}), false, 1, 1, 1,
         i18n({"启用解锁", "Enable unlocking"}), i18n({"禁用解锁", "Disable unlocking"}), enabletext),
-    headeritem(i18n({"󰀩 暗影世界" .. filllabel(11), "󰀩 Shadow World" .. filllabel(15)})),
+    headeritem(i18n({"󰀩 暗影世界", "󰀩 Shadow World"})),
     headeritem(i18n({"暗影分身改动", "Creatures"})),
     item("Shadow World", i18n({"生物暗影分身数目", "Creatures' Shadow Number"}),
         i18n({"这个世界的生物会生成几个暗影分身", "Creatures will have N shadow in the world"}), 1, 1, 3, 1,
@@ -313,19 +325,19 @@ configuration_options = {
             i18n({"仅boss残血25%或2500血以下时生成暗影分身", "only boss low health 25%/2500 will have shadow"}),
             i18n({"仅切斯特哈奇阿比盖尔伯尼", "only abigail/bernie/hutch/chester"})
         }, i18n({"除影怪和不可移动生物外大部分生物都会生成暗影分身", "Most creatures will have shadow except shadow/fixed creatures"}), {
-            i18n({filldesc(6) .. "非boss", filldesc(7) .. "Notboss"}),
-            i18n({filldesc(6) .. "仅boss", filldesc(4) .. "Boss"}),
-            i18n({filldesc(6) .. "boss残血", filldesc(13) .. "BossLowHealth"}),
-            i18n({filldesc(6) .. "boss特殊", filldesc(11) .. "BossSpecial"}),
-            i18n({filldesc(6) .. "boss半血", filldesc(14) .. "BossHalfHealth"}),
-            i18n({filldesc(8) .. "仅boss残血", filldesc(18) .. "OnlyBossLowHealth"}),
-            i18n({filldesc(6) .. "仅宠物", filldesc(7) .. "OnlyPet"})
-        }, i18n({filldesc(6) .. "大部分", filldesc(4) .. "Most"}), true), -- false为大部分,1为非boss,2为仅boss,3为...,最后一个true是revert颠倒顺序
+            i18n({"非boss", "Notboss"}),
+            i18n({"仅boss", "Boss"}),
+            i18n({"boss残血", "BossLowHealth"}),
+            i18n({"boss特殊", "BossSpecial"}),
+            i18n({"boss半血", "BossHalfHealth"}),
+            i18n({"仅boss残血", "OnlyBossLowHealth"}),
+            i18n({"仅宠物", "OnlyPet"})
+        }, i18n({"大部分", "Most"}), true), -- false为大部分,1为非boss,2为仅boss,3为...,最后一个true是revert颠倒顺序
     item("Shadow Num Limit", i18n({"暗影分身总数上限", "Shadow Num Limit"}), i18n(
             {"世界的暗影分身数目上限,BOSS/宠物不算;有但不能生成则减伤", "Per world,except Boss/Pet;If can't then creature reduce takendmg"}),
-        12, 5, 30, 1, nil, nil, nil, i18n({filldesc(4) .. "无限", filldesc(7) .. "Unlimit"})),
+        12, 5, 30, 1, nil, nil, nil, i18n({"无限", "Unlimit"})),
     item("Shadow Regen Period", i18n({"暗影分身再生时间", "Shadow Rebirth Time"}), -- false为瞬间再生
-        i18n({"死亡后多少秒再次生成", "N seconds rebirth after death"}), 480, 60, 960, 60, nil, nil, nil, filldesc(1) .. "1"),
+        i18n({"死亡后多少秒再次生成", "N seconds rebirth after death"}), 480, 60, 960, 60, nil, nil, nil, "1"),
     item("Shadow Help Self", i18n({"生物转移敌人仇恨", "Creatures Transfer Hatred to Shadow"}),
         i18n({"生物会将敌人仇恨转移给暗影分身", "When creatures attacked by enemy,it will transfer hatred to its shadow"}), 1, 1, 4, 1,
         {
@@ -334,10 +346,10 @@ configuration_options = {
             i18n({"boss残血25%时才转移敌人仇恨给分身", "all but boss only low health 25% "}),
             i18n({"大部分生物都会转移,韦伯沃特削弱很大", "Most creatures;weak webber and wurt when attack boss"})
         }, nil, {
-            i18n({filldesc(6) .. "仅无害", filldesc(8) .. "OnlySafe"}),
-            i18n({filldesc(6) .. "非boss", filldesc(7) .. "Notboss"}),
-            i18n({filldesc(6) .. "boss残血", filldesc(13) .. "BossLowHealth"}),
-            i18n({filldesc(6) .. "大部分", filldesc(4) .. "Most"})
+            i18n({"仅无害", "OnlySafe"}),
+            i18n({"非boss", "Notboss"}),
+            i18n({"boss残血", "BossLowHealth"}),
+            i18n({"大部分", "Most"})
         }, nil),
     item("Shadow Protect Creatures", i18n({"暗影分身保护本体", "Shadow Protect Creatures"}), i18n(
             {"关闭暗影分身独立仇恨;暗影分身有仇恨后仍共享本体仇恨", "Shadow will whether share creatures's target even it has own target"}),
@@ -348,11 +360,11 @@ configuration_options = {
     item("Shadow Epic Far Range", i18n({"本体远离驱散距离", "Epic Far Stop Range"}),
         i18n({"远离BOSSx距离后BOSS驱散暗影分身,非BOSS距离50", "Far away Epic x range,shadow disappear;Not epic 50"}), 200, 1000, 100,
         -100, nil,
-        nil, nil, i18n({filldesc(4) .. "无限", filldesc(7) .. "Unlimit"})),
+        nil, nil, i18n({"无限", "Unlimit"})),
     item("Epic Shadow Far Range", i18n({"分身远离回归距离", "Epic Shadow Far Range"}),
         i18n({"远离Boss分身x距离后分身主动回归,非BOSS距离50", "Far away Epic's shadow x range,shadow disappear;Not epic 50"}), false,
         1000,
-        100, -100, nil, nil, nil, i18n({filldesc(4) .. "无限", filldesc(7) .. "Unlimit"})),
+        100, -100, nil, nil, nil, i18n({"无限", "Unlimit"})),
     item("Shadow Harder Level", i18n({"暗影世界第二周目", "Shadow World Second Mode"}), i18n(
             {"裂隙开启后,脱离加载或丢失仇恨,分身闪到本体周围", "When Enable Rifts,Shadow go back when leave load range or lose target"}),
         false),
@@ -360,7 +372,7 @@ configuration_options = {
         {"设置攻击间隔。削弱影子的血量/体型/攻速/复活时间,部分boss影子2000血/复活更久",
             "set attack_period.weakness Health/Scale/AttackPeriod/SpawnTime of shadow"}), 2, 1, 3, 1),
     spaceitem(),
-    headeritem(i18n({"󰀜 简单模式" .. filllabel(10), "󰀜 Easy Mode" .. filllabel(11)})),
+    headeritem(i18n({"󰀜 简单模式", "󰀜 Easy Mode"})),
     headeritem(i18n({"建筑改动", "Structures"})),
     item("Science Machine Refine Materials", i18n({"科学机器精炼材料", "Science Machine Refine Materials"}),
         i18n({"可以给予成品或材料进行加工,齿轮升级9次", "Give it product or ingredients,gears to level up"})),
@@ -398,16 +410,12 @@ configuration_options = {
             i18n({"无标记", "Don't use markers"}),
             i18n({"用彩色标记指示其它塔的方向", "Use colored markers to indicate direciion of other Lazy Deserter"})
         }, i18n({"禁用", "Disable"}), {
-            i18n({filldesc(4) .. "无标记", "no mark"}),
-            i18n({filldesc(4) .. "标记", "mark"})
-        }, i18n({"禁用" .. filldesc(4), "Disable" .. filldesc(7)}), false),
+            i18n({"无标记", "no mark"}),
+            i18n({"标记", "mark"})
+        }, i18n({"禁用", "Disable"}), false),
     item("dragonfly furnace stewer", i18n({"龙鳞火炉批量烹饪", "Dragonfly Furnace Multi Cook Pot"}),
-        i18n({"放入足够食材;给燃料缩短做饭时间;放入红宝石可消耗制作沃利专属料理",
-            "Give food Ingredients to cook;Give fuel to reduce cook time;Put redgem can cook Warly's recipes"}), -1, nil,
-        nil, -1, {
-            i18n({"(妥协测试版专供)四格火炉可直接做主厨菜", "(Only effective in UM-beta mode)can directly cook Warly's recipes"}),
-            i18n({"消耗红宝石制作主厨菜", "Redgem can cook Warly's recipes"})
-        }),
+        i18n({"四格食材可批量烹饪，添加燃料可加快烹饪。非沃利角色可消耗红宝石制作沃利专属料理。摧毁时木头等量变木炭，树枝及可销毁杂物每两件产出一个灰烬。",
+            "Batch cook with four ingredient slots and add fuel to speed up cooking. Other characters can spend red gems to make Warly's dishes. Destroy turns logs into charcoal one for one and yields one ash per two twigs or eligible junk items."})),
     item("Portable Crock Pot Multi", i18n({"便携烹饪锅批量调味", "Portable Crock Pot Multi"})),
     item("mushroom_light", i18n({"蘑菇灯返鲜,更亮", "mushroom_light regain freshness/brighter"})),
     item("meatrack_dry", i18n({"晾肉架可晾晒蔬菜", "meatrack can dry plants"}),
@@ -423,7 +431,7 @@ configuration_options = {
     item("The tent supports multiple people sharing it",
         i18n({"帐篷可多人共用", "The tent supports multiple people sharing it"}),
         i18n({"帐篷可支持设定的人数共用(优化自 作者:liximi -《多人帐篷》模组)", "The tent can accommodate a predetermined number of people"}),
-        -3, nil, nil, -14, {"", ""}, nil, {i18n({filldesc(4) .. "无限", filldesc(7) .. "Unlimit"}), 2}),
+        -3, nil, nil, -14, {"", ""}, nil, {i18n({"无限", "Unlimit"}), 2}),
     item("Haunt Telltale Heart To Revive", i18n({"作祟告密的心复活", "Haunt Telltale Heart To Revive"}),
         i18n({"作祟容器可以把心作祟出来了", "Even if it's in container"})),
     item("Construction Amulet Repair Equip", i18n({"材料建造修理道具", "Ingredients Repair Equip"}),
@@ -440,7 +448,19 @@ configuration_options = {
         i18n({"上线时自动捡起眼骨类道具", "Auto Pickup Irreplaceable Item When Connect"})),
     item("Terra Easter egg", i18n({"泰拉箱子彩蛋", "Terra Easter egg"})),
     item("um_patch", i18n({"永不妥协补丁", "Uncompromising Mode Patch"}),
-        i18n({"启用全部永不妥协兼容修复与调整。", "Enable all Uncompromising Mode fixes and adjustments."})),
+        i18n({"启用永不妥协兼容调整与性能优化；上游实现不匹配时跳过对应优化。", "Enable UM adjustments and performance fixes; unknown upstream implementations are left unchanged."})),
+    {
+        name = "um_weather_particles2hm",
+        label = i18n({"妥协天气粒子密度", "UM weather particle density"}),
+        hover = i18n({"永不妥协补丁开启时生效，只调整暴风雪粒子与龙卷风附近雨溅，保留遮挡和天气机制。",
+            "With UM Patch enabled, adjust blizzard particles and storm rain effects while preserving overlays and weather gameplay."}),
+        options = {
+            {description = i18n({"轻量", "Light"}), data = 2},
+            {description = i18n({"均衡（默认）", "Balanced (default)"}), data = 4},
+            {description = i18n({"妥协原密度", "Original UM density"}), data = 10},
+        },
+        default = 4,
+    },
     item("luck value", i18n({"幸运值机制改动", "Luck value adjustment"}),
         i18n({"幸运值效能削弱,无法达到100概率", "Luck effect diminished, cannot reach 100% probability"})),
     headeritem(i18n({"装备改动", "Equips"})),
@@ -493,8 +513,8 @@ configuration_options = {
         "拾荒尖帽受击反击、可用自助修理机修理、耐久增强",
         "scraphat return attack to attacker,can be repaired with Auto-Mat-O-Chanic,More durable"})),
     item("lunar shadow items", i18n({"月后影后装备增强", "lunar and shadow rift items strengthen"}),
-        i18n({"结晶器避茄针,阴郁牛铃可收牛,茄剑带月灵,镰刀特效,虚空头老瓦套迅速叠满",
-            "deerclopseyeball avoid lunarthrall_plant, can put beefalo in shadow_beef_bell, sword_lunarplant with gestalt, armorwagpunk and voidclothhat quickly stacks up"})),
+        i18n({"结晶器避茄针,阴郁牛铃可收牛,骑牛离铃约一屏提醒,茄剑带月灵,镰刀特效,虚空头老瓦套迅速叠满",
+            "deerclopseyeball avoid lunarthrall_plant, shadow_beef_bell stores beefalo; riding about a screen away reminds you to bring the bell; sword_lunarplant with gestalt, armorwagpunk and voidclothhat quickly stacks up"})),
     item("Celestial Jewel Upgrade Sword Lunarplant", i18n({"天体珠宝升级亮茄剑", "Celestial Jewel Upgrade Sword Lunarplant"}),
         i18n({"攻击200普通+300位面,右键范围300普通+400位面,命中敌人脚下留3秒月火", "Attack 200 physical + 300 planar; RMB AoE 300 physical + 400 planar; hits leave 3s moonfire on the ground"}), true),
     headeritem(i18n({"道具改动", "Props"})),
@@ -503,8 +523,8 @@ configuration_options = {
     item("boat use shadowheart upgrade", i18n({"暗影心脏升级船只", "Shadow Heart Upgrade Boat"}),
         i18n({"暗影心脏放船上升级船只从而自动船舵,船损返还心脏", "Drop shadow heart on boat make its steering wheel auto"})),
     item("beef_bell use orangegem upgrade", i18n({"橙宝石升级牛铃铛", "Orange Gem Upgrade Beefalo Bell"}), i18n({
-        "存档牛数据,死后此数据复活;牛角更新存档;牛毛改名;右键牛铃召唤召回牛",
-        "Save data when upgrade,call/recall and auto relive beefalo;Then give horn reset save and wool rename"
+        "存档牛数据,死后此数据复活;牛角更新存档;牛毛改名;右键牛铃召唤召回牛;骑牛离铃约一屏提醒",
+        "Save data when upgrade,call/recall and auto relive beefalo;horn updates save,wool renames;riding about a screen away reminds you to bring the bell"
     })),
     item("New Hambat 2", i18n({"全新火腿(๑•̀ㅂ•́)و✧", "New Hambat (๑•̀ㅂ•́)و✧"}),
         i18n({"火腿为什么不能吃?我不理解，但是我们火腿棒!很棒 (设置是最大重量)", "taste your hambat and be strong (config for hambat weight)"}), 10,
@@ -608,7 +628,7 @@ configuration_options = {
         }, i18n({"禁用", "Disable"}), {
             i18n({"仅温蒂可打开", "Wendy can open"}),
             i18n({"全员可开", "Everyone can open"})
-        }, i18n({"禁用" .. filldesc(4), "Disable" .. filldesc(7)}), false),
+        }, i18n({"禁用", "Disable"}), false),
     item("wx78_easy", i18n({"-------------------- 󰀔 WX-78总开关", "󰀔 WX-78 Master Switch"})),
     item("WX-78 Safe Remove Module", i18n({"WX-78拆电路板无损耗", "WX-78 Safe Remove Module"})),
     item("WX-78 Integrated Upgrade Module Level", i18n({"WX-78同种电路板融合升级", "WX-78 Integrated Upgrade Module Level"}),
@@ -722,6 +742,15 @@ configuration_options = {
         i18n({"戴上帽子  目前 仅限韦伯", "just put on your hat . only for webber now"})),
     item("winona_easy", i18n({"---------------------- 󰀌 薇诺娜总开关", "󰀌 Winona Master Switch"})),
     item("Winona No Hungry Builder", i18n({"薇诺娜制作不再受饥饿值影响", "Winona No Hungry Builder"})),
+    item("Winona Toolbox Tools", i18n({"薇诺娜工具箱可存放工具", "Winona Toolbox Stores Tools"}),
+        i18n({"薇诺娜可以制作工具箱，并在其中存放斧头、镐、铲子等工具。开启后优先应用淬炼版的存放规则，兼容永不妥协正式版和测试版。",
+              "Winona can craft a toolbox that also stores tools such as axes, pickaxes, and shovels. Overrides the tool restriction in both editions of Uncompromising Mode."})),
+    item("Winona Generator Ground Charging", i18n({"发电机为地面电器充电", "Generators Charge Dropped Devices"}),
+        i18n({"放在运转发电机供电范围内的电器会自动充电，兼容永不妥协转换后的提灯、矿工帽等。",
+              "Dropped electrical devices recharge within range of a running generator, including electrically converted equipment from Uncompromising Mode."})),
+    item("Winona Electrical Upgrades", i18n({"薇诺娜电气改造与过充", "Winona Electrical Upgrades and Overcharging"}),
+        i18n({"电能转换套件可改造提灯、矿工帽和鼹鼠帽，耗能降低25%。薇诺娜装备电气装备触摸发电机，充过100%后解锁该件装备的200%过充和特殊效果；解锁后地面充电也可达200%。过充不增加耗能。兼容永不妥协正式版和测试版，共用一个套件。",
+              "Convert lanterns, miner hats and moggles with 25% lower consumption. Winona must equip an item and charge it at a generator past 100% to unlock 200% overcharging, including ground charging. Overcharging adds no consumption penalty. Shares one kit with either UM edition."})),
     item("Winona Hammer Drop All Loot", i18n({"薇诺娜敲掉建筑获得全部材料", "Winona Hammer Drop All Loot"})),
     item("Winona Rotating Weapon Perpetual Attack", i18n({"薇诺娜右键旋转武器", "Winona Right Rotating Weapon"}),
         i18n({"旋转闪避,2秒CD,2.5秒1.5倍伤害和5秒1.33倍加速", "short invincible,2.5s 1.5x damage,5s 1.33x speed,2s CD"})),
@@ -847,7 +876,7 @@ configuration_options = {
         }, i18n({"禁用", "Disable"}), {
             i18n({"原版倒走", "Original backwards"}),
             i18n({"往正后方倒走", "Towards the back"})
-        }, i18n({"禁用" .. filldesc(4), "Disable" .. filldesc(7)}), false),
+        }, i18n({"禁用", "Disable"}), false),
     item("Wanda Right Wrapfront", i18n({"旺达右键未来行走", "Wanda Right Warpfront"}), i18n({"娱乐选项", "FOR FUN"}), false, 2,
         20, 1),
     item("right Wrapback need ctrl", i18n({"右键倒走需要按住Ctrl", "Warpback Need Press Ctrl"}),
@@ -876,7 +905,7 @@ configuration_options = {
         }, i18n({"禁用", "Disable"}), {
             i18n({"伤害2x 承伤1.6x", "2x dmg,1.6x taken"}),
             i18n({"伤害4x 承伤2.5x", "4x dmg,2.5x taken"})
-        }, i18n({"禁用" .. filldesc(4), "Disable" .. filldesc(7)}), false),
+        }, i18n({"禁用", "Disable"}), false),
     item("Monster Night Vision", i18n({"怪物角色夜视（独立开关）", "Monster Player Night Vision"}),
         i18n({"韦伯、鱼妹、芜猴及带monster标签的玩家获得稳定夜视（排除沃托克斯）；夜视不依赖模式。开启简单模式和对应角色强化后，前三位夜晚不掉理智",
             "Stable night vision for Webber, Wurt, Wonkey, and monster-tagged players except Wortox, regardless of mode. The first three also avoid night sanity drain with their Easy Mode character perks enabled"})),
@@ -898,7 +927,7 @@ configuration_options = {
     item("enter gift 2", i18n({"新人礼物", "Enter gift"}),
         i18n({"提供更多的首次进入礼物,受其他设置影响.季节礼物", "provide more gift for new player, effect by other config.Season gifts"})),
     spaceitem(),
-    headeritem(i18n({"󰀕 困难模式" .. filllabel(11), "󰀕 Hard Mode" .. filllabel(12)})),
+    headeritem(i18n({"󰀕 困难模式", "󰀕 Hard Mode"})),
     headeritem(i18n({"角色改动", "Charaters"})),
     item("role_nerf", i18n({"困难模式角色改动总开关", "Switch for Charaters of Hard Mode"})),
     item("role_battle", i18n({"生存险境", "Danger Health"}), i18n(
@@ -918,15 +947,23 @@ configuration_options = {
         "饥饿死亡有饥饿上限惩罚,肉海带种子干/新鲜回血食物/强心针(需蛙腿,效能翻倍)恢复",
         "Hunger Has Penalty.Eat Dried/Fresh Health Food or Booster Shot to Heal"
     })),
-    item("combat", i18n({"战斗险境", "Combat Reduce"}),
-        i18n({"检查拳击袋,开关攻击伤害信息显示", "inspect Punching Bag open/close dmg status display"}), 4, 1, 4, 1, {
-            i18n({"使用原版机制，增益伤害全部乘算", "Original,not change"}),
-            i18n({"[先乘算后加算]小于1.5的倍率乘算，大于等于1.5的倍率加算", "[first mult then add] <1.5 -> mult, >=1.5 -> add."}),
-            i18n({"最大倍率上限封顶2.5倍，多余转为减伤和移速",
-                "2.5 max mult, excess part is converted into damage reduction and speed bonus"}),
-            i18n({"锋芒渐敛：普通2.5起递减趋近3倍，位面2起递减趋近2.5倍；无溢出生存补偿",
-                "Tempered Edge: regular 2.5->3x, planar 2->2.5x; no overflow defense/speed"})
-        }, nil, {leftparttext, enabletext, enabletext, i18n({filldesc(8) .. "锋芒渐敛", filldesc(13) .. "Tempered Edge"})}),
+    {
+        name = "combat", label = i18n({"战斗险境", "Combat Reduce"}), default = 4,
+        hover = i18n({"检查拳击袋可开关伤害显示。旧默认1档自动升级为锋芒渐敛；仍可手动选择传统档位。",
+            "Inspect a punching bag to toggle damage details. The old default migrates to Tempered Edge; traditional tiers remain selectable."}),
+        options = {
+            {description = disabletext, data = false},
+            {description = i18n({"传统1档", "Traditional 1"}), data = "traditional_1",
+                hover = i18n({"使用原版机制，增益伤害全部乘算", "Original multiplicative bonuses"})},
+            {description = i18n({"传统2档", "Traditional 2"}), data = 2,
+                hover = i18n({"先乘算后加算：小于1.5的倍率乘算，大于等于1.5的倍率加算", "Multiply bonuses below 1.5, then add bonuses of 1.5 or higher"})},
+            {description = i18n({"传统3档", "Traditional 3"}), data = 3,
+                hover = i18n({"倍率上限2.5倍，多余转为减伤和移速", "Cap at 2.5x; excess grants defense and speed"})},
+            {description = i18n({"锋芒渐敛（默认）", "Tempered Edge (default)"}), data = 4,
+                hover = i18n({"普通2.5起递减趋近4倍，位面2起递减趋近3.5倍；普通10倍压缩为3.75倍，无溢出生存补偿",
+                    "Regular 2.5->4x, planar 2->3.5x; regular 10x becomes 3.75x; no overflow defense/speed"})},
+        },
+    },
     item("regen_danger", i18n({"恢复险境", "Danger Regen"}), i18n({
         "吃东西缓慢回血,挨打后恢复效果受到折扣",
         "Eating heals slowly over time;recovery is reduced after getting hit"
@@ -966,7 +1003,7 @@ configuration_options = {
         }, i18n({"禁用", "Disable"}), {
             i18n({"随机增加", "Add"}),
             i18n({"随机增减", "Add or Reduce"})
-        }, i18n({"禁用" .. filldesc(4), "Disable" .. filldesc(7)}), false),
+        }, i18n({"禁用", "Disable"}), false),
     -- 2025.2.24 YeFeng:时钟险境,替代旧版clock_rotate,打乱每天日夜交替顺序并真正改变游戏日夜相位
     -- item("clock_rotate", i18n({"时钟欺骗", "Clock Deception"}), i18n({"右上角时钟顺/逆时针旋转1~3格", "The top-right clock rotates 1-3 ticks clockwise/counterclockwise."}), false, 1, 2, 1, {
     --       i18n({"顺/逆时针旋转1~3格", "rotates 1-3 ticks clockwise or counterclockwise."}),
@@ -974,7 +1011,7 @@ configuration_options = {
     --       }, i18n({"禁用", "Disable"}), {
     --       i18n({"部分角度", "Limited Angle"}),
     --       i18n({"全部角度", "Full Angle"})
-    --       }, i18n({ "禁用" .. filldesc(4),"Disable" .. filldesc(7)}), false),
+    --       }, i18n({ "禁用","Disable"}), false),
     item("clock_peril", i18n({"时钟险境", "Clock Peril"}),
         i18n({"打乱每天的日夜交替顺序,真正改变游戏日夜相位", "Randomize the day/dusk/night cycle each day, actually changes game phases"}),
         false, 1, 2, 1, {
@@ -983,7 +1020,7 @@ configuration_options = {
         }, i18n({"禁用", "Disable"}), {
             i18n({"整块打乱", "Shuffle"}),
             i18n({"逐段随机", "Fragment"})
-        }, i18n({"禁用" .. filldesc(4), "Disable" .. filldesc(7)}), false),
+        }, i18n({"禁用", "Disable"}), false),
     item("taste", i18n({"口味挑剔", "Taste picky"}), i18n({
         "角色一天内重复吃同一料理san值收益减少且额外扣除san值",
         "Repeatedly eats the same dish in one day, the sanity value benefit decreases and additional sanity value is deducted."
@@ -1057,8 +1094,7 @@ configuration_options = {
                 "Dark dusk; night vision alone is unsafe. Native abilities and enabled Webber, Wurt, and Wonkey vision perks in Easy Mode provide dim light"}),
             i18n({"黄昏使用夜间光照", "dusk no light"})
         }, nil,
-        {enabletext, i18n({filldesc(4) .. "经典", filldesc(9) .. "Classical"}), i18n({filldesc(4) .. "经典", filldesc(9) ..
-        "Classical"})}),
+        {enabletext, i18n({"经典", "Classical"}), i18n({"经典", "Classical"})}),
     item("moonlight", i18n({"启迪新月", "Full Moon Unlock"}),
         i18n({"天体启迪时月亮正常阴晴圆缺,此外", "MoonStorm Don't lock full Moon,and"}), -4, -1, -6, -1, {
             i18n({"夜间始终有光照", "Night Always Has Light"}),
@@ -1145,9 +1181,9 @@ configuration_options = {
         i18n({"开局垃圾堆旁边生成2个发条", "spawn 2 Clockwork Knight near Teetering Junk Pile"}),
         i18n({"月台有1个发条;每一些天后或月圆时再生1个上限3个", "1/3 clockwork spawns near moon stone.Every some days or full moon regen 1"})
     }, i18n({"禁用", "Disable"}), {
-        i18n({filldesc(4) .. "垃圾堆", "Junk Pile"}),
-        i18n({filldesc(4) .. "月台", "Moon stone"})
-    }, i18n({"禁用" .. filldesc(4), "Disable" .. filldesc(7)}), false),
+        i18n({"垃圾堆", "Junk Pile"}),
+        i18n({"月台", "Moon stone"})
+    }, i18n({"禁用", "Disable"}), false),
     item("cave_entrance", i18n({"洞梯限行", "Cave entrance"}), i18n({
         "洞口楼梯限行月黑切换;灵魂可出入;洞口伪装但附近有蝙蝠",
         "Entrance/Exit lock unless player ghost;cave entrance hide but near bat"
@@ -1181,13 +1217,13 @@ configuration_options = {
         -3, -1, {
             i18n({"容器内火焰背景代表燃料等级", "Flame background in the container represents fuel grade"}),
             i18n({"且全食材各食材度除怪物度和不可食用度外-0.25", "And the degree of all ingredients except grotesque and inedible is-0.25"}),
-            i18n({"且5格锅,50%-70%食物仅75%饥饿值,限制不可食用度/装饰度/冰度<=2,和<=3",
-                "And 5 Pot;Food<0.7->0.75hunger;inedible/decoration/frozen<=2,sum<=3."})  -- 2025.7.9 melon5格锅
+            i18n({"且5格锅,50%-70%食物仅75%饥饿值,限制不可食用度/装饰度/冰度<=2,和<=3；兼容永不妥协正式版/测试版",
+                "And 5 Pot;Food<0.7->0.75hunger;inedible/decoration/frozen<=2,sum<=3. Compatible with UM stable/beta."})  -- 2025.7.9 melon5格锅
         }, i18n({"禁用", "Disable"}), {
-            i18n({filldesc(4) .. "燃料", filldesc(4) .. "fuel"}),
-            i18n({filldesc(4) .. "-0.25", filldesc(4) .. "-0.25"}),
-            i18n({filldesc(2) .. "5格锅", "5-slot Pot"})
-        }, i18n({"禁用" .. filldesc(4), "Disable" .. filldesc(7)}), false),
+            i18n({"燃料", "fuel"}),
+            i18n({"-0.25", "-0.25"}),
+            i18n({"5格锅", "5-slot Pot"})
+        }, i18n({"禁用", "Disable"}), false),
     item("birds_change", i18n({"鸟类改动", "Birds"}), i18n({
         "鸟笼内鸟类会受食物血量影响;被击或喂食受伤会概率诅咒反击",
         "Birds in cages are affected by food blood volume; common birds fight back when they lose blood"
@@ -1400,28 +1436,28 @@ configuration_options = {
     {
         name = "epic_armor_5",
         label = i18n({"巨兽装甲", "Epic Armor"}),
-        hover = i18n({"遇强则坚通过动态减伤限制爆发与集火；传统装甲保留原有无敌机制。需要开启困难模式及怪物改动。",
-            "Adaptive Fortitude limits burst damage through dynamic resistance; traditional tiers retain their invulnerability. Requires Hard Mode and Monster Changes."}),
+        hover = i18n({"旧默认1档自动升级为遇强则坚，传统1～5档仍可手动选择。需要开启困难模式及怪物改动。",
+            "The old default migrates to Adaptive Fortitude; traditional tiers 1-5 remain selectable. Requires Hard Mode and Monster Changes."}),
         default = "dynamic",
         options = {
             {description = i18n({"禁用", "Disable"}), data = false},
-            {description = i18n({"传统 1 档", "Traditional 1"}), data = 1},
+            {description = i18n({"传统 1 档", "Traditional 1"}), data = "traditional_1"},
             {description = i18n({"传统 2 档", "Traditional 2"}), data = 2},
             {description = i18n({"传统 3 档", "Traditional 3"}), data = 3},
             {description = i18n({"传统 4 档", "Traditional 4"}), data = 4},
             {description = i18n({"传统 5 档", "Traditional 5"}), data = 5},
             {description = i18n({"遇强则坚（默认）", "Adaptive Fortitude (default)"}), data = "dynamic",
-                hover = i18n({"单次伤害先限为最大生命10%，再按动态值减伤；每秒衰减1%最大生命/额外血量倍率平方根；无固定无敌、回血或陨石。",
-                    "Each hit is capped at 10% max health before dynamic resistance; pressure decays by 1% max health/sec divided by sqrt(extra health multiplier). No timed invulnerability, healing or meteors."})},
+                hover = i18n({"单次伤害上限10%最大生命，压力20%起减伤、30%达上限；每秒衰减2%最大生命/额外血量倍率平方根，停手1秒后启用每秒至少400点保底；无固定无敌、回血或陨石。",
+                    "Each hit is capped at 10% max health; resistance rises from 20% to 30% pressure. Pressure cools at 2% max health/sec divided by sqrt(extra health multiplier); the 400 HP/sec minimum starts one second after damage. No timed invulnerability, healing or meteors."})},
         },
     },
     itemvalue("epic_ruin", i18n({"巨兽摧毁", "Epic Ruin"}),
-        i18n({"生物死亡时按所受巨兽伤害占比减少战利品",
-            "Loot is reduced by the proportion of BOSS damage"}), 1, {
+        i18n({"按累计巨兽伤害占生命上限的比例乘以摧毁强度，减少战利品数量",
+            "Reduces the loot count based on recorded boss damage divided by maximum health, multiplied by the selected strength"}), 0.8, {
             i18n({"关闭", "Disable"}), false,
             i18n({"摧毁强度60%", "Ruin 60%"}), 0.6,
-            i18n({"摧毁强度80%", "Ruin 80%"}), 0.8,
-            i18n({"摧毁强度100%", "Ruin 100%"}), 1,
+            i18n({"摧毁强度80%（默认）", "Ruin 80% (default)"}), 0.8,
+            i18n({"摧毁强度100%", "Ruin 100%"}), "full",
             i18n({"摧毁强度200%", "Ruin 200%"}), 2
         }),
     item("poor_armor", i18n({"劣质装甲", "Poor Armor"}),
@@ -1432,10 +1468,10 @@ configuration_options = {
             i18n({"30%", "30%"}),
             i18n({"50%", "50%"})
         }, i18n({"禁用", "Disable"}), {
-            i18n({filldesc(4) .. "10%", filldesc(4) .. "10%"}),
-            i18n({filldesc(4) .. "30%", filldesc(4) .. "30%"}),
-            i18n({filldesc(4) .. "50%", filldesc(4) .. "50%"})
-        }, i18n({"禁用" .. filldesc(4), "Disable" .. filldesc(7)}), false),
+            i18n({"10%", "10%"}),
+            i18n({"30%", "30%"}),
+            i18n({"50%", "50%"})
+        }, i18n({"禁用", "Disable"}), false),
     item("pig_boss", i18n({"猪猪boss", "pig_boss"}),
         i18n({"给猪紫宝石让猪变boss,3倍体型,2级装甲,位面抵抗,免疫负面,仅玩家能攻击,掉落彩虹(开启劣质装甲才起效)",
             "give purplegem to pig to boss,planarentity,avoid debuff,only player attack,(enable when open Poor Armor)"}),
@@ -1469,8 +1505,8 @@ configuration_options = {
         i18n({"哪些生物会获得下面选项的加强", "Which creatures will be enhanced by the following options"}), true, nil, nil, nil,
         i18n({"除玩家和BOSS外的任何危险生物", "All hostile creatures except player and boss"}),
         i18n({"除玩家和BOSS外的任何生物", "All creatures except player and boss"}),
-        i18n({filldesc(8) .. "危险生物", filldesc(7) .. "Hostile"}),
-        i18n({filldesc(8) .. "全部生物", filldesc(3) .. "All"})),
+        i18n({"危险生物", "Hostile"}),
+        i18n({"全部生物", "All"})),
     item("notboss_health", i18n({"非BOSS血量", "Not Boss Health"}), i18n({"乘以", "multiply"}), false, 1, 100, 0.1),
     item("notboss_speed", i18n({"非BOSS移速", "Move Speed"}),
         i18n({"乘以;怪物/额外改动的移速攻速攻频加强同时生效时取较大者", "multiply"}), false, 1, 10, 0.05),

@@ -1,0 +1,35 @@
+export const itemGroups=[
+ {
+  id:'enchanting',title:'附魔与鉴定',description:'锻造台、鉴定工具与收纳装备。',article:'gemology.html#gemology-s2',
+  ids:['um_gemologyforge','um_magnifier_purplegem','um_magnifier','um_magnifier_obsidian','um_gemology_pouch','um_gem_repair_kit'],
+ },
+ {
+  id:'gems',title:'奇异宝石与晶洞',description:'图标对应宝石种类，品质和掉落规则见宝石学。',article:'gemology.html#gemology-s1',
+  ids:[
+   'um_gemologybluegem1','um_gemologybluegem2','um_gemologyredgem1','um_gemologyredgem2',
+   'um_gemologypurplegem1','um_gemologypurplegem2','um_gemologyyellowgem1','um_gemologyyellowgem2',
+   'um_gemologygreengem1','um_gemologygreengem2','um_gemologyorangegem1','um_gemologyorangegem2',
+   'um_gemologypalegem1','um_gemologypalegem2',
+   'um_gemology_geode_blue','um_gemology_geode_glass','um_gemology_geode_magma',
+  ],
+ },
+ {
+  id:'slingshots',title:'薇希弹弓',description:'四把弹弓分别链接对应配方，可对照科技、材料和技能条件。',article:'wixie.html',
+  ids:['slingshot_gnasher','slingshot_matilda','slingshot_jessie','slingshot_claire'],
+ },
+ {
+  id:'equipment',title:'探索与装备',description:'寒冬、洞穴和首领相关的装备与材料。',links:{
+   snowgoggles:'snowstorms.html',wathgrithr_shield_dreadstone:'dreadstone-shield.html',
+   beakbasher:'beak-basher.html',glass_scales:'summer-dragonflies.html',
+   armor_glassmail:'summer-dragonflies.html',um_fyrite:'cave-worldgen.html',
+  },
+  ids:['snowgoggles','um_hat_rime','wathgrithr_shield_dreadstone','beakbasher','glass_scales','armor_glassmail','um_fyrite'],
+ },
+ {
+  id:'rats',title:'鼠潮与鼠穴',description:'鼠潮物品和温奇的定居鼠穴。',links:{
+   uncompromising_winkyhomeburrow:'winky.html#winky-s2',
+   ratpoisonbottle:'rat-raids.html',rat_tail:'rat-raids.html',
+  },
+  ids:['uncompromising_winkyhomeburrow','ratpoisonbottle','rat_tail'],
+ },
+];

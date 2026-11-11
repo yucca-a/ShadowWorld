@@ -1,0 +1,21 @@
+{
+  "version": 6,
+  "label": "第四版去眼稿",
+  "status": "Static approval preview only; runtime unchanged",
+  "generator": "built-in image_gen; edit mode",
+  "base": "../2026-11-04-frost-v4/frost-shrine-v4.png",
+  "artworks": [
+    {
+      "name": "寒霜之祠",
+      "file": "frost-shrine-v6.png",
+      "source": "C:\\Users\\Yucca\\.codex\\generated_images\\01a1a5f4-a146-7ff1-a028-6aab9e6bf76b\\exec-5076f008-dc6f-4073-8534-706680d55316.png",
+      "prompt": "Use case: precise-object-edit.\nPerform ONE strictly localized edit to this exact approved Frost Shrine version 4: COMPLETELY REMOVE BOTH EYES.\nThe user has rejected sapphire replacements and explicitly wants version 4 with no eyes at all. Use only this supplied image as the base.\nAt the two small eye locations on the left and right of the grey shark-head facade:\n- Erase the dark narrow eye slits, the recessed sockets, upper/lower eyelid-like contour lines, and the pointed surrounding eye-shaped frames.\n- Fill each entire former eye area with uninterrupted ash-grey stone surface that connects seamlessly to the adjacent forehead and muzzle material. Match existing flat shading, faint paper texture and sparse short ink hatching.\n- Smooth away any local eyebrow or crease that would still suggest an eye above those two patches. The result must contain absolutely NO eyes, no eye-shaped holes, no slits, no sockets, no pairs of dark marks, no gems or replacement ornaments. The face area at the former eyes must simply be blank continuous stone.\nLOCK ALL OTHER PARTS: keep the same shark head/body silhouette, forehead, existing tiny stone chips elsewhere, huge OPEN MOUTH, upper triangular teeth, offwhite shaggy mane, curved central ice fin, grey side fins, full blue crystalline ICE CHIN forming the lower base, the illuminated small core centered in the mouth, its holder and angular cold wisps, carved fin supports, oval masonry footing, original sizes, proportions, perspective, composition and muted palette. The mouth must stay wide open and retain all its original detail. Preserve the short central non-eye ridge above the mouth if possible, but do not introduce an expression.\nThis is a tiny retouch, NOT a redesign. Do not add a roof, stone blocks, new ornaments, gemstones, symbols, or any different structure. Preserve the reference's Don't Starve 2D ink linework and flat textured gouache surfaces everywhere else.\nReturn one complete sprite in the same centered framing on a genuine transparent alpha background. No floor, external shadow, checkerboard, text, labels, border or extra objects."
+    },
+    {
+      "name": "霜冻核心",
+      "file": "frost-core-v2.png",
+      "status": "Reused unchanged from version 2"
+    }
+  ],
+  "change": "Completely remove both eyes, sockets and eye-shaped outlines; fill with continuous grey stone. Preserve version 4 composition."
+}

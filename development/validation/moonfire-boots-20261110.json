@@ -1,0 +1,92 @@
+{
+  "date": "2026-11-10",
+  "status": "passed",
+  "published": false,
+  "unit_checks": 49,
+  "lua51_compile_files": 6,
+  "production_sha256": {
+    "epic/sword_lunarplant_moonfire2hm.lua": "aeb4087efa455ea42449ef021d8148f03455356bd077d480c24fbe2fdedd9e4e",
+    "scripts/bootlegnonslip2hm.lua": "be354f731b231001d2912293e5b04bde32c11079a59215d4914809eb4b7a3970",
+    "common/patch.lua": "6ade277d8f0af0b0de06592f7f7e439c41952263b7bc526c81d7b412d08a0d2c",
+    "scripts/prefabs/bootleg2hm.lua": "2bc84c0943917c0182273de19907aa927cb4a9355bdaf4988e3a5f007e1f17b2",
+    "scripts/prefabs/bootleg_2hm.lua": "fa82a9863f0209e8fe2c986b475a021c0d2e797aca2f6dec7417ac020f320b3e",
+    "epic/alterguardian.lua": "bff705231853b66448662d0c4437237a30e6a09a253d0858d632205380c6d356"
+  },
+  "runs": [
+    {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-udaxbmcz",
+      "um": "beta",
+      "before": false,
+      "moonfire": {
+        "kind": "moonfire",
+        "passed": true,
+        "checks": 27
+      },
+      "boots": {
+        "kind": "boots",
+        "passed": true,
+        "checks": 13
+      },
+      "status": "passed",
+      "production_matches_current": true,
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-udaxbmcz\\moonfire-boots-result.json"
+    },
+    {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-u6grgh1t",
+      "um": "none",
+      "before": false,
+      "moonfire": {
+        "kind": "moonfire",
+        "passed": true,
+        "checks": 27
+      },
+      "boots": {
+        "kind": "boots",
+        "passed": true,
+        "checks": 13
+      },
+      "status": "passed",
+      "production_matches_current": true,
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-u6grgh1t\\moonfire-boots-result.json"
+    },
+    {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-mycw5kvw",
+      "um": "stable",
+      "before": false,
+      "moonfire": {
+        "kind": "moonfire",
+        "passed": true,
+        "checks": 27
+      },
+      "boots": {
+        "kind": "boots",
+        "passed": true,
+        "checks": 13
+      },
+      "status": "passed",
+      "production_matches_current": true,
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-mycw5kvw\\moonfire-boots-result.json"
+    },
+    {
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-qldi5rja",
+      "um": "beta",
+      "before": true,
+      "moonfire": {
+        "kind": "moonfire",
+        "passed": true,
+        "checks": 5
+      },
+      "boots": {
+        "kind": "boots",
+        "passed": true,
+        "checks": 5
+      },
+      "status": "reproduced",
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-qldi5rja\\moonfire-boots-result.json"
+    }
+  ],
+  "limitations": [
+    "No manual client screenshot; native item-tile recharge data verified.",
+    "Workshop 3360553731 is not installed locally. No full real-client portal migration under that exact mod combination. Actual retired entities and both native/UM delayed initializer callbacks were exercised."
+  ]
+}

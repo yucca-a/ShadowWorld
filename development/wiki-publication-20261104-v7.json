@@ -1,0 +1,39 @@
+{
+  "id": "appgdep_6aeae59b32fc8191aa72f7b264f7f26b",
+  "project_id": "appgprj_6aeab300ca58819193ec146fbf0d4571",
+  "title": "淬炼之季 Wiki",
+  "version_id": "appgprj_6aeab300ca58819193ec146fbf0d4571~appgver_06462d7e5ad08191851807ef5443d32f",
+  "type": "publish",
+  "status": "succeeded",
+  "url": "https://tempered-season-wiki.stormy-ant-2734.chatgpt.site",
+  "has_mcp": false,
+  "screenshot_asset_pointer": null,
+  "provider_deployment_id": "site---6aeab300ca58819193ec146fbf0d4571",
+  "failure_message": null,
+  "env_set_revision": 0,
+  "updated_at": "2026-11-04T07:58:49.914237+00:00",
+  "commit_sha": "c6a92a039a9ce3194110f83b92251ccea4eea050",
+  "scope": {
+    "personalCreditsRemoved": true,
+    "foodArticles": 15,
+    "creatureArticles": 33,
+    "sections": 357,
+    "tables": 111,
+    "currentModSourceHashes": 74
+  },
+  "validation": {
+    "pages": 250,
+    "localLinksAndAnchors": 122591,
+    "settings": 424,
+    "choices": 3322,
+    "searchEntries": 671,
+    "sourceOnlyAudit": true,
+    "gameplayTest": false,
+    "browserChecks": [
+      "desktop 1280 and mobile 390: no document horizontal overflow",
+      "search to sea fish article and contents anchors",
+      "published homepage introduction has no personal name"
+    ]
+  },
+  "screenshot": "development/wiki-preview-v7-20261104.png"
+}

@@ -1,0 +1,35 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>寒霜之祠 · 冰焰动效</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#141c23;color:#e7f1f4;font:16px/1.7 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1120px;margin:auto;padding:34px 24px}.eyebrow{font-size:11px;letter-spacing:3px;color:#8bb3c3}h1{font-size:30px;margin:5px 0 24px}.layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(260px,1fr);gap:25px}.stage{border:1px solid #384c58;border-radius:16px;overflow:hidden;position:relative;background:#454c42}canvas{display:block;width:100%;height:auto}.status{position:absolute;top:18px;left:20px;font-size:13px;padding:4px 12px;border-radius:20px;background:#1a252cc9;color:#b7e7f7}.panel{padding:22px;background:#1c2831;border:1px solid #344957;border-radius:16px}h2{font-size:20px;margin:0 0 12px}p{color:#b0c5ce;font-size:14px}button{font:inherit;cursor:pointer;border-radius:8px;padding:10px 15px;border:1px solid #4c6c7c;color:#b9e9fb;background:#253b48}button:hover{background:#345362}button[aria-pressed=true]{color:#14232a;background:#abe4f7}.controls{display:flex;gap:9px;flex-wrap:wrap;margin:18px 0}.steps{border-top:1px solid #3a4e59;margin-top:22px;padding-top:15px}.steps p{margin:12px 0}.steps b{display:block;color:#dceff6;font-size:15px}.note{font-size:12px;color:#8ca6b3;margin-top:20px}a{color:#a2d8eb}@media(max-width:740px){main{padding:24px 16px}.layout{grid-template-columns:1fr}h1{font-size:25px}}
+</style>
+<main><div class="eyebrow">SHADOW WORLD / FROST SHRINE</div><h1>让眼窝成为冰焰的出口</h1><div class="layout">
+<div class="stage"><span class="status" id="status">休眠</span><canvas id="stage" width="580" height="620" aria-label="寒霜之祠冰蓝眼焰动态预览"></canvas></div>
+<section class="panel"><h2>靠近唤醒，使用共振</h2><p>保留第四版造型。眼窝燃起两簇冰蓝火焰，轻轻跳动；成功交易或升级时短暂增强，与祠体晃动呼应。</p>
+<div class="controls"><button id="near">玩家靠近</button><button id="use">交易／升级</button><button id="far">玩家离开</button></div>
+<div class="controls"><button id="auto" aria-pressed="true">自动演示</button><button id="pause" aria-pressed="false">暂停</button></div>
+<div class="steps"><p><b>唤醒</b>冰焰渐亮，响起月亮祭坛式的短促唤醒音。</p><p><b>运转</b>两簇火焰错开节奏，伴随轻微冷火声。</p><p><b>使用</b>火焰短暂增强，祠体轻晃，播放祭坛使用音。</p><p><b>休眠</b>所有玩家离开后，冰焰渐隐，循环声音停止。</p></div>
+<p class="note">此页用实际游戏图集、动画变换和眼窝坐标预览画面，未模拟游戏光照与后处理。音效在游戏中播放。保留现有交易、升级与配方规则。</p><a href="preview.html">查看所选原稿</a></section></div></main>
+<script src="effects-preview-assets/data.js"></script>
+<script>
+const D=window.FROST_PREVIEW,canvas=document.querySelector('canvas'),ctx=canvas.getContext('2d');
+const assets=new Map();let awake=false,fade=0,pulseUntil=0,jiggleStart=-100,time=0,prev=0,automatic=true,paused=false,lastPhase=-1;
+async function load(){for(const build of [D.shrine,D.fire])for(const src of build.atlases){let im=new Image();im.src=src;await im.decode();assets.set(src,im)}}
+function frameAt(build,name,t){const anim=build.animations[name];return anim.frames[Math.floor(Math.max(0,t)*anim.fps)%anim.frames.length]}
+function matrix(el){return el.slice(3,9)}
+function drawFrame(build,elements){for(const el of [...elements].sort((a,b)=>b[9]-a[9])){let frames=build.symbols[el[0]],f=frames.find(x=>el[1]>=x.frame&&el[1]<x.frame+x.duration);if(!f)continue;ctx.save();ctx.transform(...matrix(el));for(const q of f.quads){const im=assets.get(build.atlases[q[0]]);ctx.drawImage(im,q[5]*im.width,q[6]*im.height,q[7]*im.width,q[8]*im.height,q[1],q[2],q[3],q[4])}ctx.restore()}}
+function use(){pulseUntil=time+D.pulse;jiggleStart=time}
+function manual(fn){automatic=false;document.querySelector('#auto').setAttribute('aria-pressed','false');fn()}
+document.querySelector('#near').onclick=()=>manual(()=>awake=true);
+document.querySelector('#far').onclick=()=>manual(()=>awake=false);
+document.querySelector('#use').onclick=()=>manual(use);
+document.querySelector('#auto').onclick=()=>{automatic=!automatic;lastPhase=-1;document.querySelector('#auto').setAttribute('aria-pressed',automatic)};
+document.querySelector('#pause').onclick=()=>{paused=!paused;document.querySelector('#pause').setAttribute('aria-pressed',paused);document.querySelector('#pause').textContent=paused?'继续':'暂停'};
+function render(ms){const dt=Math.min(.05,(ms-prev)/1000||0);prev=ms;if(!paused){time+=dt;if(automatic){const t=time%12,phase=t<1.2?0:t<5?1:t<5.8?2:t<8.5?3:4;if(phase!==lastPhase){awake=phase>=1&&phase<=3;if(phase===2)use();lastPhase=phase}}const target=awake||time<pulseUntil?1:0;fade=target>fade?Math.min(target,fade+dt/D.fade):Math.max(target,fade-dt/D.fade)}
+ctx.clearRect(0,0,canvas.width,canvas.height);ctx.save();ctx.translate(290,561);ctx.scale(1.02,1.02);
+const jiggleTime=time-jiggleStart,jiggle=D.shrine.animations.jiggle,body=jiggleTime<jiggle.frames.length/jiggle.fps?frameAt(D.shrine,'jiggle',jiggleTime):frameAt(D.shrine,'idle',time);
+drawFrame(D.shrine,body);const remaining=Math.max(0,pulseUntil-time),pulse=remaining>0?Math.sin(Math.PI*(1-remaining/D.pulse)):0;
+if(fade>0){ctx.save();ctx.transform(...matrix(body[0]));for(const eye of D.eyes){ctx.save();ctx.translate(eye.x,eye.y);const s=(.72+.28*fade)*(1+.25*pulse);ctx.scale(D.sx*eye.flip*s,D.sy*s);ctx.globalAlpha=fade*(.94+.06*Math.sin(time*2.4));drawFrame(D.fire,frameAt(D.fire,'level1_redux',time+eye.phase));ctx.restore()}ctx.restore()}
+ctx.restore();document.querySelector('#status').textContent=remaining>0?'使用 · 冰焰增强':awake?'唤醒 · 冰焰运转':fade>0?'冰焰渐隐':'休眠';requestAnimationFrame(render)}
+load().then(()=>requestAnimationFrame(render)).catch(e=>{document.querySelector('#status').textContent='预览加载失败';console.error(e)});
+</script></html>

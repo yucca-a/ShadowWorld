@@ -1,0 +1,51 @@
+多人维护发布前差异核对（2026-11-08）
+
+三方来源
+- 共同基础：已发布 2.8.15.0.10，清单 development/releases/v2.8.15.0.10-content-manifest.json。
+- 基础源码提交：945983d6b6b0e077e800117e8872df49b38322b6；本次读取的基础文件均已对照发布清单 SHA-256。
+- 工坊下载副本：D:/SteamLibrary/steamapps/workshop/content/322330/3832182265，modinfo 为 2.8.15.0.11。
+- 当前工作区：content/，版本字段仍为 2.8.15.0.10，包含本轮尚未发布的工具、睡眠、牛铃及配置页修改。
+
+结论
+- 当前目录不能直接作为下一版上传；将丢失下载副本中 .11 独有的代码和新增文件。
+- .11 独有的实际源码变化共 13 个文件：11 个修改、2 个新增。
+- 另有 mod.manifest 为上传器生成数据，不作为手工源码合并目标。
+- 当前工作区独有的变化为 7 个文件。
+- 双方同时变化的源码只有 modinfo.lua；对照基础，.11 在该文件中仅递增版本号。
+- 本次仅对比、保存差异与发布前合并清单，未改动 content/，未上传工坊。
+
+.11 独有文件，应保留其改动
+easy_other/containersort.lua
+easy_other/easy_structures.lua
+easy_other/exchangemodes2hm.lua
+easy_other/lunar_shadow_items.lua
+easy_other/shadowbank2hm.lua
+easy_other/um_patch.lua
+epic/sharkboi.lua
+extra/extra.lua
+scripts/components/exchangevariants2hm.lua
+scripts/components/shadowbank2hm.lua
+scripts/prefabs/shadowbank_tackle2hm.lua（新增）
+scripts/prefabs/shadowbank_tackleremote2hm.lua（新增）
+shadowworld.lua
+
+当前独有文件，应保留本轮修改
+common/common.lua
+easy_other/easy_equipments.lua
+easy_other/easy_mechanics.lua
+modmain.lua
+role/clock_peril.lua
+scripts/wixieconfig2hm.lua
+tech/ancient_statue.lua
+
+合并方式
+- 以 .10 为共同基础，将 .11 独有变更合入当前工作区，保留本轮 7 个独有文件中的改动。
+- modinfo.lua 保留本轮配置页、牛铃说明和难度评级开关，发布前再统一递增到未使用的版本号。
+- 对合并后的整体运行必要回归，重新核对工坊是否又有后续更新，再执行发布。
+- 发布记录和版本号只是标记；不会让上传器自动合并其他维护者的修改。
+- 后续应让所有维护者以同一 Git 基线交流源码，发布前合并提交并约定一个发布人，避免并行覆盖。
+
+机器可读对比与逐文件差异：work/collaborative-release-audit-20261108/。
+本机下载副本是本次核对到的 .11，并非实时工坊锁；其他维护者继续发布后，需要重新拉取并核对。
+
+后续：已按用户要求完成合并，准备版本 2.8.15.0.12；详见 collaborative-merge-20261108.txt。

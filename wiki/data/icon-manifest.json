@@ -1,0 +1,1930 @@
+{
+  "beefalohat": {
+    "path": "assets/icons/beefalohat.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "book_research_station": {
+    "path": "assets/icons/book_research_station.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "berries_juicy_cooked": {
+    "path": "assets/icons/berries_juicy_cooked.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "batnose": {
+    "path": "assets/icons/batnose.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "bearger_fur": {
+    "path": "assets/icons/bearger_fur.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "balloonhat": {
+    "path": "assets/icons/balloonhat.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "beeswax": {
+    "path": "assets/icons/beeswax.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "cookedmeat": {
+    "path": "assets/icons/cookedmeat.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "bernie_inactive": {
+    "path": "assets/icons/bernie_inactive.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "armorsnurtleshell": {
+    "path": "assets/icons/armorsnurtleshell.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "armor_bramble": {
+    "path": "assets/icons/armor_bramble.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "beehat": {
+    "path": "assets/icons/beehat.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "book_fish": {
+    "path": "assets/icons/book_fish.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "blue_cap_cooked": {
+    "path": "assets/icons/blue_cap_cooked.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "boneshard": {
+    "path": "assets/icons/boneshard.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "beefalowool": {
+    "path": "assets/icons/beefalowool.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "cutgrass": {
+    "path": "assets/icons/cutgrass.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "book_sleep": {
+    "path": "assets/icons/book_sleep.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "carrat": {
+    "path": "assets/icons/carrat.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "battlesong_instant_revive": {
+    "path": "assets/icons/battlesong_instant_revive.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "blueamulet": {
+    "path": "assets/icons/blueamulet.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "cactus_meat": {
+    "path": "assets/icons/cactus_meat.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "beef_bell": {
+    "path": "assets/icons/beef_bell.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "carpentry_station": {
+    "path": "assets/icons/carpentry_station.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "chesspiece_crabking_sketch": {
+    "path": "assets/icons/chesspiece_crabking_sketch.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "cane": {
+    "path": "assets/icons/cane.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "bushhat": {
+    "path": "assets/icons/bushhat.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "asparagus": {
+    "path": "assets/icons/asparagus.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "abigail_flower": {
+    "path": "assets/icons/abigail_flower.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "berries": {
+    "path": "assets/icons/berries.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "bugnet": {
+    "path": "assets/icons/bugnet.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "butterfly": {
+    "path": "assets/icons/butterfly.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "armor_lunarplant": {
+    "path": "assets/icons/armor_lunarplant.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "archive_resonator_item": {
+    "path": "assets/icons/archive_resonator_item.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "compass": {
+    "path": "assets/icons/compass.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "bullkelp_root": {
+    "path": "assets/icons/bullkelp_root.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "armorskeleton": {
+    "path": "assets/icons/armorskeleton.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "batbat": {
+    "path": "assets/icons/batbat.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "berries_juicy": {
+    "path": "assets/icons/berries_juicy.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "boat_item": {
+    "path": "assets/icons/boat_item.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "bluegem": {
+    "path": "assets/icons/bluegem.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "beefalofeed": {
+    "path": "assets/icons/beefalofeed.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "deerclopseyeball_sentryward": {
+    "path": "assets/icons/deerclopseyeball_sentryward.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "armorruins": {
+    "path": "assets/icons/armorruins.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "butterflywings": {
+    "path": "assets/icons/butterflywings.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "canary_poisoned": {
+    "path": "assets/icons/canary_poisoned.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "cactus_flower": {
+    "path": "assets/icons/cactus_flower.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "ancientfruit_nightvision": {
+    "path": "assets/icons/ancientfruit_nightvision.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "battlesong_instant_taunt": {
+    "path": "assets/icons/battlesong_instant_taunt.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "boat_bumper_crabking_kit": {
+    "path": "assets/icons/boat_bumper_crabking_kit.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "cartographydesk": {
+    "path": "assets/icons/cartographydesk.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "compost": {
+    "path": "assets/icons/compost.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "deserthat": {
+    "path": "assets/icons/deserthat.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "armormarble": {
+    "path": "assets/icons/armormarble.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "cactus_meat_cooked": {
+    "path": "assets/icons/cactus_meat_cooked.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "batwing_cooked": {
+    "path": "assets/icons/batwing_cooked.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "beargervest": {
+    "path": "assets/icons/beargervest.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "carrot": {
+    "path": "assets/icons/carrot.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "antliontrinket": {
+    "path": "assets/icons/antliontrinket.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "canary": {
+    "path": "assets/icons/canary.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "beargerfur_sack": {
+    "path": "assets/icons/beargerfur_sack.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "birdtrap": {
+    "path": "assets/icons/birdtrap.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "boards": {
+    "path": "assets/icons/boards.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "alterguardianhat": {
+    "path": "assets/icons/alterguardianhat.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "bedroll_straw": {
+    "path": "assets/icons/bedroll_straw.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "chester_eyebone": {
+    "path": "assets/icons/chester_eyebone.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "armor_carrotlure": {
+    "path": "assets/icons/armor_carrotlure.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "book_temperature": {
+    "path": "assets/icons/book_temperature.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "bee": {
+    "path": "assets/icons/bee.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "antlionhat": {
+    "path": "assets/icons/antlionhat.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "barnacle": {
+    "path": "assets/icons/barnacle.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "book_tentacles": {
+    "path": "assets/icons/book_tentacles.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "beardhair": {
+    "path": "assets/icons/beardhair.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "bunnystew": {
+    "path": "assets/icons/bunnystew.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "bedroll_furry": {
+    "path": "assets/icons/bedroll_furry.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "deerclopseyeball_sentryward_kit": {
+    "path": "assets/icons/deerclopseyeball_sentryward_kit.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "chesspiece_wagboss_lunar_sketch": {
+    "path": "assets/icons/chesspiece_wagboss_lunar_sketch.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "bonesoup": {
+    "path": "assets/icons/bonesoup.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "armordreadstone": {
+    "path": "assets/icons/armordreadstone.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "bundlewrap": {
+    "path": "assets/icons/bundlewrap.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "deerclops_eyeball": {
+    "path": "assets/icons/deerclops_eyeball.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "book_moon": {
+    "path": "assets/icons/book_moon.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "blowdart_pipe": {
+    "path": "assets/icons/blowdart_pipe.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "blueprint": {
+    "path": "assets/icons/blueprint.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "corn": {
+    "path": "assets/icons/corn.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "book_brimstone": {
+    "path": "assets/icons/book_brimstone.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "battlesong_instant_panic": {
+    "path": "assets/icons/battlesong_instant_panic.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "chesspiece_malbatross_sketch": {
+    "path": "assets/icons/chesspiece_malbatross_sketch.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "armordragonfly": {
+    "path": "assets/icons/armordragonfly.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "book_light": {
+    "path": "assets/icons/book_light.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "chestupgrade_stacksize": {
+    "path": "assets/icons/chestupgrade_stacksize.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "cookedmonstermeat": {
+    "path": "assets/icons/cookedmonstermeat.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "beebox": {
+    "path": "assets/icons/beebox.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "berries_cooked": {
+    "path": "assets/icons/berries_cooked.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "cannonball_rock_item": {
+    "path": "assets/icons/cannonball_rock_item.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "cave_banana": {
+    "path": "assets/icons/cave_banana.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "armorwood": {
+    "path": "assets/icons/armorwood.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "armor_sanity": {
+    "path": "assets/icons/armor_sanity.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "bird_egg": {
+    "path": "assets/icons/bird_egg.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "blue_cap": {
+    "path": "assets/icons/blue_cap.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "axe": {
+    "path": "assets/icons/axe.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "crow": {
+    "path": "assets/icons/crow.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "butter": {
+    "path": "assets/icons/butter.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "bootleg": {
+    "path": "assets/icons/bootleg.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "backpack": {
+    "path": "assets/icons/backpack.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "charcoal": {
+    "path": "assets/icons/charcoal.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "cutstone": {
+    "path": "assets/icons/cutstone.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "cookpot": {
+    "path": "assets/icons/cookpot.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "book_silviculture": {
+    "path": "assets/icons/book_silviculture.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "blue_mushroomhat": {
+    "path": "assets/icons/blue_mushroomhat.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "boomerang": {
+    "path": "assets/icons/boomerang.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "armor_voidcloth": {
+    "path": "assets/icons/armor_voidcloth.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "armorgrass": {
+    "path": "assets/icons/armorgrass.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "batnosehat": {
+    "path": "assets/icons/batnosehat.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "cutlichen": {
+    "path": "assets/icons/cutlichen.png",
+    "source": "DST images.zip/images/inventoryimages1.tex"
+  },
+  "fishingrod": {
+    "path": "assets/icons/fishingrod.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "fish": {
+    "path": "assets/icons/fish.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "icestaff": {
+    "path": "assets/icons/icestaff.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "lightninggoathorn": {
+    "path": "assets/icons/lightninggoathorn.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "ghostflower": {
+    "path": "assets/icons/ghostflower.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "dreadstonehat": {
+    "path": "assets/icons/dreadstonehat.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "eggplant": {
+    "path": "assets/icons/eggplant.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "orangestaff": {
+    "path": "assets/icons/orangestaff.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "oceanfish_small_5_inv": {
+    "path": "assets/icons/oceanfish_small_5_inv.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "moonglassaxe": {
+    "path": "assets/icons/moonglassaxe.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "moonglass": {
+    "path": "assets/icons/moonglass.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "hambat": {
+    "path": "assets/icons/hambat.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "meat": {
+    "path": "assets/icons/meat.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "mastupgrade_lamp_item": {
+    "path": "assets/icons/mastupgrade_lamp_item.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "fossil_piece": {
+    "path": "assets/icons/fossil_piece.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "goldenpitchfork": {
+    "path": "assets/icons/goldenpitchfork.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "fishmeat_small_cooked": {
+    "path": "assets/icons/fishmeat_small_cooked.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "nitre": {
+    "path": "assets/icons/nitre.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "green_cap": {
+    "path": "assets/icons/green_cap.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "greenstaff": {
+    "path": "assets/icons/greenstaff.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "eyebrellahat": {
+    "path": "assets/icons/eyebrellahat.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "ghostlyelixir_lunar": {
+    "path": "assets/icons/ghostlyelixir_lunar.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "lunar_seed": {
+    "path": "assets/icons/lunar_seed.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "froglegs": {
+    "path": "assets/icons/froglegs.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "oceanfish_small_9_inv": {
+    "path": "assets/icons/oceanfish_small_9_inv.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "elixir_container": {
+    "path": "assets/icons/elixir_container.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "malbatross_beak": {
+    "path": "assets/icons/malbatross_beak.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "horrorfuel": {
+    "path": "assets/icons/horrorfuel.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "ghostlyelixir_shadow": {
+    "path": "assets/icons/ghostlyelixir_shadow.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "malbatross_feathered_weave": {
+    "path": "assets/icons/malbatross_feathered_weave.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "fishmeat_small": {
+    "path": "assets/icons/fishmeat_small.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "monstermeat_dried": {
+    "path": "assets/icons/monstermeat_dried.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "giftwrap": {
+    "path": "assets/icons/giftwrap.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "ghostlyelixir_attack": {
+    "path": "assets/icons/ghostlyelixir_attack.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "papyrus": {
+    "path": "assets/icons/papyrus.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "minerhat": {
+    "path": "assets/icons/minerhat.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "milkywhites": {
+    "path": "assets/icons/milkywhites.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "ghostlyelixir_speed": {
+    "path": "assets/icons/ghostlyelixir_speed.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "lantern": {
+    "path": "assets/icons/lantern.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "livinglog": {
+    "path": "assets/icons/livinglog.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "goatmilk": {
+    "path": "assets/icons/goatmilk.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "dragonflychest": {
+    "path": "assets/icons/dragonflychest.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "icestaff2": {
+    "path": "assets/icons/icestaff2.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "gelblob_bottle": {
+    "path": "assets/icons/gelblob_bottle.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "lureplantbulb": {
+    "path": "assets/icons/lureplantbulb.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "glommerfuel": {
+    "path": "assets/icons/glommerfuel.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "dumbbell_heat": {
+    "path": "assets/icons/dumbbell_heat.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "firestaff": {
+    "path": "assets/icons/firestaff.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "featherhat": {
+    "path": "assets/icons/featherhat.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "hammer": {
+    "path": "assets/icons/hammer.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "oceanfish_medium_8_inv": {
+    "path": "assets/icons/oceanfish_medium_8_inv.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "malbatross_feather": {
+    "path": "assets/icons/malbatross_feather.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "oceanfish_medium_7_inv": {
+    "path": "assets/icons/oceanfish_medium_7_inv.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "nightsword": {
+    "path": "assets/icons/nightsword.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "ghostlyelixir_revive": {
+    "path": "assets/icons/ghostlyelixir_revive.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "kelphat": {
+    "path": "assets/icons/kelphat.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "log": {
+    "path": "assets/icons/log.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "lunarplant_husk": {
+    "path": "assets/icons/lunarplant_husk.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "panflute": {
+    "path": "assets/icons/panflute.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "moon_tree_blossom": {
+    "path": "assets/icons/moon_tree_blossom.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "onion_seeds": {
+    "path": "assets/icons/onion_seeds.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "moonrockidol": {
+    "path": "assets/icons/moonrockidol.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "houndstooth": {
+    "path": "assets/icons/houndstooth.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "oceanfish_small_3_inv": {
+    "path": "assets/icons/oceanfish_small_3_inv.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "oceanfish_medium_4_inv": {
+    "path": "assets/icons/oceanfish_medium_4_inv.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "eyeturret_item": {
+    "path": "assets/icons/eyeturret_item.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "ghostlyelixir_shield": {
+    "path": "assets/icons/ghostlyelixir_shield.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "oceanfish_medium_1_inv": {
+    "path": "assets/icons/oceanfish_medium_1_inv.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "green_mushroomhat": {
+    "path": "assets/icons/green_mushroomhat.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "moonstorm_static_item": {
+    "path": "assets/icons/moonstorm_static_item.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "orangeamulet": {
+    "path": "assets/icons/orangeamulet.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "meat_dried": {
+    "path": "assets/icons/meat_dried.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "mermwatchtower": {
+    "path": "assets/icons/mermwatchtower.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "hivehat": {
+    "path": "assets/icons/hivehat.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "orangegem": {
+    "path": "assets/icons/orangegem.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "guacamole": {
+    "path": "assets/icons/guacamole.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "greengem": {
+    "path": "assets/icons/greengem.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "mushroom_light2": {
+    "path": "assets/icons/mushroom_light2.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "opalpreciousgem": {
+    "path": "assets/icons/opalpreciousgem.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "healingsalve": {
+    "path": "assets/icons/healingsalve.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "dragonflyfurnace": {
+    "path": "assets/icons/dragonflyfurnace.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "petals": {
+    "path": "assets/icons/petals.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "honey": {
+    "path": "assets/icons/honey.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "oceanfish_small_7_inv": {
+    "path": "assets/icons/oceanfish_small_7_inv.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "moon_mushroomhat": {
+    "path": "assets/icons/moon_mushroomhat.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "dug_bananabush": {
+    "path": "assets/icons/dug_bananabush.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "moonbutterflywings": {
+    "path": "assets/icons/moonbutterflywings.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "icehat": {
+    "path": "assets/icons/icehat.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "meatrack": {
+    "path": "assets/icons/meatrack.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "nutrientsgoggleshat": {
+    "path": "assets/icons/nutrientsgoggleshat.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "moon_cap": {
+    "path": "assets/icons/moon_cap.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "icestaff3": {
+    "path": "assets/icons/icestaff3.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "ghostlyelixir_retaliation": {
+    "path": "assets/icons/ghostlyelixir_retaliation.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "dragonfruit": {
+    "path": "assets/icons/dragonfruit.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "eyemaskhat": {
+    "path": "assets/icons/eyemaskhat.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "pepper_seeds": {
+    "path": "assets/icons/pepper_seeds.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "oceanfishingrod": {
+    "path": "assets/icons/oceanfishingrod.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "nightmarepie": {
+    "path": "assets/icons/nightmarepie.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "palmcone_scale": {
+    "path": "assets/icons/palmcone_scale.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "ghostlyelixir_fastregen": {
+    "path": "assets/icons/ghostlyelixir_fastregen.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "nightmarefuel": {
+    "path": "assets/icons/nightmarefuel.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "oceanfish_small_8_inv": {
+    "path": "assets/icons/oceanfish_small_8_inv.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "dreadstone": {
+    "path": "assets/icons/dreadstone.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "glasscutter": {
+    "path": "assets/icons/glasscutter.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "mast_malbatross_item": {
+    "path": "assets/icons/mast_malbatross_item.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "gears": {
+    "path": "assets/icons/gears.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "kelp_dried": {
+    "path": "assets/icons/kelp_dried.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "moonglass_charged": {
+    "path": "assets/icons/moonglass_charged.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "oceanfish_medium_6_inv": {
+    "path": "assets/icons/oceanfish_medium_6_inv.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "messagebottle": {
+    "path": "assets/icons/messagebottle.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "messagebottleempty": {
+    "path": "assets/icons/messagebottleempty.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "gelblob_storage_kit": {
+    "path": "assets/icons/gelblob_storage_kit.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "hawaiianshirt": {
+    "path": "assets/icons/hawaiianshirt.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "frogfishbowl": {
+    "path": "assets/icons/frogfishbowl.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "houndstooth_blowpipe": {
+    "path": "assets/icons/houndstooth_blowpipe.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "pickaxe_lunarplant": {
+    "path": "assets/icons/pickaxe_lunarplant.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "oceanfish_medium_5_inv": {
+    "path": "assets/icons/oceanfish_medium_5_inv.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "lifeinjector": {
+    "path": "assets/icons/lifeinjector.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "dragonpie": {
+    "path": "assets/icons/dragonpie.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "garlic": {
+    "path": "assets/icons/garlic.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "moon_cap_cooked": {
+    "path": "assets/icons/moon_cap_cooked.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "green_cap_cooked": {
+    "path": "assets/icons/green_cap_cooked.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "forgetmelots": {
+    "path": "assets/icons/forgetmelots.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "heatrock": {
+    "path": "assets/icons/heatrock.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "oceanfish_small_2_inv": {
+    "path": "assets/icons/oceanfish_small_2_inv.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "lunarplanthat": {
+    "path": "assets/icons/lunarplanthat.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "garlic_seeds": {
+    "path": "assets/icons/garlic_seeds.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "nightstick": {
+    "path": "assets/icons/nightstick.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "marble": {
+    "path": "assets/icons/marble.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "pepper": {
+    "path": "assets/icons/pepper.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "molehat": {
+    "path": "assets/icons/molehat.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "drumstick": {
+    "path": "assets/icons/drumstick.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "flowerhat": {
+    "path": "assets/icons/flowerhat.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "oceanfish_medium_9_inv": {
+    "path": "assets/icons/oceanfish_medium_9_inv.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "goldnugget": {
+    "path": "assets/icons/goldnugget.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "hutch_fishbowl": {
+    "path": "assets/icons/hutch_fishbowl.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "flint": {
+    "path": "assets/icons/flint.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "moonrocknugget": {
+    "path": "assets/icons/moonrocknugget.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "gunpowder": {
+    "path": "assets/icons/gunpowder.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "mermhat": {
+    "path": "assets/icons/mermhat.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "minotaurhorn": {
+    "path": "assets/icons/minotaurhorn.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "mushroom_light": {
+    "path": "assets/icons/mushroom_light.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "killerbee": {
+    "path": "assets/icons/killerbee.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "footballhat": {
+    "path": "assets/icons/footballhat.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "kelp": {
+    "path": "assets/icons/kelp.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "icepack": {
+    "path": "assets/icons/icepack.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "durian": {
+    "path": "assets/icons/durian.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "dragon_scales": {
+    "path": "assets/icons/dragon_scales.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "lightbulb": {
+    "path": "assets/icons/lightbulb.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "dragonfruit_seeds": {
+    "path": "assets/icons/dragonfruit_seeds.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "froglegs_cooked": {
+    "path": "assets/icons/froglegs_cooked.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "ice": {
+    "path": "assets/icons/ice.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "ghostlyelixir_slowregen": {
+    "path": "assets/icons/ghostlyelixir_slowregen.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "multitool_axe_pickaxe": {
+    "path": "assets/icons/multitool_axe_pickaxe.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "greenamulet": {
+    "path": "assets/icons/greenamulet.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "goldenpickaxe": {
+    "path": "assets/icons/goldenpickaxe.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "icebox": {
+    "path": "assets/icons/icebox.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "phlegm": {
+    "path": "assets/icons/phlegm.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "pickaxe": {
+    "path": "assets/icons/pickaxe.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "dug_rock_avocado_bush": {
+    "path": "assets/icons/dug_rock_avocado_bush.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "fig": {
+    "path": "assets/icons/fig.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "fertilizer": {
+    "path": "assets/icons/fertilizer.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "goldenaxe": {
+    "path": "assets/icons/goldenaxe.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "monstermeat": {
+    "path": "assets/icons/monstermeat.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "manrabbit_tail": {
+    "path": "assets/icons/manrabbit_tail.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "gazpacho": {
+    "path": "assets/icons/gazpacho.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "oceanfish_small_1_inv": {
+    "path": "assets/icons/oceanfish_small_1_inv.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "oceanfish_small_4_inv": {
+    "path": "assets/icons/oceanfish_small_4_inv.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "orangemooneye": {
+    "path": "assets/icons/orangemooneye.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "krampus_sack": {
+    "path": "assets/icons/krampus_sack.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "dragonfruit_cooked": {
+    "path": "assets/icons/dragonfruit_cooked.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "oceanfish_medium_2_inv": {
+    "path": "assets/icons/oceanfish_medium_2_inv.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "klaussackkey": {
+    "path": "assets/icons/klaussackkey.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "oceanfish_small_6_inv": {
+    "path": "assets/icons/oceanfish_small_6_inv.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "oceanfish_medium_3_inv": {
+    "path": "assets/icons/oceanfish_medium_3_inv.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "horn": {
+    "path": "assets/icons/horn.png",
+    "source": "DST images.zip/images/inventoryimages2.tex"
+  },
+  "treasurechest": {
+    "path": "assets/icons/treasurechest.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "tentaclespots": {
+    "path": "assets/icons/tentaclespots.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "sewing_mannequin": {
+    "path": "assets/icons/sewing_mannequin.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "walrushat": {
+    "path": "assets/icons/walrushat.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "spicepack": {
+    "path": "assets/icons/spicepack.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "wall_stone_item": {
+    "path": "assets/icons/wall_stone_item.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "quagmire_onion": {
+    "path": "assets/icons/quagmire_onion.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "spider_hider": {
+    "path": "assets/icons/spider_hider.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "twigs": {
+    "path": "assets/icons/twigs.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "torch": {
+    "path": "assets/icons/torch.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "rock_avocado_fruit_sprout": {
+    "path": "assets/icons/rock_avocado_fruit_sprout.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "spore_tall": {
+    "path": "assets/icons/spore_tall.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "sewing_tape": {
+    "path": "assets/icons/sewing_tape.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "supertacklecontainer": {
+    "path": "assets/icons/supertacklecontainer.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "plantregistryhat": {
+    "path": "assets/icons/plantregistryhat.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "royal_jelly": {
+    "path": "assets/icons/royal_jelly.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "rope": {
+    "path": "assets/icons/rope.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "pomegranate": {
+    "path": "assets/icons/pomegranate.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "silk": {
+    "path": "assets/icons/silk.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "pocketwatch_heal": {
+    "path": "assets/icons/pocketwatch_heal.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "spider_healer": {
+    "path": "assets/icons/spider_healer.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "siestahut": {
+    "path": "assets/icons/siestahut.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "ruins_bat": {
+    "path": "assets/icons/ruins_bat.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "seeds_cooked": {
+    "path": "assets/icons/seeds_cooked.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "spear_wathgrithr_lightning_charged": {
+    "path": "assets/icons/spear_wathgrithr_lightning_charged.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "researchlab4": {
+    "path": "assets/icons/researchlab4.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "walrus_tusk": {
+    "path": "assets/icons/walrus_tusk.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "plantmeat": {
+    "path": "assets/icons/plantmeat.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "ruinshat": {
+    "path": "assets/icons/ruinshat.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "potato": {
+    "path": "assets/icons/potato.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "tillweed": {
+    "path": "assets/icons/tillweed.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "trap": {
+    "path": "assets/icons/trap.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "security_pulse_cage_full": {
+    "path": "assets/icons/security_pulse_cage_full.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "portablecookpot_item": {
+    "path": "assets/icons/portablecookpot_item.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "red_cap": {
+    "path": "assets/icons/red_cap.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "saddle_shadow": {
+    "path": "assets/icons/saddle_shadow.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "saltrock": {
+    "path": "assets/icons/saltrock.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "raincoat": {
+    "path": "assets/icons/raincoat.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "rocks": {
+    "path": "assets/icons/rocks.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "pocketwatch_revive": {
+    "path": "assets/icons/pocketwatch_revive.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "trinket_6": {
+    "path": "assets/icons/trinket_6.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "pocketwatch_portal": {
+    "path": "assets/icons/pocketwatch_portal.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "spidereggsack": {
+    "path": "assets/icons/spidereggsack.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "trap_bramble": {
+    "path": "assets/icons/trap_bramble.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "researchlab": {
+    "path": "assets/icons/researchlab.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "tacklecontainer": {
+    "path": "assets/icons/tacklecontainer.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "skeletonhat": {
+    "path": "assets/icons/skeletonhat.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "spear_wathgrithr_lightning": {
+    "path": "assets/icons/spear_wathgrithr_lightning.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "trunkvest_summer": {
+    "path": "assets/icons/trunkvest_summer.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "scraphat": {
+    "path": "assets/icons/scraphat.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "razor": {
+    "path": "assets/icons/razor.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "spiderhat": {
+    "path": "assets/icons/spiderhat.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "rock_avocado_fruit_ripe_cooked": {
+    "path": "assets/icons/rock_avocado_fruit_ripe_cooked.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "trunkvest_winter": {
+    "path": "assets/icons/trunkvest_winter.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "treegrowthsolution": {
+    "path": "assets/icons/treegrowthsolution.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "turf_marsh": {
+    "path": "assets/icons/turf_marsh.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "pocketwatch_parts": {
+    "path": "assets/icons/pocketwatch_parts.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "wagpunk_bits": {
+    "path": "assets/icons/wagpunk_bits.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "trap_teeth": {
+    "path": "assets/icons/trap_teeth.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "shroom_skin": {
+    "path": "assets/icons/shroom_skin.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "refined_dust": {
+    "path": "assets/icons/refined_dust.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "spear": {
+    "path": "assets/icons/spear.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "slurtleslime": {
+    "path": "assets/icons/slurtleslime.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "spider_warrior": {
+    "path": "assets/icons/spider_warrior.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "saddle_basic": {
+    "path": "assets/icons/saddle_basic.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "sword_lunarplant": {
+    "path": "assets/icons/sword_lunarplant.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "potato_cooked": {
+    "path": "assets/icons/potato_cooked.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "robin_winter": {
+    "path": "assets/icons/robin_winter.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "spore_medium": {
+    "path": "assets/icons/spore_medium.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "staff_lunarplant": {
+    "path": "assets/icons/staff_lunarplant.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "shadowheart": {
+    "path": "assets/icons/shadowheart.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "slurper_pelt": {
+    "path": "assets/icons/slurper_pelt.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "scandata": {
+    "path": "assets/icons/scandata.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "pinecone": {
+    "path": "assets/icons/pinecone.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "townportaltalisman": {
+    "path": "assets/icons/townportaltalisman.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "snowball_item": {
+    "path": "assets/icons/snowball_item.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "stash_map": {
+    "path": "assets/icons/stash_map.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "tent": {
+    "path": "assets/icons/tent.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "purplegem": {
+    "path": "assets/icons/purplegem.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "tentaclespike": {
+    "path": "assets/icons/tentaclespike.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "smallmeat": {
+    "path": "assets/icons/smallmeat.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "pocketwatch_warp": {
+    "path": "assets/icons/pocketwatch_warp.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "voidcloth": {
+    "path": "assets/icons/voidcloth.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "trinket_1": {
+    "path": "assets/icons/trinket_1.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "townportal": {
+    "path": "assets/icons/townportal.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "pigskin": {
+    "path": "assets/icons/pigskin.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "purebrilliance": {
+    "path": "assets/icons/purebrilliance.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "pocketwatch_weapon": {
+    "path": "assets/icons/pocketwatch_weapon.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "trunk_winter": {
+    "path": "assets/icons/trunk_winter.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "robin": {
+    "path": "assets/icons/robin.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "redgem": {
+    "path": "assets/icons/redgem.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "spore_small": {
+    "path": "assets/icons/spore_small.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "pumpkin": {
+    "path": "assets/icons/pumpkin.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "umbrella": {
+    "path": "assets/icons/umbrella.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "shadowheart_infused": {
+    "path": "assets/icons/shadowheart_infused.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "rainhat": {
+    "path": "assets/icons/rainhat.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "thurible": {
+    "path": "assets/icons/thurible.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "red_cap_cooked": {
+    "path": "assets/icons/red_cap_cooked.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "tophat": {
+    "path": "assets/icons/tophat.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "portableblender_item": {
+    "path": "assets/icons/portableblender_item.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "seeds": {
+    "path": "assets/icons/seeds.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "steelwool": {
+    "path": "assets/icons/steelwool.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "pocketwatch_recall": {
+    "path": "assets/icons/pocketwatch_recall.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "voidcloth_scythe": {
+    "path": "assets/icons/voidcloth_scythe.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "shieldofterror": {
+    "path": "assets/icons/shieldofterror.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "quagmire_tomato": {
+    "path": "assets/icons/quagmire_tomato.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "transistor": {
+    "path": "assets/icons/transistor.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "red_mushroomhat": {
+    "path": "assets/icons/red_mushroomhat.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "sleepbomb": {
+    "path": "assets/icons/sleepbomb.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "trident": {
+    "path": "assets/icons/trident.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "turfcraftingstation": {
+    "path": "assets/icons/turfcraftingstation.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "researchlab3": {
+    "path": "assets/icons/researchlab3.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "rabbit": {
+    "path": "assets/icons/rabbit.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "spoiled_food": {
+    "path": "assets/icons/spoiled_food.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "slurtlehat": {
+    "path": "assets/icons/slurtlehat.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "trinket_25": {
+    "path": "assets/icons/trinket_25.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "thulecite": {
+    "path": "assets/icons/thulecite.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "spidergland": {
+    "path": "assets/icons/spidergland.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "slurtle_shellpieces": {
+    "path": "assets/icons/slurtle_shellpieces.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "trunk_summer": {
+    "path": "assets/icons/trunk_summer.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "thulecite_pieces": {
+    "path": "assets/icons/thulecite_pieces.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "spice_garlic": {
+    "path": "assets/icons/spice_garlic.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "reskin_tool": {
+    "path": "assets/icons/reskin_tool.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "researchlab2": {
+    "path": "assets/icons/researchlab2.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "rock_avocado_fruit_ripe": {
+    "path": "assets/icons/rock_avocado_fruit_ripe.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "voidclothhat": {
+    "path": "assets/icons/voidclothhat.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "tacklestation": {
+    "path": "assets/icons/tacklestation.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "reviver": {
+    "path": "assets/icons/reviver.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "sculptingtable": {
+    "path": "assets/icons/sculptingtable.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "seafaring_prototyper": {
+    "path": "assets/icons/seafaring_prototyper.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "scrap_monoclehat": {
+    "path": "assets/icons/scrap_monoclehat.png",
+    "source": "DST images.zip/images/inventoryimages3.tex"
+  },
+  "watermelon": {
+    "path": "assets/icons/watermelon.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "wx78module_cold": {
+    "path": "assets/icons/wx78module_cold.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "yellowamulet": {
+    "path": "assets/icons/yellowamulet.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "waterplant_planter": {
+    "path": "assets/icons/waterplant_planter.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "wx78module_bee": {
+    "path": "assets/icons/wx78module_bee.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "wx78module_maxhealth": {
+    "path": "assets/icons/wx78module_maxhealth.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "wx78module_movespeed2": {
+    "path": "assets/icons/wx78module_movespeed2.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "yellowstaff": {
+    "path": "assets/icons/yellowstaff.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "wx78module_heat": {
+    "path": "assets/icons/wx78module_heat.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "wx78module_maxhunger": {
+    "path": "assets/icons/wx78module_maxhunger.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "wx78_moduleremover": {
+    "path": "assets/icons/wx78_moduleremover.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "waxpaper": {
+    "path": "assets/icons/waxpaper.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "wx78module_taser": {
+    "path": "assets/icons/wx78module_taser.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "wx78module_movespeed": {
+    "path": "assets/icons/wx78module_movespeed.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "woodcarvedhat": {
+    "path": "assets/icons/woodcarvedhat.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "wormlight": {
+    "path": "assets/icons/wormlight.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "wx78_shadowdrone_debuffer": {
+    "path": "assets/icons/wx78_shadowdrone_debuffer.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "watermelonhat": {
+    "path": "assets/icons/watermelonhat.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "wormlight_lesser": {
+    "path": "assets/icons/wormlight_lesser.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "wx78module_maxsanity1": {
+    "path": "assets/icons/wx78module_maxsanity1.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "wx78module_maxhealth2": {
+    "path": "assets/icons/wx78module_maxhealth2.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "waxwelljournal": {
+    "path": "assets/icons/waxwelljournal.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "wx78module_light2": {
+    "path": "assets/icons/wx78module_light2.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "yellowgem": {
+    "path": "assets/icons/yellowgem.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "wx78module_maxhunger1": {
+    "path": "assets/icons/wx78module_maxhunger1.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "wetgoop": {
+    "path": "assets/icons/wetgoop.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "wx78module_nightvision": {
+    "path": "assets/icons/wx78module_nightvision.png",
+    "source": "DST images.zip/images/inventoryimages4.tex"
+  },
+  "wolfgang": {
+    "path": "assets/icons/wolfgang.png",
+    "source": "DST images.zip/images/avatars.tex"
+  },
+  "woodie": {
+    "path": "assets/icons/woodie.png",
+    "source": "DST images.zip/images/avatars.tex"
+  },
+  "wes": {
+    "path": "assets/icons/wes.png",
+    "source": "DST images.zip/images/avatars.tex"
+  },
+  "wormwood": {
+    "path": "assets/icons/wormwood.png",
+    "source": "DST images.zip/images/avatars.tex"
+  },
+  "winona": {
+    "path": "assets/icons/winona.png",
+    "source": "DST images.zip/images/avatars.tex"
+  },
+  "wickerbottom": {
+    "path": "assets/icons/wickerbottom.png",
+    "source": "DST images.zip/images/avatars.tex"
+  },
+  "wanda": {
+    "path": "assets/icons/wanda.png",
+    "source": "DST images.zip/images/avatars.tex"
+  },
+  "wonkey": {
+    "path": "assets/icons/wonkey.png",
+    "source": "DST images.zip/images/avatars.tex"
+  },
+  "willow": {
+    "path": "assets/icons/willow.png",
+    "source": "DST images.zip/images/avatars.tex"
+  },
+  "wurt": {
+    "path": "assets/icons/wurt.png",
+    "source": "DST images.zip/images/avatars.tex"
+  },
+  "webber": {
+    "path": "assets/icons/webber.png",
+    "source": "DST images.zip/images/avatars.tex"
+  },
+  "wilson": {
+    "path": "assets/icons/wilson.png",
+    "source": "DST images.zip/images/avatars.tex"
+  },
+  "wortox": {
+    "path": "assets/icons/wortox.png",
+    "source": "DST images.zip/images/avatars.tex"
+  },
+  "walter": {
+    "path": "assets/icons/walter.png",
+    "source": "DST images.zip/images/avatars.tex"
+  },
+  "wendy": {
+    "path": "assets/icons/wendy.png",
+    "source": "DST images.zip/images/avatars.tex"
+  },
+  "wx78": {
+    "path": "assets/icons/wx78.png",
+    "source": "DST images.zip/images/avatars.tex"
+  },
+  "warly": {
+    "path": "assets/icons/warly.png",
+    "source": "DST images.zip/images/avatars.tex"
+  },
+  "waxwell": {
+    "path": "assets/icons/waxwell.png",
+    "source": "DST images.zip/images/avatars.tex"
+  },
+  "bootleg2hm": {
+    "path": "assets/icons/bootleg2hm.png",
+    "source": "content/images/inventoryimages/bootleg2hm.tex"
+  },
+  "bottle_soul": {
+    "path": "assets/icons/bottle_soul.png",
+    "source": "content/images/inventoryimages/bottle_soul.tex"
+  },
+  "carrotcake2hm": {
+    "path": "assets/icons/carrotcake2hm.png",
+    "source": "content/images/inventoryimages/carrotcake2hm.tex"
+  },
+  "crabking_kit2hm": {
+    "path": "assets/icons/crabking_kit2hm.png",
+    "source": "content/images/inventoryimages/crabking_kit2hm.tex"
+  },
+  "frostcore2hm": {
+    "path": "assets/icons/frostcore2hm.png",
+    "source": "content/images/inventoryimages/frostcore2hm.tex"
+  },
+  "pocketwatch_heal2hm": {
+    "path": "assets/icons/pocketwatch_heal2hm.png",
+    "source": "content/images/inventoryimages/pocketwatch_heal2hm.tex"
+  },
+  "smallcandy2hm": {
+    "path": "assets/icons/smallcandy2hm.png",
+    "source": "content/images/inventoryimages/smallcandy2hm.tex"
+  },
+  "sword_vortex2hm": {
+    "path": "assets/icons/sword_vortex2hm.png",
+    "source": "content/images/inventoryimages/sword_vortex2hm.tex"
+  },
+  "tropicalbouillabaisse": {
+    "path": "assets/icons/tropicalbouillabaisse.png",
+    "source": "content/images/inventoryimages/tropicalbouillabaisse.tex"
+  },
+  "tropicalbouillabaisse2hm": {
+    "path": "assets/icons/tropicalbouillabaisse2hm.png",
+    "source": "content/images/inventoryimages/tropicalbouillabaisse2hm.tex"
+  },
+  "frostshrine2hm": {
+    "path": "assets/icons/frostshrine2hm.png",
+    "source": "content/images/frostshrine2hm.tex"
+  },
+  "tomb_repair": {
+    "path": "assets/icons/tomb_repair.png",
+    "source": "content/images/tomb_repair.tex"
+  },
+  "modicon": {
+    "path": "assets/icons/modicon.png",
+    "source": "content/modicon.tex"
+  },
+  "zaspberry": {
+    "path": "assets/icons/zaspberry.png",
+    "source": "Uncompromising Mode Workshop 2039181790/images/inventoryimages/zaspberry.tex"
+  },
+  "viperfruit": {
+    "path": "assets/icons/viperfruit.png",
+    "source": "Uncompromising Mode Workshop 2039181790/images/inventoryimages/viperfruit.tex"
+  }
+}

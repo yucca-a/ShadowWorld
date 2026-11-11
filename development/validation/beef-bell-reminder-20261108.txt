@@ -1,0 +1,32 @@
+骑牛忘带牛铃提醒（2026-11-08，未发布）
+
+行为
+- 普通牛铃与阴郁牛铃共用的小优化，无新增配置开关，也不要求先升级牛铃。
+- 玩家骑乘 beefalo 时，每秒检查这头牛实际绑定的牛铃；上牛时立即检查。
+- 距离达到原生 PLAYER_CAMERA_SEE_DISTANCE（40 单位，默认视野近似范围）时，角色说话提醒忘带牛铃。
+- 同一趟远离只提醒一次；回到 20 单位内或将牛铃带在自己身上后重新允许提醒。
+- 40/20 的两个阈值防止在边界往返时刷屏。下牛及玩家移除时取消任务，徒步不检查。
+- 提示：“糟了，忘带牛铃了！下牛前得回去拿。”另提供英文。
+- 说明并入 modinfo.lua 原有普通牛铃升级及裂隙物品／阴郁牛铃说明。
+
+源码复用
+- 实现位于 common/common.lua 的现有 AddPlayerPostInit，全部辅助状态及函数为回调内局部变量。
+- 使用原生 mounted、dismounted、onremove，rider:IsRiding/GetMount，牛铃 GetBeefalo 及 inventoryitem:GetGrandOwner。
+- 获取实际绑定铃时读取 follower.leader；原生 GetLeader() 会优先返回持铃者 itemowner，不能用它识别牛铃。
+- 背包或嵌套容器沿原生所属关系取最终持有者；自己携带时不提醒，地面容器及他人携带时使用其实际位置。
+- 不替换牛铃回调、骑乘行为、绑定规则、跟随机制或升级机制；未新增组件或公共接口。
+
+验证
+1. work/python-3.12.8/python.exe tests/run_beef_bell_reminder_tests.py
+   49 项检查通过；实际提醒代码及本机原生 GetGrandOwner。
+   覆盖两种铃、40 单位边界、20 单位重置、边界往返、自己及他人携带、多层容器、无效绑定、任务清理、客户端及骑乘恢复。
+   common.lua、modinfo.lua 通过 Lua 5.1 编译。
+
+2. work/python-3.12.8/python.exe tests/run_native_beef_bell_reminder.py
+   隔离原生专服，3 组场景、60 项检查通过。
+   普通未升级铃、实际接受橙宝石升级的普通铃、首次绑定自动升级的阴郁牛铃。
+   使用原生 StartUsingItem 绑定、Write 完成命名、真实 saddle_basic 与 Rider:Mount/ActualDismount。
+   验证地面距离、重复抑制、返回重置、物品栏、装备背包、地面箱子、实际周期任务和下牛／重新上牛。
+   测试角色为专服生成的 wilson 实体，不含人工客户端操作或各类第三方容器的完整验收。
+   结果：work/vault-hardened-hosted-rolf2fxu/beef-bell-reminder-result.json
+   成功运行所冻结的 common/common.lua、modinfo.lua 与当前交付文件逐字节一致；测试专服已停止。

@@ -1,3 +1,4 @@
+local UpvalueHacker = require("upvaluehacker2hm")
 ----------------------------[物品(非建筑、非装备，可放入物品栏)]--------------------------------
 ---------------------------------------------------------------------------------
 local hardmode = TUNING.hardmode2hm
@@ -477,7 +478,10 @@ if GetModConfigData("beef_bell use orangegem upgrade") then
         -- 牛被拐走了,被拐走的牛直接杀掉
         if not inst.components.persistent2hm.data.beefalotmp and beefalo and beefalo:IsValid() and beefalo.components.health and
             not beefalo.components.health:IsDead() then inst:DoTaskInTime(0, killbeefalo, beefalo) end
-        if not inst.components.persistent2hm.data.beefalotmp and not inst.relivetask2hm then inst.relivetask2hm = inst:DoTaskInTime(240, relivebeefalo) end
+        if not inst.components.persistent2hm.data.beefalotmp and not inst.relivetask2hm then
+            inst.relivetask2hm = inst:DoTaskInTime(inst.beefbellrevivetime2hm or 240, relivebeefalo)
+            inst.beefbellrevivetime2hm = nil
+        end
     end
     local function on_used_on_beefalo(inst, target, user)
         if inst.components.useabletargeteditem then inst.components.useabletargeteditem.inuse_targeted = true end
@@ -589,6 +593,7 @@ if GetModConfigData("beef_bell use orangegem upgrade") then
         end
     end
     local function processpersistent(inst)
+        if inst.beefbellpreview2hm then return end
         if inst.components.persistent2hm.data.bell_upgrade then
             upgradebeef_bell(inst)
             inst.components.inventoryitem:ChangeImageName("beef_bell_linked")
@@ -860,7 +865,7 @@ if GetModConfigData("elastispacer upgrade") then
                 if inst:HasTag("superportablestoragePG") then
                     extra = (TUNING.isCh2hm and "无限- " or "Infinite- ")
                     if olddisplaynamefn then
-                        _name = olddisplaynamefn(inst)
+                        local _name = olddisplaynamefn(inst)
                         if _name ~= nil then 
                             name = _name
                             extra = (TUNING.isCh2hm and "无限/" or "Infinite/")

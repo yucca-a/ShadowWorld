@@ -1,0 +1,16 @@
+2026-11-07：无名称伤害来源崩溃
+状态：本地修复，未发布；工坊2.8.15.0.7仍含旧调用。
+
+对照本机已安装的工坊原版为爽2886753796，源码版本2.8.14.112，common/bugfix.lua已用pcall保护GetDisplayName。
+淬炼2.8.15.0.7仍直接调用GetDisplayName，再用or prefab回退。若函数内部已抛错，回退表达式不会执行。
+原生EntityScript:GetAdjectivedName调用ConstructAdjectivedName；缺name及STRINGS.NAMES登记且带潮湿等前缀的来源，会在dlcsupport_strings.lua:100拼接nil。
+
+只修改淬炼common/bugfix.lua中的来源转换：受保护调用取名，要求非空字符串，失败后使用有效prefab或unknown。
+nil、false与普通字符串保持原语义；不替换游戏原生命名函数，保留现有其他bugfix修复。
+
+Lua5.1专项108项通过：使用本机游戏的原生命名／血量代码，复现已发布2.8.15.0.7错误，并对照原版修复及本地修复。
+覆盖DoDelta、SetPercent、SetVal，含无名称、潮湿、冒烟、取名函数异常、空／错误类型、缺方法和致死结算。
+动态装甲190项、战斗险境129项回归通过；修改文件及夹具语法通过。
+
+完整淬炼＋妥协测试版隔离原生专服通过：真实CreateEntity生成无名潮湿来源，直接取名复现原生错误，三个血量入口均成功；猪人最大生命500，三种入口均得到375生命，事件来源回退为prefab。
+原始结果：work/health-cause-native.json。未操作玩家世界或真实客户端。

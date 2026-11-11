@@ -947,13 +947,13 @@ local function randomfrozenfissure(inst)
                         frozenfissuretask(_x, _z, i, inst)
                     end
                 else 
-                    _i = math.max(i, step/2)
+                    local _i = math.max(i, step/2)
                     local angle = 2 * math.asin(step / (2 * _i))
                     local num = 1
                     if angle then num = math.min(math.floor(TWOPI / angle), 20) end
                     for a = 0, num - 1 do
                         local random_radius = math.random(0,4)
-                        random_angle = math.random() * TWOPI
+                        local random_angle = math.random() * TWOPI
                         local _x = start_x + math.cos(a * angle) * _i + math.cos(random_angle) * random_radius
                         local _z = start_z + math.sin(a * angle) * _i + math.sin(random_angle) * random_radius
                         if not TheWorld.Map:IsOceanAtPoint(_x,0,_z, false, true) and #TheSim:FindEntities(_x, 0, _z, step / 2, {"ice_circle2hm", "FX"}) <= 0 then
@@ -1196,14 +1196,14 @@ AddPrefabPostInit("sharkboi", function(inst)
     inst:AddComponent("amphibiouscreature")
     inst.aoethrow2hm = 1
     if inst.OnEntitySleep then
-        oldOnEntitySleep = inst.OnEntitySleep
+        local oldOnEntitySleep = inst.OnEntitySleep
         inst.OnEntitySleep = function(inst, ...)
             oldOnEntitySleep(inst, ...)
             onsleep(inst)
         end
     end
     if inst.OnEntityWake then
-        oldOnEntityWake = inst.OnEntityWake
+        local oldOnEntityWake = inst.OnEntityWake
         inst.OnEntityWake = function(inst, ...)
             oldOnEntityWake(inst, ...)
             onwake(inst)
@@ -1300,36 +1300,42 @@ local function createice(inst)
 end
 
 local function onupgrade(target, TheWorld, prefab)
-    if target:HasTag("frostcore2hm") then return end
+    if not target or not target:IsValid() then return end
     target:AddTag("frostcore2hm")
-    if target.components.preserver then
-        local oldperish = target.components.preserver.perish_rate_multiplier
+    local preserver = target.components.preserver
+    if not preserver then
+        target:AddComponent("preserver")
+        preserver = target.components.preserver
+        local num = TUNING.PERISH_FRIDGE_MULT / 2
+        if target:HasTag("fridge") then
+            num = function(inst, item)
+                return (item and item:HasTag("frozen") and not inst:HasTag("nocool") and not inst:HasTag("lowcool") and TUNING.PERISH_COLD_FROZEN_MULT / 2)
+                    or TUNING.PERISH_FRIDGE_MULT / 2
+            end
+        elseif target:HasTag("foodpreserver") then
+            num = TUNING.PERISH_FOOD_PRESERVER_MULT / 2
+        end
+        preserver:SetPerishRateMultiplier(num)
+        preserver.frostcore2hm = true
+    elseif not preserver.frostcore2hm then
+        local oldperish = preserver.perish_rate_multiplier
         if oldperish then
-            target.components.preserver.perish_rate_multiplier = function(inst, item, ...)
+            preserver.perish_rate_multiplier = function(inst, item, ...)
                 local num = FunctionOrValue(oldperish, inst, item, ...)
-                if num > 0 then 
+                if num > 0 then
                     num = num / 2
                 elseif num < 0 then
                     num = num * 2
                 end
                 return num
             end
+        else
+            preserver:SetPerishRateMultiplier(TUNING.PERISH_FRIDGE_MULT / 2)
         end
-    else
-        target:AddComponent("preserver")
-        local num = TUNING.PERISH_FRIDGE_MULT
-        if target:HasTag("fridge") then
-            num = function(inst, item) 
-                return (item and item:HasTag("frozen") and not inst:HasTag("nocool") and not inst:HasTag("lowcool") and TUNING.PERISH_COLD_FROZEN_MULT / 2) 
-                or TUNING.PERISH_FRIDGE_MULT / 2
-            end
-        elseif target:HasTag("foodpreserver") then
-            num = TUNING.PERISH_FOOD_PRESERVER_MULT / 2
-        end
-        target.components.preserver:SetPerishRateMultiplier(num)
+        preserver.frostcore2hm = true
     end
-    if target.prefab == "icebox" then
-        target.createicetask2hm = target:DoPeriodicTask(math.random(-1,1) * 20 + time ,createice)
+    if target.prefab == "icebox" and not target.createicetask2hm then
+        target.createicetask2hm = target:DoPeriodicTask(math.random(-1,1) * 20 + time, createice)
     end
 end
 
@@ -1353,7 +1359,7 @@ AddPrefabPostInitAny(function(inst)
                     if inst:HasTag("frostcore2hm") then
                         extra = (TUNING.isCh2hm and "霜冻- " or "Frost- ")
                         if olddisplaynamefn then
-                            _name = olddisplaynamefn(inst)
+                            local _name = olddisplaynamefn(inst)
                             if _name ~= nil then
                                 name = _name 
                                 extra = (TUNING.isCh2hm and "霜冻/" or "Frost/")
@@ -1391,6 +1397,22 @@ AddPrefabPostInit("tacklestation2hm", function(inst)
     inst:ListenForEvent("preserverupadat2hm", inst.onupgrade, TheWorld)
     SetOnSave(inst, onsave)
     SetOnLoad(inst, onload)
+end)
+AddPrefabPostInit("shadowvaulttacklepage2hm", function(inst)
+    if not TheWorld.ismastersim then return end
+    inst:ListenForEvent("preserverupadat2hm", function() onupgrade(inst) end, TheWorld)
+    inst:DoStaticTaskInTime(0, function()
+        local tackle = TheWorld:GetPocketDimensionContainer("tacklestation2hm")
+        if tackle and tackle:HasTag("frostcore2hm") then onupgrade(inst) end
+    end)
+end)
+AddPrefabPostInit("shadowbank_tackle2hm", function(inst)
+    if not TheWorld.ismastersim then return end
+    inst:ListenForEvent("preserverupadat2hm", function() onupgrade(inst) end, TheWorld)
+    inst:DoStaticTaskInTime(0, function()
+        local tackle = TheWorld:GetPocketDimensionContainer("tacklestation2hm")
+        if tackle and tackle:HasTag("frostcore2hm") then onupgrade(inst) end
+    end)
 end)
 AddShardModRPCHandler("MOD_HARDMODE", "ms_preserver_update", function(shard_id, islink, data)
     TheWorld:PushEvent("preserverupadat2hm")

@@ -1,0 +1,89 @@
+妥协两版本天气性能排查（2026-11-10）
+
+范围及结论边界
+本轮同时检查本机正式版 1.5.4.6 与此前冻结的测试版 6.0.3.9，不声称是工坊即时最新版本。
+正式版 Lua 源码冻结于 work/um-weather-stable-frozen；测试版 work/um-memory-beta-frozen。
+用户已确认「雪球雨」指密集雪粒/暴风雪画面，不是另一套砸人或可拾取的落下雪球。
+只执行原 Lua 回调与替身引擎的隔离复现，不修改 content、不发布、不启用清理模组。
+统计是实际源码调用次数，不能视为实服耗时、帧率或整服性能改善百分比。
+
+一、暴风雪更新重复计算（两版共有）
+scripts/components/snowstormwatcher.lua：OnUpdate 先调用 UpdateSnowstormLevel，后者调用 UpdateSnowstormWalkSpeed；
+接着 OnUpdate 又直接调用 UpdateSnowstormWalkSpeed。
+固定一个无装备、无掩体、受暴风雪影响的假玩家，执行 300 次更新：
+正式版：2400 次邻域搜索、600 次速度倍率写入、600 次 checksnowvision 事件。
+测试版：600 次邻域搜索、600 次速度倍率写入；其本地雪覆盖通过 classified 更新。
+优先优化：每次更新只执行一遍相同的判定。此处可消除该路径的一半重复工作，但不能换算成整服性能翻倍。
+两版防护规则不同：正式版墙壁和 shelter 有数量阈值、各自半径；测试版合并了搜索并有 rimeweed 小暴风雪。
+不能把两版强行统一为一套防护规则。装备、骑乘、雨穹及测试版小暴风雪都需要各自验证。
+正式版 checksnowvision 还会触发客户端后续逻辑，本脚本不模拟这些事件的订阅者。
+
+二、非冬季每帧反复停止暴风雪（两版共有）
+实际加载组件是 scripts/components/um_snow_stormspawner.lua。
+不要误修同目录旧 snowstorminitiator.lua；init_harder_weather.lua 已将旧组件添加语句注释。
+当前组件一直 StartUpdatingComponent；春夏秋 OnUpdate 每次 StopSnowstorm -> StopSnowstorms。
+因为前者补建下次暴风雪计时，后者又停止它，300 次非冬季更新得到：
+正式版：StartTimer 300、StopTimer 600、ResumeTimer 300、RemoveTag 600。
+测试版：StartTimer 300、StopTimer 1200、ResumeTimer 300、RemoveTag 600。
+优先优化：通过季节和降雪状态事件管理启动/停止；非冬季停止更新，必要时保留低频校验。
+需覆盖控制台强制天气、存档加载和第三方改变降雪的路径，不能只删除 failsafe。
+
+三、雪堆换季集中移除（两版不同）
+scripts/prefabs/snowpile.lua 的 OnSeasonChange：
+正式版离开冬季立即 Remove，1000 个假雪堆在同一次事件处理中执行 1000 次移除。
+测试版随机延迟 0~0.5 秒，1000 个假雪堆排入 1000 个短期任务，仍集中在半秒窗口。
+每个测试版雪堆 onremove 调用 um_snowstormmanager:UnregisterSnowpile；该函数删掉一项后复制整个剩余表。
+按原 manager 删除 1000 个登记项，实际遍历复制 499500 项，呈二次方增长；正式版没有此 manager。
+优先优化：注销时直接删除对应 GUID，不重建整张表；计数若缓存，需正确处理重复注册、重复注销。
+这会保留正常雪堆及其冬季玩法，也保留离冬自然消失机制；不是强行给雪堆设全世界上限。
+若修复登记表后仍有尖峰，再评估正常融化工作分帧。扩大消失窗口会改变融化时刻，不能声称完全不影响机制。
+同时需验证 NOCLICK 建筑恢复、邻近多雪堆、光环任务退出、已睡眠实体和保存重载。
+
+四、雪堆生成/扩散搜索
+snowstormwatcher 的 SnowpileChance 会在确定实际需要围绕建筑生成之前先搜索周围建筑。
+正式版使用 50 半径，测试版 32；建筑密集基地的分支会遍历建筑，各自尝试生成。
+可将建筑搜索放进实际使用结果的分支，并提前判断冬季/风暴/雨穹；不减少正常抽签次数。
+多人重叠区域是否可合并，要验证原版按人数降低概率的设计，不能直接只保留一个玩家的生成机会。
+雪堆 FindSpreadSpot 两版都有最多约 9 次尝试；这与前轮海妖的大候选集深递归不是同一性质。
+正式版大范围密度上限使用原生 FindEntities 半径 64。
+测试版改为 um_snowstormmanager:CheckForOtherSnowpiles，逐个扫描全世界登记雪堆并计算距离。
+候选优化：实测原生局部搜索与区域桶索引，计数达到判定阈值即可停止；该方法也供 rimeweed 使用，不能全局修改返回值语义。
+不能把新全局数量配额当成等价优化；需保留半径、密度阈值、火源阻止与采集/伏击规则。
+
+五、龙卷风服务器更新（两版共有）
+scripts/prefabs/um_tornado.lua：主体禁止睡眠，移动任务每 0.1 秒，环境影响每 0.25 秒。
+移动任务每次搜索半径 300 的玩家/风机；对每个目标每次取消旧天气标记移除任务，再创建一个新任务。
+原 TornadoTask 对同一台假风机执行 300 次，两版均记录 300 次邻域搜索、300 次新任务、299 次取消。
+这说明有调度分配开销，不表示这些任务无限泄漏：旧任务在此处确实取消了。
+优先优化：用一个可续期的截止时间维护 under_the_weather，缓存有效目的地，复用固定查询标签表。
+还可评估玩家/风机登记表与短期缓存，但需对照原查询顺序、移动目标、多个龙卷风及被吸走物品。
+不要直接 SetCanSleep(true)，因为跨地图移动、破坏、收割和远处天气影响属于当前设计。
+也不要整体降低移动/吸附频率：该函数中位移常量直接按 0.1 秒写死，改周期会改变速度、吸力和随机闪电概率。
+原模组已有 Tornadoes - Less Lag 的 reduced/minimal 选项，但会改变离屏行为或直接取消非玩家交互，不能作为完全保留玩法的等价修复。
+
+六、暴雨与密集雪粒：客户端渲染成本（两版共有）
+postinit/components/weather.lua 包装原生 OnUpdate，暴风雪时 snow.particles_per_tick * 10 + 1。
+已检查当前游戏原生 scripts/components/weather.lua：正常每次 OnUpdate 重设 snow 发射基数，不是无限指数叠乘。
+以原生满降雪基数 20 执行原包装器 300 次，两版最终都是 201，不会随次数继续倍增。
+龙卷风附近雨粒子按 preciprate*5+intensity、雨溅按 preciprate*3+intensity，max intensity 为 5 或 15，受客户端 Reduced VFX 配置控制。
+weather 包装器还每帧 FindFirstEntityWithTag(um_tornado)，即使没有需要显示的风暴特效也查询；可提前检查特效/玩家/状态后再查询。
+专服不会生成这套客户端密集降雪粒子；画面掉帧与服务器模拟停顿应分别取证。
+建议独立客户端粒子密度/雨溅选项，保留遮挡、音效提示、受冻减速、防护检测、降水量与雪堆生成。
+这改变的是可选画面密度，不冒充「完全相同画面下保证同样帧率」；需实际客户端 GPU/CPU 帧耗时对照。
+
+七、补齐前轮正式版覆盖
+正式版源码没有测试版 um_ocupus 控制器，也没有 init_thicket.lua 的全体 locomotor 包装。
+正式版 hooded_fern 使用 playerprox；前轮测试版高齿蕨搜索/海妖任务复现不能直接宣称正式版也有。
+后续采用版本/实际组件能力判断：共享天气冗余共用处理，manager 和特殊生态部分只处理实际存在的实现。
+兼容矩阵至少包括：正式版单开、测试版单开、淬炼+正式版、淬炼+测试版；不能同时启用两版。
+
+建议落地顺序
+1. 暴风雪重复更新、非冬季停止流程反复执行、测试版雪堆注销复制：先做保持原规则的逻辑优化。
+2. 在不同实体规模/玩家数的原生隔离服测季节切换帧峰值、更新耗时、任务数与 GC 后内存；验证保存加载。
+3. 再做生成搜索、龙卷风任务续期与缓存，检查概率、吸力、伤害、路径和离屏影响保持原设计。
+4. 客户端单独验证暴雨/降雪粒子选项，不能用专服空跑代替画面实测。
+本轮没有启动原生服或图形客户端，没有给出实测提速百分比，也未修改正式模组。
+
+复现入口
+work/python-3.12.8/python.exe tests/run_um_weather_performance_probe.py
+机器结果及源码哈希：development/validation/um-weather-performance-20261110.json。

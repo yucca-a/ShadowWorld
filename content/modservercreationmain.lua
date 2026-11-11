@@ -154,3 +154,28 @@ end
 
 -- Keep Wixie-only options conditional on the enabled server mods.
 GLOBAL.require("wixieconfig2hm").Install(GLOBAL, modname)
+
+-- 房主开房时，引擎从本机设置读取通信频率并写入本次启动配置。
+local server_methods = debug.getmetatable(TheSystemService).__index
+local tick_rate_mods = server_methods.hosttickratemods2hm
+if not tick_rate_mods then
+    tick_rate_mods = {}
+    server_methods.hosttickratemods2hm = tick_rate_mods
+    local StartDedicatedServers = server_methods.StartDedicatedServers
+    function server_methods:StartDedicatedServers(slot, multilevel, cluster_info, ...)
+        local mods = ShardSaveGameIndex:GetSlotEnabledServerMods(slot)
+        for name in pairs(tick_rate_mods) do
+            if mods[name] and mods[name].enabled then
+                -- SetSetting 不能删除键。缺省时恢复为游戏默认的 15。
+                local previous_rate = TheSim:GetSetting("NETWORK", "tick_rate") or "15"
+                TheSim:SetSetting("NETWORK", "tick_rate", "60")
+                local ok, started = pcall(StartDedicatedServers, self, slot, multilevel, cluster_info, ...)
+                TheSim:SetSetting("NETWORK", "tick_rate", previous_rate)
+                if not ok then error(started, 0) end
+                return started
+            end
+        end
+        return StartDedicatedServers(self, slot, multilevel, cluster_info, ...)
+    end
+end
+tick_rate_mods[modname] = true

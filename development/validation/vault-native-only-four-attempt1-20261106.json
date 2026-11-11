@@ -1,0 +1,110 @@
+[
+  {
+    "case": "four",
+    "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-trzgampo",
+    "checks": [
+      {
+        "label": "native_handoffs",
+        "actual": {
+          "gold": 17
+        },
+        "conserved": true,
+        "state": {
+          "Master": {
+            "label": "native_handoffs",
+            "sent": 1,
+            "banks": {
+              "1": [],
+              "4": [],
+              "3": [],
+              "2": []
+            },
+            "snapshotcut": "1_1793968885:32000:982646156_3",
+            "saves": 3,
+            "shard": "1",
+            "runtimeboot": "1793968885:32000:982646156",
+            "dropped": 1,
+            "locations": [],
+            "details": [],
+            "pending": 0,
+            "goods": [],
+            "snapshotphase": "ready",
+            "time": 53.733336135745,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          },
+          "Caves": {
+            "label": "native_handoffs",
+            "sent": 9,
+            "banks": [],
+            "snapshotcut": "1_1793968885:32000:982646156_3",
+            "saves": 3,
+            "shard": "2",
+            "runtimeboot": "1793968879:26000:728239723",
+            "dropped": 9,
+            "locations": {
+              "KU_VA_2_1": 17
+            },
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "pending": 0,
+            "goods": {
+              "gold": 17
+            },
+            "snapshotphase": "ready",
+            "time": 52.433336067945,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          },
+          "Layer3": {
+            "label": "native_handoffs",
+            "sent": 9,
+            "banks": [],
+            "snapshotcut": "1_1793968885:32000:982646156_3",
+            "saves": 3,
+            "shard": "3",
+            "runtimeboot": "1793968877:25000:553133955",
+            "dropped": 9,
+            "locations": [],
+            "details": [],
+            "pending": 0,
+            "goods": [],
+            "snapshotphase": "ready",
+            "time": 54.066669486463,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          }
+        }
+      }
+    ],
+    "travel": [
+      {
+        "from": "Caves",
+        "to": "Layer3",
+        "departure_seconds": 0.5667
+      },
+      {
+        "from": "Layer3",
+        "to": "Master",
+        "departure_seconds": 0.5667
+      },
+      {
+        "from": "Master",
+        "to": "Caves",
+        "departure_seconds": 0.5333
+      }
+    ],
+    "status": "failed",
+    "error": "Traceback (most recent call last):\n  File \"D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\tests\\run_vault_native_only.py\", line 47, in <module>\n    c.saveall();check('saved_while_layer4_offline')\n    ^^^^^^^^^^^\n  File \"D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\tests\\run_vault_comparison.py\", line 120, in saveall\n    for n in self.children:self.wait(n,'saved',after=before[n],timeout=40)\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\tests\\run_vault_comparison.py\", line 101, in wait\n    raise TimeoutError(name+' '+kind+' '+str(match)+'; '+str(self.logs[name]))\nTimeoutError: Master saved {}; D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-trzgampo\\Master-1.log\n"
+  }
+]

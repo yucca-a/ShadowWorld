@@ -1,6 +1,9 @@
 ----------------------------[装备(可装备的)]------------------------------------
 -------------------------------------------------------------------------------
 local hardmode = TUNING.hardmode2hm
+local InfusionView = require("weaponinfusionview2hm")
+local RPCGuard = require("rpcguard2hm")
+AddClassPostConstruct("widgets/itemtile", InfusionView.AttachTile)
 
 -- 启迪之冠养老，保暖隔热防水绝缘冷源热源
 local alterhat = GetModConfigData("Enlightened Crown Benefit From Spore")
@@ -452,6 +455,25 @@ if GetModConfigData("Turf-Raiser Helm Plant Tree Cone") then
         end
     end
     TUNING.ANTLIONHAT_REPAIR2hm = 20
+    -- 沿用原生 PerformBufferedAction 在 Do() 期间保留 bufferedaction 的约定，
+    -- 让工作回调可通过 GetBufferedAction().invobject 读取实际工具。
+    -- 不走 PushBufferedAction/PerformBufferedAction，避免取消玩家动作或触发转身、状态机。
+    local function doitemaction(act)
+        local owner = act.doer
+        local previous = owner.bufferedaction
+        -- 已有批量耕地工具共用此标记；头盔逐点耕地时只执行原生单点处理。
+        local item = act.invobject
+        local tiller = act.action == ACTIONS.TILL and item and item.components.farmtiller
+        local singletill = tiller and tiller.oldAction2hm ~= nil
+        local oldtill = singletill and item.oldtill2hm
+        if singletill then item.oldtill2hm = true end
+        owner.bufferedaction = act
+        local ok, success, reason = pcall(act.Do, act)
+        if owner.bufferedaction == act then owner.bufferedaction = previous end
+        if singletill then item.oldtill2hm = oldtill end
+        if not ok then error(success, 0) end
+        return success, reason
+    end
     local actions_antlionhat = {ACTIONS.NET, ACTIONS.CHOP, ACTIONS.DIG, ACTIONS.MINE, ACTIONS.HAMMER}
     local actions2_antlionhat = {ACTIONS.NET, ACTIONS.CHOP, ACTIONS.DIG, ACTIONS.MINE}
     local function canitemdospecactions(item)
@@ -520,7 +542,7 @@ if GetModConfigData("Turf-Raiser Helm Plant Tree Cone") then
                             if ent and ent:IsValid() and item and item:IsValid() and not ent:HasTag("INLIMBO") and ent.components.workable and
                                 ent.components.workable.action == action and ent.components.workable.workable then
                                 local left = ent.components.workable.workleft
-                                if BufferedAction(owner, ent, action, item):Do() then
+                                if doitemaction(BufferedAction(owner, ent, action, item)) then
                                     self.totalwork2hm = (self.totalwork2hm or 0) + 1
                                     if self.totalwork2hm and self.totalwork2hm >= 10 then
                                         self:FinishTerraforming(px, py, pz)
@@ -537,7 +559,7 @@ if GetModConfigData("Turf-Raiser Helm Plant Tree Cone") then
                             ent.components.lunarhailbuildup and ent.components.lunarhailbuildup:IsBuildupWorkable() then
                                 local _action = ACTIONS.REMOVELUNARBUILDUP
                                 local left = ent.components.lunarhailbuildup.workleft
-                                if BufferedAction(owner, ent, _action, item):Do() then
+                                if doitemaction(BufferedAction(owner, ent, _action, item)) then
                                     self.totalwork2hm = (self.totalwork2hm or 0) + 1
                                     if self.totalwork2hm and self.totalwork2hm >= 10 then
                                         self:FinishTerraforming(px, py, pz)
@@ -565,7 +587,7 @@ if GetModConfigData("Turf-Raiser Helm Plant Tree Cone") then
         end
         -- 干草叉刮地皮
         if item and item:IsValid() and item.inherentactions and item.inherentactions[ACTIONS.TERRAFORM] then
-            if BufferedAction(owner, nil, ACTIONS.TERRAFORM, item, Vector3(cx, cy, cz)):Do() then
+            if doitemaction(BufferedAction(owner, nil, ACTIONS.TERRAFORM, item, Vector3(cx, cy, cz))) then
                 self.totalwork2hm = (self.totalwork2hm or 0) + 1
                 self:FinishTerraforming(px, py, pz)
                 return true
@@ -589,7 +611,6 @@ if GetModConfigData("Turf-Raiser Helm Plant Tree Cone") then
                         ent:PushEvent("collapsesoil")
                     end
                 end
-                if item.prefab == "multitool_axe_pickaxe" and enablemultitool then item.oldtill2hm = true end
                 local spacing = 1.3
                 local index = 1
                 for i = -1, 1 do
@@ -615,12 +636,11 @@ if GetModConfigData("Turf-Raiser Helm Plant Tree Cone") then
                                 TheWorld.Map:CollapseSoilAtPoint(nx, 0, nz)
                                 SpawnPrefab("farm_soil").Transform:SetPosition(nx, 0, nz)
                             end
-                        elseif item and item:IsValid() and BufferedAction(owner, nil, ACTIONS.TILL, item, Vector3(nx, 0, nz)):Do() then
+                        elseif item and item:IsValid() and doitemaction(BufferedAction(owner, nil, ACTIONS.TILL, item, Vector3(nx, 0, nz))) then
                             self.totalwork2hm = (self.totalwork2hm or 0) + 1
                         end
                     end
                 end
-                if item.prefab == "multitool_axe_pickaxe" and enablemultitool then item.oldtill2hm = nil end
             end
             if self.totalwork2hm and self.totalwork2hm > 0 then self:FinishTerraforming(px, py, pz) end
             return true
@@ -709,7 +729,7 @@ if GetModConfigData("Turf-Raiser Helm Plant Tree Cone") then
             local ents = findnearents(px, py, pz)
             for _, ent in ipairs(ents) do
                 if ent and ent:IsValid() and ent ~= owner and ent:HasTag("minesprung") and not ent:HasTag("mine_not_reusable") then
-                    if BufferedAction(owner, ent, ACTIONS.RESETMINE):Do() then
+                    if doitemaction(BufferedAction(owner, ent, ACTIONS.RESETMINE)) then
                         self.totalwork2hm = (self.totalwork2hm or 0) + 1
                         self:FinishTerraforming(px, py, pz)
                         return true
@@ -768,7 +788,7 @@ if GetModConfigData("Turf-Raiser Helm Plant Tree Cone") then
                     item.components.stackable.stacksize >= 1 and
                     ((ent:HasTag("notreadyforharvest") and not ent:HasTag("withered")) or ent:HasTag("fertile") or ent:HasTag("infertile") or
                         ent:HasTag("barren") or ent:HasTag("fertilizable")) then
-                    if BufferedAction(owner, ent, ACTIONS.FERTILIZE, item):Do() then
+                    if doitemaction(BufferedAction(owner, ent, ACTIONS.FERTILIZE, item)) then
                         self.totalwork2hm = (self.totalwork2hm or 0) + 1
                         self:FinishTerraforming(px, py, pz)
                         return true
@@ -818,6 +838,7 @@ if GetModConfigData("Turf-Raiser Helm Plant Tree Cone") then
                                 if ent and ent.prefab == "bullkelp_plant" and ent:IsValid() and ent:IsOnOcean() then
                                     changeent = ent
                                     ent:AddTag("NOBLOCK")
+                                    local _y
                                     nx, _y, nz = ent.Transform:GetWorldPosition()
                                     break
                                 end
@@ -1008,27 +1029,14 @@ if GetModConfigData("Turf-Raiser Helm Plant Tree Cone") then
             -- 空瓶子：自动收集附近恶液(gelblob_small_fx,带canbebottled标签)
             local ents = TheSim:FindEntities(px, py, pz, AUTOTRAP_RANGE, {"canbebottled"}, {"INLIMBO", "FX", "NOCLICK"})
             for _, ent in ipairs(ents) do
-                if ent and ent:IsValid() and ent.prefab == "gelblob_small_fx" then
-                    -- 消耗1个空瓶子
-                    if item.components.stackable and item.components.stackable.stacksize > 1 then
-                        item.components.stackable:Get(1):Remove()
-                    else
-                        item:Remove()
-                    end
-                    -- 移除恶液实体
-                    ent:Remove()
-                    -- 生成恶液瓶放入物品栏
-                    local bottledinst = SpawnPrefab("gelblob_bottle")
-                    if bottledinst then
-                        if not owner.components.inventory:GiveItem(bottledinst) then
-                            bottledinst.Transform:SetPosition(px, py, pz)
-                        end
-                    end
+                if ent and ent:IsValid() and ent.prefab == "gelblob_small_fx" and item.components.bottler and
+                    doitemaction(BufferedAction(owner, ent, ACTIONS.BOTTLE, item)) then
                     -- 消耗头盔耐久
                     if inst.components.finiteuses then inst.components.finiteuses:Use(1) end
                     -- 播放音效
                     if owner.SoundEmitter then owner.SoundEmitter:PlaySound("rifts4/gelblob_storage/store") end
                     -- 自动从物品栏补充空瓶子
+                    if not inst:IsValid() then return end
                     local slotitem = inst.components.container:GetItemInSlot(1)
                     if slotitem == nil then
                         local newitem = owner.components.inventory:FindItem(function(v) return v.prefab == "messagebottleempty" end)
@@ -1043,40 +1051,44 @@ if GetModConfigData("Turf-Raiser Helm Plant Tree Cone") then
         else
             -- 陷阱：自动捕捉附近小动物/鸟类
             local musttags = gettraptargettags(item.prefab)
-            if not musttags then return end
-            local ents = TheSim:FindEntities(px, py, pz, AUTOTRAP_RANGE, musttags, AUTOTRAP_CANT_TAGS)
+            local trap = item.components.trap
+            if not musttags or not trap then return end
+            if trap:IsSprung() and trap.lootprefabs == nil then trap:Reset() end
+            local ents = trap:IsSprung() and {item} or TheSim:FindEntities(px, py, pz, AUTOTRAP_RANGE, musttags, AUTOTRAP_CANT_TAGS)
             for _, ent in ipairs(ents) do
-                if ent and ent:IsValid() and ent.components.health and not ent.components.health:IsDead()
-                    and not (ent.components.follower and ent.components.follower:GetLeader()) then
-                    -- 活物捕捉：直接将生物作为物品放入物品栏
-                    if ent.components.inventoryitem then
-                        owner.components.inventory:GiveItem(ent)
-                    else
-                        ent:Remove()
-                        local lootitem = SpawnPrefab(ent.prefab)
-                        if lootitem then
-                            if not owner.components.inventory:GiveItem(lootitem) then
-                                lootitem.Transform:SetPosition(px, py, pz)
-                            end
-                        end
+                if trap:IsSprung() or (ent and ent:IsValid() and ent.components.health and not ent.components.health:IsDead()
+                    and not (ent.components.follower and ent.components.follower:GetLeader()) and
+                    ((ent.components.inventoryitem and ent.components.inventoryitem.trappable) or
+                        (ent.components.lootdropper and ent.components.lootdropper.trappable))) then
+                    -- 只省略落地/合拢动画；捕获产物、数据、事件及陷阱耐久仍由原生组件结算。
+                    -- 不覆盖陷阱已有的捕获物，也不播放 springtrap 以免延迟动画重复结算。
+                    if not trap:IsSprung() then
+                        local previous = trap.target
+                        trap.target = ent
+                        ent:PushEvent("trapped", {trap = item})
+                        trap:DoSpring()
+                        if not trap:IsSprung() and trap.target == ent then trap.target = previous end
                     end
-                    -- 消耗陷阱耐久
-                    if item.components.finiteuses then
-                        item.components.finiteuses:Use(1)
-                        if not item:IsValid() or (item.components.finiteuses and item.components.finiteuses:GetUses() <= 0) then
-                            if item:IsValid() then item:Remove() end
-                            local newitem = owner.components.inventory:FindItem(function(v) return v.prefab == item.prefab end)
+                    if trap:IsSprung() and trap.lootprefabs ~= nil then
+                        local trapprefab = item.prefab
+                        trap:Harvest(owner)
+                        if item:IsValid() then
+                            -- Harvest 会重新 Set；容器里的陷阱不能继续作为地面陷阱扫描。
+                            trap:Reset()
+                            if item.components.finiteuses and item.components.finiteuses:GetUses() <= 0 then item:Remove() end
+                        end
+                        -- 破损陷阱由原生 onharvest 消耗，不能再额外扣一次。
+                        if not item:IsValid() then
+                            local newitem = owner.components.inventory:FindItem(function(v) return v.prefab == trapprefab end)
                             if newitem and newitem:IsValid() then
                                 local obj = newitem.components.stackable and newitem.components.stackable:Get(1) or newitem.components.inventoryitem:RemoveFromOwner(true)
                                 if obj then inst.components.container:GiveItem(obj, 1) end
                             end
                         end
+                        if inst.components.finiteuses then inst.components.finiteuses:Use(1) end
+                        if owner.SoundEmitter then owner.SoundEmitter:PlaySound("dontstarve/common/trap_close") end
+                        return
                     end
-                    -- 消耗头盔耐久
-                    if inst.components.finiteuses then inst.components.finiteuses:Use(1) end
-                    -- 播放音效
-                    if owner.SoundEmitter then owner.SoundEmitter:PlaySound("dontstarve/common/trap_close") end
-                    return
                 end
             end
         end
@@ -1145,6 +1157,35 @@ if GetModConfigData("Turf-Raiser Helm Plant Tree Cone") then
             table.insert(actions_antlionhat, ACTIONS.HACK)
             table.insert(actions2_antlionhat, ACTIONS.HACK)
         end
+    end)
+    -- 暗影斧原生工作监听只在装备时注册。过滤未使用的手持斧，
+    -- 槽内实际使用的斧则在同一个原生 working 事件中复用它已有的回调。
+    AddPrefabPostInit("shadow_battleaxe", function(inst)
+        if not TheWorld.ismastersim or not inst._onownerworking then return end
+        local onownerworking = inst._onownerworking
+        inst._onownerworking = function(owner, data)
+            local act = owner:GetBufferedAction()
+            if act then
+                if act.invobject ~= inst or act.action ~= ACTIONS.CHOP or not data or act.target ~= data.target then return end
+            elseif not (data and data.target and data.target.components.workable and
+                data.target.components.workable:GetWorkAction() == ACTIONS.CHOP and owner.components.inventory and
+                owner.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS) == inst) then
+                return
+            end
+            return onownerworking(owner, data)
+        end
+    end)
+    AddPlayerPostInit(function(inst)
+        if not TheWorld.ismastersim then return end
+        inst:ListenForEvent("working", function(owner, data)
+            local act = owner:GetBufferedAction()
+            local item = act and act.invobject
+            if act and act.action == ACTIONS.CHOP and data and act.target == data.target and item and item:IsValid() and
+                item.prefab == "shadow_battleaxe" and item._onownerworking and item.components.equippable and
+                not item.components.equippable:IsEquipped() then
+                item._onownerworking(owner, data)
+            end
+        end)
     end)
 end
 
@@ -1540,44 +1581,7 @@ if GlassCutter then
         end
         UpdateStatus(inst)
     end
-    local function resetweaponperishableview(inst)
-        inst.resetviewtask2hm = nil
-        local grandowner = inst.components.inventoryitem:GetGrandOwner()
-        if not (grandowner and grandowner.Transform) then return end
-        local x, y, z = grandowner.Transform:GetWorldPosition()
-        if not TheWorld.Map:IsPassableAtPoint(x, y, z, true) then return end
-        local owner = inst.components.inventoryitem.owner
-        if owner and owner.components.inventory then
-            if inst.components.equippable:IsEquipped() then
-                owner.components.inventory:Unequip(EQUIPSLOTS.HANDS)
-                owner:AddChild(inst)
-                inst:RemoveFromScene()
-                inst:DoTaskInTime(0, function() owner.components.inventory:Equip(inst) end)
-            else
-                if prevslot then
-                local prevslot = owner.components.inventory:GetItemSlot(inst)
-                owner.components.inventory:RemoveItem(inst)
-                owner:AddChild(inst)
-                inst:RemoveFromScene()
-                inst:DoTaskInTime(0, function() 
-                    local result = owner.components.inventory:GiveItem(inst, prevslot)
-                    if not result then inst:Remove() end
-                end)
-                end
-            end
-        elseif owner and owner.components.container then
-            local prevslot = owner.components.container:GetItemSlot(inst)
-            if prevslot then
-                owner.components.container:RemoveItem(inst)
-                owner:AddChild(inst)
-                inst:RemoveFromScene()
-                inst:DoTaskInTime(0, function()
-                    local result = owner.components.container:GiveItem(inst, prevslot) 
-                    if not result then inst:Remove() end
-                end)
-            end
-        end
-    end
+    local resetweaponperishableview = InfusionView.Refresh
     local function onrepaired(inst, repairuse, doer, repair_item, useitems)
         if repair_item.prefab == "moonglass_charged" or repair_item.prefab == "purebrilliance" then
             if inst.components.finiteuses:GetPercent() >= 1 then useitems = useitems + 0.5 end
@@ -1641,6 +1645,7 @@ if GlassCutter then
         if GetModConfigData("Construction Amulet Repair Equip") then inst.repairmaterials2hm.moonglass = TUNING.GLASSCUTTER.USES / 7 end
         inst.displaynamefn = DisplayNameFn
         inst.itemtilefn2hm = itemtiletextfn
+        InfusionView.Install(inst)
         -- inst:AddTag("hide_percentage")
         inst:AddTag("show_spoilage")
         inst:AddTag("allow_action_on_impassable")
@@ -2616,72 +2621,7 @@ end
 
 -- 眼球伞自愈隔热
 if GetModConfigData("Eyebrella Swell Shade") then
-    if hardmode and TUNING.DSTU then TUNING.DSTU.EYEBRELLAREWORK = true end
-    if not FUELTYPE.EYE then FUELTYPE.EYE = "EYE" end
-    local function refreshstatus(inst)
-        inst.refreshstatustask2hm = nil
-        if not inst.components.fueled then return end
-        if (TheWorld.state.israining or TheWorld.state.issnowing) and not TheWorld.state.isacidraining then
-            inst.components.fueled.rate_modifiers:SetModifier(inst, TheWorld.state.issnowing and -3 or -1, "2hm")
-            if (inst.components.equippable and inst.components.equippable:IsEquipped()) or
-                not (inst.components.inventoryitem and inst.components.inventoryitem:IsHeld()) then
-                inst.components.fueled:StartConsuming()
-            else
-                inst.components.fueled:StopConsuming()
-            end
-        else
-            inst.components.fueled.rate_modifiers:RemoveModifier(inst, "2hm")
-            if inst.components.equippable and inst.components.equippable:IsEquipped() then
-                inst.components.fueled:StartConsuming()
-            else
-                inst.components.fueled:StopConsuming()
-            end
-        end
-    end
-    local function delayrefreshstatus(inst) if not inst.refreshstatustask2hm then inst.refreshstatustask2hm = inst:DoTaskInTime(0, refreshstatus) end end
-    AddPrefabPostInit("eyebrellahat", function(inst)
-        if not TheWorld.ismastersim then return end
-        inst:WatchWorldState("isacidraining", delayrefreshstatus)
-        inst:WatchWorldState("israining", delayrefreshstatus)
-        inst:WatchWorldState("issnowing", delayrefreshstatus)
-        inst:ListenForEvent("onputininventory", delayrefreshstatus)
-        inst:ListenForEvent("ondropped", delayrefreshstatus)
-        inst:ListenForEvent("equipped", delayrefreshstatus)
-        inst:ListenForEvent("unequipped", delayrefreshstatus)
-        delayrefreshstatus(inst)
-        if hardmode and not TUNING.DSTU and inst.components.fueled then
-            inst.components.fueled:InitializeFuelLevel(TUNING.EYEBRELLA_PERISHTIME * (12 / 9))
-            inst.components.fueled.no_sewing = true
-            inst.components.fueled.fueltype = FUELTYPE.EYE
-            inst.components.fueled.accepting = true
-        end
-    end)
-    if hardmode then
-        local fuels = {milkywhites = {power = TUNING.MED_FUEL * 13}, goatmilk = {power = TUNING.MED_FUEL * 13}, butter = {power = TUNING.MED_FUEL * 14}}
-        for k, v in pairs(fuels) do
-            AddPrefabPostInit(k, function(inst)
-                if inst.components.fuel == nil then
-                    inst:AddComponent("fuel")
-                    inst.components.fuel.fuelvalue = v.power
-                    inst.components.fuel.fueltype = FUELTYPE.EYE
-                end
-            end)
-        end
-    end
-    AddComponentPostInit("sheltered", function(self)
-        local SetSheltered = self.SetSheltered
-        self.SetSheltered = function(self, issheltered, level, ...)
-            if self.inst.components.inventory and self.inst.components.temperature then
-                self.level2hm = level
-                local equip = self.inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HEAD)
-                if equip and equip:IsValid() and equip.prefab == "eyebrellahat" and equip.components.fueled then
-                    issheltered = true
-                    level = self.inst.components.temperature.current < self.inst.components.temperature.overheattemp - 4 and 2 or math.max(level or 1, 1)
-                end
-            end
-            SetSheltered(self, issheltered, level, ...)
-        end
-    end)
+    require("eyebrellashade2hm").Install(hardmode, AddPrefabPostInit, AddComponentPostInit)
 end
 
 -- 恐怖盾牌增强
@@ -3894,8 +3834,8 @@ end
 if GetModConfigData("Reskin Tool Upgrade") then
     -- 多世界科技变动数据统一
     AddShardModRPCHandler("MOD_HARDMODE", "ms_prototyper_update", function(shard_id, islink, data)
-        local success, data = RunInSandboxSafe(data)
-        if success and TheShard and data then
+        local data = RPCGuard.DecodeTable(data)
+        if TheShard and data and TheWorld and TheWorld.components.persistent2hm and TheWorld.components.persistent2hm.data then
             local worldid = tostring(TheShard:GetShardId())
             shard_id = tostring(shard_id)
             local _data = TheWorld.components.persistent2hm.data
@@ -4813,44 +4753,7 @@ if GetModConfigData("Nightsword Infused") then
             inst:RemoveEventCallback("onremove", inst.removecomponent2hm)
         end
     end
-    local function resetweaponperishableview(inst)
-        inst.resetviewtask2hm = nil
-        local grandowner = inst.components.inventoryitem:GetGrandOwner()
-        if not (grandowner and grandowner.Transform) then return end
-        local x, y, z = grandowner.Transform:GetWorldPosition()
-        if not TheWorld.Map:IsPassableAtPoint(x, y, z, true) then return end
-        local owner = inst.components.inventoryitem.owner
-        if owner and owner.components.inventory then
-            if inst.components.equippable:IsEquipped() then
-                owner.components.inventory:Unequip(EQUIPSLOTS.HANDS)
-                owner:AddChild(inst)
-                inst:RemoveFromScene()
-                inst:DoTaskInTime(0, function() owner.components.inventory:Equip(inst) end)
-            else
-                if prevslot then
-                local prevslot = owner.components.inventory:GetItemSlot(inst)
-                owner.components.inventory:RemoveItem(inst)
-                owner:AddChild(inst)
-                inst:RemoveFromScene()
-                inst:DoTaskInTime(0, function() 
-                    local result = owner.components.inventory:GiveItem(inst, prevslot)
-                    if not result then inst:Remove() end
-                end)
-                end
-            end
-        elseif owner and owner.components.container then
-            local prevslot = owner.components.container:GetItemSlot(inst)
-            if prevslot then
-                owner.components.container:RemoveItem(inst)
-                owner:AddChild(inst)
-                inst:RemoveFromScene()
-                inst:DoTaskInTime(0, function()
-                    local result = owner.components.container:GiveItem(inst, prevslot) 
-                    if not result then inst:Remove() end
-                end)
-            end
-        end
-    end
+    local resetweaponperishableview = InfusionView.Refresh
     local function onrepaired(inst, repairuse, doer, repair_item, useitems)
         if repair_item.prefab == "horrorfuel" or repair_item.prefab == "dreadstone" then
             if inst.components.finiteuses:GetPercent() >= 1 then useitems = useitems + 0.5 end
@@ -4907,6 +4810,7 @@ if GetModConfigData("Nightsword Infused") then
         if GetModConfigData("Construction Amulet Repair Equip") then inst.repairmaterials2hm.nightmarefuel = TUNING.NIGHTSWORD_USES / 11 end
         inst.displaynamefn = DisplayNameFn
         inst.itemtilefn2hm = itemtiletextfn
+        InfusionView.Install(inst)
         inst:AddTag("show_spoilage")
         inst.weaponlevel2hm = net_tinybyte(inst.GUID, "weapon.level2hm", "weaponlevel2hmdirty")
         if not TheWorld.ismastersim then return end
@@ -4919,8 +4823,15 @@ if GetModConfigData("Nightsword Infused") then
         inst:AddComponent("repairable2hm")
         inst.components.repairable2hm.ignoremax = true
         inst.components.repairable2hm.onrepaired = onrepaired
-        if inst.components.equippable then
-            inst.components.equippable.dapperness = TUNING.CRAZINESS_SMALL
+        local equippable = inst.components.equippable
+        if equippable then
+            equippable.dapperness = TUNING.CRAZINESS_SMALL
+            local dapperfn = equippable.dapperfn
+            if dapperfn then
+                -- Scale the existing aura so owner-specific modifiers still apply.
+                local scale = TUNING.CRAZINESS_SMALL / TUNING.CRAZINESS_MED
+                equippable.dapperfn = function(item, owner) return dapperfn(item, owner) * scale end
+            end
             inst:ListenForEvent("equipped", onequip)
             inst:ListenForEvent("unequipped", onunequip)
         end

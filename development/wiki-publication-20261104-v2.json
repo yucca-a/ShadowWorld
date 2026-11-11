@@ -1,0 +1,31 @@
+{
+  "project_id": "appgprj_6aeab300ca58819193ec146fbf0d4571",
+  "checkout_path": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\tempered-season-site",
+  "commit_sha": "c782c89f7086be8acade7357a31e965f46fa7408",
+  "archive": "D:/Users/Yucca/Documents/ChatGPT/ShadowWorld/work/tempered-season-wiki-v2-final.tar.gz",
+  "deployment_id": "appgdep_6aeabdfd8c488191aa861e74af063ab5",
+  "version_id": "appgprj_6aeab300ca58819193ec146fbf0d4571~appgver_53faa09b314c81918e497b4841a40159",
+  "status": "succeeded",
+  "url": "https://tempered-season-wiki.stormy-ant-2734.chatgpt.site",
+  "publishedAt": "2026-11-04T05:09:45.495372+00:00",
+  "access": "owner-only (preserved)",
+  "maintainedSource": "wiki/",
+  "sourceBaseline": "2.8.14.97.4",
+  "coverage": {
+    "articles": 247,
+    "pages": 250,
+    "configurations": 424,
+    "choices": 3322,
+    "configurationNotes": 424,
+    "unlinkedConfigurations": 0,
+    "icons": 190
+  },
+  "validation": [
+    "Static HTML and JavaScript checks passed",
+    "74,958 local links and anchors passed",
+    "671 searchable entries validated",
+    "Desktop and 390px mobile layouts checked",
+    "Search, configuration deep links, filtering, bookmark, theme, font and mobile navigation verified"
+  ],
+  "screenshot": "development/wiki-preview-20261104.jpg"
+}

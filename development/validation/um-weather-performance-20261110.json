@@ -1,0 +1,74 @@
+{
+  "method": "Original Lua51 component/callback execution with stubbed world, scheduler and entity APIs; operation counts only, no native server or rendered client benchmark.",
+  "production_fixes_applied": false,
+  "versions": {
+    "stable": "1.5.4.6",
+    "beta": "6.0.3.9"
+  },
+  "results": {
+    "stable": {
+      "source": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\um-weather-stable-frozen",
+      "source_hashes": {
+        "scripts/components/snowstormwatcher.lua": "2bb30ea6026061346d390693dd40278135811b27e78917ec56f575ac304a4de4",
+        "scripts/components/um_snow_stormspawner.lua": "4d2e3184d575c8c2006e53ec69cba4e31bf4f5a4cf00428c7c37cbb4dd4fe4ef",
+        "scripts/prefabs/snowpile.lua": "6b6e5ab7d0d7d528d63aaae75266eda62a2e85a0c6690b68ec813e8ee1f6b1e4",
+        "scripts/prefabs/um_tornado.lua": "1f4720d2a76dbc4cd1abe95d114e1340a3093c839c19109cd8c2d692d9ba57a7",
+        "postinit/components/weather.lua": "a6513ad73eda056dfa1d3a07b7be1ea3dcb3649a9e94f311e79643928519d3bd"
+      },
+      "observations": {
+        "watcher_queries_300_updates": 2400,
+        "watcher_speed_writes_300_updates": 600,
+        "watcher_vision_events_300_updates": 600,
+        "outside_winter_timer_starts": 300,
+        "outside_winter_timer_stops": 600,
+        "outside_winter_timer_resumes": 300,
+        "outside_winter_tag_removes": 600,
+        "season_immediate_removes": 1000,
+        "season_queued_removes": 0,
+        "season_max_delay": 0,
+        "registry_copy_entries": 0,
+        "snow_particles_per_tick_at_full_precip": 201,
+        "weather_global_queries_300_updates": 300,
+        "tornado_nearby_queries_300_ticks": 300,
+        "tornado_refresh_tasks_300_ticks": 300,
+        "tornado_refresh_cancels_300_ticks": 299
+      }
+    },
+    "beta": {
+      "source": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\um-memory-beta-frozen",
+      "source_hashes": {
+        "scripts/components/snowstormwatcher.lua": "e8674b553b076f4c5e7755e3c25d4efb59479d6b9722c4ea05a7d980e531e6d2",
+        "scripts/components/um_snow_stormspawner.lua": "b13e4edee8996eacf9355d76e39d0f3fee59c722814c242170b3e4c5dcfd56a4",
+        "scripts/prefabs/snowpile.lua": "594780f51118595e9fe6175e1b922bc64211994df6550835ad9ebfa621ec897d",
+        "scripts/components/um_snowstormmanager.lua": "8ad319ec92d222242812099921fd7ae46905bae52bd74332b1f16e6dc4083c3d",
+        "scripts/prefabs/um_tornado.lua": "997397cfa49b46453c8354fbf40fe4dbf9e927cf310fb845742fbf17913d76bb",
+        "postinit/components/weather.lua": "e68a12bbd33390adcefbda337546faf8368325f8fa8369cab3a38ff65b52a9d3"
+      },
+      "observations": {
+        "watcher_queries_300_updates": 600,
+        "watcher_speed_writes_300_updates": 600,
+        "watcher_vision_events_300_updates": 0,
+        "outside_winter_timer_starts": 300,
+        "outside_winter_timer_stops": 1200,
+        "outside_winter_timer_resumes": 300,
+        "outside_winter_tag_removes": 600,
+        "season_immediate_removes": 0,
+        "season_queued_removes": 1000,
+        "season_max_delay": 0.499984740745262,
+        "registry_copy_entries": 499500,
+        "snow_particles_per_tick_at_full_precip": 201,
+        "weather_global_queries_300_updates": 300,
+        "tornado_nearby_queries_300_ticks": 300,
+        "tornado_refresh_tasks_300_ticks": 300,
+        "tornado_refresh_cancels_300_ticks": 299
+      }
+    }
+  },
+  "limits": [
+    "300 weather/watcher updates are direct calls (10 seconds at an assumed 30 updates/s); 300 tornado ticks represent its 0.1-second schedule (30 seconds). Neither is wall-clock timing.",
+    "1000 snowpiles and registry entries are synthetic workloads; native remove cost and affected-save density are not measured.",
+    "The stable branch has no um_snowstormmanager, um_ocupus or global thicket locomotor hook from the tested beta.",
+    "The native weather OnUpdate normally resets snow particles each update; 10x+1 is amplification, not evidence of exponential accumulation.",
+    "The user confirmed snowball rain means dense blizzard particles; no independent physical projectile rain is being claimed."
+  ]
+}

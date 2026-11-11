@@ -1,0 +1,73 @@
+# 饥荒联机版模组 Wiki
+
+[公开首页](https://cuilian-wiki.pages.dev/)收录两套中文资料。淬炼之季百科位于 `tempered.html`，旧词条地址可继续访问。永不妥协测试版百科位于 `um-beta/`，包含按源码核对的词条、配置及制作与兑换索引。
+
+测试版的版本、术语和快照刷新方式见 [永不妥协测试版维护说明](um-beta/README.md)。下方的内容来源章节说明淬炼之季的资料结构。
+
+## 本地构建
+
+需要 Node.js 22 或更新版本，无 npm 依赖。
+
+```powershell
+cd wiki
+node build.mjs
+node check.mjs
+node serve.mjs
+```
+
+预览地址为 `http://127.0.0.1:4178`。也可以直接打开 `dist/index.html`；搜索索引来自本地脚本，不向服务器上传搜索和收藏信息。收藏和阅读设置只保存在当前浏览器。
+
+## 内容与来源
+
+- `content.mjs`：版本信息、基础指南与本分支新增机制。
+- `research/*.mjs`：角色、世界、道具、建筑、食物、生物的源码解析，每篇记录来源及相关配置键。
+- `research/item-audit-*.mjs`：当前版本的道具复核正文，覆盖全部 57 篇道具词条及寒霜之祠、哀悼之穴。合并时替换旧正文，并同步有误的配置说明；更新道具请优先修改这些文件。
+- `research/entity-audit-*.mjs`：当前版本的角色、建筑与 Boss 复核正文，覆盖 25 篇角色、22 篇建筑及 20 篇 Boss；其中寒霜之祠与哀悼之穴沿用已核对的道具关联正文。正文区分模式条件、实际数值、触发、消耗、升级与掉落。
+- `research/life-audit-*.mjs`：当前版本的食物、农业与普通生物复核正文，覆盖 15 篇食物农业与 33 篇生物机制。合并时同步关联配置说明，核对配方、食物属性、技能触发、基础掉落与实际未生效的分支。
+- `catalog.mjs`：合并正文、配置说明、依赖、图标与分类，校验配置关联。
+- `data/configs.json`：从真实 `modinfo.lua` 执行结果提取的完整菜单、默认值、档位、源代码行号和源码哈希。
+- `data/item-audit-sources.json`：本轮 59 篇道具及关联建筑的核对清单、配置关联，以及 54 份实际实现文件的 SHA-256。
+- `data/entity-audit-sources.json`：67 篇角色、建筑与 Boss 的核对清单、配置关联与实现文件哈希。`coverage.json` 同时检查三类词条是否遗漏。
+- `data/life-audit-sources.json`：48 篇食物、农业与普通生物的核对清单及实现文件哈希。
+- `extract-config.py`：使用 Lua 5.1 环境（lupa）执行配置表，保留 false、0、true 等不同值；源码变化后重新运行并核对。
+- `assets/icons/` 与 `data/icon-manifest.json`：354 个游戏/模组图标及来源记录；中文名称关联在 `data/icon-labels.json`。
+- `export-icons.py`：从已安装游戏和模组资源提取 KTEX 图标，需要 Pillow。构建本身无需游戏安装或 Python。
+- `releases/`：已发布更新日志的 Wiki 副本。构建时从 `../workshop/` 同步所列版本，并移除个人维护署名。
+- `ui.mjs`：参考站式阅读界面，包括首页引言与入门路径、悬浮搜索、图标导航、连续词条卡片、详情页目录及移动端工具栏。
+- `build-wiki.mjs`：HTML 与全文索引生成器；`build.mjs` 是入口。
+- `src/wiki.css`、`src/refinements.css`：基础排版与阅读引导样式；构建时合并为单个样式文件。
+- `src/wiki.js`、`src/theme.js`：搜索、分类、导航与阅读偏好。
+- `coverage.json`、`content-sources.json`：构建生成的覆盖统计与来源核对表，不放进公开静态目录。
+- `dist/`：独立托管的发布目录。构建会重新生成该目录内的 HTML。
+
+配置项的“实现差异”表示当前代码与旧界面描述不同；“当前未生效”表示该实现当前被注释或配置键不一致。百科记录代码现状，不修改游戏脚本。全部解析来自静态源码核对，不能替代联机环境实测；其他模组、存档和房间配置可能继续影响结果。
+
+布局参考 QiNeko Wiki 的连续百科形式，正文按本分支源码独立整理。图标属于 Klei Entertainment 及相应模组作者；相关署名见网站关于页。
+
+道具正文先说明获取或制作，再写用途、数值、升级和修理。操作写明材料数量、点击对象、消耗与限制；标题使用“龙鳞皮升级”等具体名称，避免“双材料升级”“两种升级可以共存”等概括。无制作配方的战利品说明掉落来源，不为机制类条目硬加配方。核对时同时检查模式加载条件、后续覆盖，以及本地原版 `scripts.zip` 的配方、科技与基础属性；参考站仅作为排版和行文参考。
+
+## 更新与发布
+
+核对工坊发布版本后，优先使用该版本的发布包。逐项追溯声明、注册入口、开关和最后一次运行时赋值；注释、孤立文件和未加载的分支可解释历史，当前玩法只写实际执行的路径。核对继承的游戏数值时，读取本地游戏的 `scripts.zip` 常量。
+
+有独立发布包时，可用 `python extract-config.py --mod-root '<发布包 content 目录>'` 生成配置快照，追加 `--check` 可复核已生成的文件。运行 `node check.mjs` 前将 `WIKI_TEMPERED_SOURCE` 指向同一个目录，即可同时核对 `modinfo.lua` 哈希。
+
+更新版本信息、受影响的研究条目和配置快照后运行 build 与 check。检查包含本地链接、锚点、所有配置默认值、搜索覆盖和脚本语法。`coverage.json` 中应没有未关联配置，所有配置都应有直接实现说明。工坊更新不会自动同步 Wiki。
+
+`.openai/hosting.json` 固定复用当前 Sites 项目，静态目录为 `dist`。站点现有访问范围为仅所有者，网站更新不自动扩大访问范围。
+
+本仓库 `wiki/` 是维护入口，`../work/tempered-season-site/` 为隔离的 Sites Git 检出。后续通过 Sites 工作流打开现有项目，将维护内容同步到其检出目录，保留 `.git` 与项目身份，然后由工作流打包、推送和部署。不上传模组工作区、测试世界或玩家存档。
+
+## GitHub 与 Cloudflare Pages
+
+公开地址：https://cuilian-wiki.pages.dev/
+
+- 独立私有仓库：https://github.com/yucca-a/tempered-season-wiki
+- 本地检出：`../work/tempered-season-cloudflare/`
+- 生产分支：`main`；推送后由 Cloudflare 自动构建发布。
+- 框架预设：None；构建命令：`node build.mjs && node check.mjs`；输出目录：`dist`。
+- Node 版本由独立仓库的 `.node-version` 固定为 22。
+
+`wiki/` 仍是模组工作区的维护入口。同步到独立仓库时，仅复制 Wiki 内容、研究资料、图标、配置快照、版本日志和构建脚本，保留独立仓库自己的 `.git`、`.gitignore`、README 与 `.node-version`。不要同步 `.openai/`、模组源码、游戏资源包或存档。运行 build 和 check 后再提交、推送。
+
+大陆连通性应以多运营商实测为准；Cloudflare 构建成功不等于大陆各网络均可访问。部署与测试记录见 `../development/wiki-cloudflare-deployment-20261104.json`。

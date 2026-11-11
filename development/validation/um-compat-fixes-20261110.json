@@ -1,0 +1,80 @@
+{
+  "date": "2026-11-10",
+  "status": "passed",
+  "published": false,
+  "unit_checks": 113,
+  "production_sha256": {
+    "common/common.lua": "74bdc23392aba94162a0d283a275f39284df7f4360b4e07d6413da020a708bb3",
+    "common/um_compat_fixes.lua": "ce3526ddafded130db98825f3b61a1d859c03da892329aba1c9453e545492158",
+    "modmain.lua": "72103ed15cee61236cd0998bb3151cbd6f409f77dd30dfde09e0a3956b95a977",
+    "easy_role/wathom_easy.lua": "e71d0a1601d6860ec3d85ea113f11fd80fe129256c60b615cfcf4a4627a7d526"
+  },
+  "native_runs": [
+    {
+      "um": "beta",
+      "before": true,
+      "optional_off": false,
+      "status": "reproduced",
+      "result": {
+        "checks": 51,
+        "kind": "um_compat",
+        "passed": true,
+        "cases": 12
+      },
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-i_6i6eua\\um-compat-result.json"
+    },
+    {
+      "um": "beta",
+      "before": false,
+      "optional_off": false,
+      "status": "passed",
+      "result": {
+        "checks": 102,
+        "kind": "um_compat",
+        "passed": true,
+        "cases": 12
+      },
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-qagd0y78\\um-compat-result.json",
+      "frozen_production_matches_current": true
+    },
+    {
+      "um": "beta",
+      "before": false,
+      "optional_off": true,
+      "status": "passed",
+      "result": {
+        "checks": 102,
+        "kind": "um_compat",
+        "passed": true,
+        "cases": 12
+      },
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-n42ungaj\\um-compat-result.json",
+      "frozen_production_matches_current": true,
+      "casts": {
+        "kind": "um_staff_casts",
+        "passed": true,
+        "checks": 10
+      }
+    },
+    {
+      "um": "stable",
+      "before": false,
+      "optional_off": false,
+      "status": "passed",
+      "result": {
+        "checks": 29,
+        "kind": "um_compat",
+        "passed": true,
+        "cases": 10
+      },
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-rzv8fque\\um-compat-result.json",
+      "frozen_production_matches_current": true,
+      "casts": {
+        "kind": "um_staff_casts",
+        "passed": true,
+        "checks": 10
+      }
+    }
+  ],
+  "limitations": "Disposable offline dedicated servers, generated player actors; no real client UI or player save modification."
+}

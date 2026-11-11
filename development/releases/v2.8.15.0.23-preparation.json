@@ -1,0 +1,16 @@
+{
+  "version": "2.8.15.0.23",
+  "base": "2.8.15.0.22",
+  "workshop_id": "3832182265",
+  "published": true,
+  "archive": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\backups\\releases\\v2.8.15.0.23-content.zip",
+  "archive_sha256": "cb30cf70fdda16307b8411454f99fa3220c41c24a904c9c92cf2e314eb1fee3a",
+  "content_files": 489,
+  "content_bytes": 21831411,
+  "native_worker_assertions": 209,
+  "native_electrical_assertions": 479,
+  "unit_worker_checks": 37,
+  "patch_notes_file": "workshop/update-notes-2.8.15.0.23.txt",
+  "patch_notes_sha256": "9b997d64c9248fe1d273de379dcac278df05886ff805708f9ab15e8f0946117c",
+  "publication": "development/releases/v2.8.15.0.23-publication.json"
+}

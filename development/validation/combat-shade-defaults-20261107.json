@@ -1,0 +1,445 @@
+{
+  "created": "2026-11-07T14:24:45",
+  "state": "local changes, not uploaded",
+  "version": "2.8.15.0.6 unchanged",
+  "unit_checks": {
+    "dynamic_armor": 190,
+    "progressive_combat": 129,
+    "configuration_and_wixie": 705
+  },
+  "lua51_syntax": {
+    "production": 385,
+    "native_probe": 1,
+    "errors": 0
+  },
+  "installed_um_versions": {
+    "stable": "1.5.4.6",
+    "beta": "6.0.3.9"
+  },
+  "baseline": {
+    "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\combat-shade-beta-published.json",
+    "hat": {
+      "hard": true,
+      "shard": "1",
+      "time": 2.1666667796671,
+      "maxfuel": 4320,
+      "um": false,
+      "kind": "balance_setup",
+      "fueltype": "USAGE",
+      "insulation": 60
+    },
+    "sustained_peak_resistance": 0,
+    "sustained_hits": 30,
+    "final_hp": 0
+  },
+  "runs": [
+    {
+      "edition": "none",
+      "label": "validated",
+      "status": "passed",
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\combat-shade-none-validated.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-umfa918v",
+      "core_matches_current": true,
+      "hat": {
+        "hard": true,
+        "shard": "1",
+        "time": 2.0333334393799,
+        "maxfuel": 5760,
+        "no_sewing": true,
+        "kind": "balance_setup",
+        "fueltype": "EYE",
+        "insulation": 240
+      },
+      "combat_10x": 3.75,
+      "mount": {
+        "mounted": true,
+        "time": 7.4333337210119,
+        "sheltered": true,
+        "shard": "1",
+        "kind": "actual_mount",
+        "temperaturelevel": 2,
+        "level": 2
+      },
+      "dismount": {
+        "mounted": false,
+        "time": 8.5000004433095,
+        "sheltered": true,
+        "shard": "1",
+        "kind": "actual_mount",
+        "temperaturelevel": 2,
+        "level": 2
+      },
+      "weather": {
+        "healed": true,
+        "acidhealed": false,
+        "accepts_milk": true,
+        "kind": "hat_weather",
+        "time": 12.566667322069,
+        "shard": "1"
+      },
+      "saved_hat": {
+        "before": 2131.2,
+        "after": 2131.2,
+        "maximum": 5760,
+        "time": 12.966667342931,
+        "kind": "hat_save_load",
+        "fueltype": "EYE",
+        "shard": "1"
+      },
+      "lifecycle": {
+        "stopped": true,
+        "shard": "1",
+        "time": 14.100000735372,
+        "sheltered": true,
+        "level": 2,
+        "kind": "shade_lifecycle",
+        "temperaturelevel": 2,
+        "bare": false
+      },
+      "sustained": {
+        "total": 4588.3361629598,
+        "maximum": 6000,
+        "peak": 0.7472266827114,
+        "remaining": 1411.6638370402,
+        "time": 38.966668698937,
+        "kind": "armor_sustained",
+        "shard": "1",
+        "hits": 50
+      },
+      "legacy_defaults": false,
+      "um_eyebrella": false,
+      "fixture_sha256": "6f131355e93ba7abce98d81b9dcc283197a9f529551909ab123575e000f1fdc2"
+    },
+    {
+      "edition": "stable",
+      "label": "validated",
+      "status": "passed",
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\combat-shade-stable-validated.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-8gfgw0pi",
+      "core_matches_current": true,
+      "hat": {
+        "hard": true,
+        "shard": "1",
+        "time": 2.1333334445953,
+        "maxfuel": 5760,
+        "no_sewing": true,
+        "kind": "balance_setup",
+        "fueltype": "EYE",
+        "insulation": 240
+      },
+      "combat_10x": 3.75,
+      "mount": {
+        "mounted": true,
+        "time": 7.7000004015863,
+        "sheltered": true,
+        "shard": "1",
+        "kind": "actual_mount",
+        "temperaturelevel": 2,
+        "level": 2
+      },
+      "dismount": {
+        "mounted": false,
+        "time": 8.766667123884,
+        "sheltered": true,
+        "shard": "1",
+        "kind": "actual_mount",
+        "temperaturelevel": 2,
+        "level": 2
+      },
+      "weather": {
+        "healed": true,
+        "acidhealed": false,
+        "accepts_milk": true,
+        "kind": "hat_weather",
+        "time": 12.833334002644,
+        "shard": "1"
+      },
+      "saved_hat": {
+        "before": 2131.2,
+        "after": 2131.2,
+        "maximum": 5760,
+        "time": 13.300000693649,
+        "kind": "hat_save_load",
+        "fueltype": "EYE",
+        "shard": "1"
+      },
+      "lifecycle": {
+        "stopped": true,
+        "shard": "1",
+        "time": 14.466667421162,
+        "sheltered": true,
+        "level": 2,
+        "kind": "shade_lifecycle",
+        "temperaturelevel": 2,
+        "bare": false
+      },
+      "sustained": {
+        "total": 4588.3361629598,
+        "maximum": 6000,
+        "peak": 0.7472266827114,
+        "remaining": 1411.6638370402,
+        "time": 39.366668719798,
+        "kind": "armor_sustained",
+        "shard": "1",
+        "hits": 50
+      },
+      "legacy_defaults": false,
+      "um_eyebrella": false,
+      "fixture_sha256": "6f131355e93ba7abce98d81b9dcc283197a9f529551909ab123575e000f1fdc2"
+    },
+    {
+      "edition": "beta",
+      "label": "validated",
+      "status": "passed",
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\combat-shade-beta-validated.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-h2zfak1q",
+      "core_matches_current": true,
+      "hat": {
+        "hard": true,
+        "maxfuel": 5760,
+        "no_sewing": true,
+        "fueltype": "EYE",
+        "time": 2.2000001147389,
+        "shard": "1",
+        "kind": "balance_setup",
+        "um": false,
+        "insulation": 240
+      },
+      "combat_10x": 3.75,
+      "mount": {
+        "mounted": true,
+        "time": 7.4666670560837,
+        "sheltered": true,
+        "shard": "1",
+        "kind": "actual_mount",
+        "temperaturelevel": 2,
+        "level": 2
+      },
+      "dismount": {
+        "mounted": false,
+        "time": 8.5333337783813,
+        "sheltered": true,
+        "shard": "1",
+        "kind": "actual_mount",
+        "temperaturelevel": 2,
+        "level": 2
+      },
+      "weather": {
+        "healed": true,
+        "acidhealed": false,
+        "accepts_milk": true,
+        "kind": "hat_weather",
+        "time": 12.633333992213,
+        "shard": "1"
+      },
+      "saved_hat": {
+        "before": 2131.2,
+        "after": 2131.2,
+        "maximum": 5760,
+        "time": 13.100000683218,
+        "kind": "hat_save_load",
+        "fueltype": "EYE",
+        "shard": "1"
+      },
+      "lifecycle": {
+        "stopped": true,
+        "shard": "1",
+        "time": 14.266667410731,
+        "sheltered": true,
+        "level": 2,
+        "kind": "shade_lifecycle",
+        "temperaturelevel": 2,
+        "bare": false
+      },
+      "sustained": {
+        "total": 4588.3361629598,
+        "maximum": 6000,
+        "peak": 0.7472266827114,
+        "remaining": 1411.6638370402,
+        "time": 39.133335374296,
+        "kind": "armor_sustained",
+        "shard": "1",
+        "hits": 50
+      },
+      "legacy_defaults": false,
+      "um_eyebrella": false,
+      "fixture_sha256": "6f131355e93ba7abce98d81b9dcc283197a9f529551909ab123575e000f1fdc2"
+    },
+    {
+      "edition": "beta",
+      "label": "um-enabled",
+      "status": "passed",
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\combat-shade-beta-um-enabled.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-zzm41var",
+      "core_matches_current": true,
+      "hat": {
+        "hard": true,
+        "maxfuel": 5760,
+        "no_sewing": true,
+        "fueltype": "EYE",
+        "time": 2.2000001147389,
+        "shard": "1",
+        "kind": "balance_setup",
+        "um": true,
+        "insulation": 240
+      },
+      "combat_10x": 3.75,
+      "mount": {
+        "mounted": true,
+        "time": 7.6333337314427,
+        "sheltered": true,
+        "shard": "1",
+        "kind": "actual_mount",
+        "temperaturelevel": 2,
+        "level": 2
+      },
+      "dismount": {
+        "mounted": false,
+        "time": 8.7333337888122,
+        "sheltered": true,
+        "shard": "1",
+        "kind": "actual_mount",
+        "temperaturelevel": 2,
+        "level": 2
+      },
+      "weather": {
+        "time": 12.800000667572,
+        "healed": true,
+        "acidhealed": false,
+        "accepts_milk": true,
+        "kind": "hat_weather",
+        "shard": "1",
+        "repaired": true
+      },
+      "saved_hat": {
+        "before": 2131.2,
+        "after": 2131.2,
+        "maximum": 5760,
+        "time": 13.13333401829,
+        "kind": "hat_save_load",
+        "fueltype": "EYE",
+        "shard": "1"
+      },
+      "lifecycle": {
+        "stopped": true,
+        "shard": "1",
+        "time": 14.300000745803,
+        "sheltered": true,
+        "level": 2,
+        "kind": "shade_lifecycle",
+        "temperaturelevel": 2,
+        "bare": false
+      },
+      "sustained": {
+        "total": 4588.3361629598,
+        "maximum": 6000,
+        "peak": 0.7472266827114,
+        "remaining": 1411.6638370402,
+        "time": 39.200002044439,
+        "kind": "armor_sustained",
+        "shard": "1",
+        "hits": 50
+      },
+      "legacy_defaults": false,
+      "um_eyebrella": true,
+      "fixture_sha256": "20a89349a69cf1d92b1d87c801ab681b33ef9c07f0f96b72fb7de7a4906795cc"
+    },
+    {
+      "edition": "beta",
+      "label": "legacy-migration",
+      "status": "passed",
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\combat-shade-beta-legacy-migration.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-_53bjozw",
+      "core_matches_current": true,
+      "hat": {
+        "hard": true,
+        "maxfuel": 5760,
+        "no_sewing": true,
+        "fueltype": "EYE",
+        "time": 2.1000001095235,
+        "shard": "1",
+        "kind": "balance_setup",
+        "um": false,
+        "insulation": 240
+      },
+      "combat_10x": 3.75,
+      "mount": {
+        "mounted": true,
+        "time": 7.5333337262273,
+        "sheltered": true,
+        "shard": "1",
+        "kind": "actual_mount",
+        "temperaturelevel": 2,
+        "level": 2
+      },
+      "dismount": {
+        "mounted": false,
+        "time": 8.6333337835968,
+        "sheltered": true,
+        "shard": "1",
+        "kind": "actual_mount",
+        "temperaturelevel": 2,
+        "level": 2
+      },
+      "weather": {
+        "time": 12.700000662357,
+        "healed": true,
+        "acidhealed": false,
+        "accepts_milk": true,
+        "kind": "hat_weather",
+        "shard": "1",
+        "repaired": true
+      },
+      "saved_hat": {
+        "before": 2131.2,
+        "after": 2131.2,
+        "maximum": 5760,
+        "time": 13.100000683218,
+        "kind": "hat_save_load",
+        "fueltype": "EYE",
+        "shard": "1"
+      },
+      "lifecycle": {
+        "stopped": true,
+        "shard": "1",
+        "time": 14.266667410731,
+        "sheltered": true,
+        "level": 2,
+        "kind": "shade_lifecycle",
+        "temperaturelevel": 2,
+        "bare": false
+      },
+      "sustained": {
+        "total": 4588.3361629598,
+        "maximum": 6000,
+        "peak": 0.7472266827114,
+        "remaining": 1411.6638370402,
+        "time": 39.133335374296,
+        "kind": "armor_sustained",
+        "shard": "1",
+        "hits": 50
+      },
+      "legacy_defaults": true,
+      "um_eyebrella": false,
+      "fixture_sha256": "20a89349a69cf1d92b1d87c801ab681b33ef9c07f0f96b72fb7de7a4906795cc",
+      "all_production_files_match_current": true
+    }
+  ],
+  "current_sha256": {
+    "modmain.lua": "ba06a740cd17923c2fc889aa01ddeb75a255a455dc2bedc03a08cb81dcbf897f",
+    "modinfo.lua": "7c051e711158ef26ab7029fce54199ccb56ed48b744c46f37d75ae400029c88d",
+    "scripts/combatconfig2hm.lua": "08856151bf3b795e606436d602a8129669e00c550271d4ae293abcaa8a03388b",
+    "scripts/wixieconfig2hm.lua": "41ed477086897e28d3fce5b4971ae68984b9e3de4f9c617c78515704edf183a5",
+    "scripts/components/dynamicarmor2hm.lua": "d997df58aac665b90d407e23a8de99a3254d3b60740b42d358978f405e15e660",
+    "scripts/progressivecombat2hm.lua": "236d24d6395b3052a3b0546c50526ebde86bc767ddd289d37a1b5ede3a740f66",
+    "scripts/combatdisplay2hm.lua": "43677f4376635b3df37428d3a9fb323a3327dc6047d65543ca7b59e3aaddbaaa",
+    "scripts/eyebrellashade2hm.lua": "64daeb3ddec3f41b9459ae11433667da42d38771f45b9499ae475ace42287df5",
+    "easy_other/easy_equipments.lua": "4d83823fab0defafa7536b2af53ea38d01b35a4d0633f45fe08898247f2b64a1"
+  },
+  "limitations": [
+    "Real dedicated-server engine with synthetic Wilson; no control of the user live client or world.",
+    "Canopy level transitions use controlled native Sheltered inputs, not client walking through a spawned tree.",
+    "Unchanged red FX visuals were not revalidated.",
+    "First three runs check milk acceptance; last two also consume milk and verify repair."
+  ]
+}

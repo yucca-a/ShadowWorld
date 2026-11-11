@@ -1,0 +1,195 @@
+{
+  "version": "0.2.5",
+  "date": "2026-11-09",
+  "change": "Existing fast config value 4 now maps to 8 correction attempts per frame; gentle remains 2; direct-host native multiplier changes from 3.5 to 5. Step distances unchanged.",
+  "rationale": "8 attempts leaves 4 RPCs below the observed 20-per-frame limit for native movement/other actions. 10 hit rate limiting with prediction enabled; 12 hit rate limiting and reduced measured speed.",
+  "sweeps": {
+    "prediction_off": {
+      "path": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\client-assist-patch-4q8jm_fm",
+      "phases": {
+        "0": {
+          "burst": "0",
+          "dx": "10.996795654297",
+          "dz": "1.3379516601563",
+          "actions": "0",
+          "accepted": "0",
+          "snapped": "0"
+        },
+        "4": {
+          "burst": "4",
+          "dx": "19.637237548828",
+          "dz": "1.8165283203125",
+          "actions": "220",
+          "accepted": "140",
+          "snapped": "20.990727987883"
+        },
+        "6": {
+          "burst": "6",
+          "dx": "21.242095947266",
+          "dz": "1.7872314453125",
+          "actions": "336",
+          "accepted": "165",
+          "snapped": "24.414913931629"
+        },
+        "8": {
+          "burst": "8",
+          "dx": "29.787750244141",
+          "dz": "1.81201171875",
+          "actions": "456",
+          "accepted": "228",
+          "snapped": "34.268525864371"
+        },
+        "10": {
+          "burst": "10",
+          "dx": "39.482635498047",
+          "dz": "1.3553466796875",
+          "actions": "580",
+          "accepted": "285",
+          "snapped": "42.801867525253"
+        },
+        "12": {
+          "burst": "12",
+          "dx": "16.802612304688",
+          "dz": "1.8123779296875",
+          "actions": "560",
+          "accepted": "161",
+          "snapped": "23.958925354976"
+        }
+      },
+      "selected_vs_old_distance_ratio": 1.513244563290497
+    },
+    "prediction_on": {
+      "path": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\client-assist-patch-ncaawsje",
+      "phases": {
+        "0": {
+          "burst": "0",
+          "dx": "11.087677001953",
+          "dz": "1.3379516601563",
+          "actions": "0",
+          "accepted": "0",
+          "snapped": "0"
+        },
+        "4": {
+          "burst": "4",
+          "dx": "17.478363037109",
+          "dz": "1.7988891601563",
+          "actions": "240",
+          "accepted": "123",
+          "snapped": "20.743542551728"
+        },
+        "6": {
+          "burst": "6",
+          "dx": "10.422973632813",
+          "dz": "1.337890625",
+          "actions": "348",
+          "accepted": "0",
+          "snapped": "0"
+        },
+        "8": {
+          "burst": "8",
+          "dx": "33.598327636719",
+          "dz": "1.5841064453125",
+          "actions": "480",
+          "accepted": "225",
+          "snapped": "37.869709611353"
+        },
+        "10": {
+          "burst": "10",
+          "dx": "9.1958923339844",
+          "dz": "1.3336791992188",
+          "actions": "580",
+          "accepted": "0",
+          "snapped": "0"
+        },
+        "12": {
+          "burst": "12",
+          "dx": "9.4699401855469",
+          "dz": "1.3359375",
+          "actions": "590",
+          "accepted": "0",
+          "snapped": "0"
+        }
+      },
+      "selected_vs_old_distance_ratio": 1.9143044077385236
+    }
+  },
+  "final_native_mouse_checks": {
+    "prediction_off": {
+      "path": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\client-assist-patch-yilqvqvz",
+      "phases": {
+        "baseline": {
+          "arrival": "2.2000001147389",
+          "dx": "11.941284179688",
+          "dz": "0.011474609375",
+          "maxx": "11.941284179688",
+          "remote": "false"
+        },
+        "fast": {
+          "arrival": "0.93333338201046",
+          "dx": "11.980987548828",
+          "dz": "0.00347900390625",
+          "maxx": "11.980987548828",
+          "remote": "nil"
+        },
+        "off": {
+          "arrival": "nil",
+          "dx": "0",
+          "dz": "0",
+          "maxx": "0",
+          "remote": "nil"
+        }
+      },
+      "production_core_sha256": "ab914bc96a59dd167c25b508ccffd4e935def650f4d4a99592257bdae8209e13",
+      "errors_or_rate_limits": 0
+    },
+    "prediction_on": {
+      "path": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\client-assist-patch-5pc6p3ip",
+      "phases": {
+        "baseline": {
+          "arrival": "2.2666667848825",
+          "dx": "11.954986572266",
+          "dz": "0.0087890625",
+          "maxx": "11.954986572266",
+          "remote": "true"
+        },
+        "fast": {
+          "arrival": "0.66666670143604",
+          "dx": "12",
+          "dz": "0",
+          "maxx": "12",
+          "remote": "true"
+        },
+        "off": {
+          "arrival": "nil",
+          "dx": "0",
+          "dz": "0",
+          "maxx": "0",
+          "remote": "true"
+        }
+      },
+      "production_core_sha256": "ab914bc96a59dd167c25b508ccffd4e935def650f4d4a99592257bdae8209e13",
+      "errors_or_rate_limits": 0
+    }
+  },
+  "unit_checks": {
+    "core": 63,
+    "mouse": 40,
+    "native_modinfo_loader": "passed",
+    "native_hud_lifecycle": "passed"
+  },
+  "limitations": [
+    "Offline isolated test worlds with normal collisions and a non-authority client; not the user save.",
+    "Injected analogue direction or native WALKTO DoAction test input; not automated physical keyboard/mouse.",
+    "Single sequential sample per sweep setting with reset between phases; ratios are measurements, not promised multipliers.",
+    "Direct-host multiplier lifecycle verified in regression through the native API contract; real clients exercised the remote branch."
+  ],
+  "installed": "D:\\SteamLibrary\\steamapps\\common\\Don't Starve Together\\mods\\vanilla_solo_assist",
+  "backup": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\client-assist-before-faster-4b6oerut\\vanilla_solo_assist",
+  "package": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\client_mods\\vanilla_solo_assist-0.2.5.zip",
+  "hashes": {
+    "modinfo.lua": "1b94d91f50daa599303fd863318f44c852e56a94d9cea7bb8fc63793fb9f9b70",
+    "modmain.lua": "cd39d1d79f60f2fad82c48a3f9933e056b31794ee63ca23c73d184fcd35f545e",
+    "README.md": "b44c96883dad2828731425f18f43698f7f03bca23c89b246bec91c9f7ed46a2b",
+    "scripts\\soloassist2hm.lua": "ab914bc96a59dd167c25b508ccffd4e935def650f4d4a99592257bdae8209e13"
+  }
+}

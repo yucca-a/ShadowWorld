@@ -1,0 +1,25 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>寒霜之祠｜独立结构设计 A / B</title><style>
+:root{color-scheme:light;--stage:#d7d4c5}*{box-sizing:border-box}body{margin:0;background:#eeece4;color:#25313a;font:16px/1.65 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1100px;margin:36px auto;padding:0 24px 40px}h1{font-size:28px;margin-bottom:8px}h2{margin:0;font-size:22px}p{margin:8px 0 20px}.note{color:#607079;font-size:14px}.toolbar{display:flex;align-items:center;gap:10px;margin:22px 0}.toolbar button{cursor:pointer;border:1px solid #9da7a6;background:#fff;border-radius:20px;padding:7px 18px;color:#25313a}.toolbar button[aria-pressed=true]{background:#253c49;color:white}.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}article{background:#f8f7f2;border:1px solid #d0d2ca;border-radius:12px;overflow:hidden}.stage{height:390px;background:var(--stage);display:flex;align-items:center;justify-content:center;padding:24px}.hero{width:100%;height:100%;object-fit:contain}.info{padding:22px}.info p{margin-bottom:0}.label{font:12px ui-monospace,monospace;letter-spacing:1px;color:#73828b}.comparison{margin-top:26px;background:#f8f7f2;border:1px solid #d0d2ca;border-radius:12px;padding:24px}.strip{display:flex;align-items:flex-end;flex-wrap:wrap;gap:22px;margin-top:18px}.thumb{text-align:center;font-size:12px;color:#52616a}.thumb .swatch{background:var(--stage);height:104px;min-width:104px;display:flex;align-items:center;justify-content:center;border-radius:6px;margin-bottom:7px}.thumb img{width:64px;height:64px;object-fit:contain}.large .swatch{height:190px;min-width:176px}.large img{width:160px;height:160px}a{color:#216181}footer{margin-top:24px;color:#64717a;font-size:13px}@media(max-width:680px){main{padding:0 16px}.grid{grid-template-columns:1fr}.stage{height:340px}.toolbar{flex-wrap:wrap}h1{font-size:24px}}
+</style>
+<main>
+<div class="label">SHADOW WORLD / NEW STRUCTURAL DIRECTIONS / 2026.11.04</div>
+<h1>寒霜之祠 · 两种新结构</h1>
+<p class="note">以冰颚、白鬃、冰鳍与核心作为战利品材料，重新组织祠堂。第四版用于比较体量和材质。当前均为静态外观预览。</p>
+<div class="toolbar"><span>预览底色</span><button data-bg="#d7d4c5" aria-pressed="true">浅色</button><button data-bg="#555d42" aria-pressed="false">草地色</button><button data-bg="#252b34" aria-pressed="false">深色</button></div>
+<div class="grid">
+<article><div class="stage"><img class="hero" src="frost-shrine-v8a-reliquary.png" alt="冰颚祠龛：鳍形支架围出拱形供奉空间，白鬃覆在顶部横梁，冰颚构成前方供台"></div><div class="info"><h2>A · 冰颚祠龛</h2><p>鳍形支架与横梁围出祠龛，白鬃作为顶部披饰，冰颚围成前方供台。核心在中央凹室中发光，整体较厚重。</p><a href="frost-shrine-v8a-reliquary.png">查看 A 透明 PNG 原图</a></div></article>
+<article><div class="stage"><img class="hero" src="frost-shrine-v8b-altar.png" alt="寒潮供台：开放圆台托起核心，前方冰颚、台身白鬃及后方冰鳍共同形成轮廓"></div><div class="info"><h2>B · 寒潮供台</h2><p>冰颚成为开放供台的边沿，白鬃绕在台身，后方冰鳍作为背饰。核心直接露在中央，轮廓更独立。</p><a href="frost-shrine-v8b-altar.png">查看 B 透明 PNG 原图</a></div></article>
+</div>
+<section class="comparison"><h2>与第四版比较</h2><p class="note">统一 160 × 160 展示框，比较轮廓和小尺寸辨识度。留白及透视不同，不代表实机占地。</p><div class="strip large">
+<div class="thumb"><div class="swatch"><img src="frost-shrine-v4.png" alt="第四版参考"></div>第四版 · 参考</div>
+<div class="thumb"><div class="swatch"><img src="frost-shrine-v8a-reliquary.png" alt="A 冰颚祠龛缩小"></div>A · 冰颚祠龛</div>
+<div class="thumb"><div class="swatch"><img src="frost-shrine-v8b-altar.png" alt="B 寒潮供台缩小"></div>B · 寒潮供台</div>
+</div></section>
+<section class="comparison"><h2>64 像素图标对照</h2><div class="strip">
+<div class="thumb"><div class="swatch"><img src="frost-shrine-v4.png" alt="第四版图标"></div>第四版</div>
+<div class="thumb"><div class="swatch"><img src="frost-shrine-v8a-reliquary.png" alt="A 图标"></div>A · 祠龛</div>
+<div class="thumb"><div class="swatch"><img src="frost-shrine-v8b-altar.png" alt="B 图标"></div>B · 供台</div>
+<div class="thumb"><div class="swatch"><img src="frost-core-v2.png" alt="沿用的第二版霜冻核心"></div>霜冻核心 · 第二版</div>
+</div></section>
+<footer>两张新方案使用内置 image_gen 独立生成。霜冻核心沿用第二版。本轮没有修改游戏资源，尚未进行动画制作和实机验证。<a href="../2026-11-04-frost-v4/preview.html">回看第四版</a> · <a href="generation-prompts.json">完整提示词与记录</a></footer>
+</main><script>document.querySelectorAll('[data-bg]').forEach(button=>button.addEventListener('click',()=>{document.documentElement.style.setProperty('--stage',button.dataset.bg);document.querySelectorAll('[data-bg]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)))}));</script></html>

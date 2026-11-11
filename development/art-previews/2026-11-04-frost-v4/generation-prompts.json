@@ -1,0 +1,34 @@
+{
+  "version": 4,
+  "label": "第二版微调稿",
+  "status": "Static preview only; no runtime assets changed",
+  "generator": "built-in image_gen; edit mode",
+  "base": "2026-11-04-frost-v2/frost-shrine-v2.png",
+  "artworks": [
+    {
+      "name": "寒霜之祠",
+      "file": "frost-shrine-v4.png",
+      "source": "C:\\Users\\Yucca\\.codex\\generated_images\\01a1a5f4-a146-7ff1-a028-6aab9e6bf76b\\exec-9fd8ebf7-3e3d-4acf-8e2c-3a9ae7777c32.png",
+      "prompt": "Use case: precise-object-edit.\nMake a VERY SMALL polish pass on this exact Frost Shrine sprite. This reference is the strongly preferred version. The user explicitly rejected a redesign that turned it into a generic masonry hut. Preserve approximately 90-95% of this image.\nLOCK the whole composition and identity: the shark HEAD as the main body, the enormous OPEN shark MOUTH as the offering chamber, the continuous spectacular blue ICE CHIN/JAW as the bottom base, the core glowing at the exact CENTER OF THE MOUTH, the white shaggy mane at the sides, the large curved central ice fin and side fins, the original broad head silhouette, proportions, perspective, outlines, palette, supporting oval base, and all existing ice facets. These are approved. Do not turn the mouth into an architectural doorway or break up the ice chin.\nChange ONLY these small details:\n1. Remove the two literal X-shaped forehead scars. Leave those two small areas as plain grey surface with a couple of sparse short pen hatches or tiny stone chips. Do NOT add runes or more ornament.\n2. Subtly neutralize the two small dark eye recesses: keep their locations, width and dark tones, but simplify the inner shapes into shallow carved grooves with slightly less of a glaring living expression. No eyeballs, pupils or glow. Preserve the shark head shape and its brow.\n3. At the bottom left and right, subtly stylize the small paws into short solid fin-shaped carved supports: preserve their size, placement and adjacent swept side-fin silhouettes, but merge the tiny finger/claw divisions into an angular solid support. Do not remove or enlarge those supports.\n4. Give the existing small central icy core a subtly brighter blue-white inner center and very faint cool reflected light immediately around its little holder, so it softly shines within the dark open mouth. Preserve the core's current size and position. Keep the interior mostly dark and preserve the two little angular cold wisps.\nEverything else must stay recognizably the same as the reference, including the teeth, mouth shape, white fur volume, blue chin blades, top fin, and black linework. This is a crafted Frostjaw-inspired trophy altar, slightly stylized into an artifact while keeping the shark-head construction completely intact.\nMatch exact Don't Starve 2D cut-paper ink and flat gouache texture of the reference. No extra masonry, no roof, no new jewelry, no smooth 3D shading, no extra objects, no text. Keep full object, original centered framing and TRUE transparent alpha background. Return one complete sprite."
+    },
+    {
+      "name": "霜冻核心",
+      "file": "frost-core-v2.png",
+      "source": "../2026-11-04-frost-v2/frost-core-v2.png",
+      "status": "Reused unchanged from version 2; no new generation"
+    }
+  ],
+  "changes": [
+    "Remove two literal X-shaped forehead scars",
+    "Subtly neutralize the eye recesses",
+    "Merge claw details into carved fin-shaped supports",
+    "Slightly strengthen the central core's light"
+  ],
+  "preserved": [
+    "Shark head body and open mouth composition",
+    "Continuous ice chin as base",
+    "Core centered in mouth",
+    "White mane and ice fin",
+    "Overall silhouette, proportions and palette"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-08",
+  "source_sha256": {
+    "content/easy_other/containersort.lua": "c065e30914b0628b5808ef7832d83006a61f2b9451314b4c8bf412c52f286775",
+    "tests/run_classic_pause_tests.py": "6538bfcbf06f83a2b3e838ce617095eb94fe1aeda91fa0a945e5e47b4d04de07",
+    "tests/classic_pause_regression.lua": "e6adf58da143ea49c40ab84ccee984f06b9510967c42024cf4518ed4a9f288e0",
+    "tests/run_native_classic_pause_tests.py": "8655299ed198818c86bef85e86edce7118c10e9fcf6c30ecdcec0c513447059c",
+    "tests/native/classic_pause_fixture.lua": "12b7f73f7a20d837f9fe4a59145dde09528a6f54bc34e675574442e74d55b4dd"
+  },
+  "regression": {
+    "pause_callbacks_and_layout": 155,
+    "three_mode_exchange": 48,
+    "all_content_lua51_syntax": true
+  },
+  "native_rpc_and_timer": {
+    "pass": true,
+    "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-classic-pause-94i0iaen\\native.log",
+    "checks": [
+      "[00:00:24]: [CLASSIC_PAUSE_TEST] PASS pause request; engine accepted:\tfalse\t",
+      "[00:00:24]: [CLASSIC_PAUSE_TEST] PASS manual resume while paused\t",
+      "[00:00:55]: [CLASSIC_PAUSE_TEST] RESULT failures=0 native RPC requests/manual resume/30 second timeout; engine_pause_verified=\tfalse\t"
+    ],
+    "limitation": "Real server RPC handler and 30 second timer; pause requests forwarded to engine, reads use requested state because no client is connected. Actual engine pause and remote-client clicks are not verified."
+  },
+  "published": false
+}

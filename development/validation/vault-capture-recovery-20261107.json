@@ -1,0 +1,516 @@
+{
+  "status": "passed",
+  "published_version": "2.8.15.0.7",
+  "published": true,
+  "archive": {
+    "baseline_error": "linked_items",
+    "missing_mods": [
+      "workshop-2847908822"
+    ],
+    "existing_items_preserved": true,
+    "pending_nightsword_delivered_once": true,
+    "save_restart_rounds": 2,
+    "all_rounds_match": true
+  },
+  "compatibility": {
+    "mods": [
+      "3193922031",
+      "1392778117",
+      "1909182187"
+    ],
+    "checks": [
+      {
+        "label": "seed_native_and_mod_items",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "0_nightsword_withdraw",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "0_nightsword_deposit",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "0_glasscutter_withdraw",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "0_glasscutter_deposit",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "0_skeletonmeat_withdraw",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "0_skeletonmeat_deposit",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "0_medal_tentaclespike_withdraw",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "0_medal_tentaclespike_deposit",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "0_neverfade_withdraw",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "0_neverfade_deposit",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "0_gift_withdraw",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "0_gift_deposit",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "1_nightsword_withdraw",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "1_nightsword_deposit",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "1_glasscutter_withdraw",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "1_glasscutter_deposit",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "1_skeletonmeat_withdraw",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "1_skeletonmeat_deposit",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "1_medal_tentaclespike_withdraw",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "1_medal_tentaclespike_deposit",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "1_neverfade_withdraw",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "1_neverfade_deposit",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "1_gift_withdraw",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "1_gift_deposit",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "2_nightsword_withdraw",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "2_nightsword_deposit",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "2_glasscutter_withdraw",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "2_glasscutter_deposit",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "2_skeletonmeat_withdraw",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "2_skeletonmeat_deposit",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "2_medal_tentaclespike_withdraw",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "2_medal_tentaclespike_deposit",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "2_neverfade_withdraw",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "2_neverfade_deposit",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "2_gift_withdraw",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "2_gift_deposit",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "automatic_current_custody_recovery",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "saved_restart_0",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      },
+      {
+        "label": "saved_restart_1",
+        "goods": {
+          "nightsword": 1,
+          "medal_tentaclespike": 1,
+          "gift": 1,
+          "neverfade": 1,
+          "glasscutter": 1,
+          "skeletonmeat": 31
+        }
+      }
+    ],
+    "blocked_inputs": {
+      "irreplaceable": true,
+      "nested_reference": true,
+      "save_error": true,
+      "references": true
+    },
+    "readonly_refresh": {
+      "nightsword": {
+        "valid": true,
+        "same": true,
+        "readonly": true
+      },
+      "glasscutter": {
+        "valid": true,
+        "same": true,
+        "readonly": true
+      }
+    },
+    "automatic_recovery": {
+      "valid": true,
+      "same": true,
+      "time": 89.33333799243,
+      "shard": "1",
+      "kind": "compat_recovered"
+    }
+  },
+  "unit_tests": {
+    "weapon_infusion_view": 44,
+    "new_capture_recovery_and_mod_records": 20,
+    "existing_vault_suites": "passed",
+    "lua51_syntax": 7
+  },
+  "source_sha256": {
+    "easy_other/easy_equipments.lua": "afa10064b7359ae269e0bb738c1e3d870b0188d91a25d7042fc680f9233356d3",
+    "easy_other/shadowvault.lua": "7a7a012ea53ae76477bf7eaf41ba52ab8f298d932fcb788839a51e0c803bb4e5",
+    "scripts/shadowvaultitems2hm.lua": "7367f61fc182bea7d920a0e2dc019aefc1c63b244d7a4aafd2acd9e5939610d8",
+    "scripts/shadowvaultjournal2hm.lua": "f85f8c3146e7871c81165eb2f37ddab87b51e09988b1ccd54fc31c56e1e147bf",
+    "scripts/weaponinfusionview2hm.lua": "a5e7b93601649c2902ad4a040534293463ba1b5e77547bbc639c2b0662066c06",
+    "scripts/components/shadowvault2hm.lua": "50352f8632e667242c443181c60904941a0fef0c2f64ad7f94fb10c41fd9453e",
+    "scripts/shadowvaultconfig2hm.lua": "8d7173979543f3d4e371a1a36ea5fe9d12e09b24e4ea20df2c93918d17128b94"
+  },
+  "reports": {
+    "baseline": "work/vault-hardened-hosted-uiwfl8kg/archive-report.json",
+    "archive": "work/vault-hardened-hosted-sq3_wahl/archive-report.json",
+    "compatibility": "work/vault-hardened-hosted-678ut3ip/compatibility-report.json"
+  },
+  "limitations": [
+    "Archive performance-pack mod was unavailable locally.",
+    "Native dedicated servers were tested; no manual client visual acceptance.",
+    "No universal compatibility guarantee for arbitrary third-party save hooks.",
+    "Final unsupported-item wording changed after native fixture freezing; behavior unchanged."
+  ],
+  "released_in": "2.8.15.0.8"
+}

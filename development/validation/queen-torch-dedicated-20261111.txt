@@ -1,0 +1,26 @@
+女王火炬与妥测惧眸：专服复现记录（2026-11-11）
+
+结论：当前下载的妥测 6.0.3.9，在本轮正常玩法场景中未复现女王火炬查询崩溃；淬炼 2.8.15.0.22 联动同样通过。
+未加载永不妥协[BETA]调整，没有安装火炬防崩保护。观测包装只计数、原样调用引擎函数，不捕获其错误。
+真实 Windows x64 nullrenderer 专服，APP_VERSION 762172。使用全新一次性运行目录与复制的种子存档，不接触玩家正式世界。
+
+场景：无火炬对照、持炬、落地、24 次收起/装备/丢弃操作、12 轮接近撤离、12 次惧眸死亡/移除、原生投掷、保存退出后重启重载。
+每组初始生成惧眸 dreadeye、胆颤影 ancient_trepidation、毒芽 viperling 各 4 个，并让真实 AI 自行更新。
+
+um: 正常查询 1018 次，找到火炬 437 次，无效参数 0 次，检查 16 项通过。
+原始结果：D:\Users\Yucca\Documents\ChatGPT\ShadowWorld\work\vault-hardened-hosted-dfyvbfoj\queen-torch-result.json
+combined: 正常查询 1023 次，找到火炬 459 次，无效参数 0 次，检查 16 项通过。
+原始结果：D:\Users\Yucca\Documents\ChatGPT\ShadowWorld\work\vault-hardened-hosted-whtz0c65\queen-torch-result.json
+
+源码核对：当前三个脑文件调用 BrainCommon.RunAwayFromQueenTorch(self.inst)，参数是实体。引擎 queen_torch.lua:35-40 仍然在存在火炬光源列表时直接访问 inst.Transform。
+单独的人工错误参数对照：用真实 dreadeye.brain 替代实体构建逃跑节点，再由专服调度器执行 Visit。两组都触发 queen_torch.lua:39 / runaway.lua:121 的 Transform=nil 原生 LUA ERROR。
+该人工崩溃明确发生在正常场景和重载场景全部通过之后；不能算作当前正常玩法复现。它证明旧错误参数仍能触发相同崩点，不能证明当前 AI 会自然传错。
+combined 的人工崩溃开始标记与预期错误恰好同批读入，通用日志检查器先报错。已修正人工对照观察器，并依据现存原始日志确认标记前没有 LUA ERROR；没有为此重跑或改变游戏代码。
+
+限制：地表分片、离线专服；脚本生成原生玩家实体，没有真人客户端，不能排除客户端渲染、玩家完整模组组合或长期运行中的其他问题。
+淬炼联动开启妥协补丁、简单/困难模式，关闭影子分身及超级怪物选项；没有验证所有淬炼配置组合。
+本次不修改 content，也不追加未经正常场景复现的火炬保护。
+补充：首轮测试夹具曾误用不存在的 trepidation prefab 名称，已改为实际 ancient_trepidation 后重新跑完整两组；该夹具初始化失败未计入游戏复现结论。
+
+复现脚本：tests/run_native_queen_torch.py --mode um --historical-control；--mode combined --historical-control。
+--historical-control 会在正常测试结束后故意触发错误参数崩溃，仅应运行于本脚本创建的一次性专服。

@@ -1,0 +1,109 @@
+{
+  "date": "2026-11-08",
+  "status": "local_only_not_uploaded",
+  "cause": "cheap_wrap Unwrap wrapper drops native nodelay argument; delayed callback re-enters unwrapdelayfn forever.",
+  "fix": "Forward extra Unwrap arguments and reset settled freshness age so the delayed completion only charges elapsed time after the previous settlement.",
+  "production_sha256": {
+    "content/tech/cheap_wrap.lua": "7f1b5a4a217933cceadc2ed6b12db4ebea3700012443438d398c9baf9801bed1",
+    "tests/native/gift_unwrap_fixture.lua": "5fa79c873a3e54726a0a433f42fe5891738b1e5e0647f728dfce1da4935b3324",
+    "tests/run_native_gift_unwrap_tests.py": "d8c79e8d375463e7020356af56d40154831d815a076d5150136fea844bb6c2a3"
+  },
+  "native_source_sha256": {
+    "components/unwrappable.lua": "8498c4482a22bbb61c96110a0a93b7677302fd088c7713bab0db7c27b182d8ed",
+    "prefabs/bundle.lua": "492825a68ef4a13b625d18750ead3ee3bca77f78bf58aac0c2ec7920261f51cf",
+    "prefabs/giftsurprise.lua": "fb786015601fd5434871874183fcc26c2e6fd42f04f90bf772c29e1196785214",
+    "scenarios/gift_surprise.lua": "a57d903e189a17c233b15720c72f49697638113c91b019b72abbfb3e55056f1d",
+    "actions.lua": "7b9b881134d810644e57d295bd3e268c0eb1dcc5ec664fb15fa7a14514e98a40"
+  },
+  "runs": {
+    "fixed": {
+      "pass": true,
+      "variant": "on",
+      "exit_code": 0,
+      "timed_out": false,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-gift-unwrap-on-q0o3_ytt\\native.log",
+      "checks": [
+        "[00:00:27]: [GIFT_UNWRAP_TEST]\tPASS\tground_large_variation_1\t\t",
+        "[00:00:29]: [GIFT_UNWRAP_TEST]\tPASS\tground_large_variation_2\t\t",
+        "[00:00:31]: [GIFT_UNWRAP_TEST]\tPASS\tinventory_drop_then_unwrap\t\t",
+        "[00:00:33]: [GIFT_UNWRAP_TEST]\tPASS\tcursor_drop_then_unwrap\t\t",
+        "[00:00:35]: [GIFT_UNWRAP_TEST]\tPASS\tsaved_surprise_gift\t\t",
+        "[00:00:37]: [GIFT_UNWRAP_TEST]\tPASS\tsave_while_jiggling_then_reload\t\t",
+        "[00:00:39]: [GIFT_UNWRAP_TEST]\tPASS\texplicit_nodelay\t\t",
+        "[00:00:41]: [GIFT_UNWRAP_TEST]\tPASS\tinvalid_doer_during_delay\t\t",
+        "[00:00:43]: [GIFT_UNWRAP_TEST]\tPASS\tordinary_gift_food\t\t",
+        "[00:00:45]: [GIFT_UNWRAP_TEST]\tPASS\tbundle_keeps_food_fresh\t\t",
+        "[00:00:47]: [GIFT_UNWRAP_TEST]\tPASS\tnative_scenario_opens_nearby_gifts\t\t",
+        "[00:00:47]: [GIFT_UNWRAP_TEST] RESULT\tcases=11\tchecks=130\tfailures=0\t"
+      ],
+      "limitation": "Native gift entities, actions, delayed tasks, scenario callbacks and component save/load in an isolated headless server; no rendered client or physical input."
+    },
+    "disabled": {
+      "pass": true,
+      "variant": "off",
+      "exit_code": 0,
+      "timed_out": false,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-gift-unwrap-off-_auyhimk\\native.log",
+      "checks": [
+        "[00:00:27]: [GIFT_UNWRAP_TEST]\tPASS\tground_large_variation_1\t\t",
+        "[00:00:29]: [GIFT_UNWRAP_TEST]\tPASS\tground_large_variation_2\t\t",
+        "[00:00:31]: [GIFT_UNWRAP_TEST]\tPASS\tinventory_drop_then_unwrap\t\t",
+        "[00:00:33]: [GIFT_UNWRAP_TEST]\tPASS\tcursor_drop_then_unwrap\t\t",
+        "[00:00:35]: [GIFT_UNWRAP_TEST]\tPASS\tsaved_surprise_gift\t\t",
+        "[00:00:37]: [GIFT_UNWRAP_TEST]\tPASS\tsave_while_jiggling_then_reload\t\t",
+        "[00:00:39]: [GIFT_UNWRAP_TEST]\tPASS\texplicit_nodelay\t\t",
+        "[00:00:41]: [GIFT_UNWRAP_TEST]\tPASS\tinvalid_doer_during_delay\t\t",
+        "[00:00:43]: [GIFT_UNWRAP_TEST]\tPASS\tordinary_gift_food\t\t",
+        "[00:00:45]: [GIFT_UNWRAP_TEST]\tPASS\tbundle_keeps_food_fresh\t\t",
+        "[00:00:47]: [GIFT_UNWRAP_TEST]\tPASS\tnative_scenario_opens_nearby_gifts\t\t",
+        "[00:00:47]: [GIFT_UNWRAP_TEST] RESULT\tcases=11\tchecks=116\tfailures=0\t"
+      ],
+      "limitation": "Native gift entities, actions, delayed tasks, scenario callbacks and component save/load in an isolated headless server; no rendered client or physical input."
+    },
+    "before": {
+      "pass": false,
+      "variant": "on",
+      "exit_code": 0,
+      "timed_out": false,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-gift-unwrap-on-_5ckzpgi\\native.log",
+      "checks": [
+        "[00:00:27]: [GIFT_UNWRAP_TEST]\tFAIL\tground_large_variation_1\t[string \"../mods/EquipSlotProbe/gift_unwrap_fixture....\"]:30: unwrap event fires exactly once per gift\t",
+        "[00:00:29]: [GIFT_UNWRAP_TEST]\tFAIL\tground_large_variation_2\t[string \"../mods/EquipSlotProbe/gift_unwrap_fixture....\"]:30: unwrap event fires exactly once per gift\t",
+        "[00:00:31]: [GIFT_UNWRAP_TEST]\tFAIL\tinventory_drop_then_unwrap\t[string \"../mods/EquipSlotProbe/gift_unwrap_fixture....\"]:30: unwrap event fires exactly once per gift\t",
+        "[00:00:33]: [GIFT_UNWRAP_TEST]\tFAIL\tcursor_drop_then_unwrap\t[string \"../mods/EquipSlotProbe/gift_unwrap_fixture....\"]:30: unwrap event fires exactly once per gift\t",
+        "[00:00:35]: [GIFT_UNWRAP_TEST]\tFAIL\tsaved_surprise_gift\t[string \"../mods/EquipSlotProbe/gift_unwrap_fixture....\"]:30: unwrap event fires exactly once per gift\t",
+        "[00:00:37]: [GIFT_UNWRAP_TEST]\tFAIL\tsave_while_jiggling_then_reload\t[string \"../mods/EquipSlotProbe/gift_unwrap_fixture....\"]:30: unwrap event fires exactly once per gift\t",
+        "[00:00:37]: [GIFT_UNWRAP_TEST]\tFAIL\texplicit_nodelay\t[string \"../mods/EquipSlotProbe/gift_unwrap_fixture....\"]:30: nodelay completes immediately\t",
+        "[00:00:39]: [GIFT_UNWRAP_TEST]\tFAIL\tinvalid_doer_during_delay\t[string \"../mods/EquipSlotProbe/gift_unwrap_fixture....\"]:30: unwrap event fires exactly once per gift\t",
+        "[00:00:41]: [GIFT_UNWRAP_TEST]\tPASS\tordinary_gift_food\t\t",
+        "[00:00:43]: [GIFT_UNWRAP_TEST]\tPASS\tbundle_keeps_food_fresh\t\t",
+        "[00:00:45]: [GIFT_UNWRAP_TEST]\tFAIL\tnative_scenario_opens_nearby_gifts\t[string \"../mods/EquipSlotProbe/gift_unwrap_fixture....\"]:30: unwrap event fires exactly once per gift\t",
+        "[00:00:45]: [GIFT_UNWRAP_TEST] RESULT\tcases=11\tchecks=67\tfailures=9\t"
+      ],
+      "limitation": "Native gift entities, actions, delayed tasks, scenario callbacks and component save/load in an isolated headless server; no rendered client or physical input."
+    },
+    "forward_only": {
+      "pass": false,
+      "variant": "on",
+      "exit_code": 0,
+      "timed_out": false,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-gift-unwrap-on-wbj5dymx\\native.log",
+      "checks": [
+        "[00:00:27]: [GIFT_UNWRAP_TEST]\tFAIL\tground_large_variation_1\t[string \"../mods/EquipSlotProbe/gift_unwrap_fixture....\"]:30: food age deducted once, including native delay\t",
+        "[00:00:29]: [GIFT_UNWRAP_TEST]\tFAIL\tground_large_variation_2\t[string \"../mods/EquipSlotProbe/gift_unwrap_fixture....\"]:30: food age deducted once, including native delay\t",
+        "[00:00:31]: [GIFT_UNWRAP_TEST]\tFAIL\tinventory_drop_then_unwrap\t[string \"../mods/EquipSlotProbe/gift_unwrap_fixture....\"]:30: food age deducted once, including native delay\t",
+        "[00:00:33]: [GIFT_UNWRAP_TEST]\tFAIL\tcursor_drop_then_unwrap\t[string \"../mods/EquipSlotProbe/gift_unwrap_fixture....\"]:30: food age deducted once, including native delay\t",
+        "[00:00:35]: [GIFT_UNWRAP_TEST]\tFAIL\tsaved_surprise_gift\t[string \"../mods/EquipSlotProbe/gift_unwrap_fixture....\"]:30: food age deducted once, including native delay\t",
+        "[00:00:37]: [GIFT_UNWRAP_TEST]\tFAIL\tsave_while_jiggling_then_reload\t[string \"../mods/EquipSlotProbe/gift_unwrap_fixture....\"]:30: food age deducted once, including native delay\t",
+        "[00:00:39]: [GIFT_UNWRAP_TEST]\tPASS\texplicit_nodelay\t\t",
+        "[00:00:41]: [GIFT_UNWRAP_TEST]\tFAIL\tinvalid_doer_during_delay\t[string \"../mods/EquipSlotProbe/gift_unwrap_fixture....\"]:30: food age deducted once, including native delay\t",
+        "[00:00:43]: [GIFT_UNWRAP_TEST]\tPASS\tordinary_gift_food\t\t",
+        "[00:00:45]: [GIFT_UNWRAP_TEST]\tPASS\tbundle_keeps_food_fresh\t\t",
+        "[00:00:47]: [GIFT_UNWRAP_TEST]\tPASS\tnative_scenario_opens_nearby_gifts\t\t",
+        "[00:00:47]: [GIFT_UNWRAP_TEST] RESULT\tcases=11\tchecks=116\tfailures=7\t"
+      ],
+      "limitation": "Native gift entities, actions, delayed tasks, scenario callbacks and component save/load in an isolated headless server; no rendered client or physical input."
+    }
+  },
+  "limitations": "Native headless entities/actions/scheduler/scenario and component save/load; no rendered client, input/pathfinding, random event world generation or third-party mod combinations."
+}

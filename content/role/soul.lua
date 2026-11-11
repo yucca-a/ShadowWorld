@@ -11,6 +11,7 @@ AddComponentPostInit("actionqueuer", function(self) if self.AddAction then self.
 
 -- 灵魂死亡
 AddClientModRPCHandler("MOD_HARDMODE", "stopplayeraction", function(inst)
+    if not require("rpcguard2hm").IsEntity(inst) then return end
     if inst.components and inst.components.actionqueuer and inst.components.actionqueuer.ClearAllThreads then inst.components.actionqueuer:ClearAllThreads() end
 end)
 local function souldeath(inst)

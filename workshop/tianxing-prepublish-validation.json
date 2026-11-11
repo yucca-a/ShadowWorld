@@ -1,0 +1,23 @@
+[
+  {
+    "source": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\client_mods\\vanilla_solo_assist",
+    "content": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\workshop\\tianxingjian\\content",
+    "lua_files": 3,
+    "sha256": {
+      "modinfo.lua": "575883b49eda3c09ffef08308be4c850ff86e8673fdd95d24da1bef80316c41d",
+      "modmain.lua": "df523c56f50d837a75f9666041338428a25823a7d68c9adb4d6318711178b4fe",
+      "scripts\\soloassist2hm.lua": "a65fe463d84bf52175cf3dc2e48dc6a6a42abe30107520adde410e04558d2ab8"
+    }
+  },
+  {
+    "source": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\server_mods\\tianxing_guard",
+    "content": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\workshop\\tianxing_guard\\content",
+    "lua_files": 4,
+    "sha256": {
+      "modinfo.lua": "874918c73d814cf1750cdf4859c44d18d2e3919880d697b18bab48cc4a48f24f",
+      "modmain.lua": "bd3cacb3486e0ef45d1a13aed235254bb5a9cfe19f770f64951e0486cbeb8266",
+      "scripts\\tianxing_guard.lua": "af386bbc9f5305843747942fe27a9c693dee595cab59d07391b0555195d01e1b",
+      "scripts\\tianxing_guard_watch.lua": "18e4b470c9480e8ac0907319f2bff93f76ab0387997a6708686cf3a52760e520"
+    }
+  }
+]

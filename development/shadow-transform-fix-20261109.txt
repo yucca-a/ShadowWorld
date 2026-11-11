@@ -1,0 +1,38 @@
+影子结束战斗与地下三王腐化（本地修复，尚未发布）
+
+1. 棱镜颤栗树增殖
+
+本机棱镜1392778117 v7.7.0的 shyerrycored / shyerrycored_lunar，
+在死亡、主动退战和 onremove 时都会调用 _EndFight。
+_EndFight(false, ...) 清理树根、树洞等战场数据；
+_EndFight(true, ...) 则生成持久化的 shyerrycore，并恢复生长阶段和养分。
+影子的 lootdropper 禁用与 persists=false 均不能阻止这个直接 SpawnPrefab 分支。
+原生回收影子也会触发 onremove，因此本体死亡会额外留树，单杀或移除影子也会留树。
+
+修复仅包装两种颤栗树 Boss 影子的 _EndFight：保留 false 分支的原生清理，
+true 分支只清空回调、不生成树或结算果实。没有改动原 Boss 的回调和正常退战流程。
+不自动清理已经生成的树：它们与玩家正常培育的树无法可靠区分。
+
+2. 织影者影子重入腐化
+
+现有 onspawnchild 已撤销影子作为腐化目标的资格（sg.mem.canstalkercorrupt、
+CanStalkerCorrupt、nightmarecorruptable）。这与施法者的能力是两条不同路径。
+原生 stalker_npc 的 cancorrupt=true 被复制实体完整继承；StalkerBrain据此选择仪式目标。
+SGstalker.perform_corrupt_pre 会立即给目标发送 stalker_corruption_stun，
+它会无条件重置目标状态，与本体的 startcorruption/动画转换冲突。
+
+修复在影子初始化时关闭 cancorrupt，并对 SGstalker 的 perform_corrupt_pre /
+perform_corrupt_loop 增加影子检查。覆盖原生 AI、事件请求及直接进状态的路径；
+影子不能先把目标打入硬直，也不会直接进入循环。原 NPC 仍调用原有流程，三王的状态图不作修改。
+沿用之前三王影子的目标免疫，以及猎犬蝙蝠提前卸装、取消碰撞任务的崩溃修复。
+
+验证使用隔离离线原生专服，实际加载棱镜，另加本机永不妥协测试版作回归。
+tests/run_native_shadow_transform.py --before <修复前 shadowworld.lua> 做旧代码失败对照；
+不带 --before 测试修复，--um 同时加载永不妥协测试版。
+14场景包含两种树的本体死亡、影子致命伤、直接回收和正常退战；
+三王各自的单个原NPC腐化对照，以及原NPC与影子同时收到请求的压力场景。
+原生状态图、动画、替换实体、巨型蠕虫主体/两段区块/土堆/头部和保存数据迁移都真实运行。
+为避免无玩家的测试服休眠，夹具让受测实体及腐化替换实体保持唤醒；
+不替换原生腐化实现，不模拟客户端画面或全流程玩家召唤任务。
+
+最终证据见 development/validation/shadow-transform-20261109.json。

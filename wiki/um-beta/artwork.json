@@ -1,0 +1,2178 @@
+{
+  "air_conditioner": {
+    "path": "assets/um-beta/air_conditioner.png",
+    "source": "images/inventoryimages/air_conditioner.tex",
+    "atlas": "images/inventoryimages/air_conditioner.xml",
+    "width": 52,
+    "height": 61,
+    "workshop": true
+  },
+  "ancient_amulet_red": {
+    "path": "assets/um-beta/ancient_amulet_red.png",
+    "source": "images/inventoryimages/ancient_amulet_red.tex",
+    "atlas": "images/inventoryimages/ancient_amulet_red.xml",
+    "width": 43,
+    "height": 60,
+    "workshop": true
+  },
+  "armor_glassmail": {
+    "path": "assets/um-beta/armor_glassmail.png",
+    "source": "images/inventoryimages/armor_glassmail.tex",
+    "atlas": "images/inventoryimages/armor_glassmail.xml",
+    "width": 56,
+    "height": 62,
+    "workshop": true
+  },
+  "armor_reed_um": {
+    "path": "assets/um-beta/armor_reed_um.png",
+    "source": "images/inventoryimages/armor_reed_um.tex",
+    "atlas": "images/inventoryimages/armor_reed_um.xml",
+    "width": 57,
+    "height": 60,
+    "workshop": true
+  },
+  "armor_sharksuit_um": {
+    "path": "assets/um-beta/armor_sharksuit_um.png",
+    "source": "images/inventoryimages/armor_sharksuit_um.tex",
+    "atlas": "images/inventoryimages/armor_sharksuit_um.xml",
+    "width": 63,
+    "height": 63,
+    "workshop": true
+  },
+  "bagofmarbles": {
+    "path": "assets/um-beta/bagofmarbles.png",
+    "source": "images/inventoryimages/bagofmarbles.tex",
+    "atlas": "images/inventoryimages/bagofmarbles.xml",
+    "width": 62,
+    "height": 62,
+    "workshop": true
+  },
+  "beakbasher": {
+    "path": "assets/um-beta/beakbasher.png",
+    "source": "images/inventoryimages/beakbasher.tex",
+    "atlas": "images/inventoryimages/beakbasher.xml",
+    "width": 62,
+    "height": 47,
+    "workshop": true
+  },
+  "blueberrypancakes": {
+    "path": "assets/um-beta/blueberrypancakes.png",
+    "source": "images/inventoryimages/blueberrypancakes.tex",
+    "atlas": "images/inventoryimages/blueberrypancakes.xml",
+    "width": 64,
+    "height": 59,
+    "workshop": true
+  },
+  "boat_bumper_sludge_kit": {
+    "path": "assets/um-beta/boat_bumper_sludge_kit.png",
+    "source": "images/inventoryimages/boat_bumper_sludge_kit.tex",
+    "atlas": "images/inventoryimages/boat_bumper_sludge_kit.xml",
+    "width": 61,
+    "height": 51,
+    "workshop": true
+  },
+  "boatpatch_sludge": {
+    "path": "assets/um-beta/boatpatch_sludge.png",
+    "source": "images/inventoryimages/boatpatch_sludge.tex",
+    "atlas": "images/inventoryimages/boatpatch_sludge.xml",
+    "width": 61,
+    "height": 54,
+    "workshop": true
+  },
+  "brine_balm": {
+    "path": "assets/um-beta/brine_balm.png",
+    "source": "images/inventoryimages/brine_balm.tex",
+    "atlas": "images/inventoryimages/brine_balm.xml",
+    "width": 64,
+    "height": 42,
+    "workshop": true
+  },
+  "bugzapper": {
+    "path": "assets/um-beta/bugzapper.png",
+    "source": "images/inventoryimages/bugzapper.tex",
+    "atlas": "images/inventoryimages/bugzapper.xml",
+    "width": 63,
+    "height": 62,
+    "workshop": true
+  },
+  "cannonball_sludge_item": {
+    "path": "assets/um-beta/cannonball_sludge_item.png",
+    "source": "images/inventoryimages/cannonball_sludge_item.tex",
+    "atlas": "images/inventoryimages/cannonball_sludge_item.xml",
+    "width": 62,
+    "height": 60,
+    "workshop": true
+  },
+  "cave_entrance_magmabiome": {
+    "path": "assets/um-beta/cave_entrance_magmabiome.png",
+    "source": "images/scrapbook/cave_entrance_magmabiome.tex",
+    "atlas": "images/scrapbook/cave_entrance_magmabiome.xml",
+    "width": 96,
+    "height": 68,
+    "workshop": true
+  },
+  "cover": {
+    "path": "assets/um-beta/cover.png",
+    "source": "modicon.tex",
+    "atlas": "modicon.xml",
+    "width": 512,
+    "height": 512,
+    "workshop": true
+  },
+  "critter_figgy_builder": {
+    "path": "assets/um-beta/critter_figgy_builder.png",
+    "source": "images/inventoryimages/critter_figgy_builder.tex",
+    "atlas": "images/inventoryimages/critter_figgy_builder.xml",
+    "width": 60,
+    "height": 57,
+    "workshop": true
+  },
+  "crystal_cursed_antler": {
+    "path": "assets/um-beta/crystal_cursed_antler.png",
+    "source": "images/inventoryimages/crystal_cursed_antler.tex",
+    "atlas": "images/inventoryimages/crystal_cursed_antler.xml",
+    "width": 63,
+    "height": 64,
+    "workshop": true
+  },
+  "cursed_antler": {
+    "path": "assets/um-beta/cursed_antler.png",
+    "source": "images/inventoryimages/cursed_antler.tex",
+    "atlas": "images/inventoryimages/cursed_antler.xml",
+    "width": 62,
+    "height": 64,
+    "workshop": true
+  },
+  "dormant_rain_horn": {
+    "path": "assets/um-beta/dormant_rain_horn.png",
+    "source": "images/inventoryimages/dormant_rain_horn.tex",
+    "atlas": "images/inventoryimages/dormant_rain_horn.xml",
+    "width": 62,
+    "height": 64,
+    "workshop": true
+  },
+  "driftwoodfishingrod": {
+    "path": "assets/um-beta/driftwoodfishingrod.png",
+    "source": "images/inventoryimages/driftwoodfishingrod.tex",
+    "atlas": "images/inventoryimages/driftwoodfishingrod.xml",
+    "width": 59,
+    "height": 61,
+    "workshop": true
+  },
+  "floral_bandage": {
+    "path": "assets/um-beta/floral_bandage.png",
+    "source": "images/inventoryimages/floral_bandage.tex",
+    "atlas": "images/inventoryimages/floral_bandage.xml",
+    "width": 64,
+    "height": 52,
+    "workshop": true
+  },
+  "fruitbat": {
+    "path": "assets/um-beta/fruitbat.png",
+    "source": "images/scrapbook/fruitbat.tex",
+    "atlas": "images/scrapbook/fruitbat.xml",
+    "width": 96,
+    "height": 73,
+    "workshop": true
+  },
+  "gasmask": {
+    "path": "assets/um-beta/gasmask.png",
+    "source": "images/inventoryimages/gasmask.tex",
+    "atlas": "images/inventoryimages/gasmask.xml",
+    "width": 64,
+    "height": 51,
+    "workshop": true
+  },
+  "giant_blueberry": {
+    "path": "assets/um-beta/giant_blueberry.png",
+    "source": "images/inventoryimages/giant_blueberry.tex",
+    "atlas": "images/inventoryimages/giant_blueberry.xml",
+    "width": 62,
+    "height": 61,
+    "workshop": true
+  },
+  "glacialhound": {
+    "path": "assets/um-beta/glacialhound.png",
+    "source": "images/scrapbook/glacialhound.tex",
+    "atlas": "images/scrapbook/glacialhound.xml",
+    "width": 96,
+    "height": 81,
+    "workshop": true
+  },
+  "glass_scales": {
+    "path": "assets/um-beta/glass_scales.png",
+    "source": "images/inventoryimages/glass_scales.tex",
+    "atlas": "images/inventoryimages/glass_scales.xml",
+    "width": 63,
+    "height": 63,
+    "workshop": true
+  },
+  "gore_horn_hat": {
+    "path": "assets/um-beta/gore_horn_hat.png",
+    "source": "images/inventoryimages/gore_horn_hat.tex",
+    "atlas": "images/inventoryimages/gore_horn_hat.xml",
+    "width": 64,
+    "height": 60,
+    "workshop": true
+  },
+  "hat_ratmask": {
+    "path": "assets/um-beta/hat_ratmask.png",
+    "source": "images/inventoryimages/hat_ratmask.tex",
+    "atlas": "images/inventoryimages/hat_ratmask.xml",
+    "width": 54,
+    "height": 62,
+    "workshop": true
+  },
+  "honey_log": {
+    "path": "assets/um-beta/honey_log.png",
+    "source": "images/inventoryimages/honey_log.tex",
+    "atlas": "images/inventoryimages/honey_log.xml",
+    "width": 62,
+    "height": 36,
+    "workshop": true
+  },
+  "hooded_fern": {
+    "path": "assets/um-beta/hooded_fern.png",
+    "source": "images/scrapbook/hooded_fern.tex",
+    "atlas": "images/scrapbook/hooded_fern.xml",
+    "width": 63,
+    "height": 96,
+    "workshop": true
+  },
+  "hoodedwidow": {
+    "path": "assets/um-beta/hoodedwidow.png",
+    "source": "images/scrapbook/hoodedwidow.tex",
+    "atlas": "images/scrapbook/hoodedwidow.xml",
+    "width": 96,
+    "height": 69,
+    "workshop": true
+  },
+  "jawed_scythe": {
+    "path": "assets/um-beta/jawed_scythe.png",
+    "source": "images/inventoryimages/jawed_scythe.tex",
+    "atlas": "images/inventoryimages/jawed_scythe.xml",
+    "width": 63,
+    "height": 63,
+    "workshop": true
+  },
+  "mastupgrade_windturbine_item": {
+    "path": "assets/um-beta/mastupgrade_windturbine_item.png",
+    "source": "images/inventoryimages/mastupgrade_windturbine_item.tex",
+    "atlas": "images/inventoryimages/mastupgrade_windturbine_item.xml",
+    "width": 60,
+    "height": 43,
+    "workshop": true
+  },
+  "meatrack_hat": {
+    "path": "assets/um-beta/meatrack_hat.png",
+    "source": "images/inventoryimages/meatrack_hat.tex",
+    "atlas": "images/inventoryimages/meatrack_hat.xml",
+    "width": 61,
+    "height": 48,
+    "workshop": true
+  },
+  "monstersmallmeat": {
+    "path": "assets/um-beta/monstersmallmeat.png",
+    "source": "images/inventoryimages/monstersmallmeat.tex",
+    "atlas": "images/inventoryimages/monstersmallmeat.xml",
+    "width": 58,
+    "height": 46,
+    "workshop": true
+  },
+  "monstersmallmeat_dried": {
+    "path": "assets/um-beta/monstersmallmeat_dried.png",
+    "source": "images/inventoryimages/monstersmallmeat_dried.tex",
+    "atlas": "images/inventoryimages/monstersmallmeat_dried.xml",
+    "width": 47,
+    "height": 51,
+    "workshop": true
+  },
+  "moonmaw_dragonfly": {
+    "path": "assets/um-beta/moonmaw_dragonfly.png",
+    "source": "images/scrapbook/moonmaw_dragonfly.tex",
+    "atlas": "images/scrapbook/moonmaw_dragonfly.xml",
+    "width": 93,
+    "height": 96,
+    "workshop": true
+  },
+  "mutator_trapdoor": {
+    "path": "assets/um-beta/mutator_trapdoor.png",
+    "source": "images/inventoryimages/mutator_trapdoor.tex",
+    "atlas": "images/inventoryimages/mutator_trapdoor.xml",
+    "width": 62,
+    "height": 46,
+    "workshop": true
+  },
+  "mutator_trapdoor_hooded": {
+    "path": "assets/um-beta/mutator_trapdoor_hooded.png",
+    "source": "images/inventoryimages/mutator_trapdoor_hooded.tex",
+    "atlas": "images/inventoryimages/mutator_trapdoor_hooded.xml",
+    "width": 62,
+    "height": 43,
+    "workshop": true
+  },
+  "ocupus_beak": {
+    "path": "assets/um-beta/ocupus_beak.png",
+    "source": "images/inventoryimages/ocupus_beak.tex",
+    "atlas": "images/inventoryimages/ocupus_beak.xml",
+    "width": 56,
+    "height": 64,
+    "workshop": true
+  },
+  "ocupus_tentacle_eye": {
+    "path": "assets/um-beta/ocupus_tentacle_eye.png",
+    "source": "images/inventoryimages/ocupus_tentacle_eye.tex",
+    "atlas": "images/inventoryimages/ocupus_tentacle_eye.xml",
+    "width": 64,
+    "height": 58,
+    "workshop": true
+  },
+  "placeholder_ingredient_ia": {
+    "path": "assets/um-beta/placeholder_ingredient_ia.png",
+    "source": "images/inventoryimages/placeholder_ingredient_ia.tex",
+    "atlas": "images/inventoryimages/placeholder_ingredient_ia.xml",
+    "width": 64,
+    "height": 64,
+    "workshop": true
+  },
+  "plaguemask": {
+    "path": "assets/um-beta/plaguemask.png",
+    "source": "images/inventoryimages/plaguemask.tex",
+    "atlas": "images/inventoryimages/plaguemask.xml",
+    "width": 62,
+    "height": 57,
+    "workshop": true
+  },
+  "plaunt_manny": {
+    "path": "assets/um-beta/plaunt_manny.png",
+    "source": "images/inventoryimages/plaunt_manny.tex",
+    "atlas": "images/inventoryimages/plaunt_manny.xml",
+    "width": 57,
+    "height": 63,
+    "workshop": true
+  },
+  "portableboat_item": {
+    "path": "assets/um-beta/portableboat_item.png",
+    "source": "images/inventoryimages/portableboat_item.tex",
+    "atlas": "images/inventoryimages/portableboat_item.xml",
+    "width": 63,
+    "height": 48,
+    "workshop": true
+  },
+  "powercell": {
+    "path": "assets/um-beta/powercell.png",
+    "source": "images/inventoryimages/powercell.tex",
+    "atlas": "images/inventoryimages/powercell.xml",
+    "width": 64,
+    "height": 62,
+    "workshop": true
+  },
+  "rain_horn": {
+    "path": "assets/um-beta/rain_horn.png",
+    "source": "images/inventoryimages/rain_horn.tex",
+    "atlas": "images/inventoryimages/rain_horn.xml",
+    "width": 61,
+    "height": 63,
+    "workshop": true
+  },
+  "rat_tail": {
+    "path": "assets/um-beta/rat_tail.png",
+    "source": "images/inventoryimages/rat_tail.tex",
+    "atlas": "images/inventoryimages/rat_tail.xml",
+    "width": 63,
+    "height": 28,
+    "workshop": true
+  },
+  "rat_whip": {
+    "path": "assets/um-beta/rat_whip.png",
+    "source": "images/inventoryimages/rat_whip.tex",
+    "atlas": "images/inventoryimages/rat_whip.xml",
+    "width": 56,
+    "height": 61,
+    "workshop": true
+  },
+  "ratpoisonbottle": {
+    "path": "assets/um-beta/ratpoisonbottle.png",
+    "source": "images/inventoryimages/ratpoisonbottle.tex",
+    "atlas": "images/inventoryimages/ratpoisonbottle.xml",
+    "width": 43,
+    "height": 63,
+    "workshop": true
+  },
+  "riceplant": {
+    "path": "assets/um-beta/riceplant.png",
+    "source": "images/scrapbook/riceplant.tex",
+    "atlas": "images/scrapbook/riceplant.xml",
+    "width": 62,
+    "height": 96,
+    "workshop": true
+  },
+  "rimeweed_main": {
+    "path": "assets/um-beta/rimeweed_main.png",
+    "source": "images/scrapbook/rimeweed_main.tex",
+    "atlas": "images/scrapbook/rimeweed_main.xml",
+    "width": 54,
+    "height": 96,
+    "workshop": true
+  },
+  "rockjawleather": {
+    "path": "assets/um-beta/rockjawleather.png",
+    "source": "images/inventoryimages/rockjawleather.tex",
+    "atlas": "images/inventoryimages/rockjawleather.xml",
+    "width": 62,
+    "height": 63,
+    "workshop": true
+  },
+  "saltpack": {
+    "path": "assets/um-beta/saltpack.png",
+    "source": "images/inventoryimages/saltpack.tex",
+    "atlas": "images/inventoryimages/saltpack.xml",
+    "width": 62,
+    "height": 64,
+    "workshop": true
+  },
+  "seafoodpaella": {
+    "path": "assets/um-beta/seafoodpaella.png",
+    "source": "images/inventoryimages/seafoodpaella.tex",
+    "atlas": "images/inventoryimages/seafoodpaella.xml",
+    "width": 64,
+    "height": 40,
+    "workshop": true
+  },
+  "shockworm": {
+    "path": "assets/um-beta/shockworm.png",
+    "source": "images/scrapbook/shockworm.tex",
+    "atlas": "images/scrapbook/shockworm.xml",
+    "width": 52,
+    "height": 96,
+    "workshop": true
+  },
+  "shroom_skin_fragment": {
+    "path": "assets/um-beta/shroom_skin_fragment.png",
+    "source": "images/inventoryimages/shroom_skin_fragment.tex",
+    "atlas": "images/inventoryimages/shroom_skin_fragment.xml",
+    "width": 61,
+    "height": 35,
+    "workshop": true
+  },
+  "silksack": {
+    "path": "assets/um-beta/silksack.png",
+    "source": "images/inventoryimages/silksack.tex",
+    "atlas": "images/inventoryimages/silksack.xml",
+    "width": 63,
+    "height": 63,
+    "workshop": true
+  },
+  "skullchest_child": {
+    "path": "assets/um-beta/skullchest_child.png",
+    "source": "images/inventoryimages/skullchest_child.tex",
+    "atlas": "images/inventoryimages/skullchest_child.xml",
+    "width": 64,
+    "height": 51,
+    "workshop": true
+  },
+  "slingshot_claire": {
+    "path": "assets/um-beta/slingshot_claire.png",
+    "source": "images/inventoryimages/slingshot_claire.tex",
+    "atlas": "images/inventoryimages/slingshot_claire.xml",
+    "width": 52,
+    "height": 60,
+    "workshop": true
+  },
+  "slingshot_gnasher": {
+    "path": "assets/um-beta/slingshot_gnasher.png",
+    "source": "images/inventoryimages/slingshot_gnasher.tex",
+    "atlas": "images/inventoryimages/slingshot_gnasher.xml",
+    "width": 55,
+    "height": 64,
+    "workshop": true
+  },
+  "slingshot_jessie": {
+    "path": "assets/um-beta/slingshot_jessie.png",
+    "source": "images/inventoryimages/slingshot_jessie.tex",
+    "atlas": "images/inventoryimages/slingshot_jessie.xml",
+    "width": 63,
+    "height": 53,
+    "workshop": true
+  },
+  "slingshot_matilda": {
+    "path": "assets/um-beta/slingshot_matilda.png",
+    "source": "images/inventoryimages/slingshot_matilda.tex",
+    "atlas": "images/inventoryimages/slingshot_matilda.xml",
+    "width": 55,
+    "height": 64,
+    "workshop": true
+  },
+  "slingshotammo_firecrackers": {
+    "path": "assets/um-beta/slingshotammo_firecrackers.png",
+    "source": "images/inventoryimages/slingshotammo_firecrackers.tex",
+    "atlas": "images/inventoryimages/slingshotammo_firecrackers.xml",
+    "width": 62,
+    "height": 48,
+    "workshop": true
+  },
+  "slingshotammo_flare": {
+    "path": "assets/um-beta/slingshotammo_flare.png",
+    "source": "images/inventoryimages/slingshotammo_flare.tex",
+    "atlas": "images/inventoryimages/slingshotammo_flare.xml",
+    "width": 60,
+    "height": 54,
+    "workshop": true
+  },
+  "slingshotammo_goop": {
+    "path": "assets/um-beta/slingshotammo_goop.png",
+    "source": "images/inventoryimages/slingshotammo_goop.tex",
+    "atlas": "images/inventoryimages/slingshotammo_goop.xml",
+    "width": 59,
+    "height": 53,
+    "workshop": true
+  },
+  "slingshotammo_honey": {
+    "path": "assets/um-beta/slingshotammo_honey.png",
+    "source": "images/inventoryimages/slingshotammo_honey.tex",
+    "atlas": "images/inventoryimages/slingshotammo_honey.xml",
+    "width": 63,
+    "height": 44,
+    "workshop": true
+  },
+  "slingshotammo_lazy": {
+    "path": "assets/um-beta/slingshotammo_lazy.png",
+    "source": "images/inventoryimages/slingshotammo_lazy.tex",
+    "atlas": "images/inventoryimages/slingshotammo_lazy.xml",
+    "width": 60,
+    "height": 51,
+    "workshop": true
+  },
+  "slingshotammo_moonglass": {
+    "path": "assets/um-beta/slingshotammo_moonglass.png",
+    "source": "images/inventoryimages/slingshotammo_moonglass.tex",
+    "atlas": "images/inventoryimages/slingshotammo_moonglass.xml",
+    "width": 62,
+    "height": 59,
+    "workshop": true
+  },
+  "slingshotammo_moonrock": {
+    "path": "assets/um-beta/slingshotammo_moonrock.png",
+    "source": "images/inventoryimages/slingshotammo_moonrock.tex",
+    "atlas": "images/inventoryimages/slingshotammo_moonrock.xml",
+    "width": 51,
+    "height": 51,
+    "workshop": true
+  },
+  "slingshotammo_obsidian": {
+    "path": "assets/um-beta/slingshotammo_obsidian.png",
+    "source": "images/inventoryimages/slingshotammo_obsidian.tex",
+    "atlas": "images/inventoryimages/slingshotammo_obsidian.xml",
+    "width": 62,
+    "height": 54,
+    "workshop": true
+  },
+  "slingshotammo_rubber": {
+    "path": "assets/um-beta/slingshotammo_rubber.png",
+    "source": "images/inventoryimages/slingshotammo_rubber.tex",
+    "atlas": "images/inventoryimages/slingshotammo_rubber.xml",
+    "width": 59,
+    "height": 51,
+    "workshop": true
+  },
+  "slingshotammo_salt": {
+    "path": "assets/um-beta/slingshotammo_salt.png",
+    "source": "images/inventoryimages/slingshotammo_salt.tex",
+    "atlas": "images/inventoryimages/slingshotammo_salt.xml",
+    "width": 64,
+    "height": 52,
+    "workshop": true
+  },
+  "slingshotammo_shadow": {
+    "path": "assets/um-beta/slingshotammo_shadow.png",
+    "source": "images/inventoryimages/slingshotammo_shadow.tex",
+    "atlas": "images/inventoryimages/slingshotammo_shadow.xml",
+    "width": 60,
+    "height": 48,
+    "workshop": true
+  },
+  "slingshotammo_slime": {
+    "path": "assets/um-beta/slingshotammo_slime.png",
+    "source": "images/inventoryimages/slingshotammo_slime.tex",
+    "atlas": "images/inventoryimages/slingshotammo_slime.xml",
+    "width": 59,
+    "height": 40,
+    "workshop": true
+  },
+  "slingshotammo_tar": {
+    "path": "assets/um-beta/slingshotammo_tar.png",
+    "source": "images/inventoryimages/slingshotammo_tar.tex",
+    "atlas": "images/inventoryimages/slingshotammo_tar.xml",
+    "width": 62,
+    "height": 41,
+    "workshop": true
+  },
+  "slingshotammo_tremor": {
+    "path": "assets/um-beta/slingshotammo_tremor.png",
+    "source": "images/inventoryimages/slingshotammo_tremor.tex",
+    "atlas": "images/inventoryimages/slingshotammo_tremor.xml",
+    "width": 51,
+    "height": 52,
+    "workshop": true
+  },
+  "sludge": {
+    "path": "assets/um-beta/sludge.png",
+    "source": "images/inventoryimages/sludge.tex",
+    "atlas": "images/inventoryimages/sludge.xml",
+    "width": 64,
+    "height": 55,
+    "workshop": true
+  },
+  "sludge_cork": {
+    "path": "assets/um-beta/sludge_cork.png",
+    "source": "images/inventoryimages/sludge_cork.tex",
+    "atlas": "images/inventoryimages/sludge_cork.xml",
+    "width": 64,
+    "height": 47,
+    "workshop": true
+  },
+  "sludge_oil": {
+    "path": "assets/um-beta/sludge_oil.png",
+    "source": "images/inventoryimages/sludge_oil.tex",
+    "atlas": "images/inventoryimages/sludge_oil.xml",
+    "width": 62,
+    "height": 58,
+    "workshop": true
+  },
+  "sludge_sack": {
+    "path": "assets/um-beta/sludge_sack.png",
+    "source": "images/inventoryimages/sludge_sack.tex",
+    "atlas": "images/inventoryimages/sludge_sack.xml",
+    "width": 64,
+    "height": 56,
+    "workshop": true
+  },
+  "snaildrake_magma": {
+    "path": "assets/um-beta/snaildrake_magma.png",
+    "source": "images/scrapbook/snaildrake_magma.tex",
+    "atlas": "images/scrapbook/snaildrake_magma.xml",
+    "width": 96,
+    "height": 57,
+    "workshop": true
+  },
+  "snaildrakehat": {
+    "path": "assets/um-beta/snaildrakehat.png",
+    "source": "images/inventoryimages/snaildrakehat.tex",
+    "atlas": "images/inventoryimages/snaildrakehat.xml",
+    "width": 61,
+    "height": 63,
+    "workshop": true
+  },
+  "snappy_jaw": {
+    "path": "assets/um-beta/snappy_jaw.png",
+    "source": "images/inventoryimages/snappy_jaw.tex",
+    "atlas": "images/inventoryimages/snappy_jaw.xml",
+    "width": 63,
+    "height": 59,
+    "workshop": true
+  },
+  "snowcone": {
+    "path": "assets/um-beta/snowcone.png",
+    "source": "images/inventoryimages/snowcone.tex",
+    "atlas": "images/inventoryimages/snowcone.xml",
+    "width": 64,
+    "height": 60,
+    "workshop": true
+  },
+  "snowgoggles": {
+    "path": "assets/um-beta/snowgoggles.png",
+    "source": "images/inventoryimages/snowgoggles.tex",
+    "atlas": "images/inventoryimages/snowgoggles.xml",
+    "width": 53,
+    "height": 45,
+    "workshop": true
+  },
+  "snowmong": {
+    "path": "assets/um-beta/snowmong.png",
+    "source": "images/scrapbook/snowmong.tex",
+    "atlas": "images/scrapbook/snowmong.xml",
+    "width": 91,
+    "height": 96,
+    "workshop": true
+  },
+  "spider_trapdoor": {
+    "path": "assets/um-beta/spider_trapdoor.png",
+    "source": "images/inventoryimages/spider_trapdoor.tex",
+    "atlas": "images/inventoryimages/spider_trapdoor.xml",
+    "width": 60,
+    "height": 42,
+    "workshop": true
+  },
+  "spider_trapdoor_hooded": {
+    "path": "assets/um-beta/spider_trapdoor_hooded.png",
+    "source": "images/inventoryimages/spider_trapdoor_hooded.tex",
+    "atlas": "images/inventoryimages/spider_trapdoor_hooded.xml",
+    "width": 60,
+    "height": 38,
+    "workshop": true
+  },
+  "sporepack": {
+    "path": "assets/um-beta/sporepack.png",
+    "source": "images/inventoryimages/sporepack.tex",
+    "atlas": "images/inventoryimages/sporepack.xml",
+    "width": 60,
+    "height": 63,
+    "workshop": true
+  },
+  "stuffed_peeper_poppers": {
+    "path": "assets/um-beta/stuffed_peeper_poppers.png",
+    "source": "images/inventoryimages/stuffed_peeper_poppers.tex",
+    "atlas": "images/inventoryimages/stuffed_peeper_poppers.xml",
+    "width": 61,
+    "height": 36,
+    "workshop": true
+  },
+  "the_real_charles_t_horse": {
+    "path": "assets/um-beta/the_real_charles_t_horse.png",
+    "source": "images/inventoryimages/the_real_charles_t_horse.tex",
+    "atlas": "images/inventoryimages/the_real_charles_t_horse.xml",
+    "width": 62,
+    "height": 62,
+    "workshop": true
+  },
+  "turf_ancienthoodedturf": {
+    "path": "assets/um-beta/turf_ancienthoodedturf.png",
+    "source": "images/inventoryimages/turf_ancienthoodedturf.tex",
+    "atlas": "images/inventoryimages/turf_ancienthoodedturf.xml",
+    "width": 60,
+    "height": 56,
+    "workshop": true
+  },
+  "turf_hoodedfoliage": {
+    "path": "assets/um-beta/turf_hoodedfoliage.png",
+    "source": "images/inventoryimages/turf_hoodedfoliage.tex",
+    "atlas": "images/inventoryimages/turf_hoodedfoliage.xml",
+    "width": 55,
+    "height": 51,
+    "workshop": true
+  },
+  "turf_hoodedfoliage_dark": {
+    "path": "assets/um-beta/turf_hoodedfoliage_dark.png",
+    "source": "images/inventoryimages/turf_hoodedfoliage_dark.tex",
+    "atlas": "images/inventoryimages/turf_hoodedfoliage_dark.xml",
+    "width": 55,
+    "height": 51,
+    "workshop": true
+  },
+  "turf_hoodedmoss": {
+    "path": "assets/um-beta/turf_hoodedmoss.png",
+    "source": "images/inventoryimages/turf_hoodedmoss.tex",
+    "atlas": "images/inventoryimages/turf_hoodedmoss.xml",
+    "width": 55,
+    "height": 51,
+    "workshop": true
+  },
+  "turf_magma_grass": {
+    "path": "assets/um-beta/turf_magma_grass.png",
+    "source": "images/inventoryimages/turf_magma_grass.tex",
+    "atlas": "images/inventoryimages/turf_magma_grass.xml",
+    "width": 55,
+    "height": 51,
+    "workshop": true
+  },
+  "turf_um_hotspring_grass": {
+    "path": "assets/um-beta/turf_um_hotspring_grass.png",
+    "source": "images/inventoryimages/turf_um_hotspring_grass.tex",
+    "atlas": "images/inventoryimages/turf_um_hotspring_grass.xml",
+    "width": 51,
+    "height": 50,
+    "workshop": true
+  },
+  "turf_um_hotspring_whiterock": {
+    "path": "assets/um-beta/turf_um_hotspring_whiterock.png",
+    "source": "images/inventoryimages/turf_um_hotspring_whiterock.tex",
+    "atlas": "images/inventoryimages/turf_um_hotspring_whiterock.xml",
+    "width": 62,
+    "height": 43,
+    "workshop": true
+  },
+  "turf_um_hotspring_yellowrock": {
+    "path": "assets/um-beta/turf_um_hotspring_yellowrock.png",
+    "source": "images/inventoryimages/turf_um_hotspring_yellowrock.tex",
+    "atlas": "images/inventoryimages/turf_um_hotspring_yellowrock.xml",
+    "width": 55,
+    "height": 46,
+    "workshop": true
+  },
+  "turf_um_magma": {
+    "path": "assets/um-beta/turf_um_magma.png",
+    "source": "images/inventoryimages/turf_um_magma.tex",
+    "atlas": "images/inventoryimages/turf_um_magma.xml",
+    "width": 62,
+    "height": 52,
+    "workshop": true
+  },
+  "um_armor_bramble_rimeweed": {
+    "path": "assets/um-beta/um_armor_bramble_rimeweed.png",
+    "source": "images/inventoryimages/um_armor_bramble_rimeweed.tex",
+    "atlas": "images/inventoryimages/um_armor_bramble_rimeweed.xml",
+    "width": 64,
+    "height": 64,
+    "workshop": true
+  },
+  "um_armor_pyre_nettles": {
+    "path": "assets/um-beta/um_armor_pyre_nettles.png",
+    "source": "images/inventoryimages/um_armor_pyre_nettles.tex",
+    "atlas": "images/inventoryimages/um_armor_pyre_nettles.xml",
+    "width": 63,
+    "height": 60,
+    "workshop": true
+  },
+  "um_astral_projector": {
+    "path": "assets/um-beta/um_astral_projector.png",
+    "source": "images/inventoryimages/um_astral_projector.tex",
+    "atlas": "images/inventoryimages/um_astral_projector.xml",
+    "width": 64,
+    "height": 64,
+    "workshop": true
+  },
+  "um_astral_projector_target": {
+    "path": "assets/um-beta/um_astral_projector_target.png",
+    "source": "images/inventoryimages/um_astral_projector_target.tex",
+    "atlas": "images/inventoryimages/um_astral_projector_target.xml",
+    "width": 64,
+    "height": 64,
+    "workshop": true
+  },
+  "um_backpack_amuletuse": {
+    "path": "assets/um-beta/um_backpack_amuletuse.png",
+    "source": "images/inventoryimages/um_backpack_amuletuse.tex",
+    "atlas": "images/inventoryimages/um_backpack_amuletuse.xml",
+    "width": 63,
+    "height": 59,
+    "workshop": true
+  },
+  "um_bear_trap_equippable_gold": {
+    "path": "assets/um-beta/um_bear_trap_equippable_gold.png",
+    "source": "images/inventoryimages/um_bear_trap_equippable_gold.tex",
+    "atlas": "images/inventoryimages/um_bear_trap_equippable_gold.xml",
+    "width": 61,
+    "height": 59,
+    "workshop": true
+  },
+  "um_bear_trap_equippable_tooth": {
+    "path": "assets/um-beta/um_bear_trap_equippable_tooth.png",
+    "source": "images/inventoryimages/um_bear_trap_equippable_tooth.tex",
+    "atlas": "images/inventoryimages/um_bear_trap_equippable_tooth.xml",
+    "width": 54,
+    "height": 63,
+    "workshop": true
+  },
+  "um_bee_moon": {
+    "path": "assets/um-beta/um_bee_moon.png",
+    "source": "images/inventoryimages/um_bee_moon.tex",
+    "atlas": "images/inventoryimages/um_bee_moon.xml",
+    "width": 50,
+    "height": 62,
+    "workshop": true
+  },
+  "um_beehive_moon": {
+    "path": "assets/um-beta/um_beehive_moon.png",
+    "source": "images/scrapbook/um_beehive_moon.tex",
+    "atlas": "images/scrapbook/um_beehive_moon.xml",
+    "width": 89,
+    "height": 96,
+    "workshop": true
+  },
+  "um_beemine_moon_item": {
+    "path": "assets/um-beta/um_beemine_moon_item.png",
+    "source": "images/inventoryimages/um_beemine_moon_item.tex",
+    "atlas": "images/inventoryimages/um_beemine_moon_item.xml",
+    "width": 63,
+    "height": 50,
+    "workshop": true
+  },
+  "um_blowdart_pyre": {
+    "path": "assets/um-beta/um_blowdart_pyre.png",
+    "source": "images/inventoryimages/um_blowdart_pyre.tex",
+    "atlas": "images/inventoryimages/um_blowdart_pyre.xml",
+    "width": 61,
+    "height": 62,
+    "workshop": true
+  },
+  "um_blowdart_rime": {
+    "path": "assets/um-beta/um_blowdart_rime.png",
+    "source": "images/inventoryimages/um_blowdart_rime.tex",
+    "atlas": "images/inventoryimages/um_blowdart_rime.xml",
+    "width": 64,
+    "height": 64,
+    "workshop": true
+  },
+  "um_blueprinting_kit": {
+    "path": "assets/um-beta/um_blueprinting_kit.png",
+    "source": "images/inventoryimages/um_blueprinting_kit.tex",
+    "atlas": "images/inventoryimages/um_blueprinting_kit.xml",
+    "width": 62,
+    "height": 59,
+    "workshop": true
+  },
+  "um_boatbottle": {
+    "path": "assets/um-beta/um_boatbottle.png",
+    "source": "images/inventoryimages/um_boatbottle.tex",
+    "atlas": "images/inventoryimages/um_boatbottle.xml",
+    "width": 54,
+    "height": 60,
+    "workshop": true
+  },
+  "um_bomb_moon": {
+    "path": "assets/um-beta/um_bomb_moon.png",
+    "source": "images/inventoryimages/um_bomb_moon.tex",
+    "atlas": "images/inventoryimages/um_bomb_moon.xml",
+    "width": 50,
+    "height": 58,
+    "workshop": true
+  },
+  "um_boom_tart": {
+    "path": "assets/um-beta/um_boom_tart.png",
+    "source": "images/inventoryimages/um_boom_tart.tex",
+    "atlas": "images/inventoryimages/um_boom_tart.xml",
+    "width": 62,
+    "height": 63,
+    "workshop": true
+  },
+  "um_boomberry_bomb": {
+    "path": "assets/um-beta/um_boomberry_bomb.png",
+    "source": "images/inventoryimages/um_boomberry_bomb.tex",
+    "atlas": "images/inventoryimages/um_boomberry_bomb.xml",
+    "width": 59,
+    "height": 55,
+    "workshop": true
+  },
+  "um_boomberrypie": {
+    "path": "assets/um-beta/um_boomberrypie.png",
+    "source": "images/inventoryimages/um_boomberrypie.tex",
+    "atlas": "images/inventoryimages/um_boomberrypie.xml",
+    "width": 52,
+    "height": 54,
+    "workshop": true
+  },
+  "um_detonator": {
+    "path": "assets/um-beta/um_detonator.png",
+    "source": "images/inventoryimages/um_detonator.tex",
+    "atlas": "images/inventoryimages/um_detonator.xml",
+    "width": 58,
+    "height": 58,
+    "workshop": true
+  },
+  "um_durian_cream_marshcake": {
+    "path": "assets/um-beta/um_durian_cream_marshcake.png",
+    "source": "images/inventoryimages/um_durian_cream_marshcake.tex",
+    "atlas": "images/inventoryimages/um_durian_cream_marshcake.xml",
+    "width": 64,
+    "height": 41,
+    "workshop": true
+  },
+  "um_eyebalm": {
+    "path": "assets/um-beta/um_eyebalm.png",
+    "source": "images/inventoryimages/um_eyebalm.tex",
+    "atlas": "images/inventoryimages/um_eyebalm.xml",
+    "width": 62,
+    "height": 46,
+    "workshop": true
+  },
+  "um_feather_totem": {
+    "path": "assets/um-beta/um_feather_totem.png",
+    "source": "images/inventoryimages/um_feather_totem.tex",
+    "atlas": "images/inventoryimages/um_feather_totem.xml",
+    "width": 49,
+    "height": 63,
+    "workshop": true
+  },
+  "um_firecream": {
+    "path": "assets/um-beta/um_firecream.png",
+    "source": "images/inventoryimages/um_firecream.tex",
+    "atlas": "images/inventoryimages/um_firecream.xml",
+    "width": 46,
+    "height": 61,
+    "workshop": true
+  },
+  "um_flamethrower": {
+    "path": "assets/um-beta/um_flamethrower.png",
+    "source": "images/inventoryimages/um_flamethrower.tex",
+    "atlas": "images/inventoryimages/um_flamethrower.xml",
+    "width": 62,
+    "height": 53,
+    "workshop": true
+  },
+  "um_fyre_bomb": {
+    "path": "assets/um-beta/um_fyre_bomb.png",
+    "source": "images/inventoryimages/um_fyre_bomb.tex",
+    "atlas": "images/inventoryimages/um_fyre_bomb.xml",
+    "width": 59,
+    "height": 63,
+    "workshop": true
+  },
+  "um_fyrite": {
+    "path": "assets/um-beta/um_fyrite.png",
+    "source": "images/inventoryimages/um_fyrite.tex",
+    "atlas": "images/inventoryimages/um_fyrite.xml",
+    "width": 57,
+    "height": 57,
+    "workshop": true
+  },
+  "um_gem_repair_kit": {
+    "path": "assets/um-beta/um_gem_repair_kit.png",
+    "source": "images/inventoryimages/um_gem_repair_kit.tex",
+    "atlas": "images/inventoryimages/um_gem_repair_kit.xml",
+    "width": 64,
+    "height": 62,
+    "workshop": true
+  },
+  "um_gemology_geode_blue": {
+    "path": "assets/um-beta/um_gemology_geode_blue.png",
+    "source": "images/inventoryimages/um_gemology_geode_blue.tex",
+    "atlas": "images/inventoryimages/um_gemology_geode_blue.xml",
+    "width": 62,
+    "height": 60,
+    "workshop": true
+  },
+  "um_gemology_geode_glass": {
+    "path": "assets/um-beta/um_gemology_geode_glass.png",
+    "source": "images/inventoryimages/um_gemology_geode_glass.tex",
+    "atlas": "images/inventoryimages/um_gemology_geode_glass.xml",
+    "width": 64,
+    "height": 64,
+    "workshop": true
+  },
+  "um_gemology_geode_green": {
+    "path": "assets/um-beta/um_gemology_geode_green.png",
+    "source": "images/inventoryimages/um_gemology_geode_green.tex",
+    "atlas": "images/inventoryimages/um_gemology_geode_green.xml",
+    "width": 63,
+    "height": 57,
+    "workshop": true
+  },
+  "um_gemology_geode_guano": {
+    "path": "assets/um-beta/um_gemology_geode_guano.png",
+    "source": "images/inventoryimages/um_gemology_geode_guano.tex",
+    "atlas": "images/inventoryimages/um_gemology_geode_guano.xml",
+    "width": 59,
+    "height": 62,
+    "workshop": true
+  },
+  "um_gemology_geode_lobster": {
+    "path": "assets/um-beta/um_gemology_geode_lobster.png",
+    "source": "images/inventoryimages/um_gemology_geode_lobster.tex",
+    "atlas": "images/inventoryimages/um_gemology_geode_lobster.xml",
+    "width": 62,
+    "height": 61,
+    "workshop": true
+  },
+  "um_gemology_geode_magma": {
+    "path": "assets/um-beta/um_gemology_geode_magma.png",
+    "source": "images/inventoryimages/um_gemology_geode_magma.tex",
+    "atlas": "images/inventoryimages/um_gemology_geode_magma.xml",
+    "width": 63,
+    "height": 64,
+    "workshop": true
+  },
+  "um_gemology_geode_red": {
+    "path": "assets/um-beta/um_gemology_geode_red.png",
+    "source": "images/inventoryimages/um_gemology_geode_red.tex",
+    "atlas": "images/inventoryimages/um_gemology_geode_red.xml",
+    "width": 62,
+    "height": 62,
+    "workshop": true
+  },
+  "um_gemology_geode_ruins": {
+    "path": "assets/um-beta/um_gemology_geode_ruins.png",
+    "source": "images/inventoryimages/um_gemology_geode_ruins.tex",
+    "atlas": "images/inventoryimages/um_gemology_geode_ruins.xml",
+    "width": 64,
+    "height": 62,
+    "workshop": true
+  },
+  "um_gemology_geode_sink": {
+    "path": "assets/um-beta/um_gemology_geode_sink.png",
+    "source": "images/inventoryimages/um_gemology_geode_sink.tex",
+    "atlas": "images/inventoryimages/um_gemology_geode_sink.xml",
+    "width": 63,
+    "height": 63,
+    "workshop": true
+  },
+  "um_gemology_geode_slime": {
+    "path": "assets/um-beta/um_gemology_geode_slime.png",
+    "source": "images/inventoryimages/um_gemology_geode_slime.tex",
+    "atlas": "images/inventoryimages/um_gemology_geode_slime.xml",
+    "width": 62,
+    "height": 61,
+    "workshop": true
+  },
+  "um_gemology_geode_vent": {
+    "path": "assets/um-beta/um_gemology_geode_vent.png",
+    "source": "images/inventoryimages/um_gemology_geode_vent.tex",
+    "atlas": "images/inventoryimages/um_gemology_geode_vent.xml",
+    "width": 64,
+    "height": 62,
+    "workshop": true
+  },
+  "um_gemology_pouch": {
+    "path": "assets/um-beta/um_gemology_pouch.png",
+    "source": "images/inventoryimages/um_gemology_pouch.tex",
+    "atlas": "images/inventoryimages/um_gemology_pouch.xml",
+    "width": 56,
+    "height": 49,
+    "workshop": true
+  },
+  "um_gemologybluegem1": {
+    "path": "assets/um-beta/um_gemologybluegem1.png",
+    "source": "images/inventoryimages/um_gemologybluegem1.tex",
+    "atlas": "images/inventoryimages/um_gemologybluegem1.xml",
+    "width": 45,
+    "height": 59,
+    "workshop": true
+  },
+  "um_gemologybluegem2": {
+    "path": "assets/um-beta/um_gemologybluegem2.png",
+    "source": "images/inventoryimages/um_gemologybluegem2.tex",
+    "atlas": "images/inventoryimages/um_gemologybluegem2.xml",
+    "width": 62,
+    "height": 59,
+    "workshop": true
+  },
+  "um_gemologyforge": {
+    "path": "assets/um-beta/um_gemologyforge.png",
+    "source": "images/scrapbook/um_gemologyforge.tex",
+    "atlas": "images/scrapbook/um_gemologyforge.xml",
+    "width": 96,
+    "height": 96,
+    "workshop": true
+  },
+  "um_gemologygreengem1": {
+    "path": "assets/um-beta/um_gemologygreengem1.png",
+    "source": "images/inventoryimages/um_gemologygreengem1.tex",
+    "atlas": "images/inventoryimages/um_gemologygreengem1.xml",
+    "width": 64,
+    "height": 55,
+    "workshop": true
+  },
+  "um_gemologygreengem2": {
+    "path": "assets/um-beta/um_gemologygreengem2.png",
+    "source": "images/inventoryimages/um_gemologygreengem2.tex",
+    "atlas": "images/inventoryimages/um_gemologygreengem2.xml",
+    "width": 64,
+    "height": 61,
+    "workshop": true
+  },
+  "um_gemologyorangegem1": {
+    "path": "assets/um-beta/um_gemologyorangegem1.png",
+    "source": "images/inventoryimages/um_gemologyorangegem1.tex",
+    "atlas": "images/inventoryimages/um_gemologyorangegem1.xml",
+    "width": 55,
+    "height": 40,
+    "workshop": true
+  },
+  "um_gemologyorangegem2": {
+    "path": "assets/um-beta/um_gemologyorangegem2.png",
+    "source": "images/inventoryimages/um_gemologyorangegem2.tex",
+    "atlas": "images/inventoryimages/um_gemologyorangegem2.xml",
+    "width": 60,
+    "height": 50,
+    "workshop": true
+  },
+  "um_gemologypalegem1": {
+    "path": "assets/um-beta/um_gemologypalegem1.png",
+    "source": "images/inventoryimages/um_gemologypalegem1.tex",
+    "atlas": "images/inventoryimages/um_gemologypalegem1.xml",
+    "width": 57,
+    "height": 56,
+    "workshop": true
+  },
+  "um_gemologypalegem2": {
+    "path": "assets/um-beta/um_gemologypalegem2.png",
+    "source": "images/inventoryimages/um_gemologypalegem2.tex",
+    "atlas": "images/inventoryimages/um_gemologypalegem2.xml",
+    "width": 59,
+    "height": 58,
+    "workshop": true
+  },
+  "um_gemologypurplegem1": {
+    "path": "assets/um-beta/um_gemologypurplegem1.png",
+    "source": "images/inventoryimages/um_gemologypurplegem1.tex",
+    "atlas": "images/inventoryimages/um_gemologypurplegem1.xml",
+    "width": 39,
+    "height": 60,
+    "workshop": true
+  },
+  "um_gemologypurplegem2": {
+    "path": "assets/um-beta/um_gemologypurplegem2.png",
+    "source": "images/inventoryimages/um_gemologypurplegem2.tex",
+    "atlas": "images/inventoryimages/um_gemologypurplegem2.xml",
+    "width": 61,
+    "height": 36,
+    "workshop": true
+  },
+  "um_gemologyredgem1": {
+    "path": "assets/um-beta/um_gemologyredgem1.png",
+    "source": "images/inventoryimages/um_gemologyredgem1.tex",
+    "atlas": "images/inventoryimages/um_gemologyredgem1.xml",
+    "width": 60,
+    "height": 51,
+    "workshop": true
+  },
+  "um_gemologyredgem2": {
+    "path": "assets/um-beta/um_gemologyredgem2.png",
+    "source": "images/inventoryimages/um_gemologyredgem2.tex",
+    "atlas": "images/inventoryimages/um_gemologyredgem2.xml",
+    "width": 61,
+    "height": 50,
+    "workshop": true
+  },
+  "um_gemologyyellowgem1": {
+    "path": "assets/um-beta/um_gemologyyellowgem1.png",
+    "source": "images/inventoryimages/um_gemologyyellowgem1.tex",
+    "atlas": "images/inventoryimages/um_gemologyyellowgem1.xml",
+    "width": 60,
+    "height": 53,
+    "workshop": true
+  },
+  "um_gemologyyellowgem2": {
+    "path": "assets/um-beta/um_gemologyyellowgem2.png",
+    "source": "images/inventoryimages/um_gemologyyellowgem2.tex",
+    "atlas": "images/inventoryimages/um_gemologyyellowgem2.xml",
+    "width": 54,
+    "height": 55,
+    "workshop": true
+  },
+  "um_ghost_fajita": {
+    "path": "assets/um-beta/um_ghost_fajita.png",
+    "source": "images/inventoryimages/um_ghost_fajita.tex",
+    "atlas": "images/inventoryimages/um_ghost_fajita.xml",
+    "width": 60,
+    "height": 49,
+    "workshop": true
+  },
+  "um_ghost_pepper_item": {
+    "path": "assets/um-beta/um_ghost_pepper_item.png",
+    "source": "images/inventoryimages/um_ghost_pepper_item.tex",
+    "atlas": "images/inventoryimages/um_ghost_pepper_item.xml",
+    "width": 63,
+    "height": 43,
+    "workshop": true
+  },
+  "um_hat_bee_moon": {
+    "path": "assets/um-beta/um_hat_bee_moon.png",
+    "source": "images/inventoryimages/um_hat_bee_moon.tex",
+    "atlas": "images/inventoryimages/um_hat_bee_moon.xml",
+    "width": 62,
+    "height": 41,
+    "workshop": true
+  },
+  "um_hat_leafwing": {
+    "path": "assets/um-beta/um_hat_leafwing.png",
+    "source": "images/inventoryimages/um_hat_leafwing.tex",
+    "atlas": "images/inventoryimages/um_hat_leafwing.xml",
+    "width": 63,
+    "height": 57,
+    "workshop": true
+  },
+  "um_hat_nettlemask": {
+    "path": "assets/um-beta/um_hat_nettlemask.png",
+    "source": "images/inventoryimages/um_hat_nettlemask.tex",
+    "atlas": "images/inventoryimages/um_hat_nettlemask.xml",
+    "width": 48,
+    "height": 59,
+    "workshop": true
+  },
+  "um_hat_pepperdragon": {
+    "path": "assets/um-beta/um_hat_pepperdragon.png",
+    "source": "images/inventoryimages/um_hat_pepperdragon.tex",
+    "atlas": "images/inventoryimages/um_hat_pepperdragon.xml",
+    "width": 64,
+    "height": 63,
+    "workshop": true
+  },
+  "um_hat_rime": {
+    "path": "assets/um-beta/um_hat_rime.png",
+    "source": "images/inventoryimages/um_hat_rime.tex",
+    "atlas": "images/inventoryimages/um_hat_rime.xml",
+    "width": 63,
+    "height": 49,
+    "workshop": true
+  },
+  "um_hotspring": {
+    "path": "assets/um-beta/um_hotspring.png",
+    "source": "images/scrapbook/um_hotspring.tex",
+    "atlas": "images/scrapbook/um_hotspring.xml",
+    "width": 89,
+    "height": 96,
+    "workshop": true
+  },
+  "um_ice_sicle": {
+    "path": "assets/um-beta/um_ice_sicle.png",
+    "source": "images/inventoryimages/um_ice_sicle.tex",
+    "atlas": "images/inventoryimages/um_ice_sicle.xml",
+    "width": 61,
+    "height": 56,
+    "workshop": true
+  },
+  "um_ice_tail": {
+    "path": "assets/um-beta/um_ice_tail.png",
+    "source": "images/inventoryimages/um_ice_tail.tex",
+    "atlas": "images/inventoryimages/um_ice_tail.xml",
+    "width": 57,
+    "height": 58,
+    "workshop": true
+  },
+  "um_leafwing": {
+    "path": "assets/um-beta/um_leafwing.png",
+    "source": "images/inventoryimages/um_leafwing.tex",
+    "atlas": "images/inventoryimages/um_leafwing.xml",
+    "width": 63,
+    "height": 61,
+    "workshop": true
+  },
+  "um_magnerang": {
+    "path": "assets/um-beta/um_magnerang.png",
+    "source": "images/inventoryimages/um_magnerang.tex",
+    "atlas": "images/inventoryimages/um_magnerang.xml",
+    "width": 57,
+    "height": 63,
+    "workshop": true
+  },
+  "um_magnifier": {
+    "path": "assets/um-beta/um_magnifier.png",
+    "source": "images/inventoryimages/um_magnifier.tex",
+    "atlas": "images/inventoryimages/um_magnifier.xml",
+    "width": 62,
+    "height": 64,
+    "workshop": true
+  },
+  "um_magnifier_obsidian": {
+    "path": "assets/um-beta/um_magnifier_obsidian.png",
+    "source": "images/inventoryimages/um_magnifier_obsidian.tex",
+    "atlas": "images/inventoryimages/um_magnifier_obsidian.xml",
+    "width": 63,
+    "height": 64,
+    "workshop": true
+  },
+  "um_magnifier_purplegem": {
+    "path": "assets/um-beta/um_magnifier_purplegem.png",
+    "source": "images/inventoryimages/um_magnifier_purplegem.tex",
+    "atlas": "images/inventoryimages/um_magnifier_purplegem.xml",
+    "width": 61,
+    "height": 64,
+    "workshop": true
+  },
+  "um_meatcomb": {
+    "path": "assets/um-beta/um_meatcomb.png",
+    "source": "images/inventoryimages/um_meatcomb.tex",
+    "atlas": "images/inventoryimages/um_meatcomb.xml",
+    "width": 61,
+    "height": 38,
+    "workshop": true
+  },
+  "um_meathoney": {
+    "path": "assets/um-beta/um_meathoney.png",
+    "source": "images/inventoryimages/um_meathoney.tex",
+    "atlas": "images/inventoryimages/um_meathoney.xml",
+    "width": 64,
+    "height": 30,
+    "workshop": true
+  },
+  "um_moss": {
+    "path": "assets/um-beta/um_moss.png",
+    "source": "images/inventoryimages/um_moss.tex",
+    "atlas": "images/inventoryimages/um_moss.xml",
+    "width": 62,
+    "height": 43,
+    "workshop": true
+  },
+  "um_pepperdragon_bladder": {
+    "path": "assets/um-beta/um_pepperdragon_bladder.png",
+    "source": "images/inventoryimages/um_pepperdragon_bladder.tex",
+    "atlas": "images/inventoryimages/um_pepperdragon_bladder.xml",
+    "width": 59,
+    "height": 36,
+    "workshop": true
+  },
+  "um_record_hooded_widow": {
+    "path": "assets/um-beta/um_record_hooded_widow.png",
+    "source": "images/inventoryimages/um_record_hooded_widow.tex",
+    "atlas": "images/inventoryimages/um_record_hooded_widow.xml",
+    "width": 64,
+    "height": 40,
+    "workshop": true
+  },
+  "um_record_menu": {
+    "path": "assets/um-beta/um_record_menu.png",
+    "source": "images/inventoryimages/um_record_menu.tex",
+    "atlas": "images/inventoryimages/um_record_menu.xml",
+    "width": 64,
+    "height": 41,
+    "workshop": true
+  },
+  "um_record_moonmaw": {
+    "path": "assets/um-beta/um_record_moonmaw.png",
+    "source": "images/inventoryimages/um_record_moonmaw.tex",
+    "atlas": "images/inventoryimages/um_record_moonmaw.xml",
+    "width": 59,
+    "height": 39,
+    "workshop": true
+  },
+  "um_record_stranger": {
+    "path": "assets/um-beta/um_record_stranger.png",
+    "source": "images/inventoryimages/um_record_stranger.tex",
+    "atlas": "images/inventoryimages/um_record_stranger.xml",
+    "width": 64,
+    "height": 40,
+    "workshop": true
+  },
+  "um_record_tot": {
+    "path": "assets/um-beta/um_record_tot.png",
+    "source": "images/inventoryimages/um_record_tot.tex",
+    "atlas": "images/inventoryimages/um_record_tot.xml",
+    "width": 58,
+    "height": 39,
+    "workshop": true
+  },
+  "um_record_walter": {
+    "path": "assets/um-beta/um_record_walter.png",
+    "source": "images/inventoryimages/um_record_walter.tex",
+    "atlas": "images/inventoryimages/um_record_walter.xml",
+    "width": 64,
+    "height": 40,
+    "workshop": true
+  },
+  "um_record_wathom": {
+    "path": "assets/um-beta/um_record_wathom.png",
+    "source": "images/inventoryimages/um_record_wathom.tex",
+    "atlas": "images/inventoryimages/um_record_wathom.xml",
+    "width": 64,
+    "height": 40,
+    "workshop": true
+  },
+  "um_record_winky": {
+    "path": "assets/um-beta/um_record_winky.png",
+    "source": "images/inventoryimages/um_record_winky.tex",
+    "atlas": "images/inventoryimages/um_record_winky.xml",
+    "width": 64,
+    "height": 40,
+    "workshop": true
+  },
+  "um_record_wixie": {
+    "path": "assets/um-beta/um_record_wixie.png",
+    "source": "images/inventoryimages/um_record_wixie.tex",
+    "atlas": "images/inventoryimages/um_record_wixie.xml",
+    "width": 64,
+    "height": 40,
+    "workshop": true
+  },
+  "um_ribopod": {
+    "path": "assets/um-beta/um_ribopod.png",
+    "source": "images/inventoryimages/um_ribopod.tex",
+    "atlas": "images/inventoryimages/um_ribopod.xml",
+    "width": 62,
+    "height": 48,
+    "workshop": true
+  },
+  "um_ribopodden": {
+    "path": "assets/um-beta/um_ribopodden.png",
+    "source": "images/inventoryimages/um_ribopodden.tex",
+    "atlas": "images/inventoryimages/um_ribopodden.xml",
+    "width": 64,
+    "height": 64,
+    "workshop": true
+  },
+  "um_rice_pudding": {
+    "path": "assets/um-beta/um_rice_pudding.png",
+    "source": "images/inventoryimages/um_rice_pudding.tex",
+    "atlas": "images/inventoryimages/um_rice_pudding.xml",
+    "width": 64,
+    "height": 63,
+    "workshop": true
+  },
+  "um_rimeweed_icepack": {
+    "path": "assets/um-beta/um_rimeweed_icepack.png",
+    "source": "images/inventoryimages/um_rimeweed_icepack.tex",
+    "atlas": "images/inventoryimages/um_rimeweed_icepack.xml",
+    "width": 64,
+    "height": 54,
+    "workshop": true
+  },
+  "um_rimeweed_itemflower": {
+    "path": "assets/um-beta/um_rimeweed_itemflower.png",
+    "source": "images/inventoryimages/um_rimeweed_itemflower.tex",
+    "atlas": "images/inventoryimages/um_rimeweed_itemflower.xml",
+    "width": 64,
+    "height": 43,
+    "workshop": true
+  },
+  "um_rimeweed_itemvine": {
+    "path": "assets/um-beta/um_rimeweed_itemvine.png",
+    "source": "images/inventoryimages/um_rimeweed_itemvine.tex",
+    "atlas": "images/inventoryimages/um_rimeweed_itemvine.xml",
+    "width": 64,
+    "height": 42,
+    "workshop": true
+  },
+  "um_rimeweed_spagett": {
+    "path": "assets/um-beta/um_rimeweed_spagett.png",
+    "source": "images/inventoryimages/um_rimeweed_spagett.tex",
+    "atlas": "images/inventoryimages/um_rimeweed_spagett.xml",
+    "width": 64,
+    "height": 50,
+    "workshop": true
+  },
+  "um_rimeweed_tequila": {
+    "path": "assets/um-beta/um_rimeweed_tequila.png",
+    "source": "images/inventoryimages/um_rimeweed_tequila.tex",
+    "atlas": "images/inventoryimages/um_rimeweed_tequila.xml",
+    "width": 40,
+    "height": 64,
+    "workshop": true
+  },
+  "um_scrapper": {
+    "path": "assets/um-beta/um_scrapper.png",
+    "source": "images/inventoryimages/um_scrapper.tex",
+    "atlas": "images/inventoryimages/um_scrapper.xml",
+    "width": 64,
+    "height": 64,
+    "workshop": true
+  },
+  "um_smolder_spore": {
+    "path": "assets/um-beta/um_smolder_spore.png",
+    "source": "images/inventoryimages/um_smolder_spore.tex",
+    "atlas": "images/inventoryimages/um_smolder_spore.xml",
+    "width": 52,
+    "height": 48,
+    "workshop": true
+  },
+  "um_sponge_cake": {
+    "path": "assets/um-beta/um_sponge_cake.png",
+    "source": "images/inventoryimages/um_sponge_cake.tex",
+    "atlas": "images/inventoryimages/um_sponge_cake.xml",
+    "width": 59,
+    "height": 41,
+    "workshop": true
+  },
+  "um_spongeplant_item": {
+    "path": "assets/um-beta/um_spongeplant_item.png",
+    "source": "images/inventoryimages/um_spongeplant_item.tex",
+    "atlas": "images/inventoryimages/um_spongeplant_item.xml",
+    "width": 63,
+    "height": 50,
+    "workshop": true
+  },
+  "um_tentaclespot_moon": {
+    "path": "assets/um-beta/um_tentaclespot_moon.png",
+    "source": "images/inventoryimages/um_tentaclespot_moon.tex",
+    "atlas": "images/inventoryimages/um_tentaclespot_moon.xml",
+    "width": 61,
+    "height": 64,
+    "workshop": true
+  },
+  "um_thulecite_razor": {
+    "path": "assets/um-beta/um_thulecite_razor.png",
+    "source": "images/inventoryimages/um_thulecite_razor.tex",
+    "atlas": "images/inventoryimages/um_thulecite_razor.xml",
+    "width": 64,
+    "height": 55,
+    "workshop": true
+  },
+  "uncompromising_fishingnet": {
+    "path": "assets/um-beta/uncompromising_fishingnet.png",
+    "source": "images/inventoryimages/uncompromising_fishingnet.tex",
+    "atlas": "images/inventoryimages/uncompromising_fishingnet.xml",
+    "width": 64,
+    "height": 55,
+    "workshop": true
+  },
+  "uncompromising_winkyhomeburrow": {
+    "path": "assets/um-beta/uncompromising_winkyhomeburrow.png",
+    "source": "images/inventoryimages/uncompromising_winkyhomeburrow.tex",
+    "atlas": "images/inventoryimages/uncompromising_winkyhomeburrow.xml",
+    "width": 64,
+    "height": 61,
+    "workshop": true
+  },
+  "veteranshrine": {
+    "path": "assets/um-beta/veteranshrine.png",
+    "source": "images/scrapbook/veteranshrine.tex",
+    "atlas": "images/scrapbook/veteranshrine.xml",
+    "width": 76,
+    "height": 96,
+    "workshop": true
+  },
+  "viperworm": {
+    "path": "assets/um-beta/viperworm.png",
+    "source": "images/scrapbook/viperworm.tex",
+    "atlas": "images/scrapbook/viperworm.xml",
+    "width": 62,
+    "height": 96,
+    "workshop": true
+  },
+  "watermelon_lantern": {
+    "path": "assets/um-beta/watermelon_lantern.png",
+    "source": "images/inventoryimages/watermelon_lantern.tex",
+    "atlas": "images/inventoryimages/watermelon_lantern.xml",
+    "width": 62,
+    "height": 45,
+    "workshop": true
+  },
+  "wathgrithr_shield_dreadstone": {
+    "path": "assets/um-beta/wathgrithr_shield_dreadstone.png",
+    "source": "images/inventoryimages/wathgrithr_shield_dreadstone.tex",
+    "atlas": "images/inventoryimages/wathgrithr_shield_dreadstone.xml",
+    "width": 59,
+    "height": 61,
+    "workshop": true
+  },
+  "wathom": {
+    "path": "assets/um-beta/wathom.png",
+    "source": "images/avatars/avatar_wathom.tex",
+    "atlas": "images/avatars/avatar_wathom.xml",
+    "width": 64,
+    "height": 58,
+    "workshop": true
+  },
+  "widowsgrasp": {
+    "path": "assets/um-beta/widowsgrasp.png",
+    "source": "images/inventoryimages/widowsgrasp.tex",
+    "atlas": "images/inventoryimages/widowsgrasp.xml",
+    "width": 61,
+    "height": 63,
+    "workshop": true
+  },
+  "widowshead": {
+    "path": "assets/um-beta/widowshead.png",
+    "source": "images/inventoryimages/widowshead.tex",
+    "atlas": "images/inventoryimages/widowshead.xml",
+    "width": 48,
+    "height": 64,
+    "workshop": true
+  },
+  "winky": {
+    "path": "assets/um-beta/winky.png",
+    "source": "images/avatars/avatar_winky.tex",
+    "atlas": "images/avatars/avatar_winky.xml",
+    "width": 62,
+    "height": 61,
+    "workshop": true
+  },
+  "winona_toolbox": {
+    "path": "assets/um-beta/winona_toolbox.png",
+    "source": "images/inventoryimages/winona_toolbox.tex",
+    "atlas": "images/inventoryimages/winona_toolbox.xml",
+    "width": 64,
+    "height": 52,
+    "workshop": true
+  },
+  "winona_upgradekit_electrical": {
+    "path": "assets/um-beta/winona_upgradekit_electrical.png",
+    "source": "images/inventoryimages/winona_upgradekit_electrical.tex",
+    "atlas": "images/inventoryimages/winona_upgradekit_electrical.xml",
+    "width": 64,
+    "height": 59,
+    "workshop": true
+  },
+  "wixie": {
+    "path": "assets/um-beta/wixie.png",
+    "source": "images/avatars/avatar_wixie.tex",
+    "atlas": "images/avatars/avatar_wixie.xml",
+    "width": 40,
+    "height": 45,
+    "workshop": true
+  },
+  "woodpecker": {
+    "path": "assets/um-beta/woodpecker.png",
+    "source": "images/inventoryimages/woodpecker.tex",
+    "atlas": "images/inventoryimages/woodpecker.xml",
+    "width": 63,
+    "height": 52,
+    "workshop": true
+  },
+  "zaspberry": {
+    "path": "assets/um-beta/zaspberry.png",
+    "source": "images/inventoryimages/zaspberry.tex",
+    "atlas": "images/inventoryimages/zaspberry.xml",
+    "width": 59,
+    "height": 59,
+    "workshop": true
+  },
+  "cover-icon": {
+    "path": "assets/um-beta/cover-icon.png",
+    "source": "modicon.tex",
+    "atlas": "modicon.xml",
+    "width": 96,
+    "height": 96,
+    "workshop": true
+  },
+  "blueprint_craftingset_ruins_builder": {
+    "path": "assets/um-beta/blueprint_craftingset_ruins_builder.png",
+    "source": "images/inventoryimages1.tex",
+    "atlas": "images/inventoryimages1.xml",
+    "width": 64,
+    "height": 64,
+    "workshop": false
+  },
+  "cutreeds": {
+    "path": "assets/um-beta/cutreeds.png",
+    "source": "images/inventoryimages1.tex",
+    "atlas": "images/inventoryimages1.xml",
+    "width": 63,
+    "height": 64,
+    "workshop": false
+  },
+  "boat_ancient_item_blueprint": {
+    "path": "assets/um-beta/boat_ancient_item_blueprint.png",
+    "source": "images/inventoryimages1.tex",
+    "atlas": "images/inventoryimages1.xml",
+    "width": 61,
+    "height": 60,
+    "workshop": false
+  },
+  "anchor_item": {
+    "path": "assets/um-beta/anchor_item.png",
+    "source": "images/inventoryimages1.tex",
+    "atlas": "images/inventoryimages1.xml",
+    "width": 53,
+    "height": 61,
+    "workshop": false
+  },
+  "alterguardianhatshard": {
+    "path": "assets/um-beta/alterguardianhatshard.png",
+    "source": "images/inventoryimages1.tex",
+    "atlas": "images/inventoryimages1.xml",
+    "width": 57,
+    "height": 46,
+    "workshop": false
+  },
+  "boatpatch": {
+    "path": "assets/um-beta/boatpatch.png",
+    "source": "images/inventoryimages1.tex",
+    "atlas": "images/inventoryimages1.xml",
+    "width": 60,
+    "height": 59,
+    "workshop": false
+  },
+  "coontail": {
+    "path": "assets/um-beta/coontail.png",
+    "source": "images/inventoryimages1.tex",
+    "atlas": "images/inventoryimages1.xml",
+    "width": 61,
+    "height": 58,
+    "workshop": false
+  },
+  "boat_rotator_kit": {
+    "path": "assets/um-beta/boat_rotator_kit.png",
+    "source": "images/inventoryimages1.tex",
+    "atlas": "images/inventoryimages1.xml",
+    "width": 64,
+    "height": 64,
+    "workshop": false
+  },
+  "catcoonhat": {
+    "path": "assets/um-beta/catcoonhat.png",
+    "source": "images/inventoryimages1.tex",
+    "atlas": "images/inventoryimages1.xml",
+    "width": 60,
+    "height": 57,
+    "workshop": false
+  },
+  "boat_ancient_item": {
+    "path": "assets/um-beta/boat_ancient_item.png",
+    "source": "images/inventoryimages1.tex",
+    "atlas": "images/inventoryimages1.xml",
+    "width": 64,
+    "height": 52,
+    "workshop": false
+  },
+  "batwing": {
+    "path": "assets/um-beta/batwing.png",
+    "source": "images/inventoryimages1.tex",
+    "atlas": "images/inventoryimages1.xml",
+    "width": 64,
+    "height": 63,
+    "workshop": false
+  },
+  "bandage": {
+    "path": "assets/um-beta/bandage.png",
+    "source": "images/inventoryimages1.tex",
+    "atlas": "images/inventoryimages1.xml",
+    "width": 64,
+    "height": 56,
+    "workshop": false
+  },
+  "blueprint_craftingset_ruinsglow_builder": {
+    "path": "assets/um-beta/blueprint_craftingset_ruinsglow_builder.png",
+    "source": "images/inventoryimages1.tex",
+    "atlas": "images/inventoryimages1.xml",
+    "width": 64,
+    "height": 64,
+    "workshop": false
+  },
+  "greenmooneye": {
+    "path": "assets/um-beta/greenmooneye.png",
+    "source": "images/inventoryimages2.tex",
+    "atlas": "images/inventoryimages2.xml",
+    "width": 60,
+    "height": 58,
+    "workshop": false
+  },
+  "firenettles_dried": {
+    "path": "assets/um-beta/firenettles_dried.png",
+    "source": "images/inventoryimages2.tex",
+    "atlas": "images/inventoryimages2.xml",
+    "width": 64,
+    "height": 48,
+    "workshop": false
+  },
+  "moonstorm_spark": {
+    "path": "assets/um-beta/moonstorm_spark.png",
+    "source": "images/inventoryimages2.tex",
+    "atlas": "images/inventoryimages2.xml",
+    "width": 55,
+    "height": 56,
+    "workshop": false
+  },
+  "goose_feather": {
+    "path": "assets/um-beta/goose_feather.png",
+    "source": "images/inventoryimages2.tex",
+    "atlas": "images/inventoryimages2.xml",
+    "width": 64,
+    "height": 46,
+    "workshop": false
+  },
+  "hermit_bundle_lures": {
+    "path": "assets/um-beta/hermit_bundle_lures.png",
+    "source": "images/inventoryimages2.tex",
+    "atlas": "images/inventoryimages2.xml",
+    "width": 64,
+    "height": 64,
+    "workshop": false
+  },
+  "mast_item": {
+    "path": "assets/um-beta/mast_item.png",
+    "source": "images/inventoryimages2.tex",
+    "atlas": "images/inventoryimages2.xml",
+    "width": 63,
+    "height": 54,
+    "workshop": false
+  },
+  "mandrake": {
+    "path": "assets/um-beta/mandrake.png",
+    "source": "images/inventoryimages2.tex",
+    "atlas": "images/inventoryimages2.xml",
+    "width": 64,
+    "height": 64,
+    "workshop": false
+  },
+  "mosquitosack": {
+    "path": "assets/um-beta/mosquitosack.png",
+    "source": "images/inventoryimages2.tex",
+    "atlas": "images/inventoryimages2.xml",
+    "width": 63,
+    "height": 34,
+    "workshop": false
+  },
+  "jammypreserves": {
+    "path": "assets/um-beta/jammypreserves.png",
+    "source": "images/inventoryimages2.tex",
+    "atlas": "images/inventoryimages2.xml",
+    "width": 64,
+    "height": 44,
+    "workshop": false
+  },
+  "nightmare_timepiece": {
+    "path": "assets/um-beta/nightmare_timepiece.png",
+    "source": "images/inventoryimages2.tex",
+    "atlas": "images/inventoryimages2.xml",
+    "width": 63,
+    "height": 60,
+    "workshop": false
+  },
+  "fireflies": {
+    "path": "assets/um-beta/fireflies.png",
+    "source": "images/inventoryimages2.tex",
+    "atlas": "images/inventoryimages2.xml",
+    "width": 64,
+    "height": 64,
+    "workshop": false
+  },
+  "oar_monkey": {
+    "path": "assets/um-beta/oar_monkey.png",
+    "source": "images/inventoryimages2.tex",
+    "atlas": "images/inventoryimages2.xml",
+    "width": 61,
+    "height": 64,
+    "workshop": false
+  },
+  "goggleshat": {
+    "path": "assets/um-beta/goggleshat.png",
+    "source": "images/inventoryimages2.tex",
+    "atlas": "images/inventoryimages2.xml",
+    "width": 64,
+    "height": 38,
+    "workshop": false
+  },
+  "feather_robin_winter": {
+    "path": "assets/um-beta/feather_robin_winter.png",
+    "source": "images/inventoryimages2.tex",
+    "atlas": "images/inventoryimages2.xml",
+    "width": 59,
+    "height": 61,
+    "workshop": false
+  },
+  "feather_canary": {
+    "path": "assets/um-beta/feather_canary.png",
+    "source": "images/inventoryimages2.tex",
+    "atlas": "images/inventoryimages2.xml",
+    "width": 59,
+    "height": 62,
+    "workshop": false
+  },
+  "firenettles": {
+    "path": "assets/um-beta/firenettles.png",
+    "source": "images/inventoryimages2.tex",
+    "atlas": "images/inventoryimages2.xml",
+    "width": 62,
+    "height": 42,
+    "workshop": false
+  },
+  "driftwood_log": {
+    "path": "assets/um-beta/driftwood_log.png",
+    "source": "images/inventoryimages2.tex",
+    "atlas": "images/inventoryimages2.xml",
+    "width": 64,
+    "height": 46,
+    "workshop": false
+  },
+  "wall_ruins_item": {
+    "path": "assets/um-beta/wall_ruins_item.png",
+    "source": "images/inventoryimages3.tex",
+    "atlas": "images/inventoryimages3.xml",
+    "width": 63,
+    "height": 64,
+    "workshop": false
+  },
+  "sewing_kit": {
+    "path": "assets/um-beta/sewing_kit.png",
+    "source": "images/inventoryimages3.tex",
+    "atlas": "images/inventoryimages3.xml",
+    "width": 64,
+    "height": 52,
+    "workshop": false
+  },
+  "pumpkincookie": {
+    "path": "assets/um-beta/pumpkincookie.png",
+    "source": "images/inventoryimages3.tex",
+    "atlas": "images/inventoryimages3.xml",
+    "width": 64,
+    "height": 44,
+    "workshop": false
+  },
+  "slingshotammo_scrapfeather": {
+    "path": "assets/um-beta/slingshotammo_scrapfeather.png",
+    "source": "images/inventoryimages3.tex",
+    "atlas": "images/inventoryimages3.xml",
+    "width": 59,
+    "height": 52,
+    "workshop": false
+  },
+  "purplemooneye": {
+    "path": "assets/um-beta/purplemooneye.png",
+    "source": "images/inventoryimages3.tex",
+    "atlas": "images/inventoryimages3.xml",
+    "width": 60,
+    "height": 58,
+    "workshop": false
+  },
+  "shadow_forge_kit": {
+    "path": "assets/um-beta/shadow_forge_kit.png",
+    "source": "images/inventoryimages3.tex",
+    "atlas": "images/inventoryimages3.xml",
+    "width": 64,
+    "height": 48,
+    "workshop": false
+  },
+  "slingshotammo_marble": {
+    "path": "assets/um-beta/slingshotammo_marble.png",
+    "source": "images/inventoryimages3.tex",
+    "atlas": "images/inventoryimages3.xml",
+    "width": 58,
+    "height": 41,
+    "workshop": false
+  },
+  "steeringwheel_item": {
+    "path": "assets/um-beta/steeringwheel_item.png",
+    "source": "images/inventoryimages3.tex",
+    "atlas": "images/inventoryimages3.xml",
+    "width": 57,
+    "height": 64,
+    "workshop": false
+  },
+  "yotc_seedpacket": {
+    "path": "assets/um-beta/yotc_seedpacket.png",
+    "source": "images/inventoryimages4.tex",
+    "atlas": "images/inventoryimages4.xml",
+    "width": 64,
+    "height": 55,
+    "workshop": false
+  },
+  "woby_treat": {
+    "path": "assets/um-beta/woby_treat.png",
+    "source": "images/inventoryimages4.tex",
+    "atlas": "images/inventoryimages4.xml",
+    "width": 64,
+    "height": 42,
+    "workshop": false
+  },
+  "yotc_seedpacket_rare": {
+    "path": "assets/um-beta/yotc_seedpacket_rare.png",
+    "source": "images/inventoryimages4.tex",
+    "atlas": "images/inventoryimages4.xml",
+    "width": 64,
+    "height": 56,
+    "workshop": false
+  },
+  "bearger": {
+    "path": "assets/um-beta/bearger.png",
+    "source": "images/scrapbook_icons1.tex",
+    "atlas": "images/scrapbook_icons1.xml",
+    "width": 96,
+    "height": 96,
+    "workshop": false
+  },
+  "beequeen": {
+    "path": "assets/um-beta/beequeen.png",
+    "source": "images/scrapbook_icons1.tex",
+    "atlas": "images/scrapbook_icons1.xml",
+    "width": 96,
+    "height": 96,
+    "workshop": false
+  },
+  "dragonfly": {
+    "path": "assets/um-beta/dragonfly.png",
+    "source": "images/scrapbook_icons1.tex",
+    "atlas": "images/scrapbook_icons1.xml",
+    "width": 96,
+    "height": 96,
+    "workshop": false
+  },
+  "cave_vent_mite": {
+    "path": "assets/um-beta/cave_vent_mite.png",
+    "source": "images/scrapbook_icons1.tex",
+    "atlas": "images/scrapbook_icons1.xml",
+    "width": 96,
+    "height": 96,
+    "workshop": false
+  },
+  "alterguardian_phase1": {
+    "path": "assets/um-beta/alterguardian_phase1.png",
+    "source": "images/scrapbook_icons1.tex",
+    "atlas": "images/scrapbook_icons1.xml",
+    "width": 96,
+    "height": 96,
+    "workshop": false
+  },
+  "antlion": {
+    "path": "assets/um-beta/antlion.png",
+    "source": "images/scrapbook_icons1.tex",
+    "atlas": "images/scrapbook_icons1.xml",
+    "width": 96,
+    "height": 96,
+    "workshop": false
+  },
+  "deerclops": {
+    "path": "assets/um-beta/deerclops.png",
+    "source": "images/scrapbook_icons1.tex",
+    "atlas": "images/scrapbook_icons1.xml",
+    "width": 96,
+    "height": 96,
+    "workshop": false
+  },
+  "crabking": {
+    "path": "assets/um-beta/crabking.png",
+    "source": "images/scrapbook_icons1.tex",
+    "atlas": "images/scrapbook_icons1.xml",
+    "width": 96,
+    "height": 96,
+    "workshop": false
+  },
+  "daywalker": {
+    "path": "assets/um-beta/daywalker.png",
+    "source": "images/scrapbook_icons1.tex",
+    "atlas": "images/scrapbook_icons1.xml",
+    "width": 96,
+    "height": 96,
+    "workshop": false
+  },
+  "klaus": {
+    "path": "assets/um-beta/klaus.png",
+    "source": "images/scrapbook_icons2.tex",
+    "atlas": "images/scrapbook_icons2.xml",
+    "width": 96,
+    "height": 96,
+    "workshop": false
+  },
+  "rocky": {
+    "path": "assets/um-beta/rocky.png",
+    "source": "images/scrapbook_icons2.tex",
+    "atlas": "images/scrapbook_icons2.xml",
+    "width": 96,
+    "height": 96,
+    "workshop": false
+  },
+  "moose": {
+    "path": "assets/um-beta/moose.png",
+    "source": "images/scrapbook_icons2.tex",
+    "atlas": "images/scrapbook_icons2.xml",
+    "width": 96,
+    "height": 96,
+    "workshop": false
+  },
+  "minotaur": {
+    "path": "assets/um-beta/minotaur.png",
+    "source": "images/scrapbook_icons2.tex",
+    "atlas": "images/scrapbook_icons2.xml",
+    "width": 96,
+    "height": 96,
+    "workshop": false
+  },
+  "slurtle": {
+    "path": "assets/um-beta/slurtle.png",
+    "source": "images/scrapbook_icons3.tex",
+    "atlas": "images/scrapbook_icons3.xml",
+    "width": 96,
+    "height": 96,
+    "workshop": false
+  },
+  "worm_boss": {
+    "path": "assets/um-beta/worm_boss.png",
+    "source": "images/scrapbook_icons3.tex",
+    "atlas": "images/scrapbook_icons3.xml",
+    "width": 96,
+    "height": 96,
+    "workshop": false
+  },
+  "stalker_atrium": {
+    "path": "assets/um-beta/stalker_atrium.png",
+    "source": "images/scrapbook_icons3.tex",
+    "atlas": "images/scrapbook_icons3.xml",
+    "width": 96,
+    "height": 96,
+    "workshop": false
+  },
+  "shadow_knight": {
+    "path": "assets/um-beta/shadow_knight.png",
+    "source": "images/scrapbook_icons3.tex",
+    "atlas": "images/scrapbook_icons3.xml",
+    "width": 96,
+    "height": 96,
+    "workshop": false
+  },
+  "toadstool": {
+    "path": "assets/um-beta/toadstool.png",
+    "source": "images/scrapbook_icons3.tex",
+    "atlas": "images/scrapbook_icons3.xml",
+    "width": 96,
+    "height": 96,
+    "workshop": false
+  }
+}

@@ -1,0 +1,22 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>寒霜之祠｜第五版 · 蓝宝石镶嵌</title><style>
+:root{color-scheme:light;--stage:#d7d4c5}*{box-sizing:border-box}body{margin:0;background:#eeece4;color:#25313a;font:16px/1.65 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1100px;margin:36px auto;padding:0 24px 40px}h1{font-size:28px;margin-bottom:8px}h2{margin:0;font-size:22px}p{margin:8px 0 20px}.note{color:#607079;font-size:14px}.toolbar{display:flex;align-items:center;gap:10px;margin:22px 0}.toolbar button{cursor:pointer;border:1px solid #9da7a6;background:#fff;border-radius:20px;padding:7px 18px;color:#25313a}.toolbar button[aria-pressed=true]{background:#253c49;color:white}.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}article{background:#f8f7f2;border:1px solid #d0d2ca;border-radius:12px;overflow:hidden}.stage{height:390px;background:var(--stage);display:flex;align-items:center;justify-content:center;padding:24px}.hero{width:100%;height:100%;object-fit:contain}.info{padding:22px}.info p{margin-bottom:0}.label{font:12px ui-monospace,monospace;letter-spacing:1px;color:#73828b}.comparison{margin-top:26px;background:#f8f7f2;border:1px solid #d0d2ca;border-radius:12px;padding:24px}.strip{display:flex;align-items:flex-end;flex-wrap:wrap;gap:22px;margin-top:18px}.thumb{text-align:center;font-size:12px;color:#52616a}.thumb .swatch{background:var(--stage);height:104px;min-width:104px;display:flex;align-items:center;justify-content:center;border-radius:6px;margin-bottom:7px}.thumb img{width:64px;height:64px;object-fit:contain}.large .swatch{height:190px;min-width:176px}.large img{width:160px;height:160px}a{color:#216181}footer{margin-top:24px;color:#64717a;font-size:13px}@media(max-width:680px){main{padding:0 16px}.grid{grid-template-columns:1fr}.stage{height:340px}.toolbar{flex-wrap:wrap}h1{font-size:24px}}
+</style>
+<main>
+<div class="label">SHADOW WORLD / V5 SAPPHIRE INLAY / 2026.11.04</div>
+<h1>寒霜之祠 · 第五版 · 蓝宝石镶嵌</h1>
+<p class="note">在第四版基础上，将两处眼窝改为镶嵌的蓝宝石，保留冰下巴、鲨鱼头、张嘴含核及其他造型。静态透明底预览，尚未替换游戏资源。</p>
+<div class="toolbar"><span>预览底色</span><button data-bg="#d7d4c5" aria-pressed="true">浅色</button><button data-bg="#555d42" aria-pressed="false">草地色</button><button data-bg="#252b34" aria-pressed="false">深色</button></div>
+<div class="grid">
+<article><div class="stage"><img class="hero" src="frost-shrine-v4.png" alt="第四版原稿"></div><div class="info"><h2>第四版原稿</h2><p>本次修改基准：眼部仍是两道浅刻槽，其余构图已经确定。</p><a href="frost-shrine-v4.png">查看原图</a></div></article>
+<article><div class="stage"><img class="hero" src="frost-shrine-v5.png" alt="第五版：两块切面蓝宝石镶嵌于原眼窝位置"></div><div class="info"><h2>第五版 · 蓝宝石镶嵌</h2><p>两处眼窝镶入深蓝切面宝石，采用灰色石质镶座。宝石的深蓝色与浅蓝冰颚形成区别，保留原有头型和中央核心。</p><a href="frost-shrine-v5.png">查看透明 PNG 原图</a></div></article>
+</div>
+<section class="comparison"><h2>缩小尺寸对照</h2><p class="note">统一 160 × 160 展示框，仅用于比较轮廓和细节可读性，不代表实机大小。</p><div class="strip large">
+<div class="thumb"><div class="swatch"><img src="frost-shrine-v4.png" alt="第四版原稿缩小"></div>第四版原稿</div>
+<div class="thumb"><div class="swatch"><img src="frost-shrine-v5.png" alt="第五版 · 蓝宝石镶嵌缩小"></div>第五版 · 蓝宝石镶嵌</div>
+</div></section>
+<section class="comparison"><h2>霜冻核心 · 沿用第二版</h2><p class="note">保持第二版原图，本轮没有重新绘制。</p><div class="strip">
+<div class="thumb large"><div class="swatch"><img src="frost-core-v2.png" alt="第二版霜冻核心"></div>160 像素展示</div>
+<div class="thumb"><div class="swatch"><img src="frost-core-v2.png" alt="第二版核心64像素"></div>64 像素展示</div>
+</div><a href="frost-core-v2.png">查看核心原图</a></section>
+<footer>使用内置 image_gen 在第四版原图上局部修改眼部，参考原版蓝宝石的切面与配色。尚未制作或替换游戏动画资源。<a href="../2026-11-04-frost-v4/preview.html">回看第四版</a> · <a href="generation-prompts.json">完整提示词与记录</a></footer>
+</main><script>document.querySelectorAll('[data-bg]').forEach(button=>button.addEventListener('click',()=>{document.documentElement.style.setProperty('--stage',button.dataset.bg);document.querySelectorAll('[data-bg]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)))}));</script></html>

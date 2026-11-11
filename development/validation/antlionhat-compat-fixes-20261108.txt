@@ -1,0 +1,58 @@
+刮地皮头盔兼容修复（2026-11-08，未发布）
+
+授权范围
+- 修复自动陷阱、暗影斧工作扣理智、亮茄粉碎者耕地额外耗损。
+- 按用户要求保留伍迪普通斧头转化露西的原生行为。
+- 自动装瓶产物虽无误，同步改回原生 bottler，保留原有回调和后续组件扩展。
+- 只编辑现有 easy_other/easy_equipments.lua 中的头盔增强逻辑，没有增加公共接口、组件或独立模块。
+
+捕捉
+- 沿用 Trap:DoSpring、Trap:Harvest、Trap:Reset；资格判断使用原生 inventoryitem.trappable/lootdropper.trappable。
+- 省略落地/合拢动画；保留 trapped、ontrapped、harvesttrap、原生产物、捕获数据、灵魂结算、陷阱耐久和原有分身免疫钩子。
+- 青蛙由原生组件产生蛙腿；蜘蛛/鸟由原生组件重建可携带物，不再克隆不能入包的活体。
+- 不重复扣陷阱耐久；最后一次使用仍交付产物，保留备用陷阱补充。
+- Harvest 原生会重新 Set，随后 Reset 停止容器内陷阱的地面扫描。
+- 不覆盖已有捕获物；附近没有新目标时也能交付已经捕获的猎物。
+- 捕获被组件拒绝时恢复旧 target，不扣头盔/陷阱耐久。
+
+暗影斧
+- 包装斧头已有 _onownerworking 工作回调，按原生 GetBufferedAction 的实际工具、CHOP 动作和目标过滤。
+- 使用已有 working 事件，为未装备但正在执行 CHOP 的暗影斧调用同一个原生回调；真正装备时仍由原监听调用，不重复执行。
+- 伍迪实际使用暗影斧的每次工作恢复原生 15 点理智代价；头盔镐采矿时不再错误触发手持暗影斧的代价。
+- 未模拟装备，不改物品所有者、装备槽或装备查询方法。
+- 原生破损/修理重建工具组件后仍有效；伍迪普通斧头的露西转化保持原样。
+
+耕地
+- 移除仅按 multitool_axe_pickaxe 判断的批量耕地兼容分支。
+- 在已有 doitemaction 中，遇到 farmtiller.oldAction2hm 就临时启用现成 oldtill2hm 标记，执行原生单点 Till。
+- 成功、失败和报错均恢复标记原值（包括 nil/false/true），支持嵌套调用。
+- 同一测试几何条件的 8 个土堆：农锄消耗 8，多用斧镐 32，亮茄粉碎者由 60 降至 32；头盔三者均约消耗 0.8。
+
+装瓶
+- 通过已有 doitemaction 执行原生 ACTIONS.BOTTLE，最终调用 bottler:Bottle 和其 onbottlefn。
+- 原生组件扣除一个空瓶、移除恶液并交付瓶装恶液；头盔仅在成功后扣自身耐久并按原规则补充瓶子。
+- 回调返回失败时不生成产物、不扣瓶子或头盔耐久。
+- 保留堆叠瓶子、用完后补充和头盔最后一次耐久安全处理。
+
+验证
+1. work/python-3.12.8/python.exe tests/run_antlionhat_tools_tests.py
+   883 项检查通过；修改后的玩法源码通过 Lua 5.1 编译。
+
+2. work/python-3.12.8/python.exe tests/run_native_antlionhat_tools.py --fixes
+   独立原生完整淬炼版专服，27 组场景、81 项检查通过。
+   结果：work/vault-hardened-hosted-3_d5himm/antlionhat-tools-result.json
+   真实头盔/工具/物品/动物/角色组件，原生 DoTerraform、捕获和装瓶回调。
+   包含陷阱与头盔同时最后一次耐久、替补陷阱未额外消耗、鸟的血量数据保留、分身/不可捕获/组件拒绝排除、已有捕获物交付、装瓶堆叠/补充/拒绝/头盔损坏、暗影斧原生修复包修理后的工作代价。
+   测试输入与最终两个玩法文件（easy_equipments、ancient_statue）逐字节相同。
+
+3. work/python-3.12.8/python.exe tests/run_native_antlionhat_tools.py
+   再验原有雕像工具识别：56 组场景、817 项检查通过。
+   结果：work/vault-hardened-hosted-3rfhb5zr/antlionhat-tools-result.json
+   强化工具免额外召怪、普通工具保留惩罚、红宝石陷阱保留、真实手部/槽内工具优先级、耐久和原动作恢复均通过。
+   两组原生验证合计 83 组场景、898 项检查，输入与最终玩法文件逐字节一致；所有测试服务器已停止。
+
+限制与状态
+- 原审计为修复前快照，保留在 antlionhat-source-audit-20261108.txt。
+- 本次不改伍迪普通斧头的原生转化差异，修复夹具仍验证手持转露西、槽内不转。
+- 测试只使用独立复制的存档和模组目录；没有修改玩家世界或安装目录。
+- 不涉及真实客户端输入、网络预测或任意第三方模组组合。没有发布工坊或更改版本号。

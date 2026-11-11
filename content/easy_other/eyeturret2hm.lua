@@ -1,5 +1,6 @@
 -- The existing eyeturret option owns all changes in this file.
 local DAMAGE, HEALTH, REGEN = 200, 2000, 50
+local BOSS_DAMAGE_MULT = 0.33
 local CHAIN_RANGE, CHAIN_JUMPS, CHAIN_MULT = 6, 4, 0.8
 local ARMOR_TIME, ARMOR_CD = 10, 60
 local RECOVERY_TIMER = "eyeturret_recovery2hm"
@@ -488,6 +489,17 @@ AddPrefabPostInit("eyeturret", function(inst)
     inst.components.health:SetMaxHealth(HEALTH)
     inst.components.health:StartRegen(REGEN, 1)
     inst.components.combat:SetDefaultDamage(DAMAGE)
+    if not inst.components.combat._eyeturretbossdamage2hm then
+        local customdamagemultfn = inst.components.combat.customdamagemultfn
+        inst.components.combat.customdamagemultfn = function(attacker, target, weapon, multiplier, mount, ...)
+            local result = customdamagemultfn ~= nil and (customdamagemultfn(attacker, target, weapon, multiplier, mount, ...) or 1) or 1
+            if target ~= nil and target:HasTag("epic") then
+                result = result * BOSS_DAMAGE_MULT
+            end
+            return result
+        end
+        inst.components.combat._eyeturretbossdamage2hm = true
+    end
     InstallRecovery(inst)
     inst:ListenForEvent("equip", EquipElectricWeapon)
     inst:DoTaskInTime(0, EquipElectricWeapon)

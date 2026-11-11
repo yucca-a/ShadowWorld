@@ -1,0 +1,118 @@
+{
+  "date": "2026-11-06",
+  "source_sha256": {
+    "content/common/equip_slot_fix.lua": "77fef8e48290fec758d36d5946fa235aa15e8a3ad8bcb250803a7151b6a26530",
+    "content/modmain.lua": "d9bfef123dad3d87ae269928852eaafd5cf801429da986bbb5cf67aca33ed698",
+    "tests/native/equip_slot_fixture.lua": "3097275ed9750043bb599614829f287929ce984d0560cb82820b1c9e8a8b5549",
+    "tests/run_native_equip_slot_tests.py": "5d0ee519ff4f79ee52ce0a979a329054c1b31f157701b8aa4ae1578e56ef7140",
+    "installed_game/scripts/components/inventory.lua": "a83c8a7b835d8c1782778954512540d98b0a05a49e7e5fdc29bf9fae7d68b6d8"
+  },
+  "results": {
+    "vanilla": {
+      "pass": true,
+      "variant": "vanilla",
+      "exit_code": 0,
+      "timed_out": false,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-equip-slot-vanilla-atoa3_df\\native.log",
+      "checks": [
+        "[00:00:18]: [EQUIP_SLOT_TEST]\tPASS\tempty_hands_200_switches\t\t",
+        "[00:00:18]: [EQUIP_SLOT_TEST]\tPASS\tduplicate_equip\t\t",
+        "[00:00:18]: [EQUIP_SLOT_TEST]\tPASS\tcursor_equip_then_hotkey\t\t",
+        "[00:00:18]: [EQUIP_SLOT_TEST]\tPASS\ttemporary_unequip_then_hotkey\t\t",
+        "[00:00:18]: [EQUIP_SLOT_TEST]\tPASS\tmanual_relocation\t\t",
+        "[00:00:18]: [EQUIP_SLOT_TEST]\tPASS\toccupied_source_slot\t\t",
+        "[00:00:18]: [EQUIP_SLOT_TEST]\tPASS\tfull_inventory\t\t",
+        "[00:00:18]: [EQUIP_SLOT_TEST]\tPASS\texplicit_unequip\t\t",
+        "[00:00:18]: [EQUIP_SLOT_TEST]\tPASS\tlate_equip_action\t\t",
+        "[00:00:18]: [EQUIP_SLOT_TEST]\tPASS\trestricted_and_locked_equipment\t\t",
+        "[00:00:18]: [EQUIP_SLOT_TEST]\tPASS\tcontroller_swap\t\t",
+        "[00:00:18]: [EQUIP_SLOT_TEST]\tPASS\tground_pickup\t\t",
+        "[00:00:18]: [EQUIP_SLOT_TEST]\tPASS\topen_container_source\t\t",
+        "[00:00:18]: [EQUIP_SLOT_TEST]\tPASS\tclosed_container_source\t\t",
+        "[00:00:18]: [EQUIP_SLOT_TEST] RESULT\tcases=14\tchecks=649\tfailures=0\tVANILLA_BASELINE\t"
+      ],
+      "limitation": "Native server actions and real items; no rendered client, physical keyboard or network-latency simulation."
+    },
+    "patch": {
+      "pass": true,
+      "variant": "patch",
+      "exit_code": 0,
+      "timed_out": false,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-equip-slot-patch-1nhrraaq\\native.log",
+      "checks": [
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tPASS\tempty_hands_200_switches\t\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tPASS\tduplicate_equip\t\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tPASS\tcursor_equip_then_hotkey\t\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tPASS\ttemporary_unequip_then_hotkey\t\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tPASS\tmanual_relocation\t\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tPASS\toccupied_source_slot\t\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tPASS\tfull_inventory\t\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tPASS\texplicit_unequip\t\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tPASS\tlate_equip_action\t\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tPASS\trestricted_and_locked_equipment\t\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tPASS\tcontroller_swap\t\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tPASS\tground_pickup\t\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tPASS\topen_container_source\t\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tPASS\tclosed_container_source\t\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST] RESULT\tcases=14\tchecks=651\tfailures=0\tPATCHED\t"
+      ],
+      "limitation": "Native server actions and real items; no rendered client, physical keyboard or network-latency simulation."
+    },
+    "full": {
+      "pass": true,
+      "variant": "full",
+      "exit_code": 0,
+      "timed_out": false,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-equip-slot-full-y2qwo01k\\native.log",
+      "checks": [
+        "[00:00:22]: [EQUIP_SLOT_TEST]\tPASS\tempty_hands_200_switches\t\t",
+        "[00:00:22]: [EQUIP_SLOT_TEST]\tPASS\tduplicate_equip\t\t",
+        "[00:00:22]: [EQUIP_SLOT_TEST]\tPASS\tcursor_equip_then_hotkey\t\t",
+        "[00:00:22]: [EQUIP_SLOT_TEST]\tPASS\ttemporary_unequip_then_hotkey\t\t",
+        "[00:00:22]: [EQUIP_SLOT_TEST]\tPASS\tmanual_relocation\t\t",
+        "[00:00:22]: [EQUIP_SLOT_TEST]\tPASS\toccupied_source_slot\t\t",
+        "[00:00:22]: [EQUIP_SLOT_TEST]\tPASS\tfull_inventory\t\t",
+        "[00:00:22]: [EQUIP_SLOT_TEST]\tPASS\texplicit_unequip\t\t",
+        "[00:00:22]: [EQUIP_SLOT_TEST]\tPASS\tlate_equip_action\t\t",
+        "[00:00:22]: [EQUIP_SLOT_TEST]\tPASS\trestricted_and_locked_equipment\t\t",
+        "[00:00:22]: [EQUIP_SLOT_TEST]\tPASS\tcontroller_swap\t\t",
+        "[00:00:22]: [EQUIP_SLOT_TEST]\tPASS\tground_pickup\t\t",
+        "[00:00:22]: [EQUIP_SLOT_TEST]\tPASS\topen_container_source\t\t",
+        "[00:00:22]: [EQUIP_SLOT_TEST]\tPASS\tclosed_container_source\t\t",
+        "[00:00:22]: [EQUIP_SLOT_TEST] RESULT\tcases=14\tchecks=651\tfailures=0\tPATCHED\t"
+      ],
+      "limitation": "Native server actions and real items; no rendered client, physical keyboard or network-latency simulation."
+    },
+    "disabled": {
+      "pass": true,
+      "variant": "disabled",
+      "exit_code": 0,
+      "timed_out": false,
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-equip-slot-disabled-nxs3nv11\\native.log",
+      "checks": [
+        "[00:00:19]: [EQUIP_SLOT_TEST]\tPASS\tempty_hands_200_switches\t\t",
+        "[00:00:19]: [EQUIP_SLOT_TEST]\tPASS\tduplicate_equip\t\t",
+        "[00:00:19]: [EQUIP_SLOT_TEST]\tPASS\tcursor_equip_then_hotkey\t\t",
+        "[00:00:19]: [EQUIP_SLOT_TEST]\tPASS\ttemporary_unequip_then_hotkey\t\t",
+        "[00:00:19]: [EQUIP_SLOT_TEST]\tPASS\tmanual_relocation\t\t",
+        "[00:00:19]: [EQUIP_SLOT_TEST]\tPASS\toccupied_source_slot\t\t",
+        "[00:00:19]: [EQUIP_SLOT_TEST]\tPASS\tfull_inventory\t\t",
+        "[00:00:19]: [EQUIP_SLOT_TEST]\tPASS\texplicit_unequip\t\t",
+        "[00:00:19]: [EQUIP_SLOT_TEST]\tPASS\tlate_equip_action\t\t",
+        "[00:00:19]: [EQUIP_SLOT_TEST]\tPASS\trestricted_and_locked_equipment\t\t",
+        "[00:00:19]: [EQUIP_SLOT_TEST]\tPASS\tcontroller_swap\t\t",
+        "[00:00:19]: [EQUIP_SLOT_TEST]\tPASS\tground_pickup\t\t",
+        "[00:00:19]: [EQUIP_SLOT_TEST]\tPASS\topen_container_source\t\t",
+        "[00:00:19]: [EQUIP_SLOT_TEST]\tPASS\tclosed_container_source\t\t",
+        "[00:00:19]: [EQUIP_SLOT_TEST] RESULT\tcases=14\tchecks=651\tfailures=0\tPATCHED\t"
+      ],
+      "limitation": "Native server actions and real items; no rendered client, physical keyboard or network-latency simulation."
+    }
+  },
+  "notes": [
+    "Vanilla success means the known defects were reproduced as expected.",
+    "The runner LAN port selection was corrected before the successful full run; earlier successful runs used the native fallback LAN port.",
+    "Current production patch and fixture match the tested copies byte for byte.",
+    "No workshop publication or client keyboard/network-latency acceptance performed."
+  ]
+}

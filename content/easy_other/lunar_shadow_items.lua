@@ -246,7 +246,7 @@ end)
 -- 2025.5.3 melon:熊罐不受毒雾影响(disabledroponopen导致的问题)-----------------------
 local spore_resist_prefabs = {
     "beargerfur_sack", "spicepack", "rabbitkinghorn_container",
-    "tacklestation2hm", "shadow_container", "skullchest", -- 钓具容器、暗影空间
+    "tacklestation2hm", "shadowbank_tackle2hm", "shadow_container", "skullchest", -- 钓具容器、暗影空间
     "elixir_container", "alterguardianhat", -- 野餐盒、启迪头
     "mushroom_light", "mushroom_light2", -- 蘑菇灯、菌伞灯
     "alterguardianhatshard", -- 启迪碎片
@@ -1172,6 +1172,7 @@ local function upgradebeef_bell(inst)
 end
 
 local function processpersistent(inst)
+    if inst.beefbellpreview2hm then return end
     if inst.components.persistent2hm.data.minotaurhorn then
         upgradebeef_bell(inst)
         inst.components.inventoryitem:ChangeImageName("shadow_beef_bell_linked")
@@ -1237,7 +1238,7 @@ AddPrefabPostInit("shadow_beef_bell", function(inst)
     inst:DoTaskInTime(0, processpersistent) -- 修改牛铃
 end)
 -- 阴郁牛铃cd时牛尸体也不消失
-function ShouldKeepCorpse(inst)
+local function ShouldKeepCorpse(inst)
     local leader = inst.components.follower:GetLeader()
     return
         leader ~= nil and

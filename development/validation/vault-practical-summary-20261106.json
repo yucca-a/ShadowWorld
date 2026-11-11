@@ -1,0 +1,61 @@
+{
+  "status": "implemented_and_tested_not_published",
+  "protocol": {
+    "completed": 1200,
+    "independent_crashes": 800,
+    "world_saves": 0,
+    "cancelled": 0,
+    "assertions": 7202,
+    "runs": 1200,
+    "scope": "Actual Lua durable protocol with simulated delayed local persistence; native tests are separate."
+  },
+  "native": [
+    {
+      "report": "vault-practical-native-final-20261106.json",
+      "status": "passed",
+      "checks": 30,
+      "arrivals": null,
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-4vaj5382"
+    },
+    {
+      "report": "vault-practical-four-final-20261106.json",
+      "status": "passed",
+      "checks": 6,
+      "arrivals": null,
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-_5105s26"
+    },
+    {
+      "report": "vault-practical-faults-20261106.json",
+      "status": "passed",
+      "checks": 7,
+      "arrivals": null,
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-7nw10_5f"
+    },
+    {
+      "report": "vault-practical-real-client-20261106.json",
+      "status": "passed",
+      "checks": 0,
+      "arrivals": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-dz2a5aaw"
+    },
+    {
+      "report": "vault-practical-final-recovery-20261106.json",
+      "status": "passed",
+      "checks": 3,
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-cod4xlxx",
+      "shutdown_seconds": 1.5159999999741558
+    }
+  ],
+  "journal_unit_checks": 20,
+  "remaining_risk": "Not an atomic world/player transaction. Arbitrary rollbacks, merged/transferred items and interrupted writes remain risks.",
+  "scope_note": "Unrelated concurrent easy_equipments.lua changes are preserved and excluded from owned change manifest.",
+  "acceptance": "Everyday stability and normal gameplay take priority; user explicitly accepts extreme-only dupe/loss cases."
+}

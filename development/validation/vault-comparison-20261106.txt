@@ -1,0 +1,94 @@
+暗影空间穿越机制对照压力测试，2026-11-06
+
+结论：我们还没有考虑周全。现有持久化保护在本轮故障测试中没有出现已完成恢复后的物资增减，但复现了过期界面取错物品，且高并发下保存开销明显。咸鱼版的物品标识校验、操作节流和队列设计值得借鉴；其当前传输持久化方式则在原生服务器中分别复现了刷物资和吞物资。不能据此把我们的版本宣布为“任何情况都不会吞刷”。
+
+比较对象和方法
+
+两版都按传统机制改造的主世界托管方案评估。配置选项名称、是否新开档位不计优劣。测试分别启用咸鱼版 classic、我们的 hosted，只为进入各自新实现。未修改两版产品源码，未发布工坊，未使用真实玩家存档。
+
+咸鱼输入：D:\Users\Yucca\Downloads\test.zip
+SHA-256：9d26b4f14988a97973709e2e9be1c3652c3aa94382b3234b89ea6ef25063931e
+冻结副本：D:\Users\Yucca\Documents\ChatGPT\ShadowWorld\work\vault-comparison-20261106\xianyu\test
+我们的冻结副本：D:\Users\Yucca\Documents\ChatGPT\ShadowWorld\work\vault-comparison-20261106\hosted
+两版各核对 438 个文件，测试结束均与冻结清单一致；工作区 content 同样未变化。
+
+使用已安装的饥荒联机版原生专用服务器 build 761239，建立隔离的二层、四层集群。脚本驱动原生 Wilson、背包、魔术帽、容器、真实物品和原生存档；跨层消息经过各版实际传输实现。故障包括逻辑消息丢失/重复/延迟乱序、RPC 分片丢失、进程硬终止、重启、交错保存以及原生回档。
+
+物品附加仅用于核对的可保存标记，统计所有世界实体、背包、空间和真实托管容器。传输中的序列化记录不能只按实体数量判断吞物资；必须继续检查待办、恢复后的数量和属性。没有启动真实游戏客户端，日志中脚本玩家的 Invalid RPC sender list 属于没有对应客户端的 UI 发送，不能算客户端交互已经验收。
+
+完成的主要对照项目
+
+1. 四层并发：每版 12 轮，每轮三个从世界各集中发出 50 次同格取出请求，共 1,800 次请求。覆盖重复消息、每五条逻辑消息丢一条并混入重复、延迟乱序、正常通信，各三轮。每轮确认只有一份 17 个金块离开仓库，再存回。两版最终数量均正确，四层保存重启后也正确。这是 1,800 次争抢请求，不是 1,800 笔成功交易。
+
+2. 额外 Lua 协议模型：每版 1,000 个随机种子，注入约 20% 消息丢失、重复和延迟。咸鱼版 1,000 次完成；我们的协议 999 次完成，1 次在提交前安全撤销，均保持原物品。另通过既有 518 条协议、86 条适配器、36 条托管及 2 条原生客户端容器布局检查。模型使用真实 Lua 模块，但 I/O 和保存时序是模拟的；不能与原生实测次数混为一谈。
+
+3. 通信全部丢弃四秒再恢复、最终确认持续丢失、带未清待办保存后硬停重启：两版恢复后数量正确。这里“保存后硬停”不等于后述“不一致保存”的安全保证。
+
+4. 满背包：两版均没有立即丢失物品。我们把 17 个金块留在真实待交付容器，腾出背包后自动交付；咸鱼版把它们落到玩家脚边，腾出背包后仍在地上。落地不计为本轮吞物资，但不能提供与托管相同的保管保证。
+
+5. 物品属性：43 次剩余使用次数的斧头、37% 耐久木甲、包裹中的 23 个金块和 31 次耐久斧头，在传输、保存和重启后均正确。包裹另附 100,000 字节测试数据，检查大消息分片；故障期间允许排队或提交前撤销，恢复/重试后两版均保留完整数据。未声称覆盖所有模组物品、皮肤、腐烂时间或实体引用关系。
+
+6. 原生集群回档：两版在本轮二层集群正常回档后数量正确。
+
+7. 目标层离线回档：先完成跨层存取，再关闭洞穴；主世界将 23 个石头保存，改为 24 再保存，回档一档。洞穴一直关闭，主世界仍能打开该空间，实际取入玩家背包再存回；两版最终均为 23 个石头、17 个金块和一把 43 次耐久斧头。验证的是已托管空间，不是离线洞穴进程本身仍可运行。
+
+8. 只让洞穴额外保存后硬停：两版本次都保持 17 个金块。咸鱼版的这次恢复受原生分片快照对齐保护，恢复到旧背包状态；不能从一次通过推出任意保存顺序都安全。它的“玩家退出后硬停”附加用例本次也未出现数量变化。
+
+已确认的故障及原因
+
+咸鱼版：接收端保存、发送端未保存，重启刷出第二份。
+步骤：洞穴背包放入 17 个金块，两端先共同保存基线；洞穴将金块存入主世界空间，等待队列清空；只调用主世界原生 SaveGame；立即硬停两端；重启并读取原生玩家档案。
+结果：主世界仓库 17，洞穴背包 17，总量 34。我们的同条件结果为总量 17。
+证据：D:\Users\Yucca\Documents\ChatGPT\ShadowWorld\work\vault-compare-xianyu-vtiz54zv\result.json
+对照：D:\Users\Yucca\Documents\ChatGPT\ShadowWorld\work\vault-compare-hosted-tab94e11\result.json
+
+咸鱼版：保存窗口跨过传输，重启后两端都没有物品。
+步骤：同样先保存洞穴持有 17 个金块的基线；主世界先单独保存当时的空仓；洞穴完成存入，等待队列清空；洞穴再单独保存当时已清空的背包；硬停两端并重启。
+结果：两端合计 0，待办也为 0。我们的同条件结果为总量 17。
+证据：D:\Users\Yucca\Documents\ChatGPT\ShadowWorld\work\vault-compare-xianyu-bszjg43g\result.json
+对照：D:\Users\Yucca\Documents\ChatGPT\ShadowWorld\work\vault-compare-hosted-l7405nsw\result.json
+这是用原生 SaveGame 明确注入交错保存窗口，证明该窗口不安全；没有测量正常服务器遇到它的概率。
+
+对应实现：咸鱼 scripts/components/shadowbank2hm.lua:201 的 SendItem 排入可保存记录后立即移除物品；scripts/shadowbanktransfer2hm.lua:29 的 Receive 应用后直接回 ACK，收到 ACK 就删除 pending。队列和去重记录能处理丢包重发，却没有要求物品与收据在两端持久化完成。其 OnSave 在普通世界保存时才落盘。不能把“收到消息”当成“另一端已经持久保存”。
+
+我们的版本：旧界面能取错物品。
+步骤：客户端观察到第 1 格是金块；主世界把第 1、2 格的金块和斧头交换；随后执行旧界面针对第 1 格的取出操作。
+结果：我们取出的是后来换入的斧头，数量仍守恒；咸鱼版拒绝旧 token，物品保持原位。
+证据：D:\Users\Yucca\Documents\ChatGPT\ShadowWorld\work\vault-compare-hosted-8dxy0w6v\result.json 的 stale_slot_request
+对照：D:\Users\Yucca\Documents\ChatGPT\ShadowWorld\work\vault-compare-xianyu-y0q8xe2z\result.json 的 stale_slot_request
+位置：content/scripts/widgets/shadowvaultpanel2hm.lua:71 仅发送页面、槽号和动作；content/scripts/components/shadowvault2hm.lua:444 的目录没有物品版本，:478 的 Action 没有验证玩家看到的物品身份。咸鱼的 Token/Take 和存入 targettoken 校验值得借鉴。这不是吞刷漏洞，但属于多人操作一致性遗漏。
+
+我们的版本：保存开销与串行化是必须补评估的问题。
+同一四层矩阵，从初始化后的基线到最后一次耐久物品取出，我们的主世界新增 77 次原生保存完成回调，三个从世界各新增 57 次；咸鱼版同期各为 0。我们的存取为了恢复安全，需要提交前、应用后的持久化确认；竞争、撤销也可能增加保存请求。相关位置为 content/scripts/components/shadowvault2hm.lua:329 和共用协议。
+每轮争抢达到核对稳定状态的中位耗时为我们约 7.20 秒、咸鱼约 3.36 秒。这包含测试轮询、稳定等待和同机运行开销，不是玩家点击延迟或生产吞吐量指标。
+源码还显示主世界共用一个 active 事务；主世界自身有未决事务时，其他从世界的请求会被拒绝。已提交事务不能为了提升可用性而超时造回一份物品。长期离线分片占住事务对其他层的影响，仍需专门的长时压力测试。
+
+借鉴和补全的优先次序
+
+第一项，补齐“玩家看到的物品”校验。参考咸鱼的 token 方案，把页面会话、槽位、物品身份/堆叠版本从目录带到点击请求，再带到主世界真正预留物品的阶段；校验失败先刷新目录，保留物品。新请求应拒绝缺失版本，已保存的旧事务仍需能恢复。只在客户端或从世界校验一次不够，最终预留前必须再验。
+
+第二项，补齐请求节流和明确的结果反馈。借鉴每玩家操作节流、有限待办队列；显示“等待确认”“等待背包空位”“请求已过期”以及具体归属页。保留我们的满背包托管，避免把落地当作同等安全的交付。半叠、单件、换位等便利操作要分别建立数量守恒用例后再加入。
+
+第三项，优化保存调度和并发。先统计每一笔成功/拒绝/撤销请求引起的保存次数，合并同一保存阶段的请求，再设计有界批量提交或按分片/物品隔离事务。必须继续保持“持久化确认后才释放物品”的顺序，并重跑本报告中的 17→34、17→0 两个反例。直接拿掉共同检查点会重新引入已经复现的窗口。
+
+第四项，补足尚未验证的场景：真实客户端鼠标、快捷存取和控制器；高延迟公网及低 tick 率；玩家跨层迁移、死亡和断线发生在各事务阶段；单个从世界长期失联对其他层的影响；旧档迁入和不同模组物品；磁盘写入失败、长时间运行、任意单层手工回旧档及缺失实体修复。普通回档通过不能替代这些检查。
+
+主世界托管能解除“空间所对应的目标层必须在线”的要求。玩家正在另一个在线分片远程存取时，仍需要与主世界往返确认和一致的保存状态；不能把这一部分描述为不需要双向通信。
+
+复测和证据
+
+汇总机器数据：D:\Users\Yucca\Documents\ChatGPT\ShadowWorld\development\validation\vault-comparison-20261106.json
+冻结清单：同目录 vault-comparison-20261106-input-manifest.json
+原生测试器：D:\Users\Yucca\Documents\ChatGPT\ShadowWorld\tests\run_vault_comparison.py
+协议故障模型：D:\Users\Yucca\Documents\ChatGPT\ShadowWorld\tests\run_vault_protocol_stress.py
+物品核对夹具：D:\Users\Yucca\Documents\ChatGPT\ShadowWorld\tests\native\vault_comparison_fixture.lua
+
+在工作区根目录运行，建议同一版本的集群顺序启动，避免原生服务器重启释放端口时被另一轮占用：
+work/python-3.12.8/python.exe tests/run_vault_comparison.py --variant xianyu --scenario dup_cut --seed work/native-shadow-vault-2j510173/config/Audit
+work/python-3.12.8/python.exe tests/run_vault_comparison.py --variant xianyu --scenario torn_save --seed work/native-shadow-vault-2j510173/config/Audit
+将 variant 换成 hosted 可运行对照。matrix 使用 --shards 4 --rounds 3，不带 seed；其他已测场景为 loss_cut、interrupted、rollback、offline_rollback、complex。
+测试器返回 1 表示夹具/运行失败，2 表示恢复后的数量或交互断言失败，0 表示该轮未发现所检查的失败。每轮 result.json 保存独立证据，汇总由 tests/summarize_vault_comparison.py 生成。
+
+排除的夹具问题已留档：最初的魔术帽准备方式、端口争用不计版本失败；早期离线本地取放误用了 Inventory.GiveItem 的“放回仍打开的原容器”路径，导致重复传递同一个实体。已修正为明确目标背包槽位并断言真实所有权，两版重新通过 offline_rollback。四层矩阵的早期 offline_local_roundtrip 数值不作证据；其余争抢、满背包、重启结果独立有效。大分片故障期间咸鱼版暂时没有对应物品实体，但记录仍在队列且恢复后完整，不算吞物资。上述排除防止把夹具错误、暂停交付和真正的持久化丢失混为一谈。
+
+本轮只新增测试与报告；上述产品补全项目尚未合入。测试覆盖范围内我们的持久化保护表现更稳，不等于已经完成所有安全性和可用性工作。

@@ -1,0 +1,35 @@
+export const configNotes={
+ 'eyeturret':{requires:['enable easy mode'],paragraphs:['只加强友方原版眼球炮塔，洞穴放置同样生效。2000生命、每秒回复50，200基础电击伤害，额外连锁最多4个目标，每跳伤害递减20%。','可分别用1个龙鳞皮、1个蘑菇皮升级隔离火焰与孢子云免疫。倒下后保留底座和升级，5个游戏日后满血恢复；拆解返还投入的升级材料。']},
+ 'Trap Guaranteed Catch':{requires:['enable easy mode'],paragraphs:['普通捕兽陷阱开始合拢时立即结算有效目标的捕获，同时保留动画，减少合拢途中目标逃走导致的抓空。','只改变捕获时机，不改变捕获对象、范围、耐久与掉落；无法因此捕获不适用陷阱的生物。']},
+ 'Language In Game':{requires:[],paragraphs:['自动档跟随游戏语言；简体中文和 English 档强制选择本模组游戏内文本，不修改其他模组或游戏整体语言。']},
+ 'Show Mod Icon In Game':{requires:[],paragraphs:['在聊天区输入“显示模组”“隐藏模组”“默认模组”可管理模组查看按钮。查看配置时优先读取当前世界实际设置；离线模式同样支持。']},
+ 'Disable Outdate Tip':{requires:[],paragraphs:['限制提示出现频率，不会自动更新模组，也不会改变服务器实际版本。两档分别只处理本模组和处理所有模组。']},
+ 'player tags limit':{requires:[],paragraphs:['用于角色标签较多的组合环境。开启后按所选 N 将默认 63 标签容量扩展为 63 + N × 50；例如 N=1 时为113。它不提供新角色能力。']},
+ 'ignore client error':{requires:[],paragraphs:['只拦截客户端游戏更新接口中的错误，并不修复引发错误的玩法逻辑；不会拦截或修复所有服务器崩溃。默认关闭。']},
+ 'Container Sort':{requires:[],paragraphs:['决定容器按钮是否出现以及额外按钮样式。跨容器整理与锁定是互斥档位；另有禁用收集、禁用整理及无提示文字档。穿越仍需独立选择“穿越机制”。']},
+ 'World Exchange':{requires:['Container Sort'],paragraphs:['世界协同为默认实验档，自动发现地面、洞穴及其他分片并协调共同存档。所有分片配置应一致。满足迁移条件时，各分片完成快照采集即可继续穿越，备份验证在后台完成。旧档默认迁移到世界协同，升级后仍可手动切回传统或关闭。','切换到关闭或传统仍会处理已有的恢复记录。异常恢复通常会选用可验证的共同保存点。旧版遗留回档记录指向已丢失的快照，且原生存档已经推进时，符合条件的旧档会以原生存档启动并暂停世界协同。']},
+ 'Items collect':{requires:[],paragraphs:['控制物品与制作栏的快捷收集/存放。Ctrl + 右键用于对应存取操作，部分动作另使用 Alt。完整开启与禁用某一侧功能的档位不同。右键制作材料时优先补齐本次所缺数量。']},
+ 'enable easy mode':{requires:[],paragraphs:['控制建筑便利、物品装备扩展与大部分角色强化。子项仍按各自开关判断，简单与困难模式可以同时开启。明确为独立功能的入口不受此总开关限制。']},
+ 'enable hard mode':{requires:[],paragraphs:['控制困难模式的角色、天气、科技、食物、怪物和额外改动。各分类还有自己的总开关。关闭时暗影世界范围缩为宠物，随机生物大小仍由 Ray 的独立设置控制。','技能点扩展开启且困难模式关闭时，采用开局15点规则；直接禁用技能点扩展则保留游戏原有规则。']},
+ 'fooddata_change':{requires:['enable hard mode','food_change'],paragraphs:['根据单项原始生命、饥饿、理智值分段削减。默认-1档的正收益倍率从0.7到0.9不等，负收益乘1.1；不是所有食物统一扣固定比例。六种生/熟蘑菇不参与此处理。']},
+ 'farm_plant_change':{requires:['enable hard mode','food_change'],paragraphs:['对种子、萌芽、小、中与再生等阶段的生长时间区间乘所选数值；默认2即这些阶段耗时翻倍。true或-1兼容值按1.5倍处理。棱镜多年生作物也有对应倍率处理。']},
+ 'plant_change':{requires:['enable hard mode','food_change'],paragraphs:['默认8，主要可采摘、可收获与符合条件的生长过程耗时乘8。并非所有对象都统一乘8：农作物、蜘蛛巢等在相应流程排除。','部分较轻的周边过程使用 max(倍率÷2,1)，相关首领重生使用 1+(倍率-1)×3÷14。默认8时后者为2.5。']},
+ 'animal_change':{requires:['enable hard mode','food_change'],paragraphs:['默认8，多个动物巢穴刷新、繁殖和成长时间乘8；不会把敌人的单次攻击间隔乘8。影响牛崽成长、蜘蛛巢成长及多种动物生成器等。','龙蝇、蜂王重生时间使用 1+(倍率-1)×3÷14：默认8对应2.5倍。蛙雨生成延迟使用 max(倍率÷4,1)，默认8对应2倍。']},
+ 'Seeds Weed Chance':{requires:['enable hard mode','food_change'],paragraphs:['数值直接作为普通随机种子的杂草概率，默认0.8即80%。禁用会跳过此模块。它同时限制耕地判定，并调整种子食用价值与腐坏结果。','种子在随身或合适容器内腐坏时可转为相应干种子；地面种子在未加载状态下腐坏可能直接移除。带特殊物品过滤的容器有不同处理，不能把所有容器都视作干种子来源。']},
+};
+export const articles=[
+ {id:'settings-guide',title:'如何阅读配置大全',category:'start',tag:'配置',summary:'默认值、实际档位、上级开关与异常说明。',keywords:'全部配置 服主 modoverrides 参数 设置',configKeys:['enable easy mode','enable hard mode'],source:['content/modinfo.lua','content/modmain.lua'],sections:[
+ {title:'每个设置都能查到什么',paragraphs:['配置大全列出本版本的全部设置，包括默认值、原配置说明、每个可选档位及已核对的实现差异。点击配置名称可展开全部内容。','“默认”是模组声明的默认值，多数旧档设置保留原选项，版本更新也可能对特定设置执行迁移。父开关关闭时，多数子项即使显示启用也不会生效。']},
+ {title:'同名启用档如何区分',paragraphs:['原游戏界面可能把多个档位都写作“启用”或“部分”。Wiki保留各档对应的说明，并列出存档值，服主可以准确辨认自己的实际选择。数值0在Lua中也属于有效值，不能把0一概视作关闭。']},
+ {title:'配置位置不等于生效范围',paragraphs:['部分独立功能虽然放在简单模式的设置列表里，实际入口并不受简单模式总开关控制。文档对已发现的例外按源码标注。','“实现差异”表示配置文案与当前源码存在不同；“当前未生效”表示相应实现目前不可用。这里记录现状，不会替你修改模组配置或游戏代码。']},
+ ]},
+ {id:'food-values',title:'食物属性削减',category:'food',tag:'困难模式',summary:'按原始三维数值分段计算，低收益食物受到的比例影响更大。',keywords:'食物回血 饥饿 理智 三维 食物改动',configKeys:['fooddata_change'],source:['content/food/fooddata.lua'],sections:[
+ {title:'三档倍率',paragraphs:['每个食物的生命、饥饿、理智分别计算，按该项未经本规则修改的值选择区间。默认使用第1档。零与负值使用负收益倍率；正值使用下表。'],table:{headers:['原始单项值','第1档（默认）','第2档','第3档'],rows:[['≤0','×1.1','×1.2','×1.333'],['0～不足10','×0.7','×0.5','×0.3334'],['10～不足20','×0.75','×0.575','×0.4'],['20～不足30','×0.8','×0.65','×0.5'],['30～不足40','×0.85','×0.725','×0.6'],['≥40','×0.9','×0.8','×0.6667']]}},
+ {title:'如何估算',paragraphs:['例如原来恢复25生命、62.5饥饿的食物，在默认档分别变为20生命与56.25饥饿；原来降低10理智会变成降低11理智。角色吸收倍率、食物新鲜度与恢复险境还可能继续影响最终结果。']},
+ {title:'例外',paragraphs:['红、绿、蓝蘑菇及其熟制版本不参与这一步属性修改。简单模式同时开启时，部分陈旧/腐坏食物的饥饿惩罚会有所减轻。配方条目中的基础三维，不一定等于角色最终获得的数值。']},
+ ]},
+ {id:'crop-growth',title:'农作物生长速度',category:'food',tag:'农业',summary:'默认延长为两倍生长时间，按阶段改动而非统一推迟收获。',keywords:'种田 生长 作物 阶段 农场',configKeys:['farm_plant_change'],source:['content/food/farm_plant.lua'],sections:[{title:'影响的阶段',paragraphs:['默认倍率为2。种子、萌芽、小型、中型以及再生阶段，原本随机生长时间的上下限都会乘该倍率。作物原有季节、照料与其他判定仍存在。']},{title:'其他模组与开关',paragraphs:['棱镜多年生作物的获取生长时间接口也会应用同一倍率。关闭困难模式、食物改动总开关或本选项后，不加载这部分加时。']}]},
+ {id:'resource-regrowth',title:'植物与动物再生',category:'food',tag:'资源',summary:'当前默认倍率为8，普通资源与首领重生使用不同换算。',keywords:'再生 资源 刷新 植物 动物 生长 时间',configKeys:['plant_change','animal_change'],source:['content/food/plant.lua','content/food/animal.lua'],sections:[{title:'普通资源',paragraphs:['植物改动和动物改动的当前默认值均为8。它们主要延长再生、巢穴刷新和成长时间；不要沿用旧介绍里的“默认3倍”来估算当前房间。','植物流程涉及可采摘、可收获和符合条件的生长对象。农田作物、动物、蜘蛛巢等有相应排除或专门处理，最终取决于该对象使用的生长组件。']},{title:'特殊倍率',table:{headers:['过程','换算','默认8的效果'],rows:[['多数普通再生或动物成长','所选倍率','8倍时间'],['龙蝇、蜂王重生','1+(倍率-1)×3÷14','2.5倍时间'],['蛙雨生成延迟','max(倍率÷4,1)','2倍延迟'],['部分植物周边过程','max(倍率÷2,1)','4倍时间']] }},{title:'分别配置',paragraphs:['两项可独立关闭或调节。农田作物生长另由“作物改动”控制，不能把三个设置都直接相乘。']}]},
+ {id:'random-seeds',title:'随机种子与干种子',category:'food',tag:'农业',summary:'普通种子默认80%杂草概率，以及种子腐坏后的特殊产物。',keywords:'种子 杂草 干种子 腐坏 种植',configKeys:['Seeds Weed Chance'],source:['content/food/seeds.lua','content/scripts/prefabs/dryseeds2hm.lua'],sections:[{title:'普通随机种子的风险',paragraphs:['当前默认值0.8直接设置随机种子的杂草概率，即80%。已明确品种的作物种子不能与普通随机种子混为一谈。该模块也要求正常耕地判定，不会让普通地面自动变成可耕作位置。']},{title:'腐坏去向',paragraphs:['种子在人物或合适容器中腐坏时，可以转成普通干种子或对应作物干种子；带特定物品过滤规则的容器不保证执行同样替换。未加载地面上的种子腐坏时可能直接移除。','种子食用饥饿值也有调整；启用永不妥协时优先兼容其种子参数。']}]},
+ {id:'mod-interface',title:'游戏内模组查看与语言',category:'start',tag:'界面',summary:'查看房间实际配置，管理聊天区按钮和更新提示。',keywords:'语言 界面 模组按钮 离线 配置 查看',configKeys:['Language In Game','Show Mod Icon In Game','Disable Outdate Tip','player tags limit','ignore client error'],source:['content/easy_other/ui.lua','content/scripts/seasonwiki2hm.lua','content/easy_other/mod.lua','content/common/common.lua','content/common/patch.lua'],sections:[{title:'查看当前房间设置',paragraphs:['游戏内模组查看按钮在离线模式下也可显示。查看配置时以房间实际值为优先，保留已关闭项和非默认值。聊天输入“显示模组”“隐藏模组”“默认模组”可管理按钮。']},{title:'打开 Wiki',paragraphs:['在游戏控制台输入“/wiki”并回车，或点击小扫把打开模组面板，选择“打开淬炼之季 Wiki”。网页通过系统默认浏览器打开。']},{title:'语言与提示',paragraphs:['语言可跟随游戏自动选择，或强制本模组使用中文/英文。更新提示限制可仅作用于本模组或作用于所有模组，它只控制提醒频率，不进行自动更新。']},{title:'兼容辅助',paragraphs:['角色标签扩展按63 + N×50增加容量，默认关闭。强制拦截客户端错误也默认关闭，只处理特定更新接口错误，不能视作所有崩溃的修复。']}]},
+];

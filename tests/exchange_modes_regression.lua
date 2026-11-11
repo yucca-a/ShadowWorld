@@ -1,171 +1,63 @@
-local checks = 0
-local function check(ok, why) checks = checks + 1; assert(ok, why) end
-local function execute(source, env)
-    local fn = assert(loadstring(source)); setfenv(fn, env); return fn()
-end
-local function environment(values) return setmetatable(values or {}, {__index = _G}) end
-
-for _, locale in ipairs({"zh", "en"}) do
-    local env = environment({locale = locale})
-    execute(info_source, env)
-    local config, names = nil, {}
-    for _, option in ipairs(env.configuration_options) do
-        if option.name == "World Exchange" then config = option end
-        if option.name ~= "" then check(not names[option.name], "unique config " .. option.name); names[option.name] = true end
+local checks=0
+local function check(ok,why)checks=checks+1;assert(ok,why)end
+local function env(t)return setmetatable(t or {},{__index=_G})end
+local function execute(source,e)local fn=assert(loadstring(source));setfenv(fn,e);return fn()end
+for _,locale in ipairs({"zh","en"})do
+    local e=env({locale=locale});execute(info_source,e)
+    local config,names=nil,{}
+    for _,option in ipairs(e.configuration_options)do
+        if option.name~="" then check(not names[option.name],"unique config key");names[option.name]=true end
+        if option.name=="World Exchange"then config=option end
     end
-    check(config and config.default == "coordinated", "new mode defaults to coordinated")
-    check(#config.options == 3 and config.options[1].data == false and
-        config.options[2].data == "traditional" and config.options[3].data == "coordinated", "three selectable tiers")
-    if locale == "zh" then check(config.options[2].description == "传统", "traditional tier named as requested") end
+    check(config.default=="hosted","Shadow Nexus remains the default")
+    check(config.label==(locale=="zh" and "暗影枢纽" or "Shadow Nexus"),"new feature name in both locales")
+    check(#config.options==2 and config.options[1].data=="off" and config.options[2].data=="hosted","only off and the new mechanism are offered")
+    check(not names["World Exchange Shards"],"no retired shard-count option")
 end
-
--- Run the actual early mode selection and world-component installation.
-for _, mode in ipairs({false, "traditional", "coordinated", "missing"}) do
-    for _, buttons in ipairs({false, true}) do
-        local engine, hook = {}, nil
-        local env = environment({require = function() return engine end,
-            GetModConfigData = function(key)
-                if key == "World Exchange" then if mode == "missing" then return nil end; return mode end
-                return buttons
-            end,
-            AddPrefabPostInit = function(_, fn) hook = fn end})
-        execute(mode_source, env)
-        local enabled = buttons and (mode == "coordinated" or mode == "missing")
-        check(engine.enabled == enabled, "mode and existing button gates")
-        execute(install_source, env)
-        for _, saved in ipairs({false, "loaded", "legacy"}) do
-            engine.boot = saved and {[saved] = true} or nil
-            local world = {ismastersim = true, components = {}, AddComponent = function(self) self.added = true end}
-            hook(world)
-            check((world.added == true) == (enabled or saved ~= false), "existing checkpoint recovery survives mode changes")
-        end
+check(not main_source:find('modimport("easy_other/worldexchange.lua")',1,true),"retired runtime is not imported")
+check(main_source:find('modimport("easy_other/shadowvault.lua")',1,true),"new runtime is integrated in the mod")
+for _,mode in ipairs({"hosted","coordinated","classic","traditional","off",false})do
+    for _,buttons in ipairs({true,false})do
+        check(Config.Enabled(mode,buttons)==(mode~="off" and buttons),"legacy setting resolves to the new mechanism and respects disabled buttons")
     end
 end
-
-local now, queue, nodes = 0, {}, {}
-local function schedule(node, delay, fn, inst, ...)
-    local args = {...}
-    local task = {at = now + delay, Cancel = function(self) self.cancelled = true end}
-    task.run = function() fn(inst, unpack(args)) end
-    queue[#queue + 1] = task
-    return task
-end
-local function advance(seconds)
-    local untiltime = now + seconds
-    while true do
-        local idx
-        for i, task in ipairs(queue) do
-            if task.at <= untiltime and (not idx or task.at < queue[idx].at) then idx = i end
-        end
-        if not idx then break end
-        local task = table.remove(queue, idx); now = task.at
-        if not task.cancelled then task.run() end
-    end
-    now = untiltime
-end
-local function node(id, mode, contents)
-    local n = {id = id, rpc = {}, shardrpc = {}, pauses = 0, modern = 0, tags = {pocketdimension_container = true}}
-    local box = {tags = n.tags, components = {}, replica = {}, IsValid = function() return true end}
-    function box:HasTag(tag) return self.tags[tag] end
-    function box:AddTag(tag) self.tags[tag] = true end
-    function box:RemoveTag(tag) self.tags[tag] = nil end
-    function box:DoTaskInTime(delay, fn, ...) return schedule(n, delay, fn, self, ...) end
-    box.DoStaticTaskInTime = box.DoTaskInTime
-    n.box = box
-    n.player = {name = id, IsValid = function() return true end, components = {talker = {Say = function(_, s) n.said = s end}}}
-    local container = {numslots = 0, slots = {}, contents = contents, openlist = {[n.player] = true}}
-    function container:OnSave() return {contents = self.contents} end
-    function container:OnLoad(data) self.contents = data.contents end
-    function container:DestroyContents() self.contents = nil end
-    box.components.container = container
-    n.world = {ismastersim = true, components = {}, PocketDimensionContainers = {shadow = box},
-        GetPocketDimensionContainer = function(_, name) if name == "shadow" then return box end end}
-    n.env = environment({worldexchangecfg = mode ~= false, traditionalexchange = mode == "traditional",
-        TheWorld = n.world, TheShard = {GetShardId = function() return id end},
-        ShardList = {["1"] = true, ["2"] = true}, Shard_IsWorldAvailable = function() return true end,
-        TUNING = {isCh2hm = true}, FRAMES = 1 / 30,
-        AddModRPCHandler = function(_, name, fn) check(not n.rpc[name], "single client RPC registration"); n.rpc[name] = fn end,
-        AddShardModRPCHandler = function(_, name, fn) check(not n.shardrpc[name], "single shard RPC registration"); n.shardrpc[name] = fn end,
-        GetShardModRPC = function(_, name) return name end,
-        SendModRPCToShard = function(name, _, target, ...)
-            local args = {...}
-            if n.drop == name then return end
-            local peer = nodes[tostring(target)]
-            if peer then schedule(peer, 0, function() peer.shardrpc[name](id, target, unpack(args)) end) end
+check(Config.Enabled(nil,true),"missing old setting uses new default")
+for _,mode in ipairs({"hosted","coordinated","classic","off"})do
+    local hooks,shards,server,client,imports={},{},{},{},{}
+    local originals={SaveGame=function()end,RequestShutdown=function()end,DoRestart=function()end,
+        ResumeExistingUserSession=function()end,SerializeUserSession=function()end,WorldRollbackFromSim=function()end}
+    local globals={};for k,v in pairs(originals)do globals[k]=v end
+    local e=env({GLOBAL=globals,TUNING={},PrefabFiles={},
+        GetModConfigData=function(key)return key=="World Exchange" and mode or true end,
+        require=function(name)
+            if name=="shadowvaultconfig2hm"then return Config end
+            if name=="containers"then return {params={shadow_container={}}}end
+            if name=="worldexchangerpc2hm"then return {Install=function()end}end
+            if name=="shadowvaultcourier2hm"then return {}end
+            error("unexpected runtime dependency "..name)
         end,
-        SetServerPaused = function() n.paused = true; n.pauses = n.pauses + 1 end,
-        TheNet = {IsServerPaused = function() return n.paused end,
-            SetServerPaused = function(_, paused) n.paused = paused end, Announce = function() end}})
-    execute(exchange_source, n.env)
-    nodes[id] = n
-    return n
+        AddPrefabPostInit=function(name,fn)hooks[name]=fn end,
+        AddComponentPostInit=function()end,AddPlayerPostInit=function()end,
+        AddShardModRPCHandler=function(_,name,fn)shards[name]=fn end,
+        AddModRPCHandler=function(_,name,fn)server[name]=fn end,
+        AddClientModRPCHandler=function(_,name,fn)client[name]=fn end,
+        GetShardModRPC=function(_,name)return name end,GetShardModRPCHandler=function()return function()end end,
+        modimport=function(path)imports[path]=true end})
+    execute(entry_source,e);execute(player_source,e)
+    local world={ismastersim=true,added={},AddComponent=function(self,name)self.added[name]=true end}
+    hooks.world(world)
+    check(world.added.shadowvault2hm and world.added.worldexchange2hm,"new vault plus passive old-save reader installed")
+    check(shards.shadowvault_v1 and not shards.shadowvault_migrate and not shards.worldexchange_v1,"no old exchange or cutover RPC")
+    check(not server.worldexchange_exit and not client.worldexchange_exit,"no coordinated exit permission RPC")
+    check(imports["easy_other/shadowvaultplayer.lua"],"native player receipts observer is installed")
+    for k,v in pairs(originals)do check(globals[k]==v,"native "..k.." remains unchanged")end
 end
-local function pair(mode1, mode2)
-    now, queue, nodes = 0, {}, {}
-    return node("1", mode1, "gold:17"), node("2", mode2, "spear:2")
-end
-local function request(n) n.rpc.exchangebtn2hm(n.player, n.box) end
-local function contents(n) return n.box.components.container.contents end
-local function service(n, ready)
-    local core = {CanExchange = function() return ready end, IsReady = function() return ready end}
-    local s = {Initialize = function() end, protocol = {}, engine = {core = core},
-        Request = function() n.modern = n.modern + 1 end}
-    n.world.components.worldexchange2hm = s
-    return s
-end
-
-local a, b = pair("traditional", "traditional")
-service(a, true); service(b, true)
-request(a); advance(4)
-check(contents(a) == "spear:2" and contents(b) == "gold:17", "traditional handshake swaps exact contents")
-check(a.modern == 0 and b.modern == 0, "traditional never starts coordinated transaction")
-check(not a.box:HasTag("exchangeloading2hm") and not b.box:HasTag("exchangeloading2hm"), "traditional completion clears busy tags")
-request(b); advance(4)
-check(contents(a) == "gold:17" and contents(b) == "spear:2", "reverse-direction exchange works")
-
-a, b = pair("traditional", "traditional")
-a.drop = "exchangesenddata2hm"
-request(a); advance(4)
-check(contents(a) == "gold:17" and contents(b) == "spear:2", "lost initial message restores source contents")
-check(not a.box.containersendtask2hm and not a.box:HasTag("exchangeloading2hm"), "timeout removes traditional busy state")
-a.drop = nil
-a.rpc.pausebtn2hm(a.player, a.box)
-check(a.paused, "traditional exposes original optional pause")
-advance(31); check(not a.paused, "traditional pause expires after 30 seconds")
-
-for _, mode in ipairs({false, "coordinated"}) do
-    a, b = pair("traditional", mode)
-    request(a); advance(4)
-    check(contents(a) == "gold:17" and contents(b) == "spear:2", "different mode ignores legacy packets and source restores")
-    b.rpc.pausebtn2hm(b.player, b.box)
-    check(b.pauses == 0, "legacy pause RPC cannot bypass chosen mode")
-    service(b, true); request(b)
-    check(b.modern == (mode == "coordinated" and 1 or 0), "new requests respect configured mode")
-end
-
-a, b = pair("traditional", "traditional")
-a.box.components.container.openlist = {}
-request(a); a.rpc.pausebtn2hm(a.player, a.box)
-check(contents(a) == "gold:17" and #queue == 0 and a.pauses == 0, "closed container rejects exchange and pause")
-a.box.components.container.openlist[a.player] = true
-service(a, false); request(a); a.rpc.pausebtn2hm(a.player, a.box)
-check(contents(a) == "gold:17" and #queue == 0 and a.pauses == 0, "checkpoint recovery blocks new traditional requests")
-service(a, true); service(b, false); request(a); advance(4)
-check(contents(a) == "gold:17" and contents(b) == "spear:2", "recovering recipient rejects traditional transfer")
-local s = service(a, true); s.protocol.active = {name = "shadow"}
-request(a); check(contents(a) == "gold:17", "unfinished saved transaction blocks traditional exchange")
-s.protocol.active = nil; a.box.components.container.readonlycontainer = true
-request(a); check(contents(a) == "gold:17", "read-only source is protected")
-
--- Checkpoint draining must wait for all upstream exchange timer stages.
-local Engine = {}
-execute(idle_source, environment({Engine = Engine, AllPlayers = {}}))
-local e = setmetatable({service = {protocol = {}, inst = {components = {}, PocketDimensionContainers = {shadow = {}}}},
-    Writing = function() return false end}, {__index = Engine})
-for _, field in ipairs({"containersendtask2hm", "containerreceivetask2hm", "exchangeconfirmtask2hm"}) do
-    e.service.inst.PocketDimensionContainers.shadow[field] = {}
-    check(not e:Idle(), "cannot checkpoint temporary contents during " .. field)
-    e.service.inst.PocketDimensionContainers.shadow[field] = nil
-end
-check(e:Idle(), "checkpoint can proceed after legacy completion or timeout")
-print("Exchange mode checks: " .. checks .. " (Lua 5.1; native serializer; simulated shards/timers)")
+local Legacy=execute(legacy_source,env())
+local reads,locked=0,false
+local world={GetPocketDimensionContainer=function(_,name)reads=reads+1;check(name=="shadow","original container name");return {components={container={EnableReadOnlyContainer=function(_,value)locked=value end}}}end}
+local legacy=Legacy(world);legacy:OnLoad({active={name="shadow",phase="intent",own={items={gold=17}}}});legacy:LoadPostPass()
+check(locked and reads==1 and legacy:OnSave().active.own.items.gold==17,"unfinished legacy records preserve custody")
+check(not legacy.Update and not legacy.Request and not legacy.Packet and not legacy.task,"compatibility reader cannot run coordinated exchange")
+legacy=Legacy(world);legacy:OnLoad({closed={old={seq=1}}})
+check(legacy:OnSave()==nil,"completed legacy save needs no coordinator state")
+print("Shadow Nexus integration: "..checks.." checks passed")

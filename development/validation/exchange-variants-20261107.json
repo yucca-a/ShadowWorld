@@ -1,0 +1,80 @@
+{
+  "status": "passed",
+  "publication": "local only; version unchanged at 2.8.15.0.8",
+  "configuration": {
+    "default": "exchange_v1_original",
+    "legacy_values": "classic",
+    "choices": [
+      "classic",
+      "xianyu",
+      "hosted"
+    ],
+    "explicit_choice_persists": true,
+    "old_nexus_items": "automatically returned to native home-shard containers before opening"
+  },
+  "reports": {
+    "archive_migration": "work/vault-hardened-hosted-kn8nxbu4/archive-zip-report.json",
+    "three_modes": "work/vault-hardened-hosted-ayn2aqj7/three-mode-native-report.json",
+    "retired_journal": "work/vault-hardened-hosted-yj2u3v50/migrated-mode-roundtrip.json"
+  },
+  "unit_checks": 48,
+  "lua_files_compiled": 406,
+  "native_checks": [
+    "legacy default forces original",
+    "original native exchange",
+    "original reverse exchange",
+    "manual Xianyu choice persists",
+    "Xianyu split half",
+    "Xianyu transfer conservation",
+    "manual Nexus choice persists",
+    "Nexus real journal starts",
+    "original mode returns without remigrating manual Nexus",
+    "original contents survive all mode changes",
+    "Xianyu second space persists",
+    "Nexus inventory survives manual round trip"
+  ],
+  "retained_inventory_comparison": {
+    "Master": {
+      "containers": 13,
+      "occupied_slots": 68,
+      "item_count": 217
+    },
+    "Caves": {
+      "containers": 9,
+      "occupied_slots": 29,
+      "item_count": 67
+    }
+  },
+  "archive_sha256": "e4c95f653737d93e8831f436613341c93590e0d19adc87d282f835cb20693d44",
+  "missing_original_mods": [
+    "workshop-2354272932",
+    "workshop-2559637840",
+    "workshop-2983831077",
+    "workshop-3377825871",
+    "workshop-3585747839",
+    "workshop-3779015027"
+  ],
+  "core_sha256": {
+    "easy_other/exchangemodes2hm.lua": "c4e463bea501eaaac7f6275d7fcd2094d69609250ba123f88b052e4b54a5a04e",
+    "easy_other/exchangeclassic2hm.lua": "975620502a474e41c4be42a5a96f4f51b9d9f1cacdd2cc135dc65004b7901a73",
+    "easy_other/shadowbank2hm.lua": "ffc6fc3b17e6b53927ffee2b4613c4d8e018f9159846d7fb5e501280f56ee76b",
+    "easy_other/shadowvault.lua": "ba7cb03fc6d9236fdae8c47abf1eb62ceef780f5d8dc75af7201b8d2aa31d2a4",
+    "scripts/exchangemode2hm.lua": "42bd11f58ade1d66ee538f6a5b87d85d0710dd6f6c93210635428b5bf88defe8",
+    "scripts/exchangeoriginalmigration2hm.lua": "044a562175e9f807fd3864a96d6ee9926b1e5a6177e90a583b2cdba51b2fc457",
+    "scripts/components/exchangevariants2hm.lua": "0c85995b45ac1cb4f81edaa1c8dafa4f6dd67c27f6cf187c4a4ee0a3189a5564",
+    "scripts/components/shadowbank2hm.lua": "c2a016a7e071e731f028019098c9a33aed117dfd17f16ad015f0ae5dc9606283",
+    "scripts/components/shadowvault2hm.lua": "82564695e94a1e01fdc6f3746b388e21143dc0d2166d5a3c041f726181f5093a",
+    "scripts/shadowvaultjournal2hm.lua": "2841e5c3bbda910f93de7ab9527e777de66b50dc4f476df62012f08bfc344ac4",
+    "scripts/shadowvaultnative2hm.lua": "462cf3f9156157fb35e5882403e66b1c6e8f8686bd600ad42f5c86c703f4fe1e",
+    "scripts/shadowvaultproxy2hm.lua": "52eff420d62fba3c3b6ce8d56684738e68dd9639f8d7c69c87744538947b4f5d",
+    "scripts/shadowvaultconfig2hm.lua": "dde3656c89f380caac92d0cd8538cb378f211afbca04f5bcacbebd33900ed803",
+    "scripts/shadowbankview2hm.lua": "c7c740d16fef90fe0af6a7ff2afc8a2fb340f71acb5ec8606dd4267243b84fee",
+    "scripts/shadowbanktransfer2hm.lua": "7b92005a047a9c49095787b3dbb0b1c4d4f3e3a4aee8d98e19f03cc254347d97"
+  },
+  "limits": [
+    "Dedicated-engine tests with simulated players, not client visual QA.",
+    "Six original archive mods are unavailable locally; existing private offline-container mod is a substitute fixture.",
+    "Archive auto-migration run predates the final offline-receipt proof helper; its helper is covered by Lua regression, and final mode-cycle/retired-journal runs use current core.",
+    "Unresolved transactions, missing prefabs, and absent ownership evidence retain original records; they are not cleared to force migration."
+  ]
+}

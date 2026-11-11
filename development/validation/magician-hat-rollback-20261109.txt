@@ -1,0 +1,57 @@
+魔术帽打开时保存、回档后丢失（2026-11-09）
+
+用户现象：服务器保存时正在打开魔术帽暗影空间，回档到该时段后帽子消失。
+重点角色为通过暗影操控器获得能力的非麦斯威尔角色，同时检查麦斯威尔。
+
+根因：
+原生 magician:StartUsingTool 从库存/头部取出帽子，设 persists=false、进入 LIMBO，
+此时帽子单独保存在角色的 data.magician.item 中，玩家库存里没有第二份。
+麦斯威尔在构造时已有 magician，原生 OnLoad 在库存恢复后 StopUsing，将帽子归还。
+其他角色的 resetshadowmagic 要到下一帧才恢复 magician。EntityScript:SetPersistData
+遍历组件存档时该组件还不存在，data.magician 被跳过；下一帧补组件也不能取回物品。
+原生 RestoreSnapshotUserSession 会在回档加载世界时恢复并重新序列化玩家，
+因此问题会在真正玩家重新进入以前就把新会话写成缺帽状态。
+
+生产修复：content/easy_other/magician_private2hm.lua 的服务器 AddPlayerPostInit。
+1. OnPreLoad 看见旧存档 data.magician.item 且没有组件时，临时添加 magician，
+   让原生组件 OnLoad 读入帽子；无需旧存档增加新字段。
+2. 角色 OnLoad、原生库存恢复完成后调用 StopUsing，遵循麦斯威尔原有的归还规则。
+   原先在头部的返回头部，库存来源返回库存；地面来源或库存已满时使用原生落地处理。
+3. 移除仅为回收物品临时添加的组件。角色/暗影操控器原有逻辑负责能力恢复，
+   不因读取旧帽子记录额外授予魔术能力。麦斯威尔的原生组件保留。
+
+原生复现与检查：
+tests/run_native_magician_rollback.py
+tests/native/magician_rollback_probe.lua
+依赖本机正版 DST、work/python-3.12.8/python.exe；复用 work/reuse-audit 的一次性种子。
+所有运行都冻结 content 输入并创建独立离线专服，不修改玩家世界，不发布工坊。
+
+测试操作实际研究站兑换、ConvertToMagician、StartUsingTool、打开的 container_proxy；
+SerializeUserSession + SaveGame 保存打开状态，再关闭帽子并保存第二个快照，
+执行 WorldRollbackFromSim(1)，经原生玩家快照恢复后检查物品总数/归属/可用性。
+修复后的套件还重新打开这些帽子、保存、结束测试进程并冷启动，再检查一次。
+
+每套 10 个角色场景：
+非老麦库存来源、头部来源；老麦库存来源、头部来源；双方的地面来源；
+双方的附身升级帽；非老麦满库存；非老麦未打开帽子的对照。
+每顶帽子使用持久化测试标记，扫描所有实体确认恰好一顶，检查帽子没有悬挂在隐藏组件中、
+耐久约 43%、附身升级状态保留，以及原来的角色魔术能力仍可再次打开真实空间。
+
+修复前：work/vault-hardened-hosted-825ayu9g/magician-rollback-result.json，reproduced。
+5 个非老麦打开场景均从 1 顶变为 0 顶；4 个老麦场景和 1 个未打开对照均正常。
+确认目标快照中的 9 个打开场景原本都含 data.magician.item，不是保存时没有写帽子。
+
+完整当前模组原版空间模式：
+work/vault-hardened-hosted-tskjfqix/magician-rollback-result.json，passed。
+10 顶帽子回档后均为 1 顶，重新打开、再次保存及冷启动后仍各为 1 顶。
+
+完整当前模组闲鱼空间模式：
+work/vault-hardened-hosted-ljynnswa/magician-rollback-result.json，passed。
+完整当前模组暗影枢纽模式＋永不妥协测试版：
+work/vault-hardened-hosted-uikrzep2/magician-rollback-result.json，passed。
+上述两套同样完成 10 场景的真实回档、重新打开、再保存、冷启动，均无丢失/重复。
+三套合计检查 60 个恢复场景（3模式×10场景×回档/冷启动2阶段）。
+
+限制：无头离线专服使用真实角色实体及原生读写/回档 API；不等同于真实玩家网络、
+客户端界面或所有第三方模组组合的验收。修复可以读取仍保留帽子记录的旧快照；
+已丢失且重新保存后的记录不能凭空重建原物品。

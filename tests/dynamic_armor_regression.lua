@@ -29,7 +29,8 @@ TheSim = {FindEntities = function() return {} end}
 TheWorld = {ismastersim = true, components = {}, PushEvent = function() end}
 local clock, jobs, hooks, config, prefabhooks, entities
 function GetTime() return clock end
-function GetModConfigData(name) return config[name] end
+local ModeConfig=assert(loadstring(modeconfig_source))()
+GetModConfigData=ModeConfig.Wrap(function(name) return config[name] end)
 function AddComponentPostInit(name, fn) hooks[name] = fn end
 function AddPrefabPostInitAny(fn) hooks.any = fn end
 function AddPrefabPostInit(name, fn) prefabhooks[name] = fn end
@@ -50,6 +51,7 @@ end
 local function install(mult, extra)
     clock = 0; jobs = {}; hooks = {}; prefabhooks = {}; entities = {}
     config = {boss_health = mult, extra_change = extra ~= false, epic_armor_5 = "dynamic"}
+    PrefabFiles={}
     TheWorld.ismastersim = true
     assert(loadstring(integration_source))()
 end
@@ -132,6 +134,12 @@ local function boss(prefab, maximum, tags)
 end
 function SpawnPrefab(prefab)
     if prefab == "forcefieldfx" then return entity(prefab) end
+    if prefab == "dynamicarmor_indicator2hm" then
+        local fx=entity(prefab)
+        function fx:SetTarget(target)self.target=target end
+        function fx:SetResistance(value)self.resistance=value end
+        return fx
+    end
     return boss(prefab, prefab == "alterguardian_phase2" and 20000 or 30000)
 end
 local player = entity("wilson", {player = true})
@@ -146,15 +154,16 @@ equal(option.default, "dynamic", "dynamic default")
 local values = {}
 for _, opt in ipairs(option.options) do values[opt.data] = true end
 equal(values[false], true)
-for i = 1, 5 do equal(values[i], true) end
+equal(values.traditional_1,true)
+for i = 2, 5 do equal(values[i], true) end
 equal(values.dynamic, true)
-for _, mode in ipairs({false, 1, 2, 3, 4, 5, "dynamic"}) do
+for _, mode in ipairs({false, 1, "traditional_1", 2, 3, 4, 5, "dynamic"}) do
     install(1)
     config.epic_armor_5 = mode
     local imported
     modimport = function(path) imported = path end
     assert(loadstring(routing_source))()
-    equal(imported, mode == "dynamic" and "epic/dynamic_armor.lua" or mode and "epic/epic_armor.lua" or nil, "exclusive routing")
+    equal(imported, (mode == "dynamic"or mode==1) and "epic/dynamic_armor.lua" or mode and "epic/epic_armor.lua" or nil, "exclusive routing")
 end
 
 -- Native gunpowder stack -> native explosion resistance -> native health pipeline.
@@ -186,24 +195,76 @@ end
 install(1)
 local inst, h, armor = boss()
 for i = 1, 8 do hit(h, 8000) end
-near(armor.pressure, 0.19990881180344, "source-free damage counted")
-near(h.currenthealth, 8000.9118819656)
+near(armor.pressure, 0.29975212478233, "source-free damage counted")
+near(h.currenthealth, 7002.4787521767)
 equal(armor.fx.persists, false, "feedback FX never saved separately")
+equal(armor.fx.prefab,"dynamicarmor_indicator2hm","dynamic mode no longer spawns a shield")
+equal(armor.fx.target,inst,"subtle effect follows the actual boss")
+local feedback=armor.fx
+armor:UpdateFX()
+equal(armor.fx,feedback,"continued hits reuse a single indicator")
 local before = armor.pressure
 h:DoDelta(1000)
 near(armor.pressure, before, "healing does not erase pressure")
 advance(3)
-near(armor:Decay(), before - 0.03, "no 200 floor")
+near(armor:Decay(), before - 0.10, "proportional cooling continues before the minimum starts")
 advance(30)
 near(armor.pressure, 0)
 equal(armor.task, nil, "idle task stops")
 equal(armor.fx, nil)
 
-for _, row in ipairs({{1, true, 0.01}, {2, true, 0.01 / math.sqrt(2)}, {4, true, 0.005}, {8, true, 0.01 / math.sqrt(8)}, {4, false, 0.01}}) do
+for _, row in ipairs({{1, true, 0.12}, {2, true, 0.1+.02/math.sqrt(2)}, {4, true, 0.11}, {8, true, 0.1+.02/math.sqrt(8)}, {4, false, 0.12}}) do
     install(row[1], row[2])
     inst, h, armor = boss(nil, 4000)
-    for i = 1, 40 do hit(h, 1e6) end; advance(1)
-    near(armor:Decay(), 0.2 - row[3], "configured decay")
+    for i = 1, 40 do hit(h, 1e6) end; advance(2)
+    near(armor:Decay(), 0.3 - row[3], "configured decay floor")
+end
+
+-- Exercise both cooling branches, rather than only small bosses where the floor wins.
+for _, row in ipairs({
+    {10000,1,1,true,400}, {20000,1,1,true,400},
+    {100000,1,1,true,2000}, {100000,4,1,true,1000},
+    {100000,4,4,true,500}, {100000,1000000,1,true,400},
+    {4000,4,1,true,400}, {100000,4,1,false,2000},
+})do
+    install(row[2],row[4])
+    inst,h,armor=boss(nil,row[1])
+    armor:SetExternalHealthMultiplier(row[3])
+    armor:OnLoad({pressure=.3,externalhealthmult=row[3]})
+    near(armor:GetDecayRate()*row[1],row[5],"cooling HP/sec follows max-health floor and multiplier")
+    advance(1)
+    near(armor:Decay(),.3-row[5]/row[1],"one second of native update cooling")
+    local savedrate=armor:OnSave()
+    armor:LongUpdate(1000)
+    near(armor.pressure,0,"long update clamps pressure at zero")
+    armor:OnLoad(savedrate)
+    near(armor.pressure,savedrate.pressure,"save/load retains the new pressure without offline cooling")
+end
+
+install(1)
+inst,h,armor=boss()
+for _, row in ipairs({{.1,0},{.199,0},{.2,0},{.21,.1},{.25,.5},{.3,1},{.8,1}})do
+    armor:OnLoad({pressure=row[1]})
+    near(armor:GetResistance(),row[2],"new resistance threshold and limit")
+end
+armor:OnLoad({pressure=.199})
+hit(h,10)
+near(h.currenthealth,9990,"damage up to twenty percent pressure is unreduced")
+near(armor:GetResistance(),0,"exact threshold remains unarmored")
+hit(h,100)
+near(9990-h.currenthealth,95.16258196404,"mitigation begins continuously above twenty percent")
+-- Splitting a packet across the threshold or inside the resistance band must
+-- not evade mitigation. No time advances between these native damage calls.
+for _, pressure in ipairs({.195,.225})do
+    for _, damage in ipairs({.001,200,1000})do
+        install(1)
+        local a,ha,aa=boss();local b,hb,ab=boss()
+        aa:OnLoad({pressure=pressure});ab:OnLoad({pressure=pressure})
+        hit(ha,damage)
+        for i=1,100 do hit(hb,damage/100)end
+        near(ha.currenthealth,hb.currenthealth,"split invariant across new resistance band",1e-6)
+        near(aa.pressure,ab.pressure,"split pressure above new threshold",1e-9)
+    end
 end
 
 install(4)
@@ -221,16 +282,45 @@ near(al.pressure, p, "rescale keeps pressure ratio")
 near(hl.currenthealth, 10000, "SetPercent is structural")
 al:SetExternalHealthMultiplier(4)
 near(al:GetHealthMultiplier(), 16)
-advance(1); near(al:Decay(), p - 0.0025)
+advance(2); near(al:Decay(), p - 0.015)
 local savedexternal = al:OnSave()
-local _, _, copy = boss(); copy:OnLoad(savedexternal)
+local _, _, copy = boss(nil,40000); copy:OnLoad(savedexternal)
 near(copy:GetHealthMultiplier(), 16, "external multiplier saved")
 local pre_skip = copy:Decay()
 copy:LongUpdate(2)
-near(copy.pressure, pre_skip - 0.005, "time skip cools once")
-near(copy:Decay(), pre_skip - 0.005, "time skip not double counted")
+near(copy.pressure, pre_skip - 0.02, "time skip cools once")
+near(copy:Decay(), pre_skip - 0.02, "time skip not double counted")
 copy:SetExternalHealthMultiplier(0 / 0); near(copy:GetHealthMultiplier(), 4, "invalid multiplier")
 copy:OnLoad({pressure = math.huge, externalhealthmult = math.huge}); near(copy.pressure, 0)
+
+-- Normal melee cadence must accumulate pressure rather than having each hit
+-- erased by the 400 HP/sec floor before the next one arrives.
+install(1)
+inst,h,armor=boss(nil,6000)
+for i=1,12 do hit(h,200);advance(.5)end
+equal(armor:GetResistance()>0,true,"200 damage every half second triggers resistance")
+equal(h.currenthealth>3600,true,"sustained melee receives actual mitigation")
+local retained=armor.pressure
+advance(.49)
+near(armor:Decay(),retained-.49*.02,"proportional cooling remains active during the grace interval")
+advance(.51)
+near(armor:Decay(),retained-.5*.02-200/6000,"minimum cooling starts after grace")
+armor:OnLoad({pressure=.25,cooling=.7})
+local grace=armor:OnSave()
+near(grace.cooling,.7,"remaining grace is saved")
+local _,_,restored=boss(nil,6000);restored:OnLoad(grace)
+restored:LongUpdate(.3)
+near(restored.pressure,.244,"partial long update applies only proportional cooling")
+near(restored:OnSave().cooling,.4,"long update preserves remaining grace")
+restored:LongUpdate(.5)
+near(restored.pressure,.244-.4*.02-40/6000,"only the post-grace portion uses the minimum")
+local remaining=restored.pressure
+near(restored:Decay(),remaining,"long update cooling is not counted twice")
+restored:OnLoad({pressure=.25,cooling=-1});near(restored:OnSave().cooling,0,"negative grace rejected")
+restored:OnLoad({pressure=.25,cooling=math.huge});near(restored:OnSave().cooling,0,"non-finite grace rejected")
+restored:OnLoad({pressure=.25,cooling=20});near(restored:OnSave().cooling,1,"saved grace bounded to one second")
+local stamp=restored.coolinguntil
+restored:RecordDamage(0);near(restored.coolinguntil,stamp,"blocked zero-damage hits cannot extend grace")
 
 -- Real health defenses run first, ignore_invincible does NOT bypass dynamic armor.
 install(1)
@@ -261,7 +351,7 @@ near(h.currenthealth, 10000)
 install(1)
 inst, h, armor = boss()
 for _, source in ipairs({player, entity("pigman"), entity("bearger", {epic = true})}) do hit(h, 500, source) end
-near(10000 - h.currenthealth, 1393.4693402874, "all sources share pressure")
+near(10000 - h.currenthealth, 1500, "all sources share pressure below the new threshold")
 for _, prefab in ipairs({"lordfruitfly", "antlion"}) do
     local excluded, he = boss(prefab); equal(excluded.components.dynamicarmor2hm, nil)
     hit(he, 2000); near(he.currenthealth, 8000)
@@ -277,7 +367,7 @@ TheWorld.ismastersim = true
 -- Native synchronous phase transition: old removed before new spawned.
 install(1)
 inst, h, armor = boss("alterguardian_phase1")
-hit(h, 2000); hit(h, 2000); local inherited = armor.pressure
+hit(h, 2000); hit(h, 2000); hit(h,2000); local inherited = armor.pressure
 inst:PushEvent("phasetransition")
 local second = entities[#entities]
 equal(second.prefab, "alterguardian_phase2")
@@ -315,9 +405,10 @@ equal(inst.components.timer:TimerExists("invincible2hm"), false)
 install(1)
 inst, h, armor = boss()
 hit(h, 1e9); near(h.currenthealth, 9000, "huge first hit limited to ten percent")
-hit(h, 1e9); near(h.currenthealth, 8367.8794411714, "same-tick followup continuously reduced")
+hit(h, 1e9); near(h.currenthealth, 8000, "second ten-percent hit reaches the new threshold")
+hit(h, 1e9); near(h.currenthealth, 7367.8794411714, "followup above twenty percent continuously reduced")
 for i = 1, 20 do hit(h, 1e9) end
-equal(h.currenthealth >= 8000 - 1e-7, true, "many same-tick packets cannot kill")
+equal(h.currenthealth >= 7000 - 1e-7, true, "many same-tick packets cannot kill")
 advance(30)
 hit(h, 8000); near(armor.pressure, 0.1, "cooldown does not bypass per-hit cap")
 inst, h, armor = boss(nil, 40000)
@@ -326,7 +417,7 @@ h:SetPercent(0.05); armor:OnLoad(nil)
 hit(h, 8000); near(h.currenthealth, 0, "cap is not ten percent of remaining HP")
 
 -- Existing traditional tier1 behavior is still loaded unchanged.
-install(1); hooks = {}; prefabhooks = {}; config.epic_armor_5 = 1
+install(1); hooks = {}; prefabhooks = {}; config.epic_armor_5 = "traditional_1"
 assert(loadstring(legacy_source))()
 inst, h = boss(); advance(0)
 hit(h, 8000, player); near(h.currenthealth, 6000, "legacy tier1 clamp")

@@ -1,0 +1,1235 @@
+{
+  "version": "2.8.14.97.4",
+  "date": "2026-11-04",
+  "method": "静态核对当前模组的入口开关、物品实现及本地原版 scripts.zip；未启动游戏实测。",
+  "articles": [
+    {
+      "id": "eyeturret",
+      "title": "眼球炮塔",
+      "category": "items",
+      "sections": 6,
+      "source": [
+        "content/easy_other/eyeturret2hm.lua",
+        "content/scripts/prefabs/eyeturret_safefire2hm.lua",
+        "content/easy_other/easy_structures.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/recipes.lua",
+        "DST scripts.zip/scripts/prefabs/eyeturret.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "eyeturret"
+      ]
+    },
+    {
+      "id": "trap",
+      "title": "捕兽陷阱",
+      "category": "items",
+      "sections": 2,
+      "source": [
+        "content/easy_other/easy_items.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/recipes.lua",
+        "DST scripts.zip/scripts/prefabs/trap.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "Trap Guaranteed Catch"
+      ]
+    },
+    {
+      "id": "containers",
+      "title": "收集与容器整理",
+      "category": "items",
+      "sections": 4,
+      "source": [
+        "content/easy_other/containersort.lua",
+        "content/scripts/ingredientcollect2hm.lua",
+        "content/modmain.lua",
+        "content/modinfo.lua"
+      ],
+      "configKeys": [
+        "Container Sort",
+        "Items collect",
+        "Items collect danger",
+        "World Exchange"
+      ]
+    },
+    {
+      "id": "frostjaw",
+      "title": "大霜鲨交易",
+      "category": "items",
+      "sections": 3,
+      "source": [
+        "content/extra/frostjaw_trade.lua",
+        "content/extra/extra.lua",
+        "content/epic/sharkboi.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/prefabs/sharkboi.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "boss_health",
+        "sharkboi",
+        "extra_change",
+        "monster_change"
+      ]
+    },
+    {
+      "id": "frost-core",
+      "title": "霜冻核心",
+      "category": "items",
+      "sections": 6,
+      "source": [
+        "content/epic/sharkboi.lua",
+        "content/scripts/prefabs/frostcore2hm.lua",
+        "content/scripts/recipes2hm.lua",
+        "content/epic/icestaff_frostcore2hm.lua",
+        "content/modmain.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "sharkboi"
+      ]
+    },
+    {
+      "id": "frost-core-staff",
+      "title": "冰霜核心冰杖",
+      "category": "items",
+      "sections": 5,
+      "source": [
+        "content/epic/icestaff_frostcore2hm.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua"
+      ],
+      "configKeys": []
+    },
+    {
+      "id": "frost-shrine",
+      "title": "寒霜之祠",
+      "category": "buildings",
+      "sections": 6,
+      "source": [
+        "content/scripts/recipes2hm.lua",
+        "content/scripts/prefabs/frostshrine2hm.lua",
+        "content/epic/sharkboi.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "sharkboi"
+      ]
+    },
+    {
+      "id": "eternal-boots",
+      "title": "永恒·出逃腿靴",
+      "category": "items",
+      "sections": 8,
+      "source": [
+        "content/scripts/prefabs/bootleg2hm.lua",
+        "content/epic/sharkboi.lua",
+        "content/extra/frostjaw_trade.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/prefabs/sharkboi.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "sharkboi",
+        "extra_change",
+        "boss_health"
+      ]
+    },
+    {
+      "id": "anti-slip-boots",
+      "title": "防滑·出逃腿靴",
+      "category": "items",
+      "sections": 4,
+      "source": [
+        "content/scripts/prefabs/bootleg_2hm.lua",
+        "content/scripts/prefabs/frostshrine2hm.lua",
+        "content/epic/sharkboi.lua",
+        "content/modmain.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "sharkboi"
+      ]
+    },
+    {
+      "id": "infused-lunar-sword",
+      "title": "附魔亮茄剑",
+      "category": "items",
+      "sections": 7,
+      "source": [
+        "content/epic/sword_lunarplant_moonfire2hm.lua",
+        "content/easy_other/lunar_shadow_items.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua",
+        "原版 scripts.zip：scripts/tuning.lua",
+        "原版 scripts.zip：scripts/components/aoeweapon_base.lua",
+        "原版 scripts.zip：scripts/components/aoeweapon_leap.lua",
+        "原版 scripts.zip：scripts/prefabs/forge_repair_kits.lua",
+        "原版 scripts.zip：scripts/prefabs/alterguardian_phase4_lunarrift.lua"
+      ],
+      "configKeys": [
+        "Celestial Jewel Upgrade Sword Lunarplant",
+        "enable easy mode",
+        "lunar shadow items"
+      ]
+    },
+    {
+      "id": "eternal-bearger-bin",
+      "title": "永恒·极地熊獾桶",
+      "category": "items",
+      "sections": 8,
+      "source": [
+        "content/epic/beargerfur_sack_lunar_seed2hm.lua",
+        "content/easy_other/lunar_shadow_items.lua",
+        "content/scripts/prefabs/tropicalfishbuff2hm.lua",
+        "content/scripts/prefabs/healthregenbuff2hm.lua",
+        "content/scripts/prefabs/gulumi_bless2hm.lua",
+        "content/monster/pigman.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua",
+        "原版 scripts.zip：scripts/tuning.lua",
+        "原版 scripts.zip：scripts/prefabs/healthregenbuff.lua",
+        "原版 scripts.zip：scripts/prefabs/alterguardian_phase4_lunarrift.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "lunar shadow items",
+        "enable hard mode",
+        "monster_change",
+        "pigman"
+      ]
+    },
+    {
+      "id": "ooze-container-upgrade",
+      "title": "恶液存储套件",
+      "category": "items",
+      "sections": 5,
+      "source": [
+        "content/epic/gelblob_storage_kit2hm.lua",
+        "content/easy_other/lunar_shadow_items.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua"
+      ],
+      "configKeys": [
+        "gelblob_storage_kit upgrade",
+        "enable easy mode",
+        "lunar shadow items"
+      ]
+    },
+    {
+      "id": "possessed-magician-hat",
+      "title": "附身的魔术师帽子",
+      "category": "items",
+      "sections": 5,
+      "source": [
+        "content/easy_other/magician_private2hm.lua",
+        "content/easy_other/containersort.lua",
+        "content/scripts/prefabs/magician_private_container2hm.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua",
+        "原版 scripts.zip：scripts/prefabs/chest_mimic.lua"
+      ],
+      "configKeys": [
+        "Container Sort"
+      ]
+    },
+    {
+      "id": "mourning-tomb",
+      "title": "哀悼之穴",
+      "category": "buildings",
+      "sections": 7,
+      "source": [
+        "content/scripts/recipes2hm.lua",
+        "content/scripts/prefabs/player_tomb2hm.lua",
+        "content/scripts/prefabs/tomb_plant2hm.lua",
+        "content/scripts/prefabs/tomb_weed2hm.lua",
+        "content/easy_other/easy_structures.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "player_tomb"
+      ]
+    },
+    {
+      "id": "soul-bottle",
+      "title": "灵魂瓶",
+      "category": "items",
+      "sections": 4,
+      "source": [
+        "content/scripts/prefabs/player_soul2hm.lua",
+        "content/scripts/prefabs/player_soul_bottle2hm.lua",
+        "content/scripts/prefabs/player_tomb2hm.lua",
+        "content/easy_other/easy_structures.lua",
+        "content/modmain.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "player_tomb"
+      ]
+    },
+    {
+      "id": "cracked-ageless-watch",
+      "title": "裂开的不老表",
+      "category": "items",
+      "sections": 6,
+      "source": [
+        "content/easy_role/wanda_easy.lua",
+        "content/scripts/prefabs/pocketwatch_heal2hm.lua",
+        "content/common/common.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "wanda_easy",
+        "pocketwatch_heal2hm"
+      ]
+    },
+    {
+      "id": "vortex-sword",
+      "title": "涡流",
+      "category": "items",
+      "sections": 7,
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "content/scripts/prefabs/sword_vortex2hm.lua",
+        "content/scripts/components/repairable2hm.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "sword_vortex2hm",
+        "Construction Amulet Repair Equip",
+        "Nightsword Infused"
+      ]
+    },
+    {
+      "id": "equipment-repair",
+      "title": "材料修理与建造护符",
+      "category": "items",
+      "sections": 8,
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "content/scripts/components/repairable2hm.lua",
+        "原版 scripts.zip：scripts/recipes.lua、scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Construction Amulet Repair Equip",
+        "enable hard mode"
+      ]
+    },
+    {
+      "id": "multitool",
+      "title": "多用斧镐",
+      "category": "items",
+      "sections": 6,
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "content/scripts/components/repairable2hm.lua",
+        "content/tech/axe_pickaxe.lua",
+        "原版 scripts.zip：scripts/recipes.lua、scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Multi Tool Is Almighty Tool",
+        "Construction Amulet Repair Equip",
+        "minotaur"
+      ]
+    },
+    {
+      "id": "turf-raiser-helm",
+      "title": "刮地皮头盔",
+      "category": "items",
+      "sections": 7,
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "content/scripts/components/repairable2hm.lua",
+        "content/epic/antlion.lua",
+        "原版 scripts.zip：scripts/recipes.lua、scripts/tuning.lua",
+        "原版 scripts.zip：scripts/prefabs/antlion.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Turf-Raiser Helm Plant Tree Cone",
+        "antlion"
+      ]
+    },
+    {
+      "id": "infused-glass-cutter",
+      "title": "注能玻璃刀",
+      "category": "items",
+      "sections": 8,
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "content/scripts/components/repairable2hm.lua",
+        "原版 scripts.zip：scripts/recipes.lua、scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Glass Cutter Leap Attack",
+        "Construction Amulet Repair Equip",
+        "Nightsword Infused"
+      ]
+    },
+    {
+      "id": "infused-nightsword",
+      "title": "注魔暗夜剑",
+      "category": "items",
+      "sections": 9,
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "content/scripts/components/repairable2hm.lua",
+        "content/scripts/components/passive_shadows2hm.lua",
+        "content/scripts/prefabs/passive_shadow_fx2hm.lua",
+        "原版 scripts.zip：scripts/recipes.lua、scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Nightsword Infused",
+        "Construction Amulet Repair Equip"
+      ]
+    },
+    {
+      "id": "thulecite-club",
+      "title": "铥矿棒与铥矿套装",
+      "category": "items",
+      "sections": 8,
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "content/scripts/components/repairable2hm.lua",
+        "原版 scripts.zip：scripts/recipes.lua、scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Thulecite Equip Parry",
+        "Construction Amulet Repair Equip",
+        "minotaur"
+      ]
+    },
+    {
+      "id": "scalemail",
+      "title": "鳞甲",
+      "category": "items",
+      "sections": 6,
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "原版 scripts.zip：scripts/recipes.lua、scripts/tuning.lua",
+        "content/scripts/components/repairable2hm.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Scalemail Parry Freezable",
+        "Construction Amulet Repair Equip"
+      ]
+    },
+    {
+      "id": "shadow-thurible",
+      "title": "暗影香炉",
+      "category": "items",
+      "sections": 6,
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "原版 scripts.zip：scripts/prefabs/stalker.lua、scripts/prefabs/thurible.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Shadow Thurible Has Light",
+        "enable hard mode",
+        "Bone Helm No Remove"
+      ]
+    },
+    {
+      "id": "bone-helm",
+      "title": "骨头头盔",
+      "category": "items",
+      "sections": 6,
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "content/scripts/components/repairable2hm.lua",
+        "content/easy_other/easy_structures.lua",
+        "原版 scripts.zip：scripts/prefabs/stalker.lua、scripts/prefabs/hats.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Bone Helm No Remove",
+        "Prestihatitator Redeem shadowmagic Tag"
+      ]
+    },
+    {
+      "id": "enlightened-crown",
+      "title": "启迪之冠与孢子",
+      "category": "items",
+      "sections": 7,
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "原版 scripts.zip：scripts/recipes.lua、scripts/tuning.lua",
+        "原版 scripts.zip：scripts/prefabs/alterguardian_phase3dead.lua、scripts/containers.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Enlightened Crown Benefit From Spore"
+      ]
+    },
+    {
+      "id": "advanced-torches",
+      "title": "辉煌、绝望与亮茄火把",
+      "category": "items",
+      "sections": 8,
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "content/scripts/components/repairable2hm.lua",
+        "原版 scripts.zip：scripts/recipes.lua、scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "upgrade torch"
+      ]
+    },
+    {
+      "id": "moongleam-weapons",
+      "title": "月熠武器",
+      "category": "items",
+      "sections": 8,
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "content/scripts/components/repairable2hm.lua",
+        "原版 scripts.zip：scripts/recipes.lua、scripts/tuning.lua",
+        "原版 scripts.zip：scripts/prefabs/spear_wathgrithr.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Moongleam Weapon"
+      ]
+    },
+    {
+      "id": "bee-queen-crown",
+      "title": "蜂王冠",
+      "category": "items",
+      "sections": 7,
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "content/scripts/components/repairable2hm.lua",
+        "content/epic/beequeen.lua",
+        "原版 scripts.zip：scripts/prefabs/beequeen.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "hivehat",
+        "beequeen"
+      ]
+    },
+    {
+      "id": "clean-sweeper",
+      "title": "清洁扫把连接科技",
+      "category": "items",
+      "sections": 7,
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "原版 scripts.zip：scripts/recipes.lua、scripts/tuning.lua",
+        "content/easy_other/easy_structures.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Reskin Tool Upgrade",
+        "Science Machine Refine Materials",
+        "Alchemy Engine Redeem Gold Nugget",
+        "Shadow Manipulator Break Down Objects",
+        "Prestihatitator Redeem shadowmagic Tag",
+        "Terra Firma Tamper Redeem Desert Stone"
+      ]
+    },
+    {
+      "id": "horizon-expandinator",
+      "title": "视界扩展器",
+      "category": "items",
+      "sections": 7,
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "content/scripts/components/repairable2hm.lua",
+        "content/epic/daywalker2.lua",
+        "原版 scripts.zip：scripts/recipes.lua、scripts/tuning.lua",
+        "原版 scripts.zip：scripts/prefabs/daywalker2.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Horizon Expandinator",
+        "daywalker2"
+      ]
+    },
+    {
+      "id": "scrap-hat",
+      "title": "拾荒尖帽",
+      "category": "items",
+      "sections": 5,
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "content/epic/daywalker2.lua",
+        "原版 scripts.zip：scripts/recipes.lua、scripts/tuning.lua",
+        "原版 scripts.zip：scripts/components/forgerepair.lua、scripts/prefabs/daywalker2_items.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "scraphat",
+        "daywalker2"
+      ]
+    },
+    {
+      "id": "eyebrella",
+      "title": "眼球伞",
+      "category": "items",
+      "sections": 7,
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "原版 scripts.zip：scripts/recipes.lua、scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Eyebrella Swell Shade",
+        "enable hard mode"
+      ]
+    },
+    {
+      "id": "terror-shield",
+      "title": "恐怖盾牌与眼面具",
+      "category": "items",
+      "sections": 7,
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "原版 scripts.zip：scripts/recipes.lua、scripts/tuning.lua",
+        "原版 scripts.zip：scripts/prefabs/eyeofterror.lua、scripts/prefabs/shieldofterror.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Shieldofterror Eat Owner"
+      ]
+    },
+    {
+      "id": "upgraded-beefalo-bell",
+      "title": "橙宝石牛铃",
+      "category": "items",
+      "sections": 5,
+      "source": [
+        "content/easy_other/easy_items.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/recipes.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "beef_bell use orangegem upgrade"
+      ]
+    },
+    {
+      "id": "shadow-boat",
+      "title": "暗影船",
+      "category": "items",
+      "sections": 5,
+      "source": [
+        "content/easy_other/easy_items.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/recipes.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "boat use shadowheart upgrade"
+      ]
+    },
+    {
+      "id": "elastispacer",
+      "title": "弹性空间制造器",
+      "category": "items",
+      "sections": 4,
+      "source": [
+        "content/easy_other/easy_items.lua",
+        "content/modmain.lua",
+        "content/epic/daywalker2.lua",
+        "DST scripts.zip/scripts/recipes.lua",
+        "DST scripts.zip/scripts/prefabs/daywalker2.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "elastispacer upgrade",
+        "enable hard mode",
+        "monster_change",
+        "daywalker2"
+      ]
+    },
+    {
+      "id": "crabking-bumper",
+      "title": "帝王蟹保险杠与破损套件",
+      "category": "items",
+      "sections": 5,
+      "source": [
+        "content/easy_other/easy_items.lua",
+        "content/scripts/prefabs/crabking_kit2hm.lua",
+        "content/scripts/components/repairable2hm.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/prefabs/crabking.lua",
+        "DST scripts.zip/scripts/prefabs/boat_bumpers.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "boat_bumper_crabking"
+      ]
+    },
+    {
+      "id": "reusable-ground-traps",
+      "title": "犬牙陷阱与荆棘陷阱",
+      "category": "items",
+      "sections": 4,
+      "source": [
+        "content/easy_other/easy_items.lua",
+        "content/easy_role/wormwood_easy.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/recipes.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "trap_teeth",
+        "role_easy",
+        "wormwood_easy",
+        "armor_bramble damage"
+      ]
+    },
+    {
+      "id": "portable-tackle-box",
+      "title": "钓具箱与角色道具",
+      "category": "items",
+      "sections": 4,
+      "source": [
+        "content/easy_other/easy_items.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/recipes.lua",
+        "DST scripts.zip/scripts/prefabs/hermitcrab.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Tackle Box Can Hold Role's Item"
+      ]
+    },
+    {
+      "id": "haunt-heart",
+      "title": "告密的心作祟复活",
+      "category": "items",
+      "sections": 4,
+      "source": [
+        "content/easy_other/easy_items.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/recipes.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Haunt Telltale Heart To Revive",
+        "enable hard mode"
+      ]
+    },
+    {
+      "id": "recipe-cards",
+      "title": "烹饪锅食谱卡",
+      "category": "items",
+      "sections": 4,
+      "source": [
+        "content/easy_other/easy_items.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/recipes.lua",
+        "content/easy_other/easy_structures.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Make Cooking Recipe Card"
+      ]
+    },
+    {
+      "id": "horn-enchant",
+      "title": "守护者之角附魔手杖",
+      "category": "items",
+      "sections": 6,
+      "source": [
+        "content/easy_other/easy_items.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/recipes.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Minotaurhorn Enchant"
+      ]
+    },
+    {
+      "id": "new-hambat",
+      "title": "火腿棒：重量、新鲜与污染",
+      "category": "items",
+      "sections": 9,
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "content/scripts/components/hambat2hm.lua",
+        "原版 scripts.zip：scripts/recipes.lua、scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "New Hambat 2",
+        "enable hard mode"
+      ]
+    },
+    {
+      "id": "login-irreplaceables",
+      "title": "上线拾取眼骨等物品",
+      "category": "items",
+      "sections": 2,
+      "source": [
+        "content/easy_other/easy_mechanics.lua",
+        "content/modmain.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "pickup irreplaceable item"
+      ]
+    },
+    {
+      "id": "um-item-compatibility",
+      "title": "永不妥协物品补丁",
+      "category": "items",
+      "sections": 4,
+      "source": [
+        "content/easy_other/um_patch.lua",
+        "content/modmain.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "um_patch"
+      ]
+    },
+    {
+      "id": "luck-adjustment",
+      "title": "幸运值",
+      "category": "items",
+      "sections": 2,
+      "source": [
+        "content/common/hardmode.lua",
+        "content/modmain.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "luck value"
+      ]
+    },
+    {
+      "id": "deck-lamp-hat",
+      "title": "可戴在头上的甲板照明灯",
+      "category": "items",
+      "sections": 6,
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "原版 scripts.zip：scripts/recipes.lua、scripts/tuning.lua",
+        "原版 scripts.zip：scripts/prefabs/mastupgrade_lamp.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Deck Illuminator Equip Head"
+      ]
+    },
+    {
+      "id": "rift-equipment-changes",
+      "title": "月后影后装备总览",
+      "category": "items",
+      "sections": 6,
+      "source": [
+        "content/easy_other/lunar_shadow_items.lua",
+        "content/modmain.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "lunar shadow items"
+      ]
+    },
+    {
+      "id": "wagpunk-rift-upgrade",
+      "title": "W.A.R.B.I.S. 装备加强",
+      "category": "items",
+      "sections": 4,
+      "source": [
+        "content/easy_other/lunar_shadow_items.lua",
+        "content/epic/daywalker2.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/recipes.lua",
+        "DST scripts.zip/scripts/prefabs/daywalker2.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "lunar shadow items",
+        "enable hard mode",
+        "monster_change",
+        "daywalker2"
+      ]
+    },
+    {
+      "id": "rift-bearger-bin",
+      "title": "极地熊獾桶返鲜",
+      "category": "items",
+      "sections": 5,
+      "source": [
+        "content/easy_other/lunar_shadow_items.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/recipes.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "lunar shadow items"
+      ]
+    },
+    {
+      "id": "shadow-battleaxe-rift",
+      "title": "暗影锤的恐惧缠身",
+      "category": "items",
+      "sections": 7,
+      "source": [
+        "content/easy_other/lunar_shadow_items.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/recipes.lua",
+        "DST scripts.zip/scripts/prefabs/shadow_battleaxe.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "lunar shadow items"
+      ]
+    },
+    {
+      "id": "shadow-beef-bell",
+      "title": "阴郁皮弗娄牛铃",
+      "category": "items",
+      "sections": 4,
+      "source": [
+        "content/easy_other/lunar_shadow_items.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/recipes.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "lunar shadow items"
+      ]
+    },
+    {
+      "id": "fast-malbatross-sail",
+      "title": "快速飞翼风帆",
+      "category": "items",
+      "sections": 3,
+      "source": [
+        "content/easy_other/easy_items.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/recipes.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "quick mast_malbatross",
+        "enable hard mode"
+      ]
+    },
+    {
+      "id": "heat-dumbbell",
+      "title": "全员制作热铃",
+      "category": "items",
+      "sections": 3,
+      "source": [
+        "content/easy_role/role_common.lua",
+        "content/weather/temperature.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/recipes.lua",
+        "DST scripts.zip/scripts/prefabs/dumbbells.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "All dumbbell heat",
+        "enable hard mode",
+        "weather_change",
+        "temperature_change"
+      ]
+    },
+    {
+      "id": "quick-transfer-hunger",
+      "title": "快捷存取的饥饿消耗",
+      "category": "items",
+      "sections": 2,
+      "source": [
+        "content/easy_other/containersort.lua",
+        "content/modmain.lua"
+      ],
+      "configKeys": [
+        "Items collect danger",
+        "role_nerf",
+        "Container Sort",
+        "Items collect"
+      ]
+    },
+    {
+      "id": "sleep-recovery-ranges",
+      "title": "睡眠恢复",
+      "category": "items",
+      "sections": 3,
+      "source": [
+        "content/tech/sleep.lua",
+        "content/easy_other/easy_mechanics.lua",
+        "content/modmain.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "other_change",
+        "sleepingbag"
+      ]
+    },
+    {
+      "id": "giftwrap-aging",
+      "title": "礼物包装与捆绑包装",
+      "category": "items",
+      "sections": 4,
+      "source": [
+        "content/tech/cheap_wrap.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/recipes.lua",
+        "DST scripts.zip/scripts/prefabs/beequeen.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "other_change",
+        "cheap_wrap"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "file": "content/easy_other/eyeturret2hm.lua",
+      "sha256": "2b12c63a869b22d86431cb197a34e2bea0e3350317ee1f62b2c0a9884b5f2112"
+    },
+    {
+      "file": "content/scripts/prefabs/eyeturret_safefire2hm.lua",
+      "sha256": "256cef7aec75f461e1f07305fdfb1448dadb7667d54a37132ca2ffe01d8f0e8d"
+    },
+    {
+      "file": "content/easy_other/easy_structures.lua",
+      "sha256": "a6a7b1ddd784700e4a2974a6c07491bb885d67b0193e040e1d95634ed7af63ea"
+    },
+    {
+      "file": "content/modmain.lua",
+      "sha256": "5eacb3c2409edca3548b71fc5e393a10042f50abfaba24ade9179bc8a10b58c6"
+    },
+    {
+      "file": "content/easy_other/easy_items.lua",
+      "sha256": "201d56747143203ccf49cd5158ae6dc85894c12b1cf2779d75869a3d26efbc8c"
+    },
+    {
+      "file": "content/easy_other/containersort.lua",
+      "sha256": "058969d4c591e70356dbb7505913292ce17151ebbf0290210e7a18c856fb531a"
+    },
+    {
+      "file": "content/scripts/ingredientcollect2hm.lua",
+      "sha256": "8d3959c9377b178760c2be4c5e279bb8aeb78a6e4d7ba598120ad5f76faa401f"
+    },
+    {
+      "file": "content/modinfo.lua",
+      "sha256": "18809baa750ebf8b162e7f3b6ded58fdc6135854e95e3e2d94a35423d9145480"
+    },
+    {
+      "file": "content/extra/frostjaw_trade.lua",
+      "sha256": "511107f1988c9ee648b576164a4d0f3442a1c274249cbb334ca2075c8832b89d"
+    },
+    {
+      "file": "content/extra/extra.lua",
+      "sha256": "8099650350d9730cb089d8f1d84830a788a15a246caa82ce4ac2a5388e5e690e"
+    },
+    {
+      "file": "content/epic/sharkboi.lua",
+      "sha256": "c6447906fee28ed30b32c0378fb64b2bb1225e6801176ef046d90f9edee24c3b"
+    },
+    {
+      "file": "content/scripts/prefabs/frostcore2hm.lua",
+      "sha256": "f8a4e804c7be8fdc3a9fb55bc958d69e5938e593f5192fd41c23bd7e4840e3e6"
+    },
+    {
+      "file": "content/scripts/recipes2hm.lua",
+      "sha256": "49f99a77be8e3c1a96f00c2b47daac716e687218b7b7666d1510e5e3f390ff9b"
+    },
+    {
+      "file": "content/epic/icestaff_frostcore2hm.lua",
+      "sha256": "b76b8e6ec1ad7f1d4f19c68b71aa60de8d4c578f203cff22d1402bf89a1a15b7"
+    },
+    {
+      "file": "content/scripts/prefabs/frostshrine2hm.lua",
+      "sha256": "71c96219c87f8c9a868acff9f205667fa463deee21034b076383711011364b52"
+    },
+    {
+      "file": "content/scripts/prefabs/bootleg2hm.lua",
+      "sha256": "552096f95b2bfb5f469619f6f4b41764adeee6a2a95617c3a8b62bf9b4b34aab"
+    },
+    {
+      "file": "content/scripts/prefabs/bootleg_2hm.lua",
+      "sha256": "19e0439c4a75bed7aebaca8bd9f049f636bb60aa801c6a209c7f66e303626ced"
+    },
+    {
+      "file": "content/epic/sword_lunarplant_moonfire2hm.lua",
+      "sha256": "01d7e3e5c331e1edb0de2a5940fe5a2813cbd695b4b7fec373b06f6bd17b4910"
+    },
+    {
+      "file": "content/easy_other/lunar_shadow_items.lua",
+      "sha256": "6b0b5b24ceffd749a7e6daf0051f94e6029ec39838c8a6147f6ef47848c0a974"
+    },
+    {
+      "file": "content/epic/beargerfur_sack_lunar_seed2hm.lua",
+      "sha256": "f7a60d9f626046daf4cdcfc42390ae4a900134b94fdc025906055278a95535c1"
+    },
+    {
+      "file": "content/scripts/prefabs/tropicalfishbuff2hm.lua",
+      "sha256": "9ff1180ca4ae02d3374b80776e0604c5942b389fce6230d0eb865421b19e3723"
+    },
+    {
+      "file": "content/scripts/prefabs/healthregenbuff2hm.lua",
+      "sha256": "8a4744d8276216b01fd8634f6940c24adbbe4b206ce63d56d725e069d064c357"
+    },
+    {
+      "file": "content/scripts/prefabs/gulumi_bless2hm.lua",
+      "sha256": "cd3214a873894c10928e5b8f24cabe5750fbb1e6b7cf80df658492fa5df0ae71"
+    },
+    {
+      "file": "content/monster/pigman.lua",
+      "sha256": "ccd12a5b876e26a81fb2afbe9116a5e475a619eaefe29c035b2b413a5858f121"
+    },
+    {
+      "file": "content/epic/gelblob_storage_kit2hm.lua",
+      "sha256": "d937447c261a9d2a0a3c6f13ff7a4d8b091508fc2438a0fd64581613a58696fc"
+    },
+    {
+      "file": "content/easy_other/magician_private2hm.lua",
+      "sha256": "dd1c8bfb2059db37ecdd8583de1f1b9f87b14ed2f4e59374af87a285113b2f64"
+    },
+    {
+      "file": "content/scripts/prefabs/magician_private_container2hm.lua",
+      "sha256": "17d79da29f43777de6ca63dec0615531a057cd3fa542e00eeeb459f348a627f2"
+    },
+    {
+      "file": "content/scripts/prefabs/player_tomb2hm.lua",
+      "sha256": "3a14e0479565356797edd779d8f76c103a8708cbffd4193677bb47b80d77051b"
+    },
+    {
+      "file": "content/scripts/prefabs/tomb_plant2hm.lua",
+      "sha256": "7c0d9e060d9d168a0387d080b4866bf0a99e8776e20685f4d064da2f704c4d80"
+    },
+    {
+      "file": "content/scripts/prefabs/tomb_weed2hm.lua",
+      "sha256": "d1b48a77707129271a61b87a154e5f039e4528be83f6e5d22ba8649c93d9f003"
+    },
+    {
+      "file": "content/scripts/prefabs/player_soul2hm.lua",
+      "sha256": "778a05647facd5ef03a857e07d22d01c2ca4184eef7b37e070aefb0f8e9fa9bf"
+    },
+    {
+      "file": "content/scripts/prefabs/player_soul_bottle2hm.lua",
+      "sha256": "c141f1de80a3203e4f445fd782b2d452869aa2ebbeb5bf966c7b4230038c1b20"
+    },
+    {
+      "file": "content/easy_role/wanda_easy.lua",
+      "sha256": "b128554599473f23a38f87d8514c6f94f3f6e142d79831cb247cd21096989e00"
+    },
+    {
+      "file": "content/scripts/prefabs/pocketwatch_heal2hm.lua",
+      "sha256": "a468e4783d5e597f9775b501ece04d1133abf3a2b1df65e0a399a87095f87ed0"
+    },
+    {
+      "file": "content/common/common.lua",
+      "sha256": "12fa1f91da2dc4ad6472236c2a34d37aca8753332e880147834f8d6388e7d0b4"
+    },
+    {
+      "file": "content/easy_other/easy_equipments.lua",
+      "sha256": "daff73dc904ede08c20280805f419e8ae230edd6a577d075e93ca7cb80fe24f3"
+    },
+    {
+      "file": "content/scripts/prefabs/sword_vortex2hm.lua",
+      "sha256": "6d6f6ad83384da2a022118d974f37c3317f841e377f61c857cf58a5aa1e74141"
+    },
+    {
+      "file": "content/scripts/components/repairable2hm.lua",
+      "sha256": "22aeae3bb04724b52a201f672bc6210f2d30a60232a0dcb6fbfb20273eb4b261"
+    },
+    {
+      "file": "content/tech/axe_pickaxe.lua",
+      "sha256": "530da67db080c55e44bd38c62438eaf138a41540786e72b1768e391d2c15509d"
+    },
+    {
+      "file": "content/epic/antlion.lua",
+      "sha256": "aec66c7e11692422043ac441aa9232d40af4a898d0813ddade062d7aed43a99f"
+    },
+    {
+      "file": "content/scripts/components/passive_shadows2hm.lua",
+      "sha256": "399147d166583890397e267ded7a7b1bd5033fe3c336e8f6afe7d53aefc37301"
+    },
+    {
+      "file": "content/scripts/prefabs/passive_shadow_fx2hm.lua",
+      "sha256": "e945726209784b1aaa6bdea12c2df01850c2085ae8ffa85ee6cb5bea4c1ff933"
+    },
+    {
+      "file": "content/epic/beequeen.lua",
+      "sha256": "afa12d0b69ec63c105733e8457142427e3bca804ef20b651b16985e900664fc5"
+    },
+    {
+      "file": "content/epic/daywalker2.lua",
+      "sha256": "095b7d8d401effd4cc86e44766c9fa76e467892f7e922b7d833bf8a6cc2c608b"
+    },
+    {
+      "file": "content/scripts/prefabs/crabking_kit2hm.lua",
+      "sha256": "557447a696121b9d37fba364d3a8edc50ae33419c86b1b88c0cd7966f201c4b7"
+    },
+    {
+      "file": "content/easy_role/wormwood_easy.lua",
+      "sha256": "35f24df2d286aa2b58a7a4466ded7b7ed8c9355a0cdc51bcb18cbcc5e0ec2e99"
+    },
+    {
+      "file": "content/scripts/components/hambat2hm.lua",
+      "sha256": "65193dfed48e57bb354efe6cd26111dc783157b1127e1ccd83ed8021ad394db0"
+    },
+    {
+      "file": "content/easy_other/easy_mechanics.lua",
+      "sha256": "02b0aad2267fbc8aa30e42004a6883e54e88f796bca280fc8fb9a72c9526f054"
+    },
+    {
+      "file": "content/easy_other/um_patch.lua",
+      "sha256": "69be2c7a92449486ba82095b39f0263350d202c384126bc074d36a25abd20348"
+    },
+    {
+      "file": "content/common/hardmode.lua",
+      "sha256": "613120e6e42ec8197ebd887825fdec42e5199a437b0f26a551dcbe65d67f8c6d"
+    },
+    {
+      "file": "content/easy_role/role_common.lua",
+      "sha256": "4860a456fb2b279dac8f544b0adab4c64a1f4260556ab17a18db018f7f9fbf7f"
+    },
+    {
+      "file": "content/weather/temperature.lua",
+      "sha256": "6dcdebb24c08b55c7b548b8a8e543badd381bcf60c7bd6b0daa396b4a84f7f7a"
+    },
+    {
+      "file": "content/tech/sleep.lua",
+      "sha256": "15b8c4be05fe04ab443293cc9dd388cceeb7b26858a38abe840bd5fe655bcb71"
+    },
+    {
+      "file": "content/tech/cheap_wrap.lua",
+      "sha256": "dc225aac3c6e5563cc2e3fe1651d6cb5dba5a0b6f99c26c8df3c68eb40de65ea"
+    }
+  ]
+}

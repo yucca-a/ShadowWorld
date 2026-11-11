@@ -1,0 +1,79 @@
+{
+  "date": "2026-11-10",
+  "status": "passed",
+  "published": false,
+  "unit_checks": {
+    "compatibility": 115,
+    "ownership": 18
+  },
+  "production_sha256": {
+    "common/common.lua": "74bdc23392aba94162a0d283a275f39284df7f4360b4e07d6413da020a708bb3",
+    "common/um_compat_fixes.lua": "0c6310e6018da9eb5ac601d277f9a33e51235320c89dcc18f7807b2fd0794c47",
+    "common/beef_bell_pack.lua": "fa3140ffe8ef9523069229baf00e57ba541813d2cfcb037a89ca563990fb2df3",
+    "modmain.lua": "72103ed15cee61236cd0998bb3151cbd6f409f77dd30dfde09e0a3956b95a977",
+    "easy_role/wathom_easy.lua": "e71d0a1601d6860ec3d85ea113f11fd80fe129256c60b615cfcf4a4627a7d526",
+    "easy_other/easy_items.lua": "993d2f82739e9cb10fe1ce28799372f59df96b2fecc982fe4fdeb8db349ad6f5",
+    "easy_other/lunar_shadow_items.lua": "838d99b2de8293cb73fcd9cfc7c6c30c358c59bbc4b9bcee20f9c5ccd821371d"
+  },
+  "native_runs": [
+    {
+      "packing": true,
+      "optional_off": false,
+      "status": "passed",
+      "result": {
+        "checks": 713,
+        "kind": "bell_packing",
+        "passed": true,
+        "cases": 7
+      },
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-618_esw8\\um-compat-result.json",
+      "production_matches_current": true,
+      "round_trips": 21,
+      "peeks": 63,
+      "restart": {
+        "kind": "bell_packing_restart",
+        "passed": true,
+        "checks": 3
+      }
+    },
+    {
+      "packing": true,
+      "optional_off": true,
+      "status": "passed",
+      "result": {
+        "checks": 713,
+        "kind": "bell_packing",
+        "passed": true,
+        "cases": 7
+      },
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-rtqdqhk2\\um-compat-result.json",
+      "production_matches_current": true,
+      "round_trips": 21,
+      "peeks": 63,
+      "restart": {
+        "kind": "bell_packing_restart",
+        "passed": true,
+        "checks": 3
+      }
+    },
+    {
+      "packing": false,
+      "optional_off": true,
+      "status": "passed",
+      "result": {
+        "checks": 60,
+        "kind": "um_compat",
+        "passed": true,
+        "cases": 12
+      },
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-ot54qttt\\um-compat-result.json",
+      "production_matches_current": true,
+      "casts": {
+        "kind": "um_staff_casts",
+        "passed": true,
+        "checks": 10
+      }
+    }
+  ],
+  "limitations": "Disposable offline dedicated servers with generated actors and ordinary bindable beefalo; random elite rolls disabled. No manual client UI inspection, player save mutation, or deletion of prior duplicate cows."
+}

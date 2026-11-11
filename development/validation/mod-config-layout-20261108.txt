@@ -1,0 +1,40 @@
+淬炼版配置页排版与难度评级开关（2026-11-08，未发布）
+
+调整
+- 删除启用、禁用、部分、数值、自定义档位和标题中的人工对齐空格；选项文字由原生 Spinner 居中。
+- 原生 LabelSpinner 标签默认在左列右对齐，标题仅隐藏 Spinner，并没有自动居中。
+  在现有 wixieconfig2hm.Install 内对本模组配置页的 TrueScrollList.update_fn 做局部包装，标题标签改为整行区域居中。
+  滚动复用控件时先恢复普通标签的位置、宽度和右对齐，再执行原生行更新，避免标题布局泄漏到普通设置行。
+- 只处理当前淬炼模组的配置页；复用现有前端与游戏内安装入口，不新增页面或公共接口。
+- 删除配置开头的“难度查询……”大标题。
+- 在简单／困难模式总开关之后加入“难度评级”（difficulty_rating），默认开启以保留原有 /nd 功能。
+- 启用状态的小提示：“控制台或聊天输入 /nd 查询难度评级，仅自己可见”。使用原生选项 hover 显示在配置页说明区。
+- 关闭时不载入 common/difficulty.lua，不安装查询指令、查询 RPC 或控制台截获；不新增入服或全服播报。
+- 难度评级开关不参与难度评分，原有评级算法保持不变。
+
+源码依据
+- 游戏 scripts/screens/redux/modconfigurationscreen.lua：单个空 description 识别为标题；ApplyDataToWidget 隐藏 Spinner、字号改为 30，但没有设置标题位置或水平锚点。
+- 游戏 scripts/widgets/redux/templates.lua：LabelSpinner 将标签放在左列，默认 ANCHOR_RIGHT；ScrollingGrid 通过 TrueScrollList 的 update_fn 更新复用行。
+- 游戏 scripts/widgets/truescrolllist.lua：RefreshView 对 widgets_to_update 逐项执行 update_fn。
+- 数值转文本继续使用 Lua 字符串连接，兼容原生 modinfo 的受限运行环境，不依赖额外的全局函数。
+
+验证
+1. tests/run_mod_config_layout_tests.py：32560 项检查通过。
+   读取本机游戏原生 LabelSpinner、ApplyDataToWidget 和选项数据构建循环；UI 控件使用桩。
+   中文、英文、简体 Rail、繁体四种 locale；所有文字无对齐空格；全部标题居中；标题与普通行的滚动复用；其他模组不受影响；启用值提示和开关位置。
+   modinfo 在不补入普通 Lua 全局函数的环境下正常构建。
+
+2. tests/run_survival_difficulty_tests.py：7006 项检查通过。
+   原有评级、所有合法档位、私有返回、节流和可选生存机制；新增关闭开关不载入查询模块、开关不影响评分。
+
+3. tests/run_wixie_tests.py：705 项检查通过。
+   原有配置隐藏、保存保留、迁移、构造异常恢复、重复安装与多副本注册等检查继续通过。
+
+4. tests/run_mod_viewer_tests.py：84 项检查通过。
+   游戏内配置查看器、当前服务器值、私有客户端设置与原有按钮流程继续通过。
+
+5. 与本次修改前冻结输入 work/vault-hardened-hosted-rolf2fxu/input/modinfo.lua 对比：
+   436 个已有设置的名字、排列、默认值，3344 个选择的顺序及 data 均相同。
+   可见标签和选择说明与原值去除前后空格后的内容一致；仅新增 difficulty_rating 配置键。
+
+未进行实际客户端截图验收。排版检查使用原生布局代码与控件桩，不将其描述为人工客户端验收。

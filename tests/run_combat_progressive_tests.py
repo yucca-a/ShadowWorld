@@ -26,9 +26,15 @@ with ZipFile(archive) as scripts:
     lua.globals().native_attacked_source = combat[start:combat.index("\nfunction Combat:", start + 1)]
     health = read("components/health")
     lua.globals().health_source = health[health.index("function Health:SetCurrentHealth"):health.index("return Health")]
+    config = read("modindex")
+    start = config.index("function ModIndex:UpdateConfigurationOptions(")
+    lua.globals().native_options_update = "local ModIndex={}\n"+config[start:config.index("\nend",start)+4]+"\nreturn ModIndex.UpdateConfigurationOptions"
+    config = read("screens/redux/modconfigurationscreen")
+    start = config.index('Screen._ctor(self, "ModConfigurationScreen")')
+    lua.globals().native_options_ctor = "return function(self,modname,client_config)\n"+config[start:config.index("self.started_default",start)]+"\nend"
 
 lua.execute("mod_sources = {}")
-for name in ["scripts/progressivecombat2hm.lua", "scripts/combatdisplay2hm.lua",
+for name in ["scripts/progressivecombat2hm.lua", "scripts/combatdisplay2hm.lua", "scripts/combatconfig2hm.lua",
              "scripts/components/dynamicarmor2hm.lua", "role/combat.lua", "role/combat_progressive.lua",
              "epic/dynamic_armor.lua", "modinfo.lua"]:
     source = (ROOT / "content" / name).read_text(encoding="utf-8-sig")

@@ -1,0 +1,9 @@
+name = "白天白屏诊断（临时）"
+description = "记录本机玩家的夜视、滤镜和天亮切换，不主动改变视觉效果。复现后提供 client_log.txt，排查结束即可关闭。"
+author = "ShadowWorld local diagnostics"
+version = "1.1"
+api_version = 10
+dst_compatible = true
+client_only_mod = true
+all_clients_require_mod = false
+priority = -1000000

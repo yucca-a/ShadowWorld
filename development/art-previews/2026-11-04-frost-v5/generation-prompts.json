@@ -1,0 +1,22 @@
+{
+  "version": 5,
+  "label": "蓝宝石镶嵌",
+  "status": "Static preview only; no runtime replacement",
+  "generator": "built-in image_gen; edit mode",
+  "base": "../2026-11-04-frost-v4/frost-shrine-v4.png",
+  "artworks": [
+    {
+      "name": "寒霜之祠",
+      "file": "frost-shrine-v5.png",
+      "source": "C:\\Users\\Yucca\\.codex\\generated_images\\01a1a5f4-a146-7ff1-a028-6aab9e6bf76b\\exec-f8042b5a-b875-4171-8e2a-698c5900f3de.png",
+      "prompt": "Use case: precise-object-edit.\nMake ONE narrowly localized edit to Image 1, the approved Frost Shrine version 4. Replace ONLY its two grey narrow eye recesses with two inlaid BLUE SAPPHIRES. All other artwork must stay the same.\nImage 1: edit target, complete approved shrine. Image 2: original Don't Starve Blue Gem inventory icon, material/cut/color reference ONLY; do not place the whole inventory icon or a separate object in the output.\nFor each of the two existing eye locations, remove the slit/eyelid drawing and replace it with a small clearly recognizable faceted sapphire set into the grey stone facade. Use squat irregular pentagonal/hexagonal gem shapes with dark ultramarine and cobalt facets, lighter blue planar highlights and one or two crisp white edge strokes, like the original game's Blue Gem. The sapphires are solid cut gems, not luminous eyes: absolutely no pupil, iris, eyeball, eyelashes, eyelids or angry slanted eye outline. Seat each gem in a thin simple grey stone beveled socket with a charcoal ink contour; no gold or jewelry apparatus.\nMatch the previous recesses' locations and overall width. Make each sapphire modestly taller than the old thin eye slit so the polygonal cut is readable at game size, roughly a thumb-sized jewel embedded into the brow plates. Keep them balanced in size, following the facade's perspective. Do not turn the gems into huge eyes. Rich blue gem color should be noticeably deeper than the pale ice chin and mane. Use reflected facet highlights, no glowing beam or aura.\nLOCK every other feature from Image 1: whole shark-head silhouette and head shape, stone forehead and hatching, giant open mouth, all upper triangular teeth, continuous blue crystalline ICE CHIN serving as base, the glowing small core in the exact center of the mouth, the two angular cold wisps, full offwhite mane, top curved ice fin, grey side fins, carved fin supports, oval stone footing, all proportions, framing, material textures, drawing style and existing colors. Do not redesign, remove or add any other element.\nExact reference's Don't Starve 2D rough ink outlines, flat gouache-like colors, scratchy hatching, no 3D shading, no smooth digital rendering.\nReturn exactly one complete centered sprite with the original framing and genuine transparent alpha background. No text, labels, border, extra objects, scene, floor, cast shadow or checkerboard."
+    },
+    {
+      "name": "霜冻核心",
+      "file": "frost-core-v2.png",
+      "status": "Version 2 reused unchanged"
+    }
+  ],
+  "reference": "work/frost-art-preview/references/bluegem.png (original installed DST Blue Gem inventory icon)",
+  "change": "Replace the two eye recesses with inlaid faceted blue sapphires; preserve remaining design."
+}

@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-09",
+  "runs": {
+    "before": {
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-t_zm2aks\\bat-boss-shadow-result.json",
+      "status": "reproduced",
+      "result": null,
+      "cases": []
+    },
+    "fixed": {
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-_mnrfs82\\bat-boss-shadow-result.json",
+      "status": "passed",
+      "result": {
+        "checks": 44,
+        "kind": "bat_shadow",
+        "passed": true,
+        "cases": 10
+      },
+      "cases": [
+        "attached_attack_survives",
+        "attached_recall",
+        "ordinary_unequip",
+        "ground_recall",
+        "original_boss",
+        "dark_boss_recall",
+        "ordinary_pickup",
+        "slurper_exception",
+        "crowded_recall",
+        "attached_lethal_hit"
+      ]
+    },
+    "fixed_um_beta": {
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-myuj91po\\bat-boss-shadow-result.json",
+      "status": "passed",
+      "result": {
+        "checks": 44,
+        "kind": "bat_shadow",
+        "passed": true,
+        "cases": 10
+      },
+      "cases": [
+        "attached_attack_survives",
+        "attached_recall",
+        "ordinary_unequip",
+        "ground_recall",
+        "original_boss",
+        "dark_boss_recall",
+        "ordinary_pickup",
+        "slurper_exception",
+        "crowded_recall",
+        "attached_lethal_hit"
+      ]
+    }
+  },
+  "source_sha256": {
+    "content/shadowworld.lua": "40fb4ee269042726c35e6b85efd70bee4bcfc2928951b31751c999874ef5bd20",
+    "tests/native/bat_boss_shadow_probe.lua": "2c44ec790e11d65dc98eebc26c8a01d92a9abf8e39375bc8a27ebe5263ee7271",
+    "tests/run_native_bat_boss_shadow.py": "742360f8273bbd5b7665f8a0ad737cb6f26702b03e44b343bc725f5431a548cb"
+  },
+  "before_source_sha256": "75995f549a012330d13ed519eb356df6ea65a910db942dcd678fc93a2c71df36"
+}

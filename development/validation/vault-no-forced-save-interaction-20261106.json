@@ -1,0 +1,401 @@
+[
+  {
+    "case": "migration",
+    "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-ub68cxgh",
+    "checks": [
+      {
+        "name": "baseline",
+        "actual": {
+          "gold": 17
+        },
+        "conserved": true,
+        "state": {
+          "Master": {
+            "label": "baseline",
+            "sent": 25,
+            "banks": {
+              "1": [],
+              "2": {
+                "1": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            },
+            "snapshotcut": "1_1793957980:20000:56136420_2",
+            "saves": 1,
+            "shard": "1",
+            "runtimeboot": "1793957980:20000:56136420",
+            "dropped": 0,
+            "locations": {
+              "shadowvaultpage2hm": 17
+            },
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "pending": 0,
+            "goods": {
+              "gold": 17
+            },
+            "snapshotphase": "ready",
+            "time": 7.0333337001503,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          },
+          "Caves": {
+            "label": "baseline",
+            "sent": 35,
+            "banks": [],
+            "snapshotcut": "1_1793957980:20000:56136420_2",
+            "saves": 1,
+            "shard": "2",
+            "runtimeboot": "1793957981:20000:422158833",
+            "dropped": 0,
+            "locations": [],
+            "details": [],
+            "pending": 0,
+            "goods": [],
+            "snapshotphase": "ready",
+            "time": 7.2666670456529,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          }
+        }
+      },
+      {
+        "name": "runtime_transfer",
+        "actual": {
+          "gold": 17
+        },
+        "conserved": true,
+        "state": {
+          "Master": {
+            "label": "runtime_transfer",
+            "sent": 41,
+            "banks": {
+              "1": [],
+              "2": []
+            },
+            "snapshotcut": "1_1793957980:20000:56136420_2",
+            "saves": 1,
+            "shard": "1",
+            "runtimeboot": "1793957980:20000:56136420",
+            "dropped": 0,
+            "locations": [],
+            "details": [],
+            "pending": 0,
+            "goods": [],
+            "snapshotphase": "ready",
+            "time": 10.133333861828,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          },
+          "Caves": {
+            "label": "runtime_transfer",
+            "sent": 56,
+            "banks": [],
+            "snapshotcut": "1_1793957980:20000:56136420_2",
+            "saves": 1,
+            "shard": "2",
+            "runtimeboot": "1793957981:20000:422158833",
+            "dropped": 0,
+            "locations": {
+              "KU_VA_2_1": 17
+            },
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "pending": 0,
+            "goods": {
+              "gold": 17
+            },
+            "snapshotphase": "ready",
+            "time": 10.333333872259,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          }
+        }
+      },
+      {
+        "name": "migrated_to_master",
+        "actual": {
+          "gold": 17
+        },
+        "conserved": true,
+        "state": {
+          "Master": {
+            "label": "migrated_to_master",
+            "sent": 49,
+            "banks": {
+              "1": [],
+              "2": []
+            },
+            "snapshotcut": "1_1793957980:20000:56136420_2",
+            "saves": 1,
+            "shard": "1",
+            "runtimeboot": "1793957980:20000:56136420",
+            "dropped": 0,
+            "locations": {
+              "KU_VA_2_1": 17
+            },
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "pending": 0,
+            "goods": {
+              "gold": 17
+            },
+            "snapshotphase": "ready",
+            "time": 13.333334028721,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          },
+          "Caves": {
+            "label": "migrated_to_master",
+            "sent": 70,
+            "banks": [],
+            "snapshotcut": "1_1793957980:20000:56136420_2",
+            "saves": 1,
+            "shard": "2",
+            "runtimeboot": "1793957981:20000:422158833",
+            "dropped": 0,
+            "locations": [],
+            "details": [],
+            "pending": 0,
+            "goods": [],
+            "snapshotphase": "ready",
+            "time": 13.566667374223,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          }
+        }
+      },
+      {
+        "name": "migration_saved_restart",
+        "actual": {
+          "gold": 17
+        },
+        "conserved": true,
+        "state": {
+          "Master": {
+            "label": "migration_saved_restart",
+            "sent": 1,
+            "banks": {
+              "1": [],
+              "2": []
+            },
+            "snapshotcut": "1_1793957980:20000:56136420_3",
+            "saves": 0,
+            "shard": "1",
+            "runtimeboot": "1793958022:24000:519523110",
+            "dropped": 0,
+            "locations": {
+              "KU_VA_2_1": 17
+            },
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "pending": 0,
+            "goods": {
+              "gold": 17
+            },
+            "snapshotphase": "ready",
+            "time": 0.90000004693866,
+            "duplicated": 0,
+            "snapshot": 5,
+            "kind": "state"
+          },
+          "Caves": {
+            "label": "migration_saved_restart",
+            "sent": 4,
+            "banks": [],
+            "snapshotcut": "1_1793957980:20000:56136420_3",
+            "saves": 0,
+            "shard": "2",
+            "runtimeboot": "1793958022:24000:257126093",
+            "dropped": 0,
+            "locations": [],
+            "details": [],
+            "pending": 0,
+            "goods": [],
+            "snapshotphase": "ready",
+            "time": 1.3000000678003,
+            "duplicated": 0,
+            "snapshot": 5,
+            "kind": "state"
+          }
+        },
+        "destination_has_profile": true,
+        "origin_has_no_profile": true
+      }
+    ],
+    "status": "passed"
+  },
+  {
+    "case": "controls",
+    "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-787oqq69",
+    "checks": [
+      {
+        "name": "baseline",
+        "actual": {
+          "gold": 17
+        },
+        "conserved": true,
+        "state": {
+          "Master": {
+            "label": "baseline",
+            "sent": 24,
+            "banks": {
+              "1": [],
+              "2": {
+                "1": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            },
+            "snapshotcut": "1_1793958048:23000:624874482_2",
+            "saves": 1,
+            "shard": "1",
+            "runtimeboot": "1793958048:23000:624874482",
+            "dropped": 0,
+            "locations": {
+              "shadowvaultpage2hm": 17
+            },
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "pending": 0,
+            "goods": {
+              "gold": 17
+            },
+            "snapshotphase": "ready",
+            "time": 6.8666670247912,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          },
+          "Caves": {
+            "label": "baseline",
+            "sent": 35,
+            "banks": [],
+            "snapshotcut": "1_1793958048:23000:624874482_2",
+            "saves": 1,
+            "shard": "2",
+            "runtimeboot": "1793958049:23000:703920720",
+            "dropped": 0,
+            "locations": [],
+            "details": [],
+            "pending": 0,
+            "goods": [],
+            "snapshotphase": "ready",
+            "time": 7.0333337001503,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          }
+        }
+      },
+      {
+        "name": "runtime_transfer",
+        "actual": {
+          "gold": 17
+        },
+        "conserved": true,
+        "state": {
+          "Master": {
+            "label": "runtime_transfer",
+            "sent": 39,
+            "banks": {
+              "1": [],
+              "2": []
+            },
+            "snapshotcut": "1_1793958048:23000:624874482_2",
+            "saves": 1,
+            "shard": "1",
+            "runtimeboot": "1793958048:23000:624874482",
+            "dropped": 0,
+            "locations": [],
+            "details": [],
+            "pending": 0,
+            "goods": [],
+            "snapshotphase": "ready",
+            "time": 9.933333851397,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          },
+          "Caves": {
+            "label": "runtime_transfer",
+            "sent": 56,
+            "banks": [],
+            "snapshotcut": "1_1793958048:23000:624874482_2",
+            "saves": 1,
+            "shard": "2",
+            "runtimeboot": "1793958049:23000:703920720",
+            "dropped": 0,
+            "locations": {
+              "KU_VA_2_1": 17
+            },
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "pending": 0,
+            "goods": {
+              "gold": 17
+            },
+            "snapshotphase": "ready",
+            "time": 10.133333861828,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          }
+        }
+      }
+    ],
+    "status": "failed",
+    "error": "Traceback (most recent call last):\n  File \"D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\tests\\run_vault_snapshot_native.py\", line 55, in <module>\n    c.call('Caves','VaultAudit.control(1)','control_pass')\n  File \"D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\tests\\run_vault_comparison.py\", line 104, in call\n    return self.wait(name,kind,after=before,**match)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\tests\\run_vault_comparison.py\", line 97, in wait\n    for row in self.events(name)[after:]:\n               ^^^^^^^^^^^^^^^^^\n  File \"D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\tests\\run_vault_comparison.py\", line 83, in events\n    raise RuntimeError(name+' native error; '+str(self.logs[name])+'\\n'+raw[-7000:])\nRuntimeError: Caves native error; D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-787oqq69\\Caves-1.log\nl[4] <-> 1[4] (active)\t\n[00:00:23]: Validating portal[5] <-> 1[5] (active)\t\n[00:00:23]: Validating portal[6] <-> 1[6] (active)\t\n[00:00:23]: Validating portal[oceanwhirlbigportal] <-> 1[oceanwhirlbigportal] (disabled)\t\n[00:00:23]: Validating portal[7] <-> 1[7] (active)\t\n[00:00:23]: Validating portal[8] <-> 1[8] (active)\t\n[00:00:23]: Validating portal[9] <-> 1[9] (active)\t\n[00:00:23]: Validating portal[10] <-> 1[10] (active)\t\n[00:00:24]: [Shard] secondary shard LUA is now ready!\n[00:00:24]: Validating portal[1] <-> 1[1] (disabled)\t\n[00:00:24]: Validating portal[2] <-> 1[2] (active)\t\n[00:00:24]: Validating portal[3] <-> 1[3] (active)\t\n[00:00:24]: Validating portal[4] <-> 1[4] (disabled)\t\n[00:00:24]: Validating portal[5] <-> 1[5] (disabled)\t\n[00:00:24]: Validating portal[6] <-> 1[6] (disabled)\t\n[00:00:24]: Validating portal[oceanwhirlbigportal] <-> 1[oceanwhirlbigportal] (disabled)\t\n[00:00:24]: Validating portal[7] <-> 1[7] (disabled)\t\n[00:00:24]: Validating portal[8] <-> 1[8] (disabled)\t\n[00:00:24]: Validating portal[9] <-> 1[9] (disabled)\t\n[00:00:24]: Validating portal[10] <-> 1[10] (active)\t\n[00:00:24]: [VAUDIT] {\"shard\":\"2\",\"kind\":\"ready\",\"time\":1.6000000834465,\"variant\":\"hosted\"}\t\n[00:00:25]: RemoteCommandInput: \"VaultAudit.open(1,2)\"\n[00:00:25]: [VAUDIT] {\"time\":1.7000000886619,\"kind\":\"opened\",\"index\":1,\"shard\":\"2\"}\t\n[00:00:25]: Invalid RPC sender list\n[00:00:25]: Invalid RPC sender list\n[00:00:25]: Invalid RPC sender list\n[00:00:27]: Invalid RPC sender list\n[00:00:27]: Invalid RPC sender list\n[00:00:28]: Serializing user: session/2300389AF1FE60DD/KU_VA_2_1_/0000000003\n[00:00:29]: Serializing world: session/2300389AF1FE60DD/0000000003\n[00:00:29]: [VAUDIT] {\"shard\":\"2\",\"kind\":\"saved\",\"time\":5.4666669517756,\"snapshot\":3}\t\n[00:00:29]: RemoteCommandInput: \"VaultAudit.inspect(\"save_complete\")\"\n[00:00:29]: [VAUDIT] {\"label\":\"save_complete\",\"sent\":28,\"banks\":[],\"snapshotcut\":\"base_2300389AF1FE60DD_2\",\"saves\":1,\"shard\":\"2\",\"runtimeboot\":\"1793958049:23000:703920720\",\"dropped\":0,\"locations\":[],\"details\":[],\"pending\":0,\"goods\":[],\"snapshotphase\":\"capturing\",\"time\":5.8333336375654,\"duplicated\":0,\"snapshot\":4,\"kind\":\"state\"}\t\n[00:00:29]: Invalid RPC sender list\n[00:00:29]: RemoteCommandInput: \"VaultAudit.inspect(\"save_complete\")\"\n[00:00:29]: [VAUDIT] {\"label\":\"save_complete\",\"sent\":31,\"banks\":[],\"snapshotcut\":\"1_1793958048:23000:624874482_2\",\"saves\":1,\"shard\":\"2\",\"runtimeboot\":\"1793958049:23000:703920720\",\"dropped\":0,\"locations\":[],\"details\":[],\"pending\":0,\"goods\":[],\"snapshotphase\":\"ready\",\"time\":6.3333336636424,\"duplicated\":0,\"snapshot\":4,\"kind\":\"state\"}\t\n[00:00:30]: RemoteCommandInput: \"VaultAudit.inspect(\"baseline\")\"\n[00:00:30]: [VAUDIT] {\"label\":\"baseline\",\"sent\":35,\"banks\":[],\"snapshotcut\":\"1_1793958048:23000:624874482_2\",\"saves\":1,\"shard\":\"2\",\"runtimeboot\":\"1793958049:23000:703920720\",\"dropped\":0,\"locations\":[],\"details\":[],\"pending\":0,\"goods\":[],\"snapshotphase\":\"ready\",\"time\":7.0333337001503,\"duplicated\":0,\"snapshot\":4,\"kind\":\"state\"}\t\n[00:00:30]: RemoteCommandInput: \"VaultAudit.action(1,\"withdraw\",1,\"inventory\")\"\n[00:00:30]: Invalid RPC sender list\n[00:00:30]: [VAUDIT] {\"op\":\"withdraw\",\"index\":1,\"slot\":1,\"time\":7.2000003755093,\"kind\":\"action\",\"shard\":\"2\",\"pending\":1}\t\n[00:00:30]: RemoteCommandInput: \"VaultAudit.inspect(\"settle\")\"\n[00:00:30]: [VAUDIT] {\"label\":\"settle\",\"sent\":39,\"banks\":[],\"snapshotcut\":\"1_1793958048:23000:624874482_2\",\"saves\":1,\"shard\":\"2\",\"runtimeboot\":\"1793958049:23000:703920720\",\"dropped\":0,\"locations\":[],\"details\":[],\"pending\":1,\"goods\":[],\"snapshotphase\":\"ready\",\"time\":7.5000003911555,\"duplicated\":0,\"snapshot\":4,\"kind\":\"state\",\"phase\":\"intent\"}\t\n[00:00:31]: Invalid RPC sender list\n[00:00:31]: Invalid RPC sender list\n[00:00:31]: Invalid RPC sender list\n[00:00:31]: Invalid RPC sender list\n[00:00:31]: Invalid RPC sender list\n[00:00:31]: Invalid RPC sender list\n[00:00:31]: Invalid RPC sender list\n[00:00:31]: RemoteCommandInput: \"VaultAudit.inspect(\"settle\")\"\n[00:00:31]: [VAUDIT] {\"label\":\"settle\",\"sent\":47,\"banks\":[],\"snapshotcut\":\"1_1793958048:23000:624874482_2\",\"saves\":1,\"shard\":\"2\",\"runtimeboot\":\"1793958049:23000:703920720\",\"dropped\":0,\"locations\":{\"KU_VA_2_1\":17},\"details\":[{\"token\":\"gold\",\"data\":{\"count\":17,\"prefab\":\"goldnugget\"}}],\"pending\":0,\"goods\":{\"gold\":17},\"snapshotphase\":\"ready\",\"time\":8.4000004380941,\"duplicated\":0,\"snapshot\":4,\"kind\":\"state\"}\t\n[00:00:33]: RemoteCommandInput: \"VaultAudit.inspect(\"settle_confirm\")\"\n[00:00:33]: [VAUDIT] {\"label\":\"settle_confirm\",\"sent\":53,\"banks\":[],\"snapshotcut\":\"1_1793958048:23000:624874482_2\",\"saves\":1,\"shard\":\"2\",\"runtimeboot\":\"1793958049:23000:703920720\",\"dropped\":0,\"locations\":{\"KU_VA_2_1\":17},\"details\":[{\"token\":\"gold\",\"data\":{\"count\":17,\"prefab\":\"goldnugget\"}}],\"pending\":0,\"goods\":{\"gold\":17},\"snapshotphase\":\"ready\",\"time\":9.8333338461816,\"duplicated\":0,\"snapshot\":4,\"kind\":\"state\"}\t\n[00:00:33]: RemoteCommandInput: \"VaultAudit.inspect(\"runtime_transfer\")\"\n[00:00:33]: [VAUDIT] {\"label\":\"runtime_transfer\",\"sent\":56,\"banks\":[],\"snapshotcut\":\"1_1793958048:23000:624874482_2\",\"saves\":1,\"shard\":\"2\",\"runtimeboot\":\"1793958049:23000:703920720\",\"dropped\":0,\"locations\":{\"KU_VA_2_1\":17},\"details\":[{\"token\":\"gold\",\"data\":{\"count\":17,\"prefab\":\"goldnugget\"}}],\"pending\":0,\"goods\":{\"gold\":17},\"snapshotphase\":\"ready\",\"time\":10.133333861828,\"duplicated\":0,\"snapshot\":4,\"kind\":\"state\"}\t\n[00:00:33]: Invalid RPC sender list\n[00:00:33]: Invalid RPC sender list\n[00:00:33]: RemoteCommandInput: \"VaultAudit.setfault(\"blackhole\")\"\n[00:00:33]: [VAUDIT] {\"shard\":\"2\",\"kind\":\"fault\",\"time\":10.266667202115,\"mode\":\"blackhole\"}\t\n[00:00:33]: RemoteCommandInput: \"VaultAudit.control(1)\"\n[00:00:33]: Validating portal[11] <-> 1[11] (active)\t\n[00:00:33]: Invalid RPC sender list\n[00:00:35]: [string \"../mods/VaultAudit/modmain.lua\"]:318: migration failure releases native busy state\nLUA ERROR stack traceback:\n=[C]:-1 in (global) assert (C) <-1--1>\n../mods/VaultAudit/modmain.lua:318 in (field) fn (Lua) <316-330>\nscripts/scheduler.lua:186 in (method) OnTick (Lua) <164-216>\n   self =\n      running = table: 000000000A8D36B0\n      waitingfortick = table: 000000000A8D3ED0\n      hibernating = table: 000000000A8D39D0\n      tasks = table: 000000000A8D3CF0\n      waking = table: 00000000437E0A20\n      attime = table: 000000000A8D3840\n      isstatic = true\n   tick = 373\n   k = PERIODIC 100029: 2.000000\n   v = true\n   already_dead = false\nscripts/scheduler.lua:419 in (global) RunStaticScheduler (Lua) <417-425>\n   tick = 373\nscripts/update.lua:178 in () ? (Lua) <169-220>\n   dt = 0.033333335071802\n   static_tick = 373\n   i = 373\n\n[00:00:35]: [string \"../mods/VaultAudit/modmain.lua\"]:318: migration failure releases native busy state\nLUA ERROR stack traceback:\n    =[C]:-1 in (global) assert (C) <-1--1>\n    ../mods/VaultAudit/modmain.lua:318 in (field) fn (Lua) <316-330>\n    scripts/scheduler.lua:186 in (method) OnTick (Lua) <164-216>\n    scripts/scheduler.lua:419 in (global) RunStaticScheduler (Lua) <417-425>\n    scripts/update.lua:178 in () ? (Lua) <169-220>\n\t\n\n"
+  }
+]

@@ -1,0 +1,879 @@
+[
+  {
+    "case": "secondary_restart",
+    "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-_mkbljg6",
+    "checks": [
+      {
+        "name": "baseline",
+        "actual": {
+          "gold": 17
+        },
+        "conserved": true,
+        "state": {
+          "Master": {
+            "label": "baseline",
+            "sent": 24,
+            "banks": {
+              "1": [],
+              "2": {
+                "1": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            },
+            "snapshotcut": "1_1793959240:20000:724468047_2",
+            "saves": 1,
+            "shard": "1",
+            "runtimeboot": "1793959240:20000:724468047",
+            "dropped": 0,
+            "locations": {
+              "shadowvaultpage2hm": 17
+            },
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "pending": 0,
+            "goods": {
+              "gold": 17
+            },
+            "snapshotphase": "ready",
+            "time": 7.1000003702939,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          },
+          "Caves": {
+            "label": "baseline",
+            "sent": 36,
+            "banks": [],
+            "snapshotcut": "1_1793959240:20000:724468047_2",
+            "saves": 1,
+            "shard": "2",
+            "runtimeboot": "1793959241:20000:315549775",
+            "dropped": 0,
+            "locations": [],
+            "details": [],
+            "pending": 0,
+            "goods": [],
+            "snapshotphase": "ready",
+            "time": 7.3666670508683,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          }
+        }
+      },
+      {
+        "name": "runtime_transfer",
+        "actual": {
+          "gold": 17
+        },
+        "conserved": true,
+        "state": {
+          "Master": {
+            "label": "runtime_transfer",
+            "sent": 40,
+            "banks": {
+              "1": [],
+              "2": []
+            },
+            "snapshotcut": "1_1793959240:20000:724468047_2",
+            "saves": 1,
+            "shard": "1",
+            "runtimeboot": "1793959240:20000:724468047",
+            "dropped": 0,
+            "locations": [],
+            "details": [],
+            "pending": 0,
+            "goods": [],
+            "snapshotphase": "ready",
+            "time": 10.200000531971,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          },
+          "Caves": {
+            "label": "runtime_transfer",
+            "sent": 58,
+            "banks": [],
+            "snapshotcut": "1_1793959240:20000:724468047_2",
+            "saves": 1,
+            "shard": "2",
+            "runtimeboot": "1793959241:20000:315549775",
+            "dropped": 0,
+            "locations": {
+              "KU_VA_2_1": 17
+            },
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "pending": 0,
+            "goods": {
+              "gold": 17
+            },
+            "snapshotphase": "ready",
+            "time": 10.433333877474,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          }
+        }
+      },
+      {
+        "name": "single_shard_restart_recovered",
+        "actual": {
+          "gold": 17
+        },
+        "conserved": true,
+        "state": {
+          "Master": {
+            "label": "single_shard_restart_recovered",
+            "sent": 4,
+            "banks": {
+              "1": [],
+              "2": {
+                "1": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            },
+            "snapshotcut": "1_1793959240:20000:724468047_2",
+            "saves": 0,
+            "shard": "1",
+            "runtimeboot": "1793959280:59000:469484513",
+            "dropped": 0,
+            "locations": {
+              "shadowvaultpage2hm": 17
+            },
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "pending": 0,
+            "goods": {
+              "gold": 17
+            },
+            "snapshotphase": "ready",
+            "time": 2.4666667953134,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          },
+          "Caves": {
+            "label": "single_shard_restart_recovered",
+            "sent": 26,
+            "banks": [],
+            "snapshotcut": "1_1793959240:20000:724468047_2",
+            "saves": 0,
+            "shard": "2",
+            "runtimeboot": "1793959273:20000:561175424",
+            "dropped": 0,
+            "locations": [],
+            "details": [],
+            "pending": 0,
+            "goods": [],
+            "snapshotphase": "ready",
+            "time": 10.36666720733,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          }
+        }
+      }
+    ],
+    "status": "passed"
+  },
+  {
+    "case": "controls",
+    "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-xim44rr2",
+    "checks": [
+      {
+        "name": "baseline",
+        "actual": {
+          "gold": 17
+        },
+        "conserved": true,
+        "state": {
+          "Master": {
+            "label": "baseline",
+            "sent": 24,
+            "banks": {
+              "1": [],
+              "2": {
+                "1": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            },
+            "snapshotcut": "1_1793959306:21000:661206026_2",
+            "saves": 1,
+            "shard": "1",
+            "runtimeboot": "1793959306:21000:661206026",
+            "dropped": 0,
+            "locations": {
+              "shadowvaultpage2hm": 17
+            },
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "pending": 0,
+            "goods": {
+              "gold": 17
+            },
+            "snapshotphase": "ready",
+            "time": 6.7666670195758,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          },
+          "Caves": {
+            "label": "baseline",
+            "sent": 35,
+            "banks": [],
+            "snapshotcut": "1_1793959306:21000:661206026_2",
+            "saves": 1,
+            "shard": "2",
+            "runtimeboot": "1793959307:22000:564072569",
+            "dropped": 0,
+            "locations": [],
+            "details": [],
+            "pending": 0,
+            "goods": [],
+            "snapshotphase": "ready",
+            "time": 7.0000003650784,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          }
+        }
+      },
+      {
+        "name": "runtime_transfer",
+        "actual": {
+          "gold": 17
+        },
+        "conserved": true,
+        "state": {
+          "Master": {
+            "label": "runtime_transfer",
+            "sent": 40,
+            "banks": {
+              "1": [],
+              "2": []
+            },
+            "snapshotcut": "1_1793959306:21000:661206026_2",
+            "saves": 1,
+            "shard": "1",
+            "runtimeboot": "1793959306:21000:661206026",
+            "dropped": 0,
+            "locations": [],
+            "details": [],
+            "pending": 0,
+            "goods": [],
+            "snapshotphase": "ready",
+            "time": 9.8333338461816,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          },
+          "Caves": {
+            "label": "runtime_transfer",
+            "sent": 58,
+            "banks": [],
+            "snapshotcut": "1_1793959306:21000:661206026_2",
+            "saves": 1,
+            "shard": "2",
+            "runtimeboot": "1793959307:22000:564072569",
+            "dropped": 0,
+            "locations": {
+              "KU_VA_2_1": 17
+            },
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "pending": 0,
+            "goods": {
+              "gold": 17
+            },
+            "snapshotphase": "ready",
+            "time": 10.100000526756,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          }
+        }
+      },
+      {
+        "name": "controls_after_save_resumed",
+        "actual": {
+          "gold": 17
+        },
+        "conserved": true,
+        "state": {
+          "Master": {
+            "label": "controls_after_save_resumed",
+            "sent": 9,
+            "banks": {
+              "1": [],
+              "2": []
+            },
+            "snapshotcut": "1_1793959306:21000:661206026_3",
+            "saves": 2,
+            "shard": "1",
+            "runtimeboot": "1793959306:21000:661206026",
+            "dropped": 12,
+            "locations": [],
+            "details": [],
+            "pending": 0,
+            "goods": [],
+            "snapshotphase": "ready",
+            "time": 48.366669189185,
+            "duplicated": 0,
+            "snapshot": 5,
+            "kind": "state"
+          },
+          "Caves": {
+            "label": "controls_after_save_resumed",
+            "sent": 37,
+            "banks": [],
+            "snapshotcut": "1_1793959306:21000:661206026_3",
+            "saves": 2,
+            "shard": "2",
+            "runtimeboot": "1793959307:22000:564072569",
+            "dropped": 102,
+            "locations": {
+              "KU_VA_2_1": 17
+            },
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "pending": 0,
+            "goods": {
+              "gold": 17
+            },
+            "snapshotphase": "ready",
+            "time": 48.700002539903,
+            "duplicated": 0,
+            "snapshot": 5,
+            "kind": "state"
+          }
+        }
+      }
+    ],
+    "status": "passed"
+  },
+  {
+    "case": "item_migration",
+    "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-0yki4xxv",
+    "checks": [
+      {
+        "name": "baseline",
+        "actual": {
+          "gold": 17
+        },
+        "conserved": true,
+        "state": {
+          "Master": {
+            "label": "baseline",
+            "sent": 25,
+            "banks": {
+              "1": [],
+              "2": {
+                "1": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            },
+            "snapshotcut": "1_1793959378:21000:217589446_2",
+            "saves": 1,
+            "shard": "1",
+            "runtimeboot": "1793959378:21000:217589446",
+            "dropped": 0,
+            "locations": {
+              "shadowvaultpage2hm": 17
+            },
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "pending": 0,
+            "goods": {
+              "gold": 17
+            },
+            "snapshotphase": "ready",
+            "time": 6.9333336949348,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          },
+          "Caves": {
+            "label": "baseline",
+            "sent": 36,
+            "banks": [],
+            "snapshotcut": "1_1793959378:21000:217589446_2",
+            "saves": 1,
+            "shard": "2",
+            "runtimeboot": "1793959379:21000:782529179",
+            "dropped": 0,
+            "locations": [],
+            "details": [],
+            "pending": 0,
+            "goods": [],
+            "snapshotphase": "ready",
+            "time": 7.1333337053657,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          }
+        }
+      },
+      {
+        "name": "runtime_transfer",
+        "actual": {
+          "gold": 17
+        },
+        "conserved": true,
+        "state": {
+          "Master": {
+            "label": "runtime_transfer",
+            "sent": 40,
+            "banks": {
+              "1": [],
+              "2": []
+            },
+            "snapshotcut": "1_1793959378:21000:217589446_2",
+            "saves": 1,
+            "shard": "1",
+            "runtimeboot": "1793959378:21000:217589446",
+            "dropped": 0,
+            "locations": [],
+            "details": [],
+            "pending": 0,
+            "goods": [],
+            "snapshotphase": "ready",
+            "time": 10.033333856612,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          },
+          "Caves": {
+            "label": "runtime_transfer",
+            "sent": 57,
+            "banks": [],
+            "snapshotcut": "1_1793959378:21000:217589446_2",
+            "saves": 1,
+            "shard": "2",
+            "runtimeboot": "1793959379:21000:782529179",
+            "dropped": 0,
+            "locations": {
+              "KU_VA_2_1": 17
+            },
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "pending": 0,
+            "goods": {
+              "gold": 17
+            },
+            "snapshotphase": "ready",
+            "time": 10.233333867043,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          }
+        }
+      },
+      {
+        "name": "native_item_arrived",
+        "actual": {
+          "gold": 17
+        },
+        "conserved": true,
+        "state": {
+          "Master": {
+            "label": "native_item_arrived",
+            "sent": 55,
+            "banks": {
+              "1": [],
+              "2": []
+            },
+            "snapshotcut": "1_1793959378:21000:217589446_2",
+            "saves": 1,
+            "shard": "1",
+            "runtimeboot": "1793959378:21000:217589446",
+            "dropped": 0,
+            "locations": {
+              "ground": 17
+            },
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "pending": 0,
+            "goods": {
+              "gold": 17
+            },
+            "snapshotphase": "ready",
+            "time": 14.500000756234,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          },
+          "Caves": {
+            "label": "native_item_arrived",
+            "sent": 78,
+            "banks": [],
+            "snapshotcut": "1_1793959378:21000:217589446_2",
+            "saves": 1,
+            "shard": "2",
+            "runtimeboot": "1793959379:21000:782529179",
+            "dropped": 0,
+            "locations": [],
+            "details": [],
+            "pending": 0,
+            "goods": [],
+            "snapshotphase": "ready",
+            "time": 14.700000766665,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          }
+        }
+      },
+      {
+        "name": "native_item_migration_restart",
+        "actual": {
+          "gold": 17
+        },
+        "conserved": true,
+        "state": {
+          "Master": {
+            "label": "native_item_migration_restart",
+            "sent": 1,
+            "banks": {
+              "1": [],
+              "2": []
+            },
+            "snapshotcut": "1_1793959378:21000:217589446_3",
+            "saves": 0,
+            "shard": "1",
+            "runtimeboot": "1793959421:23000:9596642",
+            "dropped": 0,
+            "locations": {
+              "ground": 17
+            },
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "pending": 0,
+            "goods": {
+              "gold": 17
+            },
+            "snapshotphase": "ready",
+            "time": 0.96666671708226,
+            "duplicated": 0,
+            "snapshot": 5,
+            "kind": "state"
+          },
+          "Caves": {
+            "label": "native_item_migration_restart",
+            "sent": 4,
+            "banks": [],
+            "snapshotcut": "1_1793959378:21000:217589446_3",
+            "saves": 0,
+            "shard": "2",
+            "runtimeboot": "1793959421:24000:106248347",
+            "dropped": 0,
+            "locations": [],
+            "details": [],
+            "pending": 0,
+            "goods": [],
+            "snapshotphase": "ready",
+            "time": 1.2666667327285,
+            "duplicated": 0,
+            "snapshot": 5,
+            "kind": "state"
+          }
+        }
+      }
+    ],
+    "status": "passed"
+  },
+  {
+    "case": "history",
+    "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-f7oh62w0",
+    "checks": [
+      {
+        "name": "baseline",
+        "actual": {
+          "gold": 17
+        },
+        "conserved": true,
+        "state": {
+          "Master": {
+            "label": "baseline",
+            "sent": 25,
+            "banks": {
+              "1": [],
+              "2": {
+                "1": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            },
+            "snapshotcut": "1_1793959446:22000:447689590_2",
+            "saves": 1,
+            "shard": "1",
+            "runtimeboot": "1793959446:22000:447689590",
+            "dropped": 0,
+            "locations": {
+              "shadowvaultpage2hm": 17
+            },
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "pending": 0,
+            "goods": {
+              "gold": 17
+            },
+            "snapshotphase": "ready",
+            "time": 7.2666670456529,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          },
+          "Caves": {
+            "label": "baseline",
+            "sent": 38,
+            "banks": [],
+            "snapshotcut": "1_1793959446:22000:447689590_2",
+            "saves": 1,
+            "shard": "2",
+            "runtimeboot": "1793959447:23000:538439417",
+            "dropped": 0,
+            "locations": [],
+            "details": [],
+            "pending": 0,
+            "goods": [],
+            "snapshotphase": "ready",
+            "time": 7.3666670508683,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          }
+        }
+      },
+      {
+        "name": "runtime_transfer",
+        "actual": {
+          "gold": 17
+        },
+        "conserved": true,
+        "state": {
+          "Master": {
+            "label": "runtime_transfer",
+            "sent": 42,
+            "banks": {
+              "1": [],
+              "2": []
+            },
+            "snapshotcut": "1_1793959446:22000:447689590_2",
+            "saves": 1,
+            "shard": "1",
+            "runtimeboot": "1793959446:22000:447689590",
+            "dropped": 0,
+            "locations": [],
+            "details": [],
+            "pending": 0,
+            "goods": [],
+            "snapshotphase": "ready",
+            "time": 10.333333872259,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          },
+          "Caves": {
+            "label": "runtime_transfer",
+            "sent": 60,
+            "banks": [],
+            "snapshotcut": "1_1793959446:22000:447689590_2",
+            "saves": 1,
+            "shard": "2",
+            "runtimeboot": "1793959447:23000:538439417",
+            "dropped": 0,
+            "locations": {
+              "KU_VA_2_1": 17
+            },
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "pending": 0,
+            "goods": {
+              "gold": 17
+            },
+            "snapshotphase": "ready",
+            "time": 10.466667212546,
+            "duplicated": 0,
+            "snapshot": 4,
+            "kind": "state"
+          }
+        }
+      },
+      {
+        "name": "pruned_history_restart",
+        "actual": {
+          "gold": 17
+        },
+        "conserved": true,
+        "state": {
+          "Master": {
+            "label": "pruned_history_restart",
+            "sent": 1,
+            "banks": {
+              "1": [],
+              "2": []
+            },
+            "snapshotcut": "1_1793959446:22000:447689590_14",
+            "saves": 0,
+            "shard": "1",
+            "runtimeboot": "1793959522:20000:1008847810",
+            "dropped": 0,
+            "locations": [],
+            "details": [],
+            "pending": 0,
+            "goods": [],
+            "snapshotphase": "ready",
+            "time": 0.83333337679505,
+            "duplicated": 0,
+            "snapshot": 16,
+            "kind": "state"
+          },
+          "Caves": {
+            "label": "pruned_history_restart",
+            "sent": 3,
+            "banks": [],
+            "snapshotcut": "1_1793959446:22000:447689590_14",
+            "saves": 0,
+            "shard": "2",
+            "runtimeboot": "1793959522:20000:472746785",
+            "dropped": 0,
+            "locations": {
+              "KU_VA_2_1": 17
+            },
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "pending": 0,
+            "goods": {
+              "gold": 17
+            },
+            "snapshotphase": "ready",
+            "time": 1.0000000521541,
+            "duplicated": 0,
+            "snapshot": 16,
+            "kind": "state"
+          }
+        }
+      }
+    ],
+    "history": {
+      "Master": {
+        "limit": 8,
+        "time": 51.700002696365,
+        "shard": "1",
+        "committed": 9,
+        "prepared": 0,
+        "kind": "history"
+      },
+      "Caves": {
+        "limit": 16,
+        "time": 52.766669418663,
+        "shard": "2",
+        "committed": 14,
+        "prepared": 0,
+        "kind": "history"
+      }
+    },
+    "status": "passed"
+  }
+]

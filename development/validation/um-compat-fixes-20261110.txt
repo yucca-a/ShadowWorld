@@ -1,0 +1,59 @@
+妥协兼容修复：寡妇背包／沃托姆冰杖／机器人检查台词（2026-11-10，未发布）
+
+后续修订：本记录中的“禁止打包牛铃”已撤销，由 beef-bell-packing-20261110.txt 所述的实体／存档交接和只读预览修复替代。
+以下牛铃拒绝打包的行为、检查数量及冻结输入属于首轮历史记录；沃托姆和机器人修复保持有效。
+
+修复内容
+1. 寡妇掉落背包 silksack：打包的前六格只要含 nobundling 物品，就拒绝本次打包。
+   牛铃仍可正常放入背包携带；移出后恢复普通打包。普通、橙宝石升级及阴郁牛铃均适用，
+   也遵守其他物品已有的禁止打包标记。不删除物品、不扣蜘蛛丝、不改牛与牛铃的绑定。
+   同时保护客户端按钮和服务端 WrapStuff；直接调用打包入口也不能绕过。
+   妥测通过私有 modparams 配置该背包，不在 containers.params 中；在实际 widgetsetup 后安装按钮保护。
+
+2. 沃托姆：妥协 ATTACK 白名单仍只识别 icestaff，不识别新增的 icestaff2/icestaff3。
+   两种冰杖恢复走原有 wathomleap，不重写跳劈动画、时间轴、弹丸或伤害。
+   骑乘、攻击中、普通角色、吹箭等仍沿用原有路由；预测端原来已支持这两种冰杖。
+   淬炼困难分支的“远程跳劈中切装备滑倒”保护同步按原生 icestaff 标签识别升级杖。
+
+3. WX-78：取得 shadowmagic 后，原版 GetDescription_AddSpecialCases 会给有 shadowlevel 的物品
+   追加 ANNOUNCE_SHADOWLEVEL_ITEM。机器人的该台词是 only_used_by_waxwell 占位文本。
+   旧 talker 包装只要发现占位文本，就清空整段，吞掉基础检查及护符开关／帽子养分提示。
+   改为只移除 only_used_by_ 开头的占位词，保留其余台词、参数和返回值。
+   对纯占位词仍保持空文本；table/nil 类型不改动。
+
+入口与选项
+- common/common.lua：收窄现有台词过滤，不添加角色权限或改变暗影魔法兑换机制。
+- common/um_compat_fixes.lua：在检测到永不妥协时加载，独立于可选 um_patch 和沃托姆数值开关。
+- easy_role/wathom_easy.lua：升级冰杖继承既有切装备保护。
+- 不新增配置、不修改版本号、不发布工坊、不修改玩家存档。
+
+验证入口
+- work/python-3.12.8/python.exe tests/run_um_compat_fixes_tests.py
+  113 项专项检查；使用本机正式版／测试版原始 Attack_New、AttackClient_New 闭包及实际修复代码。
+  覆盖六种武器、普通／骑乘／攻击中／其他角色、六个打包槽、预测容器、服务端拒绝及普通行为透传。
+  四个变更的生产 Lua 文件通过 Lua 5.1 编译。
+
+- work/python-3.12.8/python.exe tests/run_native_um_compat_fixes.py --before
+  隔离副本仅撤去本轮修复，51 项检查成功复现旧行为：
+  机器人两种提示为空、升级冰杖回到 attack、三类绑定铃可进入包裹且带有可生成另一头牛的 beef_record。
+  work/vault-hardened-hosted-i_6i6eua/um-compat-result.json
+
+- work/python-3.12.8/python.exe tests/run_native_um_compat_fixes.py
+  完整淬炼＋妥测 6.0.3.9，12 组／102 项通过。
+  实际兑换暗影魔法、LOOKAT 护符、装备高级耕作先驱帽、保存／加载角色能力、原生与预测动作路由、
+  三种牛铃绑定及升级、每种连续三次直接拒绝打包、原槽位和蜘蛛丝守恒、普通物品打包／拆包。
+  work/vault-hardened-hosted-qagd0y78/um-compat-result.json
+
+- work/python-3.12.8/python.exe tests/run_native_um_compat_fixes.py --optional-off
+  关闭可选妥协补丁的同套验证：102 项通过；再加两种冰杖真实跳劈施法的 10 项通过。
+  原生时间轴到冲击帧前不扣次；之后各扣一次耐久，真实弹丸使猪人冻结或累积冰冻值。
+  work/vault-hardened-hosted-n42ungaj/um-compat-result.json
+
+- work/python-3.12.8/python.exe tests/run_native_um_compat_fixes.py --um stable
+  永不妥协正式版：10 组／29 项及真实跳劈施法 10 项通过。正式版没有寡妇背包，跳过该物品专属用例。
+  真实施法测试为生成的角色补上原生 playercontroller，以满足正式版跳劈时间轴对实际玩家组件的要求。
+  work/vault-hardened-hosted-rzv8fque/um-compat-result.json
+
+以上成功运行的四个生产文件均与当前交付文件逐字节一致；冻结输入哈希见同目录 um-compat-fixes-20261110.json。
+测试使用仓库 work/ 下的一次性离线专服和生成的角色实体；不等同真实客户端画面／鼠标操作验收。
+旧代码对照只检查已经生成的重复牛存档记录，不向玩家世界导入或清理历史复制品。

@@ -1,0 +1,130 @@
+{
+  "status": "tested_locally_not_published",
+  "native_build": 761239,
+  "source_sha256": {
+    "content/easy_other/shadowvaultsnapshot.lua": "50da21227d44b56651beba9d2a09e22fb85988497c00ca16f240c07155f4be0f",
+    "content/scripts/components/shadowvault2hm.lua": "3a2cdb1ce005cb6cef0068c021429ce8e66dac7373ee2f161ff0ef0a50482bb2",
+    "content/scripts/shadowvaultcourier2hm.lua": "923f77b8b490218a088b775e7c84131571e533e8dfbec9e855f3011cf7de80ea",
+    "content/scripts/shadowvaultmovement2hm.lua": "076c897b94d513003671884094bd6a504925bb70d3a5e9336fc2e390b8f177c5",
+    "content/scripts/shadowvaultsnapshot2hm.lua": "40ed3385ef5c3492fcf155dabeaa61d2267d564b6e96716cdd0260d8acc1d644",
+    "content/scripts/shadowvaultsnapshotcore2hm.lua": "0434045a490b96cb1d3a9fb6adab8642ddb6900851bbdd69bef0005c419c1ae7",
+    "content/scripts/shadowvaulttransport2hm.lua": "7dbb8279725ab1a999c1b06a195cf151c17a8959adafbe5ae4792b831f757b02"
+  },
+  "character_permission_rpc": false,
+  "character_ack_timeout": false,
+  "native_blackhole_departure_seconds": [
+    0.5667,
+    0.5333,
+    0.5333,
+    0.5333,
+    0.5667,
+    0.5667
+  ],
+  "native_blackhole_median_seconds": 0.55,
+  "historical_disabled_comparison_seconds": [
+    0.5667,
+    0.5333,
+    0.5333,
+    0.5333,
+    0.5333,
+    0.5667
+  ],
+  "historical_disabled_comparison_cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-0wwyri4g",
+  "world_saves_after_baseline_and_six_blackhole_trips": {
+    "Master": 1,
+    "Caves": 1
+  },
+  "cases": {
+    "blackhole": {
+      "status": "passed",
+      "report": "vault-native-only-main-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-bhit0l19",
+      "source_differences_from_current": [
+        "content/scripts/shadowvaultcourier2hm.lua",
+        "content/scripts/shadowvaultmovement2hm.lua",
+        "content/scripts/shadowvaultsnapshot2hm.lua",
+        "content/scripts/shadowvaultsnapshotcore2hm.lua",
+        "content/scripts/shadowvaulttransport2hm.lua"
+      ]
+    },
+    "crash": {
+      "status": "passed",
+      "report": "vault-native-only-main-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-e0c9m82h",
+      "source_differences_from_current": [
+        "content/scripts/shadowvaultsnapshot2hm.lua",
+        "content/scripts/shadowvaultsnapshotcore2hm.lua",
+        "content/scripts/shadowvaulttransport2hm.lua"
+      ]
+    },
+    "four": {
+      "status": "passed",
+      "report": "vault-native-only-four-final-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-mwzwowsq",
+      "source_differences_from_current": []
+    },
+    "full": {
+      "status": "passed",
+      "report": "vault-native-only-main-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-801i5gzj",
+      "source_differences_from_current": [
+        "content/scripts/shadowvaultcourier2hm.lua",
+        "content/scripts/shadowvaultmovement2hm.lua",
+        "content/scripts/shadowvaultsnapshot2hm.lua",
+        "content/scripts/shadowvaultsnapshotcore2hm.lua",
+        "content/scripts/shadowvaulttransport2hm.lua"
+      ]
+    },
+    "inflight": {
+      "status": "passed",
+      "report": "vault-native-only-main-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-lxxyyl1u",
+      "source_differences_from_current": [
+        "content/scripts/shadowvaultcourier2hm.lua",
+        "content/scripts/shadowvaultmovement2hm.lua",
+        "content/scripts/shadowvaultsnapshot2hm.lua",
+        "content/scripts/shadowvaultsnapshotcore2hm.lua",
+        "content/scripts/shadowvaulttransport2hm.lua"
+      ]
+    },
+    "save": {
+      "status": "passed",
+      "report": "vault-native-only-final-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-wtd8507i",
+      "source_differences_from_current": [
+        "content/scripts/shadowvaultsnapshot2hm.lua",
+        "content/scripts/shadowvaultsnapshotcore2hm.lua",
+        "content/scripts/shadowvaulttransport2hm.lua"
+      ]
+    },
+    "source_restart": {
+      "status": "passed",
+      "report": "vault-native-only-recovery-final-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-i_x6wvtg",
+      "source_differences_from_current": [
+        "content/scripts/shadowvaultsnapshotcore2hm.lua"
+      ]
+    }
+  },
+  "real_client": {
+    "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-74h7sysb",
+    "status": "passed",
+    "blackhole": true,
+    "arrivals": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "client_log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-74h7sysb\\real-client.log",
+    "source_differences_from_current": [
+      "content/scripts/shadowvaultsnapshot2hm.lua",
+      "content/scripts/shadowvaultsnapshotcore2hm.lua",
+      "content/scripts/shadowvaulttransport2hm.lua"
+    ],
+    "report": "vault-native-only-real-client-20261106.json"
+  }
+}

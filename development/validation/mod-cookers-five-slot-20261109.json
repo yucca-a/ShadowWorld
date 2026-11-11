@@ -1,0 +1,163 @@
+{
+  "date": "2026-11-09",
+  "status": "passed",
+  "published": false,
+  "public_version": "2.8.15.0.16",
+  "scope": "Legion/Medal five-input cooking, Smart Pot row previews and adaptive UI separation",
+  "source_sha256": {
+    "common/food_util.lua": "6cdae5097679db475c8e738d36de35a1e652c90d1c8d85902e3bcd094598c2fc",
+    "food/cooking.lua": "d0327b2e80a8319a324dc8d604e7a1074fb35db44984bf6dd53f54868b5baad2",
+    "scripts/fiveslotcookers2hm.lua": "186db0f92839fcbcdd11681755c6724884fc0255f1064f8d6aa92341064df265",
+    "scripts/cookpreviewlayout2hm.lua": "06a324f8b1b5dec29664d7760136759e700eb2dd4a2b5ad3dd69c75d16441b21"
+  },
+  "lua51_files": 410,
+  "unit_checks": {
+    "cooker_rules_and_actual_smartpot_methods": 44,
+    "five_slot_routing": 190,
+    "layout_viewport_cases": 360,
+    "layout_lifecycle": [
+      "negative/nonuniform scale",
+      "popup stat icons outside background",
+      "move and resize",
+      "restore scale/position/Show",
+      "late old close preserves new owner"
+    ]
+  },
+  "native_backend": [
+    {
+      "result": "work/native-five-slot-beta-g16g8g2s/result.json",
+      "passed": true,
+      "arguments": {
+        "edition": "beta",
+        "stats": true,
+        "patch_off": true,
+        "mode": -3,
+        "baseline": false,
+        "disk": false,
+        "mod_cookers": true,
+        "port": 10998
+      },
+      "phase_summaries": [
+        {
+          "phase": "normal",
+          "passed": true,
+          "summary": [
+            "[00:00:48]: [FIVE_SLOT_TEST] RESULT\tcases=18\tchecks=229\tfailures=0\t"
+          ]
+        }
+      ]
+    },
+    {
+      "result": "work/native-five-slot-solo-_u5p25fb/result.json",
+      "passed": true,
+      "arguments": {
+        "edition": "solo",
+        "stats": false,
+        "patch_off": false,
+        "mode": -3,
+        "baseline": false,
+        "disk": false,
+        "mod_cookers": true,
+        "port": 10998
+      },
+      "phase_summaries": [
+        {
+          "phase": "normal",
+          "passed": true,
+          "summary": [
+            "[00:00:34]: [FIVE_SLOT_TEST] RESULT\tcases=18\tchecks=218\tfailures=0\t"
+          ]
+        }
+      ]
+    },
+    {
+      "result": "work/native-five-slot-beta-34_2gqus/result.json",
+      "passed": true,
+      "arguments": {
+        "edition": "beta",
+        "stats": true,
+        "patch_off": true,
+        "mode": -3,
+        "baseline": false,
+        "disk": true,
+        "mod_cookers": false
+      },
+      "phase_summaries": [
+        {
+          "phase": "seed",
+          "passed": true,
+          "summary": [
+            "[00:00:34]: [FIVE_SLOT_TEST] SEED_SAVED\t"
+          ]
+        },
+        {
+          "phase": "verify",
+          "passed": true,
+          "summary": [
+            "[00:00:31]: [FIVE_SLOT_TEST] RESULT\tcases=3\tchecks=37\tfailures=0\t"
+          ]
+        }
+      ]
+    }
+  ],
+  "rendered_client": [
+    {
+      "kind": "bundled",
+      "result": "work/vault-hardened-hosted-hc55ugvw/craftpot-client-result.json",
+      "passed": true,
+      "cases": 13,
+      "layout_checks": 14,
+      "resolution": [
+        1280,
+        720
+      ],
+      "final_source_matches": true
+    },
+    {
+      "kind": "classic",
+      "result": "work/vault-hardened-hosted-l1o2oywg/craftpot-client-result.json",
+      "passed": true,
+      "cases": 13,
+      "layout_checks": 14,
+      "resolution": [
+        1280,
+        720
+      ],
+      "final_source_matches": true
+    },
+    {
+      "kind": "refresh",
+      "result": "work/vault-hardened-hosted-4kqtbirq/craftpot-client-result.json",
+      "passed": true,
+      "cases": 13,
+      "layout_checks": 14,
+      "resolution": [
+        1280,
+        720
+      ],
+      "final_source_matches": true
+    }
+  ],
+  "installed_mod_versions": {
+    "legion_1392778117": "7.7.0",
+    "medal_1909182187": "1.6.8.2",
+    "bird_autumn_3161120380": "11.33",
+    "bird_spring_3161117403": "12.1",
+    "classic_727774324": "0.15.0",
+    "refresh_3822775840": "1.0"
+  },
+  "observations": [
+    "Observed actual rendered four-row cooker, recipe list and detail card separated with computer-use screenshot.",
+    "Client cases cover four cooker variants, fifth input, output exclusion, stack normalization, row changes, input removal, recipe popup, drag/scale and return to ordinary pot.",
+    "Each recipe list and popup must avoid the measured cooker/buttons and each other and stay inside the viewport.",
+    "Popup measurement includes protruding stat icons. Layout restores original methods, position and scale on close."
+  ],
+  "limits": [
+    "Disposable offline servers/clients only; no player saves modified.",
+    "Actual viewport 1280x720; other resolutions/edge positions covered by 360 solver cases.",
+    "Scale test moves cooker +180,-100 and multiplies widget scale by 1.3; no manual HUD-setting or resolution-toggle matrix.",
+    "No exhaustive arbitrary mod combinations.",
+    "Backend evidence reused because cooking.lua and five-slot adapter match, and dedicated server rule path is unchanged.",
+    "Local changes only; no Workshop upload or version bump."
+  ]
+}

@@ -1,0 +1,36 @@
+WX-78 白天偶发滤镜异常排查（2026-11-10，未改运行代码）
+
+反馈
+角色为 WX-78；同时启用全能力 3366313760。是否安装夜视芯片／佩戴夜视装备不确定。
+截图处于暂停状态，场景偏灰白、紫色；暂停遮罩会影响画面明暗，不能仅凭截图确定具体色表。
+
+已核对源码
+- 淬炼 content/common/monster_nightvision.lua：普通 WX-78 没有额外 monster 标签时不会获得怪物夜视源。
+  视觉兼容包装适用于所有角色，按原生来源栈维护，不能因为角色不在怪物名单就排除它参与的可能性。
+- 淬炼 content/weather/dusk.lua：经典危险档会处理夜视芯片的世界状态回调及补光；默认长夜档不进入此段。
+- 全能力当前下载版 1.0.49：modmain/abilities/wx78_recipes.lua 的通用芯片 AddPlayerPostInit 首句跳过 prefab=wx78。
+  该文件是全能力内唯一调用 PushForcedNightVision/PopForcedNightVision 的运行模块。
+  time_stop.lua 触发 screenflash=.5，没有为其建立持续的全屏 colour cube 覆盖。
+  这不证明全能力和其他模组完全无关，但不支持“通用芯片代码直接给原生机器人叠了一层滤镜”的结论。
+- 当前原生 playervision 的夜视表：白天／满月 mole_vision_off_cc.tex，黄昏／夜晚 mole_vision_on_cc.tex。
+  夜视来源留在白天时，确实会选用夜视白天色表。截图是否就是该色表仍未实机确认。
+
+离线检查
+使用 tests/monster_nightvision_regression.lua 的实体／调度基础及当前淬炼补丁，
+直接执行游戏 playervision 和 wx78_moduledefs.lua 的 OnNightVisionUpdate。
+覆盖客户端／主机、怪物夜视配置开／关、原生夜视无色表技能开／关，8 组各 100 次昼夜切换。
+共 800 个昼夜周期、1602 项断言通过：无其他夜视源时，天亮后来源栈为空、夜视关闭、CC 表恢复 nil；
+夜视装备仍存在时，白天选用 mole_vision_off_cc；卸下装备后恢复默认。
+此检查不是完整模组组合的游戏画面实测，没有复现用户截图，也没有测试现场未知的全部装备和模组。
+
+结论
+夜视状态或视觉覆盖未退出是需要重点确认的方向，当前没有足够证据把它归因于淬炼多个滤镜互相覆盖。
+没有清空所有滤镜、禁止机器人夜视或修改／发布运行代码。
+
+再次发生时，在客户端本地控制台读取：
+local c=TheWorld.components.colourcube;print(c and c:GetDebugString() or "请切换到本地控制台")
+
+需要更完整的只读输出时：
+local v=ThePlayer and ThePlayer.components.playervision;if v then print("VISION",TheWorld.state.phase,v.nightvision,v.forcenightvision,v.nonightvisioncc,v.ghostvision);for _,s in ipairs(v.forcednightvisionstack)do print("SOURCE",tostring(s.source),s.priority,s.nonightvisioncc)end end;local c=TheWorld.components.colourcube;if c then print(c:GetDebugString())end
+
+该输出可以区分实际季节／昼夜色表、理智／月岛色表、强制覆盖，以及仍存活的夜视来源。

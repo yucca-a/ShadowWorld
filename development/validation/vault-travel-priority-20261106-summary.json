@@ -1,0 +1,172 @@
+{
+  "status": "historical_before_native_only_migration",
+  "superseded_by": "vault-native-only-20261106.txt",
+  "native_build": 761239,
+  "source_sha256": {
+    "content/easy_other/shadowvault.lua": "77f90b68c7cc521c46c299e54cd49a29169be9f62abfb35fa7dc1f28fbed4a43",
+    "content/easy_other/shadowvaultsnapshot.lua": "12588a6058d319f85eb5d108da539f653e8da59e1b414279716a78bbb628328b",
+    "content/scripts/components/shadowvault2hm.lua": "5e10f6188120f6dd4e19269159c159cbb862dd7f01ae4e70627184cc7688beca",
+    "content/scripts/shadowvaultcourier2hm.lua": "8c6894387b7d5af961210511790d2ed685d34846277c30ec51aadc7122516fd9",
+    "content/scripts/shadowvaultsnapshot2hm.lua": "c8a396506d07e2b197389d59666447895e4a10af44a0395405f4d7a91d022a1b",
+    "content/scripts/shadowvaultsnapshotcore2hm.lua": "7ac45175e89a769559598970d0c54865b920827afb68ffa508a8498a0a2d9f86"
+  },
+  "changes_from_turn_baseline": {
+    "content/easy_other/shadowvault.lua": {
+      "added": 0,
+      "removed": 17
+    },
+    "content/easy_other/shadowvaultsnapshot.lua": {
+      "added": 35,
+      "removed": 11
+    },
+    "content/scripts/components/shadowvault2hm.lua": {
+      "added": 10,
+      "removed": 1
+    },
+    "content/scripts/shadowvaultcourier2hm.lua": {
+      "added": 105,
+      "removed": 0
+    },
+    "content/scripts/shadowvaultsnapshot2hm.lua": {
+      "added": 45,
+      "removed": 10
+    },
+    "content/scripts/shadowvaultsnapshotcore2hm.lua": {
+      "added": 46,
+      "removed": 4
+    }
+  },
+  "benchmark": {
+    "native": {
+      "Caves": {
+        "samples": [
+          0.5667,
+          0.5333,
+          0.5333
+        ],
+        "median": 0.5333
+      },
+      "Master": {
+        "samples": [
+          0.5333,
+          0.5333,
+          0.5667
+        ],
+        "median": 0.5333
+      }
+    },
+    "enabled": {
+      "Caves": {
+        "samples": [
+          0.6333,
+          0.6667,
+          0.6333
+        ],
+        "median": 0.6333
+      },
+      "Master": {
+        "samples": [
+          0.5333,
+          0.5667,
+          0.5667
+        ],
+        "median": 0.5667
+      }
+    }
+  },
+  "benchmark_scope": "server request-to-departure, includes native fade and probe sampling; not client loading time",
+  "cases": {
+    "controls": {
+      "status": "passed",
+      "report": "vault-travel-priority-faults-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-z_kvee3y",
+      "source_differences_from_archived_core": [
+        "content/scripts/shadowvaultcourier2hm.lua",
+        "content/scripts/shadowvaultsnapshot2hm.lua"
+      ]
+    },
+    "enabled": {
+      "status": "passed",
+      "report": "vault-travel-priority-final-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-z1lze_rc",
+      "source_differences_from_archived_core": [
+        "content/scripts/shadowvaultcourier2hm.lua",
+        "content/scripts/shadowvaultsnapshot2hm.lua"
+      ]
+    },
+    "full": {
+      "status": "passed",
+      "report": "vault-travel-priority-final-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-01o8xnv_",
+      "source_differences_from_archived_core": [
+        "content/scripts/shadowvaultcourier2hm.lua",
+        "content/scripts/shadowvaultsnapshot2hm.lua"
+      ]
+    },
+    "inflight": {
+      "status": "passed",
+      "report": "vault-travel-priority-forwarding-final-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-p3atxysb",
+      "source_differences_from_archived_core": []
+    },
+    "native": {
+      "status": "passed",
+      "report": "vault-travel-priority-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-0wwyri4g",
+      "source_differences_from_archived_core": [
+        "content/scripts/components/shadowvault2hm.lua",
+        "content/scripts/shadowvaultcourier2hm.lua",
+        "content/scripts/shadowvaultsnapshot2hm.lua",
+        "content/scripts/shadowvaultsnapshotcore2hm.lua"
+      ]
+    },
+    "save": {
+      "status": "passed",
+      "report": "vault-travel-priority-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-jw5iuxvj",
+      "source_differences_from_archived_core": [
+        "content/easy_other/shadowvaultsnapshot.lua",
+        "content/scripts/components/shadowvault2hm.lua",
+        "content/scripts/shadowvaultcourier2hm.lua",
+        "content/scripts/shadowvaultsnapshot2hm.lua",
+        "content/scripts/shadowvaultsnapshotcore2hm.lua"
+      ]
+    },
+    "unrelated": {
+      "status": "passed",
+      "report": "vault-travel-priority-final-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-fq04coo8",
+      "source_differences_from_archived_core": [
+        "content/scripts/shadowvaultcourier2hm.lua"
+      ]
+    },
+    "yield_crash": {
+      "status": "passed",
+      "report": "vault-travel-priority-faults-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-s8njidd1",
+      "source_differences_from_archived_core": [
+        "content/scripts/shadowvaultcourier2hm.lua",
+        "content/scripts/shadowvaultsnapshot2hm.lua"
+      ]
+    }
+  },
+  "real_client": {
+    "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-eippsggj",
+    "status": "passed",
+    "arrivals": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "client_log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-eippsggj\\real-client.log",
+    "source_differences_from_archived_core": [
+      "content/scripts/shadowvaultcourier2hm.lua",
+      "content/scripts/shadowvaultsnapshot2hm.lua"
+    ],
+    "report": "vault-real-client-travel-20261106.json"
+  }
+}

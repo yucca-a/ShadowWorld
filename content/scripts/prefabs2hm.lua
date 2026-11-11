@@ -109,4 +109,5 @@ return {
     "spiderbag2hm",
     "devil_heart2hm",
     "eyeturret_safefire2hm",
+    "slingshotammo_moonglass_walter2hm",
 }

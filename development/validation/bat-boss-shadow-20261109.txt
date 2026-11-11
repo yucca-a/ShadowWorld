@@ -1,0 +1,36 @@
+猎犬蝙蝠 Boss 影子附着回收崩溃（2026-11-09）
+
+依据：用户提供的 Downloads/日志.txt，01:22:36 的错误。
+bat_boss 影子通过 SGbat 的 chomp_attack 附着在 spider_warrior 头上，进入 LIMBO。
+onputininventory 被通用影子拾取规则视为击杀，下一帧执行 shadowworld.lua 的 removechild。
+EntityScript:Remove 先从 Ents 注销实体，随后 inventoryitem.OnRemoveEntity 触发原生卸装。
+OnUnequip 切换 stun_pre，旧 chomp_attack.onexit 恢复碰撞；此时 scheduler 无法为已注销实体
+创建 physicstask，OnUpdatePhysicsRadius 在无阻挡、半径恢复为 0.7 时访问 nil:Cancel()。
+
+修复（content/shadowworld.lua）：
+1. bat_boss 和 bat_boss_shadow 与 slurper 一样排除“拾取立即回收”，允许原生附着攻击。
+2. 分身在休眠/LIMBO/海鱼的直接回收分支中，若仍是装备，先通过原生
+   inventoryitem:RemoveFromOwner(true) 完成卸装，再 Remove。
+   保留卸装特效、外观、冷却和任务清理，不伪造 physicstask、不吞掉错误。
+
+复现与验证：
+work/python-3.12.8/python.exe tests/run_native_bat_boss_shadow.py --before work/bat-boss-shadow-before.lua
+work/python-3.12.8/python.exe tests/run_native_bat_boss_shadow.py
+work/python-3.12.8/python.exe tests/run_native_bat_boss_shadow.py --um
+
+旧源码冻结自本次修改之前；隔离专服复现与用户日志一致的完整关键调用链：
+standardcomponents.lua:1620 → ToggleOnCharacterCollisions → SGbat.lua:1181 →
+bat_boss.lua:291 → equippable/inventory/inventoryitem → EntityScript:Remove → shadowworld.lua:311。
+结果：work/vault-hardened-hosted-t_zm2aks/bat-boss-shadow-result.json（reproduced）。
+
+修复后原生测试覆盖 10 组场景、44 项检查：
+附着攻击保留；附着时距离回收；正常卸装及眩晕/冷却；落地淡出回收；
+非影子本体；原生暗影蝙蝠形态；普通影子拾取回收；缀食者原有排除规则；
+有真实角色碰撞阻挡时的回收及任务取消；附着时致命伤与父体子实体计数。
+完整淬炼：work/vault-hardened-hosted-_mnrfs82/bat-boss-shadow-result.json（passed，10组/44项）。
+完整淬炼＋妥测：work/vault-hardened-hosted-myuj91po/bat-boss-shadow-result.json（passed，10组/44项）。
+使用实际 shadow spawner、SGbat chomp_attack/TryHat、库存/装备、物理与 scheduler。
+测试显式推进攻击时间线至附着窗口；为蜘蛛补充库存/戴帽资格，以独立于第三方模组复现。
+
+限制：独立离线专服、一次性测试存档；未连接真实玩家客户端、未验收完整多模组组合。
+不改玩家存档，不发布工坊。此前工作区内其他未提交修改保持原样。

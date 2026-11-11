@@ -1,0 +1,25 @@
+{
+  "title": "淬炼之季 Wiki",
+  "status": "succeeded",
+  "access": "owner-private",
+  "url": "https://tempered-season-wiki.stormy-ant-2734.chatgpt.site",
+  "project_id": "appgprj_6aeab300ca58819193ec146fbf0d4571",
+  "version_id": "appgprj_6aeab300ca58819193ec146fbf0d4571~appgver_7bd0169f176c81918621a3b251c5222d",
+  "deployment_id": "appgdep_6aeab6e6328481919a04568ae9051ef0",
+  "source_commit": "f2b555d5d73d706b70436489f486f78bbc070248",
+  "published_at": "2026-11-04T04:39:14.667851+00:00",
+  "mod_version": "2.8.14.97.4",
+  "articles": 23,
+  "maintained_source": "wiki/",
+  "isolated_site_checkout": "work/tempered-season-site/",
+  "archive": "work/tempered-season-wiki-v1.tar.gz",
+  "verification": {
+    "static_pages": 24,
+    "local_links_and_anchors": 1228,
+    "javascript_syntax": "passed",
+    "search_index_integrity": "passed",
+    "local_http": 200,
+    "browser_visual_and_interaction_qa": "unverified; local browser automation disabled in Work settings",
+    "deployment": "native Sites tool reported succeeded"
+  }
+}

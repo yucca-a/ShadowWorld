@@ -1,0 +1,25 @@
+[
+  {
+    "key": "tianxingjian",
+    "title": "天行健",
+    "content": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\workshop\\tianxingjian\\content",
+    "description": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\workshop\\tianxingjian\\description.txt",
+    "changelog": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\workshop\\tianxingjian\\changelog.txt",
+    "preview": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\workshop\\tianxingjian\\preview.png",
+    "published_id": "3836527313",
+    "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3836527313",
+    "upload_status": "Published in ModUploader; browser title verified Chinese name"
+  },
+  {
+    "key": "tianxing_guard",
+    "title": "天行卫（服务端防护）",
+    "content": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\workshop\\tianxing_guard\\content",
+    "description": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\workshop\\tianxing_guard\\description.txt",
+    "changelog": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\workshop\\tianxing_guard\\changelog.txt",
+    "preview": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\workshop\\tianxing_guard\\preview.png",
+    "upload_status": "Published; official Steam API verified Public, Chinese title and version:0.1.1",
+    "published_id": "3836529679",
+    "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3836529679",
+    "published_version": "0.1.1"
+  }
+]

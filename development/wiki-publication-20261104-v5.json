@@ -1,0 +1,45 @@
+{
+  "date": "2026-11-04",
+  "version": "2.8.14.97.4",
+  "scope": "57 item articles and 2 related buildings; direct prose, recipes, acquisition, effects, upgrades, repair and configuration requirements",
+  "project_id": "appgprj_6aeab300ca58819193ec146fbf0d4571",
+  "checkout_path": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\tempered-season-site",
+  "commit_sha": "f282c2de56dfa8317fb15a382d013ce088bf7696",
+  "archive": "D:/Users/Yucca/Documents/ChatGPT/ShadowWorld/work/tempered-season-wiki-v5.tar.gz",
+  "deployment": {
+    "id": "appgdep_6aead208b1648191a6653118fac78e1f",
+    "project_id": "appgprj_6aeab300ca58819193ec146fbf0d4571",
+    "title": "淬炼之季 Wiki",
+    "version_id": "appgprj_6aeab300ca58819193ec146fbf0d4571~appgver_a97b9d2570708191b082cf810217ff8e",
+    "type": "publish",
+    "status": "succeeded",
+    "url": "https://tempered-season-wiki.stormy-ant-2734.chatgpt.site",
+    "has_mcp": false,
+    "screenshot_asset_pointer": null,
+    "provider_deployment_id": "site---6aeab300ca58819193ec146fbf0d4571",
+    "failure_message": null,
+    "env_set_revision": 0,
+    "updated_at": "2026-11-04T06:35:18.597774+00:00"
+  },
+  "validation": {
+    "pages": 250,
+    "articles": 247,
+    "configs": 424,
+    "choices": 3322,
+    "localLinksAndAnchors": 115731,
+    "searchEntries": 671,
+    "itemAuditArticles": 59,
+    "itemCategoryCoverage": 57,
+    "hashedModSources": 54,
+    "browser": [
+      "390px mobile configuration table",
+      "desktop structure and navigation",
+      "original eyeturret-s3 anchor",
+      "related configuration deep link",
+      "full-text search for 月火斩",
+      "published eye turret upgrade content"
+    ],
+    "gameRuntimeTested": false
+  },
+  "screenshot": "development/wiki-preview-v5-item-20261104.jpg"
+}

@@ -1,0 +1,3727 @@
+{
+  "date": "2026-11-10",
+  "dst_build": "762172",
+  "unit_checks": 25,
+  "lua51_compile": "passed",
+  "conclusion": "Fixed confirmed Halloween shadow form initialization conflicts; sustained native resident overpopulation not reproduced.",
+  "limitations": [
+    "Controlled housing/cleanup fixture; resident brains stopped and offscreen spawning allowed.",
+    "No affected player save, long-running natural AI simulation, complete other-mod stack, event retrofit or cross-shard migration test."
+  ],
+  "production_sha256": {
+    "content/shadowworld.lua": "8047eaf981079495338c0262ffa24fd719a8105beed9bb7e2a1cb46eb14cb47f",
+    "content/scripts/shadowhalloween2hm.lua": "8d3369b1e39e77e3cc30179f983a2a2a55ba3f4977b7625220f15ba13f783e81"
+  },
+  "runs": [
+    {
+      "label": "vanilla_halloween",
+      "probe": "capacity_control",
+      "status": "observed",
+      "raw_result": "work/vault-hardened-hosted-qm6sc49x/hallowed-population-result.json",
+      "mode": "vanilla",
+      "um": "none",
+      "event": true,
+      "samples": [
+        {
+          "label": "loaded_0",
+          "real": 2,
+          "shadow": 0,
+          "form_mismatch": null,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "cycled_0",
+          "real": 10,
+          "shadow": 0,
+          "form_mismatch": null,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "lifecycle_0",
+          "real": 10,
+          "shadow": 0,
+          "form_mismatch": null,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "loaded_1",
+          "real": 10,
+          "shadow": 0,
+          "form_mismatch": null,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "cycled_1",
+          "real": 10,
+          "shadow": 0,
+          "form_mismatch": null,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "lifecycle_1",
+          "real": 5,
+          "shadow": 0,
+          "form_mismatch": null,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        }
+      ],
+      "lethal_cleanup": []
+    },
+    {
+      "label": "shadow_off_um_beta",
+      "probe": "capacity_control",
+      "status": "observed",
+      "raw_result": "work/vault-hardened-hosted-omwc6ejg/hallowed-population-result.json",
+      "mode": "off",
+      "um": "beta",
+      "event": true,
+      "samples": [
+        {
+          "label": "loaded_0",
+          "real": 3,
+          "shadow": 0,
+          "form_mismatch": null,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "cycled_0",
+          "real": 10,
+          "shadow": 0,
+          "form_mismatch": null,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "lifecycle_0",
+          "real": 10,
+          "shadow": 0,
+          "form_mismatch": null,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "loaded_1",
+          "real": 10,
+          "shadow": 0,
+          "form_mismatch": null,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "cycled_1",
+          "real": 10,
+          "shadow": 0,
+          "form_mismatch": null,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "lifecycle_1",
+          "real": 5,
+          "shadow": 0,
+          "form_mismatch": null,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        }
+      ],
+      "lethal_cleanup": []
+    },
+    {
+      "label": "before_um_beta",
+      "probe": "parent_home_and_lethal",
+      "status": "observed",
+      "raw_result": "work/vault-hardened-hosted-hlxel483/hallowed-population-result.json",
+      "mode": "on",
+      "um": "beta",
+      "event": true,
+      "samples": [
+        {
+          "label": "loaded_0",
+          "real": 3,
+          "shadow": 0,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "cycled_0",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": 4,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 1
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 1
+            }
+          ]
+        },
+        {
+          "label": "lifecycle_0",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": 4,
+          "lifecycle_cleanup": {
+            "remaining": 0,
+            "attempted": 10
+          },
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 1
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 1
+            }
+          ]
+        },
+        {
+          "label": "loaded_1",
+          "real": 10,
+          "shadow": 0,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "cycled_1",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": 4,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 1
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 1
+            }
+          ]
+        },
+        {
+          "label": "lifecycle_1",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": 4,
+          "lifecycle_cleanup": {
+            "remaining": 0,
+            "attempted": 10
+          },
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 1
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 1
+            }
+          ]
+        }
+      ],
+      "lethal_cleanup": [
+        {
+          "remaining": 0,
+          "kind": "population_cleanup",
+          "attempted": 10,
+          "label": "cleanup_0"
+        },
+        {
+          "remaining": 0,
+          "kind": "population_cleanup",
+          "attempted": 10,
+          "label": "cleanup_1"
+        }
+      ]
+    },
+    {
+      "label": "after_um_beta_two_restarts",
+      "probe": "lethal_cleanup_extended",
+      "status": "passed",
+      "raw_result": "work/vault-hardened-hosted-cafvvhuo/hallowed-population-result.json",
+      "mode": "on",
+      "um": "beta",
+      "event": true,
+      "samples": [
+        {
+          "label": "loaded_0",
+          "real": 3,
+          "shadow": 0,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "cycled_0",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 3,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 1
+            }
+          ]
+        },
+        {
+          "label": "lifecycle_0",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 3,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 1
+            }
+          ]
+        },
+        {
+          "label": "loaded_1",
+          "real": 10,
+          "shadow": 0,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "cycled_1",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 3,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 1
+            }
+          ]
+        },
+        {
+          "label": "lifecycle_1",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 3,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 1
+            }
+          ]
+        },
+        {
+          "label": "loaded_2",
+          "real": 10,
+          "shadow": 0,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "cycled_2",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 3,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 1
+            }
+          ]
+        },
+        {
+          "label": "lifecycle_2",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 3,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 1
+            }
+          ]
+        }
+      ],
+      "lethal_cleanup": [
+        {
+          "remaining": 0,
+          "kind": "population_cleanup",
+          "attempted": 10,
+          "label": "cleanup_0"
+        },
+        {
+          "remaining": 0,
+          "kind": "population_cleanup",
+          "attempted": 10,
+          "label": "cleanup_1"
+        },
+        {
+          "remaining": 0,
+          "kind": "population_cleanup",
+          "attempted": 10,
+          "label": "cleanup_2"
+        }
+      ]
+    },
+    {
+      "label": "after_um_beta",
+      "probe": "parent_home_and_lethal",
+      "status": "passed",
+      "raw_result": "work/vault-hardened-hosted-6j5f9m3b/hallowed-population-result.json",
+      "mode": "on",
+      "um": "beta",
+      "event": true,
+      "samples": [
+        {
+          "label": "loaded_0",
+          "real": 3,
+          "shadow": 0,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "cycled_0",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 3,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 1
+            }
+          ]
+        },
+        {
+          "label": "lifecycle_0",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": {
+            "remaining": 0,
+            "attempted": 10
+          },
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 3,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 1
+            }
+          ]
+        },
+        {
+          "label": "loaded_1",
+          "real": 10,
+          "shadow": 0,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "cycled_1",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 3,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 1
+            }
+          ]
+        },
+        {
+          "label": "lifecycle_1",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": {
+            "remaining": 0,
+            "attempted": 10
+          },
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 3,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 1
+            }
+          ]
+        }
+      ],
+      "lethal_cleanup": [
+        {
+          "remaining": 0,
+          "kind": "population_cleanup",
+          "attempted": 10,
+          "label": "cleanup_0"
+        },
+        {
+          "remaining": 0,
+          "kind": "population_cleanup",
+          "attempted": 10,
+          "label": "cleanup_1"
+        }
+      ]
+    },
+    {
+      "label": "after_um_stable",
+      "probe": "parent_home_and_lethal",
+      "status": "passed",
+      "raw_result": "work/vault-hardened-hosted-8tp97zsz/hallowed-population-result.json",
+      "mode": "on",
+      "um": "stable",
+      "event": true,
+      "samples": [
+        {
+          "label": "loaded_0",
+          "real": 3,
+          "shadow": 0,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "cycled_0",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 3,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 1
+            }
+          ]
+        },
+        {
+          "label": "lifecycle_0",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": {
+            "remaining": 0,
+            "attempted": 10
+          },
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 3,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 1
+            }
+          ]
+        },
+        {
+          "label": "loaded_1",
+          "real": 10,
+          "shadow": 0,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "cycled_1",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 3,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 1
+            }
+          ]
+        },
+        {
+          "label": "lifecycle_1",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": {
+            "remaining": 0,
+            "attempted": 10
+          },
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 3,
+              "franken": 0,
+              "shadowmummy": 3,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 1,
+              "shadowmummy": 0,
+              "shadowfranken": 1
+            }
+          ]
+        }
+      ],
+      "lethal_cleanup": [
+        {
+          "remaining": 0,
+          "kind": "population_cleanup",
+          "attempted": 10,
+          "label": "cleanup_0"
+        },
+        {
+          "remaining": 0,
+          "kind": "population_cleanup",
+          "attempted": 10,
+          "label": "cleanup_1"
+        }
+      ]
+    },
+    {
+      "label": "before_event_off",
+      "probe": "capacity_control",
+      "status": "observed",
+      "raw_result": "work/vault-hardened-hosted-r3okk535/hallowed-population-result.json",
+      "mode": "on",
+      "um": "none",
+      "event": false,
+      "samples": [
+        {
+          "label": "loaded_0",
+          "real": 3,
+          "shadow": 0,
+          "form_mismatch": null,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "cycled_0",
+          "real": 10,
+          "shadow": 8,
+          "form_mismatch": null,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "lifecycle_0",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": null,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "loaded_1",
+          "real": 10,
+          "shadow": 0,
+          "form_mismatch": null,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "cycled_1",
+          "real": 10,
+          "shadow": 0,
+          "form_mismatch": null,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "lifecycle_1",
+          "real": 2,
+          "shadow": 2,
+          "form_mismatch": null,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        }
+      ],
+      "lethal_cleanup": []
+    },
+    {
+      "label": "after_event_off",
+      "probe": "parent_home_and_lethal",
+      "status": "passed",
+      "raw_result": "work/vault-hardened-hosted-qyy3aykk/hallowed-population-result.json",
+      "mode": "on",
+      "um": "none",
+      "event": false,
+      "samples": [
+        {
+          "label": "loaded_0",
+          "real": 3,
+          "shadow": 0,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 0,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "cycled_0",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "lifecycle_0",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": {
+            "remaining": 0,
+            "attempted": 10
+          },
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "loaded_1",
+          "real": 10,
+          "shadow": 0,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 0,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "cycled_1",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": null,
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        },
+        {
+          "label": "lifecycle_1",
+          "real": 10,
+          "shadow": 10,
+          "form_mismatch": 0,
+          "lifecycle_cleanup": {
+            "remaining": 0,
+            "attempted": 10
+          },
+          "houses": [
+            {
+              "token": "population_1_normal",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_2_mummy",
+              "max": 3,
+              "real": 3,
+              "shadow": 3,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_3_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_4_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_5_normal",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            },
+            {
+              "token": "population_6_franken",
+              "max": 1,
+              "real": 1,
+              "shadow": 1,
+              "mummy": 0,
+              "franken": 0,
+              "shadowmummy": 0,
+              "shadowfranken": 0
+            }
+          ]
+        }
+      ],
+      "lethal_cleanup": [
+        {
+          "remaining": 0,
+          "kind": "population_cleanup",
+          "attempted": 10,
+          "label": "cleanup_0"
+        },
+        {
+          "remaining": 0,
+          "kind": "population_cleanup",
+          "attempted": 10,
+          "label": "cleanup_1"
+        }
+      ]
+    }
+  ]
+}

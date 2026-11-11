@@ -1,0 +1,17 @@
+{
+  "publishedfileid": "3836529679",
+  "result": 1,
+  "title": "天行卫（服务端防护）",
+  "visibility": 0,
+  "file_size": "0",
+  "time_updated": 1794197299,
+  "tags": [
+    {
+      "tag": "server_only_mod"
+    },
+    {
+      "tag": "version:0.1.1"
+    }
+  ],
+  "protected_release_description": true
+}

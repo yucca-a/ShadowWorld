@@ -1,0 +1,419 @@
+[
+  {
+    "variant": "hosted",
+    "scenario": "full_restart",
+    "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-fgpn5zhp",
+    "checks": [
+      {
+        "name": "baseline",
+        "expected": {
+          "gold": 17,
+          "axe": 1
+        },
+        "actual": {
+          "axe": 1,
+          "gold": 17
+        },
+        "conserved": true,
+        "quiescent": true,
+        "state": {
+          "Master": {
+            "dropped": 0,
+            "locations": {
+              "shadowvaultpage2hm": 18
+            },
+            "label": "baseline",
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              },
+              {
+                "token": "axe",
+                "data": {
+                  "count": 1,
+                  "uses": 43,
+                  "prefab": "axe"
+                }
+              }
+            ],
+            "snapshot": 6,
+            "banks": {
+              "1": [],
+              "2": {
+                "1": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                },
+                "2": {
+                  "count": 1,
+                  "uses": 43,
+                  "prefab": "axe"
+                }
+              }
+            },
+            "pending": 0,
+            "shard": "1",
+            "time": 12.333333976567,
+            "saves": 3,
+            "duplicated": 0,
+            "kind": "state",
+            "goods": {
+              "axe": 1,
+              "gold": 17
+            },
+            "sent": 15
+          },
+          "Caves": {
+            "dropped": 0,
+            "locations": [],
+            "label": "baseline",
+            "details": [],
+            "snapshot": 6,
+            "banks": [],
+            "pending": 0,
+            "shard": "2",
+            "time": 12.666667327285,
+            "saves": 3,
+            "duplicated": 0,
+            "kind": "state",
+            "goods": [],
+            "sent": 16
+          }
+        }
+      },
+      {
+        "name": "held_full",
+        "expected": {
+          "gold": 17,
+          "axe": 1
+        },
+        "actual": {
+          "axe": 1,
+          "gold": 17
+        },
+        "conserved": true,
+        "quiescent": false,
+        "state": {
+          "Master": {
+            "dropped": 0,
+            "locations": {
+              "shadowvaultpage2hm": 1
+            },
+            "label": "held_full",
+            "details": [
+              {
+                "token": "axe",
+                "data": {
+                  "count": 1,
+                  "uses": 43,
+                  "prefab": "axe"
+                }
+              }
+            ],
+            "snapshot": 8,
+            "banks": {
+              "1": [],
+              "2": {
+                "2": {
+                  "count": 1,
+                  "uses": 43,
+                  "prefab": "axe"
+                }
+              }
+            },
+            "pending": 0,
+            "shard": "1",
+            "time": 20.433334399015,
+            "saves": 5,
+            "duplicated": 0,
+            "kind": "state",
+            "goods": {
+              "axe": 1
+            },
+            "sent": 34
+          },
+          "Caves": {
+            "dropped": 0,
+            "locations": {
+              "shadowvaulttransfer2hm": 17
+            },
+            "label": "held_full",
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "snapshot": 8,
+            "banks": [],
+            "pending": 1,
+            "shard": "2",
+            "time": 20.90000109002,
+            "saves": 5,
+            "duplicated": 0,
+            "kind": "state",
+            "goods": {
+              "gold": 17
+            },
+            "sent": 33
+          }
+        },
+        "held": true
+      },
+      {
+        "name": "held_after_restart",
+        "expected": {
+          "gold": 17,
+          "axe": 1
+        },
+        "actual": {
+          "axe": 1,
+          "gold": 17
+        },
+        "conserved": true,
+        "quiescent": false,
+        "state": {
+          "Master": {
+            "dropped": 0,
+            "locations": {
+              "shadowvaultpage2hm": 1
+            },
+            "label": "held_after_restart",
+            "details": [
+              {
+                "token": "axe",
+                "data": {
+                  "count": 1,
+                  "uses": 43,
+                  "prefab": "axe"
+                }
+              }
+            ],
+            "snapshot": 9,
+            "banks": {
+              "1": [],
+              "2": {
+                "2": {
+                  "count": 1,
+                  "uses": 43,
+                  "prefab": "axe"
+                }
+              }
+            },
+            "pending": 0,
+            "shard": "1",
+            "time": 8.3666671030223,
+            "saves": 0,
+            "duplicated": 0,
+            "kind": "state",
+            "goods": {
+              "axe": 1
+            },
+            "sent": 5
+          },
+          "Caves": {
+            "dropped": 0,
+            "locations": {
+              "shadowvaulttransfer2hm": 17
+            },
+            "label": "held_after_restart",
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "snapshot": 9,
+            "banks": [],
+            "pending": 1,
+            "shard": "2",
+            "time": 8.6333337835968,
+            "saves": 0,
+            "duplicated": 0,
+            "kind": "state",
+            "goods": {
+              "gold": 17
+            },
+            "sent": 3
+          }
+        },
+        "one_delivery": true,
+        "other_item_untouched": true
+      },
+      {
+        "name": "delivered_once",
+        "expected": {
+          "gold": 17,
+          "axe": 1
+        },
+        "actual": {
+          "axe": 1,
+          "gold": 17
+        },
+        "conserved": true,
+        "quiescent": true,
+        "state": {
+          "Master": {
+            "dropped": 0,
+            "locations": {
+              "shadowvaultpage2hm": 1
+            },
+            "label": "settle_confirm",
+            "details": [
+              {
+                "token": "axe",
+                "data": {
+                  "count": 1,
+                  "uses": 43,
+                  "prefab": "axe"
+                }
+              }
+            ],
+            "snapshot": 9,
+            "banks": {
+              "1": [],
+              "2": {
+                "2": {
+                  "count": 1,
+                  "uses": 43,
+                  "prefab": "axe"
+                }
+              }
+            },
+            "pending": 0,
+            "shard": "1",
+            "time": 10.233333867043,
+            "saves": 0,
+            "duplicated": 0,
+            "kind": "state",
+            "goods": {
+              "axe": 1
+            },
+            "sent": 7
+          },
+          "Caves": {
+            "dropped": 0,
+            "locations": {
+              "KU_VA_2_1": 17
+            },
+            "label": "settle_confirm",
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "snapshot": 9,
+            "banks": [],
+            "pending": 0,
+            "shard": "2",
+            "time": 10.500000547618,
+            "saves": 0,
+            "duplicated": 0,
+            "kind": "state",
+            "goods": {
+              "gold": 17
+            },
+            "sent": 5
+          }
+        },
+        "completed": true
+      },
+      {
+        "name": "delivered_reload",
+        "expected": {
+          "gold": 17,
+          "axe": 1
+        },
+        "actual": {
+          "axe": 1,
+          "gold": 17
+        },
+        "conserved": true,
+        "quiescent": true,
+        "state": {
+          "Master": {
+            "dropped": 0,
+            "locations": {
+              "shadowvaultpage2hm": 1
+            },
+            "label": "settle_confirm",
+            "details": [
+              {
+                "token": "axe",
+                "data": {
+                  "count": 1,
+                  "uses": 43,
+                  "prefab": "axe"
+                }
+              }
+            ],
+            "snapshot": 10,
+            "banks": {
+              "1": [],
+              "2": {
+                "2": {
+                  "count": 1,
+                  "uses": 43,
+                  "prefab": "axe"
+                }
+              }
+            },
+            "pending": 0,
+            "shard": "1",
+            "time": 6.0333336479962,
+            "saves": 0,
+            "duplicated": 0,
+            "kind": "state",
+            "goods": {
+              "axe": 1
+            },
+            "sent": 0
+          },
+          "Caves": {
+            "dropped": 0,
+            "locations": {
+              "KU_VA_2_1": 17
+            },
+            "label": "settle_confirm",
+            "details": [
+              {
+                "token": "gold",
+                "data": {
+                  "count": 17,
+                  "prefab": "goldnugget"
+                }
+              }
+            ],
+            "snapshot": 10,
+            "banks": [],
+            "pending": 0,
+            "shard": "2",
+            "time": 6.233333658427,
+            "saves": 0,
+            "duplicated": 0,
+            "kind": "state",
+            "goods": {
+              "gold": 17
+            },
+            "sent": 0
+          }
+        }
+      }
+    ],
+    "status": "finished"
+  }
+]

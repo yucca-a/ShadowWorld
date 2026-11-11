@@ -804,7 +804,7 @@ local function phase3Vac2hm(inst)
     if not inst.moonpulsefxcd2hmtask then
         for index, player in ipairs(AllPlayers) do
             if not IsEntityDeadOrGhost(player) and not (player.sg and player.sg:HasStateTag("knockout")) and inst:GetDistanceSqToInst(player) <= 25 and
-                Vector3(player.Physics:GetVelocity()):LengthSq() > (alterguardianmode == -5 and 100 or 63) then -- 弹飞阈值:仅时停版本天体用100(10格/秒),其他档用原版63
+                Vector3(player.Physics:GetVelocity()):LengthSq() > (alterguardianmode == -5 and 144 or 63) then -- 弹飞阈值:仅时停版本天体用144(12格/秒),其他档用原版63
                 if not inst.moonpulsefx2hmtask then
                     inst.moonpulsefx2hmtask = inst:DoTaskInTime(1.5, cancelmoonpulsefx2hmtask)
                     SpawnPrefab("moonpulse_fx").Transform:SetPosition(inst.Transform:GetWorldPosition())
@@ -967,34 +967,9 @@ local function clearicetilescd2hmtask(inst) inst.icetilescd2hmtask = nil end
 
 -- 旧靴子免疫滑倒
 if not GetModConfigData("sharkboi") then
-    local function bootlegcancel(inst)
-        local oldowner = inst.oldowner2hm
-        inst.oldowner2hm = nil
-        if oldowner and oldowner:IsValid() and oldowner.bootlegs2hm then
-            for i = #oldowner.bootlegs2hm, 1, -1 do
-                local bootleg = oldowner.bootlegs2hm[i]
-                if bootleg == inst then
-                    table.remove(oldowner.bootlegs2hm, i)
-                    break
-                end
-            end
-            if IsTableEmpty(oldowner.bootlegs2hm) and not oldowner:HasTag("playerghost") and not oldowner.components.slipperyfeet then
-                oldowner:AddComponent("slipperyfeet")
-                oldowner.bootlegs2hm = nil
-            end
-        end
-    end
-    local function bootlegupdate(inst)
-        local owner = inst.components.inventoryitem:GetGrandOwner()
-        if owner == inst.oldowner2hm then return end
-        bootlegcancel(inst)
-        if owner and owner:IsValid() and owner:HasTag("player") and owner.components.slipperyfeet then
-            inst.oldowner2hm = owner
-            inst.oldowner2hm:RemoveComponent("slipperyfeet")
-            owner.bootlegs2hm = owner.bootlegs2hm or {}
-            table.insert(owner.bootlegs2hm, inst)
-        end
-    end
+    local nonslip = require("bootlegnonslip2hm")
+    local bootlegcancel = nonslip.Remove
+    local bootlegupdate = nonslip.Update
     local function delaybootlegupdate(inst) inst:DoTaskInTime(0, bootlegupdate) end
 
     AddPrefabPostInit("bootleg", function(inst)
@@ -1199,7 +1174,7 @@ AddPrefabPostInit("alterguardian_phase3", function(inst)
     inst:ListenForEvent("death", phase3ondeath)
     -- inst.swc2hmfn = phase3processswc
     if not inst.components.persistent2hm then inst:AddComponent("persistent2hm") end
-    if TUNING.shadowworld2hm then
+    if TUNING.shadowworld2hm and not inst.disablesw2hm then
         inst.swp2hmfn = swp2hmfn
     else
         swp2hmfn(inst)

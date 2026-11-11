@@ -1,0 +1,121 @@
+{
+  "updatedAt": "2026-11-04",
+  "status": "deployed",
+  "repository": "https://github.com/yucca-a/tempered-season-wiki",
+  "visibility": "private",
+  "branch": "main",
+  "commit": "cf6a022a3495821e35bdf37024b7892946ffdf4e",
+  "checkout": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\tempered-season-cloudflare",
+  "framework": "None",
+  "buildCommand": "node build.mjs && node check.mjs",
+  "outputDirectory": "dist",
+  "nodeVersion": "22",
+  "validation": {
+    "htmlPages": 250,
+    "articles": 247,
+    "configurations": 424,
+    "choices": 3322,
+    "searchEntries": 671,
+    "linksAndAnchors": 122591
+  },
+  "publicUrl": "https://cuilian-wiki.pages.dev/",
+  "mainlandAccessTest": {
+    "status": "not_run_at_user_request",
+    "target": "https://cuilian-wiki.pages.dev/"
+  },
+  "blocker": null,
+  "staticFileCount": 444,
+  "externalRuntimeAssets": [],
+  "cloudflareAccountId": "398638a02c199cb5a7394afd90ce8231",
+  "projectName": "cuilian-wiki",
+  "deploymentId": "d1947c28-cfaa-4e08-b70c-fe06ffd8fd65",
+  "previewUrl": "https://d1947c28.cuilian-wiki.pages.dev/",
+  "automaticDeployments": true,
+  "githubAppRepositoryAccess": [
+    "tempered-season-wiki"
+  ],
+  "browserChecks": [
+    "homepage opened successfully with expected version, introduction, 247 articles and 424 configurations",
+    "homepage styles and icons rendered"
+  ],
+  "domainPreference": "cuilian-wiki.pages.dev selected for the requested 淬炼 Wiki name.",
+  "previousDeployments": [
+    {
+      "projectName": "tempered-season-wiki",
+      "publicUrl": "https://tempered-season-wiki.pages.dev/",
+      "deploymentId": "bbf44330-dd76-409b-ac3d-f574510e059f",
+      "previewUrl": "https://bbf44330.tempered-season-wiki.pages.dev/",
+      "mainlandAccessTest": {
+        "status": "completed_with_access_failures",
+        "provider": "52CE",
+        "testedAtLocal": "2026-11-04 (Asia/Shanghai)",
+        "target": "https://tempered-season-wiki.pages.dev/",
+        "allNodes": {
+          "total": 31,
+          "responded": 11,
+          "abnormal": 20
+        },
+        "mainland": {
+          "total": 18,
+          "responded": 3,
+          "abnormal": 15
+        },
+        "groups": {
+          "中国电信": {
+            "total": 8,
+            "responded": 0,
+            "abnormal": 8
+          },
+          "中国联通": {
+            "total": 1,
+            "responded": 0,
+            "abnormal": 1
+          },
+          "中国移动": {
+            "total": 1,
+            "responded": 1,
+            "abnormal": 0
+          },
+          "多线网络": {
+            "total": 8,
+            "responded": 2,
+            "abnormal": 6
+          },
+          "港澳台 / 海外": {
+            "total": 13,
+            "responded": 8,
+            "abnormal": 5
+          }
+        },
+        "control": {
+          "target": "https://www.baidu.com/",
+          "results": {
+            "total": 31,
+            "responded": 31,
+            "abnormal": 0
+          }
+        },
+        "limitations": "Single provider and snapshot; HTTP 0 or empty error details do not identify the failure cause. Mainland sample has only one Unicom and one Mobile node. This does not establish all-player accessibility.",
+        "evidence": [
+          "development/wiki-cloudflare-52ce-20261104.json",
+          "development/wiki-cloudflare-52ce-control-20261104.json",
+          "development/wiki-cloudflare-52ce-20261104.png"
+        ]
+      },
+      "commandLineProbe": {
+        "status": 403,
+        "cloudflareCode": 1010,
+        "interpretation": "Automated Python request rejected; browser succeeds. Not a mainland reachability measurement."
+      },
+      "browserChecks": [
+        "home",
+        "article filter",
+        "item detail",
+        "full-text search",
+        "configuration anchor navigation"
+      ]
+    }
+  ],
+  "screenshot": "development/wiki-cuilian-live-20261104.png",
+  "oldProjectRetained": true
+}

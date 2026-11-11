@@ -1,0 +1,9 @@
+{
+  "completed": 1200,
+  "independent_crashes": 800,
+  "world_saves": 0,
+  "cancelled": 0,
+  "assertions": 7202,
+  "runs": 1200,
+  "scope": "Actual Lua durable protocol with simulated delayed local persistence; native tests are separate."
+}

@@ -1,0 +1,37 @@
+Browser tab: 19, Title: "cuilian-wiki | Workers & Pages | Yucca-a@outlook.com's Account | Cloudflare", URL: "https://dash.cloudflare.com/398638a02c199cb5a7394afd90ce8231/pages/view/cuilian-wiki".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
++				141 container breadcrumb
++					142 link Description: Workers & Pages, Value: dash.cloudflare.com/398638a02c199cb5a7394afd90ce8231/workers-and-pages
++					143 text cuilian-wiki
++			144 container
++				145 container
++					146 tab group
++						147 tab (selected, settable, boolean) Deployments, Value: 1, ID: base-ui-:r34:
++						148 tab (selectable, settable, boolean) Metrics, Value: 0, ID: base-ui-:r35:
++						149 tab (selectable, settable, boolean) Custom domains, Value: 0, ID: base-ui-:r36:
++						150 tab (selectable, settable, boolean) Settings, Value: 0, ID: base-ui-:r37:
++				151 link Description: yucca-a/tempered-season-wiki, Value: github.com/yucca-a/tempered-season-wiki
++				152 text Production Automatic deployments enabled Domains:
++				153 content list
++					154 link Description: cuilian-wiki.pages.dev, Value: cuilian-wiki.pages.dev/
++				155 container
++					156 text Environment Source Deployment Status
++				157 container
++					158 text Production main
++					159 link Description: cf6a022, Help: Publish current Wiki for Cloudflare Pages, Value: github.com/yucca-a/tempered-season-wiki/commit/cf6a022a3495821e35bdf37024b7892946ffdf4e
++					160 text Publish current Wiki for Cloudflare Pages
++					161 link Description: https://d1947c28.cuilian-wiki.pages.dev, Value: d1947c28.cuilian-wiki.pages.dev/
++					162 text a minute ago
++					163 link Description: Details, Value: dash.cloudflare.com/398638a02c199cb5a7394afd90ce8231/pages/view/cuilian-wiki/d1947c28-cfaa-4e08-b70c-fe06ffd8fd65
++				164 text All deployments
++				165 container
++					166 text Environment Source Deployment Status
++				167 container
++					168 text Production main
++					169 link Description: cf6a022, Help: Publish current Wiki for Cloudflare Pages, Value: github.com/yucca-a/tempered-season-wiki/commit/cf6a022a3495821e35bdf37024b7892946ffdf4e
++					170 text Publish current Wiki for Cloudflare Pages
++					171 link Description: https://d1947c28.cuilian-wiki.pages.dev, Value: d1947c28.cuilian-wiki.pages.dev/
++					172 text a minute ago
++					173 link Description: Details, Value: dash.cloudflare.com/398638a02c199cb5a7394afd90ce8231/pages/view/cuilian-wiki/d1947c28-cfaa-4e08-b70c-fe06ffd8fd65
++					174 pop up button (collapsed) Description: More actions, ID: base-ui-:r3g:, Secondary Actions: Expand
+The focused UI element is 0 AXWebArea cuilian-wiki | Workers & Pages | Yucca-a@outlook.com's Account | Cloudflare, URL: dash.cloudflare.com/398638a02c199cb5a7394afd90ce8231/pages/view/cuilian-wiki

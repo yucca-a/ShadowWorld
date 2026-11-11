@@ -1,0 +1,20 @@
+[
+  {
+    "edition": "solo",
+    "disabled": false,
+    "passed": true,
+    "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\winona-electric-solo-pc68hjse\\native.log"
+  },
+  {
+    "edition": "stable",
+    "disabled": false,
+    "passed": true,
+    "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\winona-electric-stable-wmpsbm69\\native.log"
+  },
+  {
+    "edition": "beta",
+    "disabled": false,
+    "passed": true,
+    "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\winona-electric-beta-doyqg8fv\\native.log"
+  }
+]

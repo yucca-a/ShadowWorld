@@ -1,3 +1,101 @@
+local BEEFALO_SIZE_BASE2HM = 1000
+local BEEFALO_HERD_RANGE2HM = 20
+local BEEFALO_SALTLICK_RANGE2HM = TUNING.SALTLICK_CHECK_DIST or 20
+local GROWTH_CHECK_INTERVAL2HM = 10
+local randomsizeenabled2hm = GetModConfigData("Random Sized")
+
+local function GetHerdHealthReference2hm(inst)
+    local x, y, z = inst.Transform:GetWorldPosition()
+    local herd = TheSim:FindEntities(x, y, z, BEEFALO_HERD_RANGE2HM, {"beefalo"}, {"INLIMBO"})
+    local total, count = 0, 0
+    for _, beefalo in ipairs(herd) do
+        local health = beefalo ~= inst and beefalo.components.health or nil
+        if health ~= nil and not beefalo:HasTag("baby") and not health:IsDead() then
+            total = total + health.maxhealth
+            count = count + 1
+        end
+    end
+    return count > 0 and total / count or BEEFALO_SIZE_BASE2HM
+end
+
+local function GetSaltlickGrowthStep2hm(inst)
+    local x, y, z = inst.Transform:GetWorldPosition()
+    local saltlicks = TheSim:FindEntities(x, y, z, BEEFALO_SALTLICK_RANGE2HM, {"saltlick"}, {"INLIMBO", "fire", "burnt"})
+    local step = 0
+    for _, saltlick in ipairs(saltlicks) do
+        local uses = saltlick.components.finiteuses
+        if uses == nil or uses:GetUses() > 0 then
+            if saltlick.prefab == "saltlick_improved" then
+                return 20
+            elseif saltlick.prefab == "saltlick" then
+                step = 10
+            end
+        end
+    end
+    return step
+end
+
+local function AdvanceBeefaloGrowth2hm(inst)
+    local growable = inst.components.growable
+    if growable == nil or growable:GetStage() >= #growable.stages then return end
+    local step = GetSaltlickGrowthStep2hm(inst)
+    if step <= 0 then return end
+    if growable.targettime ~= nil then
+        local remain = growable.targettime - GetTime() - step
+        if remain <= 0 then
+            if growable.task ~= nil then
+                growable.task:Cancel()
+                growable.task = nil
+            end
+            growable:DoGrowth()
+        else
+            growable.targettime = GetTime() + remain
+            if growable.task ~= nil then
+                growable.task:Cancel()
+                growable.task = nil
+            end
+            growable:StartGrowingTask(remain)
+        end
+    elseif growable.pausedremaining ~= nil then
+        growable.pausedremaining = math.max(0, growable.pausedremaining - step)
+    end
+end
+
+local function GrowBeefaloWithHerdSize2hm(inst)
+    local herd = inst.components.herdmember ~= nil and inst.components.herdmember:GetHerd() or nil
+    local reference = GetHerdHealthReference2hm(inst)
+    local targethealth = math.min(3000, math.max(1, reference * (1 + math.random() * 0.3 - 0.2)))
+    local size = targethealth / BEEFALO_SIZE_BASE2HM
+    local grown = SpawnPrefab("beefalo")
+    if grown == nil then return end
+    grown.Transform:SetPosition(inst.Transform:GetWorldPosition())
+    grown.Transform:SetRotation(inst.Transform:GetRotation())
+    if randomsizeenabled2hm then
+        grown.myscale = size
+        grown.ray_suijidaxiao = 1
+    else
+        grown.components.health:SetMaxHealth(math.ceil(targethealth))
+        grown.Transform:SetScale(size, size, size)
+    end
+    grown.sg:GoToState("grow_up_pop")
+    inst:Remove()
+    if herd ~= nil and herd.components.herd ~= nil and herd:IsValid() then
+        herd.components.herd:AddMember(grown)
+    end
+end
+
+AddPrefabPostInit("babybeefalo", function(inst)
+    if not TheWorld.ismastersim or inst.components.growable == nil then return end
+    local growable = inst.components.growable
+    local stages = {}
+    for i, stage in ipairs(growable.stages) do
+        stages[i] = {}
+        for key, value in pairs(stage) do stages[i][key] = value end
+    end
+    stages[#stages].fn = GrowBeefaloWithHerdSize2hm
+    growable.stages = stages
+    inst:DoPeriodicTask(GROWTH_CHECK_INTERVAL2HM, AdvanceBeefaloGrowth2hm)
+end)
 STRINGS.CHARACTERS.GENERIC.ACTIONFAIL.USEITEMON.SCARYTOPREY2HM = TUNING.isCh2hm and "它很警惕我" or "It's very vigilant to me."
 STRINGS.CHARACTERS.GENERIC.ACTIONFAIL.USEITEMON.MOTHER2HM = TUNING.isCh2hm and "它正在带娃呢" or "It has child."
 STRINGS.CHARACTERS.GENERIC.ACTIONFAIL.USEITEMON.STRANGER2HM = TUNING.isCh2hm and "它还不熟悉我" or "It's very unfamiliar to me."

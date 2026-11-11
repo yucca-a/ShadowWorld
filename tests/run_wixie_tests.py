@@ -8,6 +8,8 @@ sys.path.insert(0, str(ROOT / "work/test-python"))
 from lupa.lua51 import LuaRuntime
 
 lua = LuaRuntime(unpack_returned_tuples=True)
+lua.globals().combatconfig_source=(ROOT/'content/scripts/combatconfig2hm.lua').read_text(encoding='utf-8-sig')
+lua.execute('package.preload["combatconfig2hm"]=assert(loadstring(combatconfig_source))')
 for key, file in {"fear_patch": "easy_role/wixie_easy.lua", "role_patch": "role/walter.lua",
                   "access_patch": "common/walter_wixie_slingshot.lua",
                   "config_patch": "scripts/wixieconfig2hm.lua", "modinfo_source": "modinfo.lua"}.items():

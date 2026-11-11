@@ -1,0 +1,95 @@
+{
+  "status": "historical_before_travel_priority",
+  "superseded_by": "vault-travel-priority-20261106.txt",
+  "source_manifest_scope": "frozen matrix input; other cases have their own input-manifest.json",
+  "native_build": 761239,
+  "forced_save_deltas": {
+    "Master": 0,
+    "Caves": 0,
+    "Layer3": 0,
+    "Layer4": 0
+  },
+  "race_attempts": 1800,
+  "source_sha256": {
+    "content/easy_other/shadowvault.lua": "b4d0ea5dc354cc13292990cf7e908f83734db4d76a9e0a5aee452a66553d2050",
+    "content/easy_other/shadowvaultsnapshot.lua": "1bb8b7e02cdeef608128623d56e0df3b3cabaf5a42145b066909997811cbfbd9",
+    "content/easy_other/worldexchangefast.lua": "a315c23d9775b1684db2795a5877d32b8b024467e5bc58045f89272207c88610",
+    "content/scripts/components/shadowvault2hm.lua": "979dde3e6ef9fc7ab42e7c142ee05592dc943d7a42f1e598a8711e8e9aeb7447",
+    "content/scripts/shadowvaultsnapshot2hm.lua": "cc7f44c4649341b07113f179bca15a0760990072f26e6d6f69eeeb2b3d13a063",
+    "content/scripts/shadowvaultsnapshotcore2hm.lua": "99273af86ec7f1dfeb168b28b426a6b7b61d529803cfbc2c21217806670589f2",
+    "content/scripts/shadowvaultconfig2hm.lua": "afb5734cb2af356ad2d77aa1ab4a4364735ce32e60032e0a2348718173ac5d66",
+    "content/scripts/worldexchangeinstant2hm.lua": "6f5fa633e0298924e69b99fc72535f572a86e9787777b14a1763d02ea3f4b31a"
+  },
+  "cases": {
+    "capture_crash": {
+      "status": "passed",
+      "report": "vault-no-forced-save-faults-final-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-l84sjj6z"
+    },
+    "commit_crash": {
+      "status": "passed",
+      "report": "vault-no-forced-save-faults-final-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-gqawbwi3"
+    },
+    "complex": {
+      "status": "finished",
+      "report": "vault-no-forced-save-final-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-tx21fu9w"
+    },
+    "controls": {
+      "status": "passed",
+      "report": "vault-no-forced-save-remaining-final-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-xim44rr2"
+    },
+    "full_restart": {
+      "status": "finished",
+      "report": "vault-no-forced-save-final-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-jjikl7uo"
+    },
+    "history": {
+      "status": "passed",
+      "report": "vault-no-forced-save-remaining-final-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-f7oh62w0"
+    },
+    "interrupted": {
+      "status": "finished",
+      "report": "vault-no-forced-save-final-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-8f_rdo_8"
+    },
+    "item_migration": {
+      "status": "passed",
+      "report": "vault-no-forced-save-remaining-final-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-0yki4xxv"
+    },
+    "master_restart": {
+      "status": "passed",
+      "report": "vault-no-forced-save-faults-final-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-_bssjhd3"
+    },
+    "matrix": {
+      "status": "finished",
+      "report": "vault-no-forced-save-final-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-mixx_q4b"
+    },
+    "migration": {
+      "status": "passed",
+      "report": "vault-no-forced-save-interaction-final-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-dz74cju8"
+    },
+    "secondary_restart": {
+      "status": "passed",
+      "report": "vault-no-forced-save-remaining-final-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-_mkbljg6"
+    },
+    "shutdown": {
+      "status": "passed",
+      "report": "vault-no-forced-save-controls-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-j0yv427f"
+    },
+    "shutdown_outage": {
+      "status": "passed",
+      "report": "vault-no-forced-save-interaction-final-20261106.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-gw69ztnp"
+    }
+  }
+}

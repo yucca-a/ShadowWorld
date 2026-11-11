@@ -13,6 +13,7 @@ local shadowhardermode = GetModConfigData("Shadow Harder Level")
 local maxshadownum = GetModConfigData("Shadow Num Limit")
 TUNING.currentshadow2hm = 0
 local UpvalueHacker = require("upvaluehacker2hm")
+local ShadowHalloween = require("shadowhalloween2hm")
 local old_alterguardian = GetModConfigData("old_alterguardian") -- 旧版本天体英雄
 -- 模组兼容说明
 -- 其他模组可以给实体设置disablesw2hm变量或添加"disablesw2hm"标签来禁用该实体出现影子
@@ -308,6 +309,11 @@ local function removechild(child)
             child:DoTaskInTime(10, child.Remove)
             child.components.health:Kill()
         elseif child:IsAsleep() or child:IsInLimbo() or child.components.oceanfishable then
+            -- 附着中的蝙蝠/缀食者会在卸装时退出攻击状态并恢复碰撞。
+            -- Remove 先注销实体，届时已无法创建碰撞恢复任务，必须提前卸装。
+            if child.components.inventoryitem and child.components.equippable and child.components.equippable:IsEquipped() then
+                child.components.inventoryitem:RemoveFromOwner(true)
+            end
             child:Remove()
         elseif not child.toremove2hm then
             child.toremove2hm = true
@@ -547,6 +553,13 @@ local function onspawnchild(inst, child)
     if child.AnimState then child.AnimState:SetMultColour(0, 0, 0, 0.5) end
     child.swp2hm = inst
     child:AddTag("swc2hm")
+    ShadowHalloween.Prepare(inst, child)
+    if inst:HasTag("epic") and child:HasTag("epic") and inst.components.health and child.components.health and
+        child.components.health.maxhealth > inst.components.health.maxhealth then
+        local percent = child.components.health:GetPercent()
+        child.components.health:SetMaxHealth(inst.components.health.maxhealth)
+        child.components.health:SetPercent(percent)
+    end
     child:AddTag("crazy")
     child.persists = false
     -- 骨架和腐化手杖会把合格目标替换成有正常掉落的新实体。
@@ -556,6 +569,19 @@ local function onspawnchild(inst, child)
         if sgmem then sgmem.canstalkercorrupt = nil end
         child.CanStalkerCorrupt = nil
         child:RemoveTag("nightmarecorruptable")
+    end
+    -- NPC 织影者的影子不能与本体同时执行地下三王的腐化仪式。
+    if child.cancorrupt then child.cancorrupt = false end
+    -- 棱镜颤栗树在移除时也会结束战斗并生成原树；影子只保留战场清理。
+    if (child.prefab == "shyerrycored" or child.prefab == "shyerrycored_lunar") and child._EndFight then
+        local EndFight = child._EndFight
+        child._EndFight = function(self, isend, ...)
+            if isend then
+                self._EndFight = nil
+                return
+            end
+            return EndFight(self, isend, ...)
+        end
     end
     -- 妥协测试版会在生成后按地形替换蠕虫；分身直接沿用本体的种类。
     if TUNING.DSTU and (child.prefab == "worm" or child.prefab == "shockworm" or child.prefab == "viperworm") then
@@ -640,8 +666,8 @@ local function onspawnchild(inst, child)
     if not child.components.playerprox2hm then child:AddComponent("playerprox2hm") end
     child.components.playerprox2hm:SetDist(30, inst:HasTag("epic") and epicshadowfarrange or 50) -- set specific values
     child.components.playerprox2hm:SetOnPlayerFar(delayremovechild)
-    -- 被捡起来时回归;缀食者除外
-    if child.prefab ~= "slurper" then
+    -- 被捡起来时回归；附着攻击也会进入装备栏，缀食者和猎犬蝙蝠不能因此回收。
+    if child.prefab ~= "slurper" and child.prefab ~= "bat_boss" and child.prefab ~= "bat_boss_shadow" then
         child:ListenForEvent("onputininventory", onchildbekilled)
         child:ListenForEvent("onpickup", onchildbekilled)
     end
@@ -1044,6 +1070,20 @@ end
 
 -- 织影者分身不再施法
 AddStategraphPostInit("SGstalker", function(sg)
+    -- 同时封住事件/直接进状态的入口，避免分身先把目标打进腐化硬直。
+    for _, name in ipairs({"perform_corrupt_pre", "perform_corrupt_loop"}) do
+        local state = sg.states[name]
+        if state then
+            local onenter = state.onenter
+            state.onenter = function(inst, ...)
+                if inst:HasTag("swc2hm") then
+                    inst.sg:GoToState("idle")
+                    return
+                end
+                return onenter(inst, ...)
+            end
+        end
+    end
     local summon_channelers_pre = sg.states.summon_channelers_pre.onenter
     sg.states.summon_channelers_pre.onenter = function(inst, ...)
         if inst:HasTag("swc2hm") and inst.components.timer and inst.components.health and not inst.components.health:IsDead() then

@@ -1,0 +1,109 @@
+{
+  "date": "2026-11-09",
+  "status": "passed",
+  "published": false,
+  "source": "content/shadowworld.lua",
+  "source_sha256": "1541fa259f565e8b5e0ae1bee2e1f054b82e2568fa6f996e7158e2e172f3b7a1",
+  "previous_source_sha256": "40fb4ee269042726c35e6b85efd70bee4bcfc2928951b31751c999874ef5bd20",
+  "changes": [
+    "Legion shyerrycored/shyerrycored_lunar clones retain native battlefield cleanup, skip final tree/fruit settlement.",
+    "Disable clone cancorrupt and reject clone entry into SGstalker perform_corrupt_pre/loop. Original NPC behavior and existing target immunity remain."
+  ],
+  "native_runs": [
+    {
+      "result": "work/vault-hardened-hosted-8w5d4le7/shadow-transform-result.json",
+      "status": "reproduced",
+      "um": false,
+      "summary": {
+        "checks": 99,
+        "failures": 11,
+        "kind": "shadow_transform",
+        "passed": false,
+        "cases": 14
+      },
+      "source_sha256": "40fb4ee269042726c35e6b85efd70bee4bcfc2928951b31751c999874ef5bd20",
+      "failed_cases": [
+        "tree_shyerrycored_parent_death",
+        "tree_shyerrycored_child_lethal",
+        "tree_shyerrycored_child_remove",
+        "tree_shyerrycored_original_retire",
+        "tree_shyerrycored_lunar_parent_death",
+        "tree_shyerrycored_lunar_child_lethal",
+        "tree_shyerrycored_lunar_child_remove",
+        "tree_shyerrycored_lunar_original_retire",
+        "pair_rocky_boss",
+        "pair_bat_boss",
+        "pair_worm_boss"
+      ]
+    },
+    {
+      "result": "work/vault-hardened-hosted-6bzvcxzd/shadow-transform-result.json",
+      "status": "passed",
+      "um": false,
+      "summary": {
+        "checks": 107,
+        "failures": 0,
+        "kind": "shadow_transform",
+        "passed": true,
+        "cases": 14
+      },
+      "source_sha256": "1541fa259f565e8b5e0ae1bee2e1f054b82e2568fa6f996e7158e2e172f3b7a1",
+      "failed_cases": []
+    },
+    {
+      "result": "work/vault-hardened-hosted-ulr8deap/shadow-transform-result.json",
+      "status": "passed",
+      "um": true,
+      "summary": {
+        "checks": 107,
+        "failures": 0,
+        "kind": "shadow_transform",
+        "passed": true,
+        "cases": 14
+      },
+      "source_sha256": "1541fa259f565e8b5e0ae1bee2e1f054b82e2568fa6f996e7158e2e172f3b7a1",
+      "failed_cases": []
+    }
+  ],
+  "bat_attachment_regression": {
+    "result": "work/vault-hardened-hosted-9k8uvdrl/bat-boss-shadow-result.json",
+    "summary": {
+      "checks": 44,
+      "kind": "bat_shadow",
+      "passed": true,
+      "cases": 10
+    },
+    "source_matches_final": true
+  },
+  "lua51_syntax_files": 410,
+  "installed_mods": {
+    "1392778117": {
+      "modinfo_sha256": "c2dc99c209d6c909faafe2ea8cf80e4ca37eaf43db13f68302e5109bec1a25c6",
+      "version_source": [
+        "version = \"7.7.0\" --每次更新时为了上传必须更改"
+      ]
+    },
+    "3193922031": {
+      "modinfo_sha256": "4202afc0776b6d11eb1a5899ae7f100df18c86f7bbdaabb930b5f2c01b7dc981",
+      "version_source": [
+        "local _version = \"6.0.3.9\"",
+        "version = \"On The Rocks! v1.6 Testing v\" .. _version"
+      ]
+    }
+  },
+  "fixture_sha256": "80cfacb8faf112fcca7b7a011a4c7e95b50165dd9087eab6135652bfe1bcdeaf",
+  "scope": [
+    "8 tree lifecycle scenarios check normal/lunar parent death, child lethal hit, direct recall, original retirement, persistent tree counts and growth stages.",
+    "6 corruption scenarios check rocky/bat/worm single-NPC controls and simultaneous original/clone requests.",
+    "Concurrent stress tests event entry, direct-loop entry and 10 repeated requests. Fixed targets receive one ritual stun and one replacement.",
+    "Worm uses real controller, two chunks, dirt and head, native save-data migration, and observed exit from corruption before normal burrowing.",
+    "Real native stategraphs and animation timing; player saves untouched."
+  ],
+  "limits": [
+    "Disposable offline dedicated servers with installed Legion, repeated with UM beta. No rendered client or full player quest/battle walkthrough.",
+    "Fixture keeps entities awake with no players present. Prototype sleeping-replacement and unsaved lone-worm-chunk fixtures were superseded.",
+    "NPC AI is stopped for deterministic requests; actual AI cancorrupt gate is checked and native events execute.",
+    "Existing extra trees are preserved because they cannot be reliably distinguished from legitimate trees.",
+    "No Workshop upload or version bump."
+  ]
+}
