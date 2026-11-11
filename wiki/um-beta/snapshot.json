@@ -1,6 +1,6 @@
 {
-  "betaVersion": "6.0.3.8",
-  "cnVersion": "20260926.1",
+  "betaVersion": "6.0.3.9",
+  "cnVersion": "20261106",
   "configs": [
     {
       "key": "um_music",
@@ -8178,8 +8178,8 @@
       "line": 74
     },
     {
-      "id": "slingshotammo_honey",
-      "product": "slingshotammo_honey",
+      "id": "um_slingshotammo_honey",
+      "product": "um_slingshotammo_honey",
       "ingredients": [
         {
           "id": "honey",
@@ -9049,7 +9049,7 @@
     },
     "mutator_trapdoor_hooded": {
       "en": "Hooded Widower Switcherdoodle",
-      "zh": null
+      "zh": "罩面寡蛛诱变糕"
     },
     "nightmare_timepiece": {
       "en": "Thulecite Medallion",
@@ -9302,10 +9302,6 @@
     "slingshotammo_goop": {
       "en": "Gloop Rounds",
       "zh": "粘液弹药"
-    },
-    "slingshotammo_honey": {
-      "en": "Honey Rounds",
-      "zh": "蜂蜜弹药"
     },
     "slingshotammo_lazy": {
       "en": "Lazy Prankster Rounds",
@@ -9633,7 +9629,7 @@
     },
     "um_gem_repair_kit": {
       "en": "Mending Kit",
-      "zh": null
+      "zh": "修复套件"
     },
     "um_gemology_geode_blue": {
       "en": "Blue Fungal Geode",
@@ -9657,7 +9653,7 @@
     },
     "um_gemology_geode_magma": {
       "en": "Molten Geode",
-      "zh": null
+      "zh": "熔火晶洞"
     },
     "um_gemology_geode_red": {
       "en": "Red Fungal Geode",
@@ -9898,6 +9894,10 @@
     "um_scrapper": {
       "en": "Ancient Scrapper",
       "zh": "远古拆解机"
+    },
+    "um_slingshotammo_honey": {
+      "en": "Honey Rounds",
+      "zh": "蜂蜜弹药"
     },
     "um_smolder_spore": {
       "en": "Smolder Spore",
@@ -10474,11 +10474,12 @@
       ]
     },
     "beta/init/init_character_changes/walter.lua": {
-      "sha256": "2a6cff7dafac65a32ebf15fcf4dc2f56370113dce3c5035f51159de62b22b239",
-      "lines": 74,
+      "sha256": "aae1abcf649644844de59b431b0fae98ae6a1784792f6d0eccaa93dfceebb0b7",
+      "lines": 80,
       "citations": [
         10,
-        27
+        16,
+        33
       ]
     },
     "beta/init/init_character_changes/wanda.lua": {
@@ -10549,14 +10550,18 @@
       ]
     },
     "beta/init/init_character_changes/winona.lua": {
-      "sha256": "4f971e474cc6762efe0f51bdba8094d4bc1aa98fe04625ccc191153007a0c51f",
-      "lines": 503,
+      "sha256": "f6d1d84df35ace391c1f3aa78f42d5bc806221cbf4ca22c359e460786d972151",
+      "lines": 494,
       "citations": [
-        9,
-        16,
-        106,
-        170,
-        459
+        12,
+        13,
+        29,
+        113,
+        151,
+        157,
+        162,
+        175,
+        450
       ]
     },
     "beta/init/init_character_changes/wolfgang.lua": {
@@ -10840,7 +10845,7 @@
       ]
     },
     "beta/init/init_recipes/recipes_wixie.lua": {
-      "sha256": "ee2dc281148ca1195951a8754115ccf43f6507f635b3b1b99fb0d5d8d1079713",
+      "sha256": "3d296aedb76b6bd245cfe28b69c174fcadbbbc097e3b4bb56919346ca31eb631",
       "lines": 224,
       "citations": [
         7,
@@ -10848,12 +10853,13 @@
         15,
         19,
         24,
+        78,
         141,
         142
       ]
     },
     "beta/init/init_strings/init_names.lua": {
-      "sha256": "10c9c85e404f200405070ae82f0702e2cbf3e02c6ef4a1c64c09bc193d0573ec",
+      "sha256": "5d7852ef086529d8fc3a8ef0dd34d8c8261f125a1d21973f60ff2f2f9aadc2fa",
       "lines": 874,
       "citations": [
         324,
@@ -10936,7 +10942,7 @@
       ]
     },
     "beta/modinfo.lua": {
-      "sha256": "2d2cb1a0123c36055cc41300d169b376a53b9c0922ef1201afdd0aef31c725e5",
+      "sha256": "4202afc0776b6d11eb1a5899ae7f100df18c86f7bbdaabb930b5f2c01b7dc981",
       "lines": 1630,
       "citations": [
         146,
@@ -11107,16 +11113,16 @@
       ]
     },
     "beta/postinit/components/hounded.lua": {
-      "sha256": "5f55161f7d840fe1f6ff3dd14538c0617f946b741d09052f402319e976ef85af",
-      "lines": 219,
+      "sha256": "e023a2985e81907f728db6014259adedc718a357892dc4361aeb696629837ceb",
+      "lines": 230,
       "citations": [
         25,
-        96,
-        188,
-        191,
-        194,
-        197,
-        203
+        172,
+        201,
+        204,
+        207,
+        210,
+        215
       ]
     },
     "beta/postinit/components/inventory.lua": {
@@ -11297,7 +11303,11 @@
       "sha256": "0a896267dcdaf6494f9c0e7918f519c22620400ab9c96a8524706b59822ceb65",
       "lines": 87,
       "citations": [
-        25
+        7,
+        12,
+        25,
+        50,
+        64
       ]
     },
     "beta/postinit/prefabs/lavae.lua": {
@@ -11513,14 +11523,14 @@
       ]
     },
     "beta/postinit/stategraphs/SGspider.lua": {
-      "sha256": "877642972e9701648c2115eb015bdd8f660afae5777fee5c76b4b26922df8cbe",
-      "lines": 367,
+      "sha256": "a0fe8ee939f4b2efa1a490285bb306220e5c6ed15a61f5f39dde719b3749e6f1",
+      "lines": 366,
       "citations": [
         76
       ]
     },
     "beta/postinit/stategraphs/SGwilson.lua": {
-      "sha256": "c1e7a2c842831f18dc320f9d0eb89327a616c489474cfc4c9c8de9dc60f6c541",
+      "sha256": "627d6200518ad01bf689f737790ac0ac326d92a6a653c20f3adc1156249ceb6d",
       "lines": 5083,
       "citations": [
         166,
@@ -12249,6 +12259,16 @@
         247
       ]
     },
+    "beta/scripts/prefabs/slingshotammo_extras.lua": {
+      "sha256": "c73e0bfb0ad6cb3dd03943e05f5b6fbc88ebd47707a7fb2042440970249f0fcd",
+      "lines": 2250,
+      "citations": [
+        471,
+        483,
+        519,
+        529
+      ]
+    },
     "beta/scripts/prefabs/sludge_sack.lua": {
       "sha256": "0c853f3b3b95d334060c33b1364173587c5fe69149b7830a8f511a5c849ba2e7",
       "lines": 115,
@@ -12468,7 +12488,7 @@
       ]
     },
     "beta/scripts/prefabs/um_guano_rock.lua": {
-      "sha256": "7226f98993986a8f2618b548d93a6adfa267cf37463c8233633bab0f21924e44",
+      "sha256": "2330b84df469e43fdbcfb6b88faa07a52d6135bc25f76d5e562ceccf92e92835",
       "lines": 180,
       "citations": [
         17
@@ -12861,6 +12881,15 @@
         35
       ]
     },
+    "beta/scripts/prefabs/wixiehoney_trail.lua": {
+      "sha256": "6111a3ba445d6d4abf036bb990a13bf094ccd1f9527f3cd8c154488630e1fd88",
+      "lines": 115,
+      "citations": [
+        7,
+        61,
+        67
+      ]
+    },
     "beta/scripts/prefabs/zaspberry.lua": {
       "sha256": "1706268a63d758491593902015bd43c169bfb9aee3c43e02427dce96ea56c884",
       "lines": 170,
@@ -12997,7 +13026,7 @@
       ]
     },
     "beta/scripts/webbedcreatureloot.lua": {
-      "sha256": "5a4758247ab41cd3739ceff31e8145bda612eef57857dfa83b62e5daddd35701",
+      "sha256": "4c779727ce650da5dfc12dda943860e8b141fec24595eadbfd2db60249b8ba43",
       "lines": 1394,
       "citations": [
         404,
@@ -13030,9 +13059,10 @@
       ]
     },
     "beta/wixie_postinit/stategraphs/SGwixie.lua": {
-      "sha256": "bf59adf38ce75369ee7b0fa2b5751432272247e089d6bf52f399eef75cd2d065",
+      "sha256": "9fc1e3cebb90d01892e0d96be136a3e9bbbf0fb5180fda2918edc33862e6aae4",
       "lines": 1059,
       "citations": [
+        278,
         361,
         367,
         384,
@@ -13058,8 +13088,8 @@
       ]
     },
     "cn/init/init_strings/init_descriptions/skilltreestrings.lua": {
-      "sha256": "32afeae6f69f02990fb5edc5d4a38967c0779cc2ed0a3a59c35fdd85b4817658",
-      "lines": 461,
+      "sha256": "39416a8e22827bdfb9af3ae8437d3e7014831adff808588e52a97e8a9a6f0f28",
+      "lines": 462,
       "citations": [
         63,
         158,
@@ -13068,8 +13098,8 @@
       ]
     },
     "cn/init/init_strings/init_names.lua": {
-      "sha256": "4cc44a71b44927285a55b319f717852bd126217c1b0843adf18b47ca613eb22d",
-      "lines": 874,
+      "sha256": "1f29c1f6a5e743923147cfd428f219f44223d7d084b8b6a8b611e1d23557d1ed",
+      "lines": 882,
       "citations": [
         15,
         16,
@@ -13100,155 +13130,156 @@
         147,
         148,
         149,
-        153,
         154,
-        168,
-        176,
+        155,
+        169,
         177,
-        180,
-        186,
-        188,
-        190,
-        192,
-        212,
-        215,
-        221,
-        225,
-        232,
+        178,
+        181,
+        187,
+        189,
+        191,
+        193,
+        213,
+        216,
+        222,
+        226,
         233,
         234,
         235,
         236,
         237,
-        248,
-        251,
-        254,
+        238,
+        249,
+        252,
         255,
-        258,
-        260,
-        266,
-        275,
-        285,
-        290,
+        256,
+        259,
+        261,
+        267,
+        276,
+        286,
         291,
         292,
         293,
         294,
         295,
         296,
-        303,
-        324,
+        297,
+        304,
         325,
         326,
-        336,
-        340,
-        346,
-        375,
-        425,
-        426,
-        433,
-        446,
-        449,
-        450,
-        455,
+        327,
+        338,
+        342,
+        348,
+        377,
+        427,
+        428,
+        435,
+        448,
+        451,
+        452,
         457,
-        461,
-        467,
-        474,
-        550,
-        563,
-        564,
-        571,
-        572,
+        459,
+        463,
+        469,
+        476,
+        552,
+        565,
+        566,
         573,
         574,
-        577,
-        636,
-        637,
-        664,
-        670,
-        680,
-        683,
-        686,
-        692,
-        695,
-        696,
+        575,
+        576,
+        579,
+        581,
+        638,
+        639,
+        666,
+        672,
+        682,
+        685,
+        688,
+        694,
         697,
         698,
         699,
+        700,
         701,
-        702,
         703,
+        704,
         705,
         707,
-        713,
-        722,
-        726,
+        709,
+        715,
+        724,
         729,
-        731,
         732,
+        734,
         735,
-        739,
         740,
-        747,
-        748,
+        744,
+        745,
         752,
-        764,
-        770,
+        753,
+        757,
+        769,
         775,
-        781,
-        784,
-        807,
-        811,
-        815,
+        780,
+        786,
+        789,
+        812,
         816,
-        819,
+        820,
         821,
-        829,
-        833,
-        842,
-        852,
-        853,
-        854,
+        824,
+        826,
+        834,
+        839,
+        848,
+        858,
         859,
-        864,
-        866
+        860,
+        865,
+        870,
+        874
       ]
     },
     "cn/init/init_strings/init_strings.lua": {
-      "sha256": "249aff6451e3b206bb7ec576449e1eda70355df507617bb11097fd4666b4b288",
-      "lines": 1510,
+      "sha256": "b1d691dabca5e90bd678ac7bb0df892f912329ba2656b138789619a1d3c4d41a",
+      "lines": 1509,
       "citations": [
-        267,
-        876,
-        880,
-        884,
-        886
+        266,
+        875,
+        879,
+        883,
+        885
       ]
     },
     "cn/init/init_strings/init_tooltips.lua": {
-      "sha256": "bb3615757d2d902b94107c3d1c73901640205d6cfa007c0b0d062cf781e53cce",
-      "lines": 477,
+      "sha256": "47f00aaffc040ba97080332ade2eed47d8ac3d04c8c4e4d6515d9dabc1a9bea7",
+      "lines": 479,
       "citations": [
-        35
+        36
       ]
     },
     "cn/init/init_strings_other.lua": {
-      "sha256": "82486d601b4426f6062ea6046eb39531693cc0248c3f4066591356ce9e2ea67c",
-      "lines": 135,
+      "sha256": "a11b146f43c77b19655dc9acca8aa39643f9c758d37a602821b01448d42a6476",
+      "lines": 136,
       "citations": [
-        125
+        126
       ]
     },
     "cn/modinfo.lua": {
-      "sha256": "8fce769829e143057fb5ae52f0b3c22cf91b04da4a9f874cdf9bbf6587ad181f",
+      "sha256": "298bad8eaf5dd4caa263afb98d18d16aeea601699089e54a06511f13d5e4b2c1",
       "lines": 35
     },
     "cn/wixie_postinit/wixie_strings.lua": {
-      "sha256": "d198fc594a14e4260685b4082df18c7054b9360e0dd3606919c7eb07574957de",
-      "lines": 679,
+      "sha256": "be039c3984b2286100c5ac1190e8730c4c54d465dd55e6f2f77fbe935754ada4",
+      "lines": 680,
       "citations": [
-        9
+        10
       ]
     },
     "dst/chinese_s.po": {

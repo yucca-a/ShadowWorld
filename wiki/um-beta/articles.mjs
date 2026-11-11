@@ -13,8 +13,8 @@ import { toolExpansionArticles } from './tool-expansion-articles.mjs';
 import { effectTable, gemEffects, tradeTable } from './gemology-tables.mjs';
 import { gemSources, gemSourceTitle, geodeSources, geodeSourceTitle, sourceJumps } from './gemology-sources.mjs';
 
-export const auditedVersion='6.0.3.8';
-export const auditedCnVersion='20260926.1';
+export const auditedVersion='6.0.3.9';
+export const auditedCnVersion='20261106';
 
 const beta=(file,line)=>({file,line});
 const cn=(file,line)=>({kind:'cn',file,line});
@@ -86,7 +86,7 @@ export const articles=[
    ['移动和防护','全域暴雪或局部暴雪中，无防护玩家移速乘 0.75。护目镜视野、骑乘、熊皮背心、雨罩，或角色 6 单位内有适用的墙、火或掩体，均可免去该移动惩罚。',null,[{href:'snow-goggles.html',label:'猫眼护目镜的用法'},{href:'rime-helmet.html',label:'查霜兽头盔'}]],
    ['雪堆','玩家监测器可以在暴雪中生成雪堆。建筑脚本中隐藏容器的积雪逻辑当前处于注释状态，岩浆池和龙鳞火炉等仍有防雪堆标签。',null,[{href:'rimeweed.html',label:'尖刺霜草与局部暴雪'},{href:'snowmong.html',label:'雪怪与雪堆'},{href:'saltpack.html',label:'用盐瓶3000除雪'}]],
   ],
-  sources:[cfg(451),cfg(463),beta('init/init_weather/init_harder_weather.lua',130),...[11,100,123,141,176].map(line=>beta('scripts/components/um_snow_stormspawner.lua',line)),beta('scripts/components/snowstormwatcher.lua',45),beta('init/init_weather/init_snowstorm_structures.lua',126),names(35),names(692)],
+  sources:[cfg(451),cfg(463),beta('init/init_weather/init_harder_weather.lua',130),...[11,100,123,141,176].map(line=>beta('scripts/components/um_snow_stormspawner.lua',line)),beta('scripts/components/snowstormwatcher.lua',45),beta('init/init_weather/init_snowstorm_structures.lua',126),names(35),names(694)],
  },
  {
   id:'cave-worldgen',category:'world',title:'熔岩洞穴与潮湿陷坑',aliases:['Magma Caves','Flooded Caves','月岛','蓝蘑菇林'],
@@ -96,7 +96,7 @@ export const articles=[
    ['潮湿陷坑的三种档位','默认 lunar_cave 在月岛提供潮湿陷坑入口，对应离大陆洞穴区域。cave 将相关区域放在蓝蘑菇林方向。off 保留原版月亮石窟。',null,[{href:'lunar-island.html',label:'月岛地形与入口'}]],
    ['熔岩洞穴与锻造台','熔岩洞穴和宝石学默认开启。两者同时启用时，新洞穴在熔岩区域要求生成宝石学锻造台。关闭熔岩洞穴并保留宝石学时，锻造台转入远古遗迹。',null,[{href:'gemology.html#gemology-s8',label:'查洞穴各地形的晶洞'}]],
   ],
-  sources:[cfg(556),beta('scripts/map/tasks/forest/moonisland.lua',19),beta('scripts/map/tasks/caves/mushroom_tasks.lua',46),beta('scripts/map/tasks/caves/magma_cave.lua',103),names(784)],
+  sources:[cfg(556),beta('scripts/map/tasks/forest/moonisland.lua',19),beta('scripts/map/tasks/caves/mushroom_tasks.lua',46),beta('scripts/map/tasks/caves/magma_cave.lua',103),names(789)],
  },
  {
   id:'gemology',category:'mechanics',title:'宝石学与装备附魔',aliases:['Gemology','晶洞','宝石学锻造台','鉴定'],
@@ -117,17 +117,17 @@ export const articles=[
    [geodeSourceTitle,'先从下表的地形取得晶洞，再放到地上用镐敲开。石化蘑菇树与几类矿物都有外观相近的无晶洞版本。',geodeSources,[{href:'cave-worldgen.html',label:'查洞穴地形与房间设置'}]],
    ['巨石枝与旧档','斧砍长成的巨石枝时，藤上掉落按种植位置所属地形的池子抽取。三色蘑菇林、混合菌类区、月亮洞窟、苔藓区、岩石平原、蝙蝠洞、遗迹、喷气孔区和落水洞的池子均能提供对应晶洞。旧树沿用已经保存的掉落，在现有对应地形重新种植可以抽当前池。开启宝石学和蘑菇树调整时，绿树入夏、红树入秋、蓝树入春也有机会自然石化。秋天已有的石虾附近还可能生成孕育中的岩石。'],
    ['虫茧的高品质宝石','到地表连帽森林的黑寡妇巢旁，用寡妇之爪破开茧。蛞蝓龟或蜗牛龟型、雪怪型、蜗龙型、石虾型的茧各随机给一颗绿、蓝、红、白色附魔宝石，同色两种都可能出现。每颗有 90% 概率为二级、10% 为三级。遗迹迷宫和远古守护者的箱子还可能提供已经附魔的装备。',null,[{href:'hooded-widow.html#hooded-widow-s1',label:'黑寡妇在哪、怎么开战'},{href:'widows-grasp.html',label:'寡妇之爪与开茧'},{href:'ancient-guardian.html#ancient-guardian-s3',label:'远古守护者的附魔战利品'}]],
-   ['岛屿冒险的额外来源','海难的熔岩地与火山中，开采普通或含金熔岩矿时，14 种附魔宝石都以相同的低权重加入额外掉落池。黑曜石岩石和龙骑士蛋各有 10% 概率给熔岩晶洞，木炭岩有 10% 概率给浮石晶洞。启用岛屿冒险的老虎机战利品时，部分老虎机奖池还会给晶洞。'],
+   ['岛屿冒险的额外来源','海难的熔岩地与火山中，开采普通或含金熔岩矿时，14 种附魔宝石都以相同的低权重加入额外掉落池。黑曜石岩石和龙骑士蛋各有 10% 概率给熔火晶洞，木炭岩有 10% 概率给浮石晶洞。启用岛屿冒险的老虎机战利品时，部分老虎机奖池还会给晶洞。'],
   ],
   sources:[cfg(184),beta('scripts/prefabs/um_gemology_geodes.lua',17),beta('scripts/prefabs/um_gemologyforge.lua',25),beta('scripts/components/gem_enchantable.lua',25),beta('init/init_gamemodes/init_uncompromising_mode.lua',92),beta('scripts/prefabs/um_magnifier.lua',55),beta('scripts/components/gemologyscanner.lua',13),
    ...[87,247,261,411,493].map(line=>beta('init/init_gemology/trades.lua',line)),beta('scripts/prefabs/snowmong.lua',123),beta('scripts/stategraphs/SGsnowmong.lua',329),
-   ...[90,228,301,353,421,450,472,581,648,689,742,789,842].map(line=>beta('scripts/gemology_defs.lua',line)),beta('init/init_tuning.lua',400),beta('init/init_gemology/special.lua',5),beta('postinit/components/freezable.lua',21),beta('scripts/prefabs/um_ice_shield.lua',37),names(752),names(764),names(770),names(821),names(853),
+   ...[90,228,301,353,421,450,472,581,648,689,742,789,842].map(line=>beta('scripts/gemology_defs.lua',line)),beta('init/init_tuning.lua',400),beta('init/init_gemology/special.lua',5),beta('postinit/components/freezable.lua',21),beta('scripts/prefabs/um_ice_shield.lua',37),names(757),names(769),names(775),names(826),names(859),
    ...[44,83,111,129,149].map(line=>beta('init/init_gemology/special.lua',line)),beta('init/init_gamemodes/init_uncompromising_mode.lua',93),...[79,92,121].map(line=>beta('postinit/components/combat.lua',line)),
    beta('scripts/prefabs/uncompromising_buffs.lua',6),beta('scripts/prefabs/uncompromising_buffs.lua',451),beta('scripts/prefabs/um_ice_shield.lua',69),beta('scripts/prefabs/um_ice_shield.lua',108),beta('init/init_containers.lua',1000),
    cfg(167),beta('modworldgenmain.lua',31),beta('scripts/um_gemology_geode_defs.lua',1),beta('scripts/prefabs/um_gemology_geodes.lua',97),
    ...[3,47,128,141,167].map(line=>beta('scripts/map/tasks/caves/gemology.lua',line)),...[2,55,117,166,198,231,249].map(line=>beta('scripts/map/rooms/caves/gemology.lua',line)),beta('scripts/map/rooms/caves/moonregions.lua',243),beta('scripts/map/rooms/caves/moltenregions.lua',311),
-   beta('scripts/prefabs/um_mushtrees_petri.lua',179),beta('scripts/prefabs/um_guano_rock.lua',17),beta('scripts/prefabs/um_rocklobster_rock.lua',19),beta('scripts/prefabs/um_moonglass_ceiling.lua',50),beta('scripts/prefabs/um_moonglass_ceiling.lua',144),beta('scripts/prefabs/um_slimestone_rock.lua',18),beta('scripts/prefabs/um_sinkmound_rock.lua',34),beta('scripts/prefabs/um_magmastone.lua',19),beta('scripts/prefabs/um_magmastone.lua',59),beta('postinit/prefabs/chessjunk.lua',78),beta('postinit/prefabs/cave_vent_mite.lua',20),beta('init/init_strings/init_names.lua',830),names(842),
-   beta('init/um_tree_rock_data.lua',34),beta('init/um_tree_rock_data.lua',83),beta('init/init_gamemodes/init_uncompromising_mode.lua',256),beta('postinit/prefabs/mushtrees.lua',34),beta('postinit/prefabs/mushtrees.lua',84),beta('postinit/prefabs/rocky.lua',19),beta('scripts/map/tasks/forest/giant_trees.lua',11),...[404,515,615,713].map(line=>beta('scripts/webbedcreatureloot.lua',line)),beta('scripts/prefabs/webbedcreature.lua',108),beta('scripts/prefabs/widowsgrasp.lua',22),beta('init/init_gemology/misc.lua',10),beta('init/init_compat.lua',244),beta('init/init_compat.lua',282),beta('init/init_compat.lua',320),names(233),names(303)],
+   beta('scripts/prefabs/um_mushtrees_petri.lua',179),beta('scripts/prefabs/um_guano_rock.lua',17),beta('scripts/prefabs/um_rocklobster_rock.lua',19),beta('scripts/prefabs/um_moonglass_ceiling.lua',50),beta('scripts/prefabs/um_moonglass_ceiling.lua',144),beta('scripts/prefabs/um_slimestone_rock.lua',18),beta('scripts/prefabs/um_sinkmound_rock.lua',34),beta('scripts/prefabs/um_magmastone.lua',19),beta('scripts/prefabs/um_magmastone.lua',59),beta('postinit/prefabs/chessjunk.lua',78),beta('postinit/prefabs/cave_vent_mite.lua',20),beta('init/init_strings/init_names.lua',830),names(848),
+   beta('init/um_tree_rock_data.lua',34),beta('init/um_tree_rock_data.lua',83),beta('init/init_gamemodes/init_uncompromising_mode.lua',256),beta('postinit/prefabs/mushtrees.lua',34),beta('postinit/prefabs/mushtrees.lua',84),beta('postinit/prefabs/rocky.lua',19),beta('scripts/map/tasks/forest/giant_trees.lua',11),...[404,515,615,713].map(line=>beta('scripts/webbedcreatureloot.lua',line)),beta('scripts/prefabs/webbedcreature.lua',108),beta('scripts/prefabs/widowsgrasp.lua',22),beta('init/init_gemology/misc.lua',10),beta('init/init_compat.lua',244),beta('init/init_compat.lua',282),beta('init/init_compat.lua',320),names(234),names(304)],
  },
  {
   id:'winky',category:'characters',title:'温奇',aliases:['Winky','鼠人','定居鼠穴'],
@@ -148,9 +148,10 @@ export const articles=[
    ['角色与译名','相关配置默认开启。薇希的生命为 130、饥饿 150、理智 200。汉化的角色初始化写作「薇希」，角色专用文本又使用「薇茜」。两种写法都可搜索。'],
    ['幽闭恐惧','附近战斗生物、躲藏、骑乘、邻近墙壁或树木以及部分护具都会影响幽闭恐惧。部分头部和身体护甲各增加 0.2 的基础影响。累积到 100% 触发恐慌，降到 0 后解除并进入 10 秒冷却。'],
    ['弹弓','专属弹弓包括浮木弹弓-玛蒂尔达、活木弹弓-切齿、绝望弹弓-杰西和光芒弹弓-克莱尔。杰西和克莱尔分别在暗影与月亮制作站制作，最终生效的配方仅检查薇希制作标签和制作站。'],
+   ['蜂蜜弹药与瞄准','蜂蜜 ×3 可在炼金引擎档制作 10 发蜂蜜弹药，须有薇希的弹药制作资格。命中后让目标沿途留下减速蜂蜜；弹药的具体用法见蜂蜜弹药词条。蓄力时可以转向，满蓄力的时机仍因弹弓而异。',null,[{href:'honey-rounds.html',label:'蜂蜜弹药的减速范围与持续时间'}]],
    ['衣橱谜题','解开地表的钢琴、破旧玩具与摆钟谜题可召出暗影薇希，击败后获得滑行手杖。薇希使用手杖冲刺时会把敌人推得更远。',null,[{href:'charlies-slider.html#charlies-slider-s2',label:'滑行手杖与衣橱谜题解法'}]],
   ],
-  sources:[beta('modmain.lua',355),beta('modmain.lua',382),beta('scripts/prefabs/wixie.lua',77),beta('scripts/prefabs/wixie.lua',176),beta('init/init_recipes/init_recipes.lua',84),beta('init/init_recipes/recipes_wixie.lua',11),beta('init/init_recipes/recipes_wixie.lua',141),character(18),cn('wixie_postinit/wixie_strings.lua',9),names(571)],
+  sources:[beta('modmain.lua',355),beta('modmain.lua',382),beta('scripts/prefabs/wixie.lua',77),beta('scripts/prefabs/wixie.lua',176),beta('init/init_recipes/init_recipes.lua',84),beta('init/init_recipes/recipes_wixie.lua',11),beta('init/init_recipes/recipes_wixie.lua',141),beta('init/init_recipes/recipes_wixie.lua',78),beta('wixie_postinit/stategraphs/SGwixie.lua',278),character(18),cn('wixie_postinit/wixie_strings.lua',10),names(573)],
  },
  {
   id:'wathom',category:'characters',title:'沃托姆',aliases:['Wathom','跳劈哥','肾上腺素'],
@@ -182,7 +183,7 @@ export const articles=[
    ['制作','女武神重做选择 1 或 3 档，并点出对应的圆盾技能。配方为绝望石 6、纯粹恐惧 4、暗影碎布 1。'],
    ['属性与格挡','基础 41 普通伤害、20 位面伤害和 5 位面防御，耐久为基础女武神圆盾的两倍。成功格挡会让符合条件的攻击者恐慌 5 秒。主动挥击消耗 3 点基础耐久。'],
   ],
-  sources:[cfg(360),recipe(669),beta('init/init_tuning.lua',39),beta('scripts/prefabs/wathgrithr_shield_dreadstone.lua',154),beta('scripts/prefabs/wathgrithr_shield_dreadstone.lua',290),names(811)],
+  sources:[cfg(360),recipe(669),beta('init/init_tuning.lua',39),beta('scripts/prefabs/wathgrithr_shield_dreadstone.lua',154),beta('scripts/prefabs/wathgrithr_shield_dreadstone.lua',290),names(816)],
  },
  {
   id:'beak-basher',category:'new-items',title:'喙击者',aliases:['Beak Basher','多目章鱼喙','锤子'],
@@ -192,7 +193,7 @@ export const articles=[
    ['制作','需要炼金引擎。配方为漂流木 2、海带 8、多目章鱼喙 1。'],
    ['用途','武器基础伤害为 51，锤击工作效率为普通值的 2 倍。满耐久为 425 次使用，每次锤击消耗 1 次。'],
   ],
-  sources:[recipe(655),beta('scripts/prefabs/beakbasher.lua',51),names(550)],
+  sources:[recipe(655),beta('scripts/prefabs/beakbasher.lua',51),names(552)],
  },
  {
   id:'veterans-curse',category:'mechanics',title:'老兵诅咒',aliases:["Veteran's Curse",'头骨洞窟','诅咒神龛'],
@@ -203,7 +204,7 @@ export const articles=[
    ['角色差异','诅咒有角色专属效果。例如温奇会失去 5 个普通物品栏槽位。客户端可单独切换诅咒图标显示。'],
    ['首领装备','默认与始终开启档会让部分首领追加装备掉落，击杀者无需受诅咒。穿戴带有诅咒要求的装备时，通常要先让角色进入老兵诅咒状态。',null,[{href:'gore-horn-hat.html',label:'犀牛帽'},{href:'silk-sack.html',label:'蛛丝背包'},{href:'cursed-antler.html',label:'诅咒鹿角'}]],
   ],
-  sources:[cfg(146),cfg(231),beta('init/init_vetcurse.lua',173),beta('scripts/prefabs/veteranshrine.lua',72),beta('scripts/map/tasks/forest/make_a_pick.lua',6),beta('scripts/prefabs/winky.lua',170),beta('postinit/prefabs/vetcurse_drops.lua',9),beta('scripts/tools/um_commonfns.lua',204),names(78),cn('init/init_strings/init_strings.lua',267)],
+  sources:[cfg(146),cfg(231),beta('init/init_vetcurse.lua',173),beta('scripts/prefabs/veteranshrine.lua',72),beta('scripts/map/tasks/forest/make_a_pick.lua',6),beta('scripts/prefabs/winky.lua',170),beta('postinit/prefabs/vetcurse_drops.lua',9),beta('scripts/tools/um_commonfns.lua',204),names(78),cn('init/init_strings/init_strings.lua',266)],
  },
  {
   id:'dread-eye',category:'creatures',title:'恐惧之眼',aliases:['Dread Eye','暗影生物','影怪'],
@@ -216,7 +217,7 @@ export const articles=[
   sources:[cfg(244),beta('init/init_creatures/init_harder_shadows.lua',71),beta('scripts/components/uncompromising_shadowcreaturespawner.lua',84),beta('scripts/prefabs/dreadeye.lua',280),beta('scripts/prefabs/dreadeye.lua',509),names(16)],
  },
  {
-  id:'mending-kit',category:'new-items',prefab:'um_gem_repair_kit',title:'修补工具包',aliases:['Mending Kit','宝石修补工具包','修理附魔','附魔耐久'],
+  id:'mending-kit',category:'new-items',prefab:'um_gem_repair_kit',title:'修复套件',aliases:['Mending Kit','修补工具包','宝石修补工具包','修理附魔','附魔耐久'],
   summary:'同时修补符合条件的装备本体和附魔耐久，同一件装备修得越多，每次恢复越少。',
   configs:['gemology'],
   sections:[

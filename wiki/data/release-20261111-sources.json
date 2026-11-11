@@ -1,0 +1,1048 @@
+{
+  "version": "2.8.15.0.23",
+  "checkedAt": "2026-11-11",
+  "method": "Targeted review of cumulative changes against published release 2.8.15.0.23. Unchanged sections retain earlier specialist audits. No gameplay source changes or new game runs.",
+  "articles": [
+    {
+      "id": "getting-started",
+      "source": [
+        "README.md",
+        "workshop/workshop-description.txt",
+        "content/modinfo.lua"
+      ],
+      "configKeys": [],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "configuration",
+      "source": [
+        "content/modinfo.lua",
+        "content/scripts/combatconfig2hm.lua",
+        "content/scripts/exchangemode2hm.lua",
+        "content/scripts/difficultyrating2hm.lua",
+        "content/modservercreationmain.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "enable hard mode",
+        "World Exchange",
+        "Container Sort",
+        "combat",
+        "epic_armor_5",
+        "epic_ruin",
+        "difficulty_rating",
+        "贝爷求生",
+        "德爷生存"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "faq",
+      "source": [
+        "content/modinfo.lua",
+        "content/scripts/exchangemode2hm.lua",
+        "content/easy_other/shadowvault.lua",
+        "content/scripts/difficultyrating2hm.lua"
+      ],
+      "configKeys": [],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "combat",
+      "source": [
+        "content/modmain.lua",
+        "content/modinfo.lua",
+        "content/role/combat.lua",
+        "content/scripts/progressivecombat2hm.lua",
+        "content/scripts/combatconfig2hm.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "role_nerf",
+        "combat"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "armor",
+      "source": [
+        "content/modmain.lua",
+        "content/modinfo.lua",
+        "content/epic/dynamic_armor.lua",
+        "content/scripts/components/dynamicarmor2hm.lua",
+        "content/scripts/prefabs/dynamicarmor_indicator2hm.lua",
+        "content/scripts/combatconfig2hm.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "epic_armor_5",
+        "extra_change",
+        "boss_health"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "world-exchange",
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_other/exchangemodes2hm.lua",
+        "content/easy_other/exchangeclassic2hm.lua",
+        "content/easy_other/shadowbank2hm.lua",
+        "content/easy_other/shadowvault.lua",
+        "content/scripts/exchangemode2hm.lua",
+        "content/scripts/components/exchangevariants2hm.lua",
+        "content/scripts/exchangeoriginalmigration2hm.lua"
+      ],
+      "configKeys": [
+        "Container Sort",
+        "Items collect",
+        "World Exchange"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "walter",
+      "source": [
+        "content/common/walter_wixie_slingshot.lua",
+        "content/scripts/wixieconfig2hm.lua",
+        "content/modmain.lua",
+        "content/scripts/prefabs/slingshotammo_moonglass_walter2hm.lua",
+        "content/tech/prototyperlevel.lua"
+      ],
+      "configKeys": [
+        "Walter Use Wixie Slingshot",
+        "walter"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "eyeturret",
+      "source": [
+        "content/easy_other/eyeturret2hm.lua",
+        "content/scripts/prefabs/eyeturret_safefire2hm.lua",
+        "content/easy_other/easy_structures.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/recipes.lua",
+        "DST scripts.zip/scripts/prefabs/eyeturret.lua",
+        "DST scripts.zip/scripts/tuning.lua"
+      ],
+      "configKeys": [
+        "eyeturret"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "containers",
+      "source": [
+        "content/easy_other/containersort.lua",
+        "content/scripts/ingredientcollect2hm.lua",
+        "content/modmain.lua",
+        "content/modinfo.lua",
+        "content/easy_other/exchangemodes2hm.lua",
+        "content/scripts/exchangemode2hm.lua"
+      ],
+      "configKeys": [
+        "Container Sort",
+        "Items collect",
+        "Items collect danger",
+        "World Exchange"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "food-values",
+      "source": [
+        "content/food/fooddata.lua",
+        "content/food/cooking.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/tuning.lua",
+        "原版 scripts.zip：scripts/components/edible.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "food_change",
+        "fooddata_change",
+        "cooking_change"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "eternal-boots",
+      "source": [
+        "content/scripts/prefabs/bootleg2hm.lua",
+        "content/epic/sharkboi.lua",
+        "content/extra/frostjaw_trade.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/prefabs/sharkboi.lua",
+        "原版 scripts.zip：scripts/tuning.lua",
+        "content/scripts/bootlegnonslip2hm.lua",
+        "content/common/patch.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "sharkboi",
+        "extra_change",
+        "boss_health"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "anti-slip-boots",
+      "source": [
+        "content/scripts/prefabs/bootleg_2hm.lua",
+        "content/scripts/prefabs/frostshrine2hm.lua",
+        "content/epic/sharkboi.lua",
+        "content/modmain.lua",
+        "content/scripts/bootlegnonslip2hm.lua",
+        "content/common/patch.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "monster_change",
+        "sharkboi"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "infused-lunar-sword",
+      "source": [
+        "content/epic/sword_lunarplant_moonfire2hm.lua",
+        "content/easy_other/lunar_shadow_items.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua",
+        "原版 scripts.zip：scripts/tuning.lua",
+        "原版 scripts.zip：scripts/components/aoeweapon_base.lua",
+        "原版 scripts.zip：scripts/components/aoeweapon_leap.lua",
+        "原版 scripts.zip：scripts/prefabs/forge_repair_kits.lua",
+        "原版 scripts.zip：scripts/prefabs/alterguardian_phase4_lunarrift.lua"
+      ],
+      "configKeys": [
+        "Celestial Jewel Upgrade Sword Lunarplant",
+        "enable easy mode",
+        "lunar shadow items"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "possessed-magician-hat",
+      "source": [
+        "content/easy_other/magician_private2hm.lua",
+        "content/easy_other/containersort.lua",
+        "content/scripts/prefabs/magician_private_container2hm.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua",
+        "原版 scripts.zip：scripts/prefabs/chest_mimic.lua"
+      ],
+      "configKeys": [
+        "Container Sort"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "dragonfly-furnace",
+      "source": [
+        "content/easy_other/easy_structures.lua",
+        "content/food/cooking.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua",
+        "原版 scripts.zip：scripts/prefabs/dragonfly.lua",
+        "content/common/food_util.lua",
+        "content/easy_other/um_food_stats.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "dragonfly furnace stewer",
+        "enable hard mode",
+        "Portable Crock Pot Multi",
+        "food_change",
+        "cooking_change"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "turf-raiser-helm",
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "content/scripts/components/repairable2hm.lua",
+        "content/epic/antlion.lua",
+        "原版 scripts.zip：scripts/recipes.lua、scripts/tuning.lua",
+        "原版 scripts.zip：scripts/prefabs/antlion.lua",
+        "content/tech/ancient_statue.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Turf-Raiser Helm Plant Tree Cone",
+        "antlion"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "infused-glass-cutter",
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "content/scripts/components/repairable2hm.lua",
+        "原版 scripts.zip：scripts/recipes.lua、scripts/tuning.lua",
+        "content/scripts/weaponinfusionview2hm.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Glass Cutter Leap Attack",
+        "Construction Amulet Repair Equip",
+        "Nightsword Infused"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "infused-nightsword",
+      "source": [
+        "content/easy_other/easy_equipments.lua",
+        "content/scripts/components/repairable2hm.lua",
+        "content/scripts/components/passive_shadows2hm.lua",
+        "content/scripts/prefabs/passive_shadow_fx2hm.lua",
+        "原版 scripts.zip：scripts/recipes.lua、scripts/tuning.lua",
+        "content/scripts/weaponinfusionview2hm.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Nightsword Infused",
+        "Construction Amulet Repair Equip"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "upgraded-beefalo-bell",
+      "source": [
+        "content/easy_other/easy_items.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/recipes.lua",
+        "content/common/um_compat_fixes.lua",
+        "content/common/beef_bell_pack.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "beef_bell use orangegem upgrade"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "upgraded-tents",
+      "source": [
+        "content/easy_other/easy_mechanics.lua",
+        "content/tech/sleep.lua",
+        "content/scripts/components/repairable2hm.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/recipes.lua",
+        "原版 scripts.zip：scripts/tuning.lua",
+        "原版 scripts.zip：scripts/prefabs/tent.lua",
+        "content/role/clock_peril.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "Sleep In Tent Even Danger",
+        "The tent supports multiple people sharing it",
+        "enable hard mode",
+        "other_change",
+        "sleepingbag"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "shadow-beef-bell",
+      "source": [
+        "content/easy_other/lunar_shadow_items.lua",
+        "content/modmain.lua",
+        "DST scripts.zip/scripts/recipes.lua",
+        "content/common/um_compat_fixes.lua",
+        "content/common/beef_bell_pack.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "lunar shadow items"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "fuel-cooking",
+      "source": [
+        "content/food/cooking.lua",
+        "content/food/fooddata.lua",
+        "content/modmain.lua",
+        "原版 scripts.zip：scripts/tuning.lua",
+        "原版 scripts.zip：scripts/cooking.lua",
+        "原版 scripts.zip：scripts/components/stewer.lua",
+        "原版 scripts.zip：scripts/prefabs/portablecookpot.lua",
+        "原版 scripts.zip：scripts/recipes.lua",
+        "content/common/food_util.lua",
+        "content/scripts/fiveslotcookers2hm.lua",
+        "content/scripts/cookpreviewlayout2hm.lua",
+        "content/easy_other/um_food_stats.lua",
+        "content/easy_other/um_patch.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "food_change",
+        "cooking_change",
+        "fooddata_change",
+        "Tackle Receptacle Use Fish Redeem"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "role-wendy",
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/wendy_easy.lua",
+        "content/role/wendy.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "enable hard mode",
+        "role_nerf",
+        "wendy_easy",
+        "Wendy Low HP Abigail Damage",
+        "Pipspook Give Random Ghostly Elixir",
+        "Abigail Level Protect",
+        "Wendy Share Light From Abigail",
+        "Wendy Share Debuff From Abigail",
+        "wendy elixir_container",
+        "wendy"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "role-winona",
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/winona_easy.lua",
+        "content/easy_role/rightaction.lua",
+        "content/easy_role/rightselfaction.lua",
+        "content/scripts/winonabuilder2hm.lua",
+        "content/scripts/umwinonaworker2hm.lua",
+        "content/easy_other/um_patch.lua",
+        "content/easy_role/winona_toolbox.lua",
+        "content/easy_role/winona_electrical.lua",
+        "content/scripts/winonaelectrical2hm.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "winona_easy",
+        "Winona No Hungry Builder",
+        "Winona Hammer Drop All Loot",
+        "Winona Rotating Weapon Perpetual Attack",
+        "Winona Control Chess",
+        "Winona Right Self Hide Structures",
+        "right self need ctrl",
+        "Winona Toolbox Tools",
+        "Winona Generator Ground Charging",
+        "Winona Electrical Upgrades",
+        "um_patch"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "role-walter",
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/easy_role/walter_easy.lua",
+        "content/role/walter.lua",
+        "content/common/walter_wixie_slingshot.lua",
+        "content/easy_role/rightaction.lua",
+        "content/easy_role/attackaction.lua",
+        "content/scripts/prefabs/slingshotammo_moonglass_walter2hm.lua",
+        "content/tech/prototyperlevel.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "enable hard mode",
+        "role_nerf",
+        "walter_easy",
+        "Walter No Damage Lose Sanity",
+        "Walter Has Other Pet",
+        "Walter Throw Slingshot First Attack",
+        "Walter Right Dodge Longer",
+        "Walter Hide Woby",
+        "Walter Ride Better",
+        "Walter press Ctrl can't Dodge",
+        "Walter Use Wixie Slingshot",
+        "walter",
+        "ctrl disable right"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "clock-danger",
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/role/clock_peril.lua",
+        "content/easy_other/easy_mechanics.lua"
+      ],
+      "configKeys": [
+        "clock_peril"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "world-shadow",
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/shadowworld.lua",
+        "content/scripts/shadowhalloween2hm.lua"
+      ],
+      "configKeys": [
+        "Shadow World",
+        "Shadow Animals",
+        "Shadow Num Limit",
+        "Shadow Regen Period"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "world-ancient-statues",
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/tech/ancient_statue.lua",
+        "content/easy_other/easy_equipments.lua"
+      ],
+      "configKeys": [
+        "ancient_statue"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "creature-beefalo-bonding",
+      "source": [
+        "content/modmain.lua",
+        "content/food/beefalo.lua",
+        "DST scripts.zip/scripts/tuning.lua",
+        "DST scripts.zip/scripts/prefabs/beefalo.lua"
+      ],
+      "configKeys": [
+        "enable hard mode",
+        "food_change",
+        "beefalo"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "winona-toolbox",
+      "source": [
+        "content/modmain.lua",
+        "content/easy_role/winona_toolbox.lua",
+        "content/scripts/prefabs/winona_toolbox2hm.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "winona_easy",
+        "Winona Toolbox Tools"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "winona-electrical-upgrades",
+      "source": [
+        "content/modmain.lua",
+        "content/easy_role/winona_electrical.lua",
+        "content/scripts/winonaelectrical2hm.lua",
+        "content/scripts/prefabs/winona_electrical2hm.lua",
+        "content/scripts/prefabs/electrical_shock2hm.lua"
+      ],
+      "configKeys": [
+        "enable easy mode",
+        "role_easy",
+        "winona_easy",
+        "Winona Electrical Upgrades",
+        "Winona Generator Ground Charging"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "walter-moonglass-rounds",
+      "source": [
+        "content/modmain.lua",
+        "content/common/walter_wixie_slingshot.lua",
+        "content/scripts/prefabs/slingshotammo_moonglass_walter2hm.lua",
+        "content/tech/prototyperlevel.lua"
+      ],
+      "configKeys": [
+        "Walter Use Wixie Slingshot"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "equipment-slot-swapping",
+      "source": [
+        "content/modmain.lua",
+        "content/common/equip_slot_fix.lua"
+      ],
+      "configKeys": [],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "shadow-nexus",
+      "source": [
+        "content/easy_other/shadowvault.lua",
+        "content/easy_other/shadowvaultshared.lua",
+        "content/easy_other/shadowvaultplayer.lua",
+        "content/scripts/shadowvaultconfig2hm.lua",
+        "content/scripts/shadowvaultnative2hm.lua",
+        "content/scripts/shadowvaultshared2hm.lua",
+        "content/scripts/components/shadowvault2hm.lua",
+        "content/scripts/shadowvaultitems2hm.lua"
+      ],
+      "configKeys": [
+        "Container Sort",
+        "Items collect",
+        "World Exchange"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "survival-modes",
+      "source": [
+        "content/modinfo.lua",
+        "content/modmain.lua",
+        "content/ray/beye.lua",
+        "content/ray/beye_actions.lua",
+        "content/ray/beye_crafting.lua",
+        "content/ray/deyeshengcun.lua"
+      ],
+      "configKeys": [
+        "贝爷求生",
+        "种地种树需要书",
+        "做饭需要书",
+        "材料制造翻倍",
+        "低san采集失败",
+        "捡东西变慢",
+        "德爷生存",
+        "料理禁止堆叠",
+        "护甲失效",
+        "难以冻结",
+        "下雨禁火",
+        "火把传热",
+        "空挥武器"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "difficulty-rating",
+      "source": [
+        "content/common/difficulty.lua",
+        "content/scripts/difficultyrating2hm.lua",
+        "content/scripts/combatconfig2hm.lua",
+        "content/modinfo.lua",
+        "content/modmain.lua"
+      ],
+      "configKeys": [
+        "difficulty_rating",
+        "enable hard mode",
+        "贝爷求生",
+        "德爷生存"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    },
+    {
+      "id": "um-performance-compatibility",
+      "source": [
+        "content/modmain.lua",
+        "content/modinfo.lua",
+        "content/easy_other/um_patch.lua",
+        "content/scripts/umperformance2hm.lua",
+        "content/scripts/umtornado2hm.lua",
+        "content/scripts/umcompatguard2hm.lua",
+        "content/scripts/umcompatprofiles2hm.lua"
+      ],
+      "configKeys": [
+        "um_patch",
+        "um_weather_particles2hm"
+      ],
+      "auditedVersion": "2.8.15.0.23"
+    }
+  ],
+  "files": {
+    "content/common/beef_bell_pack.lua": {
+      "sha256": "fa3140ffe8ef9523069229baf00e57ba541813d2cfcb037a89ca563990fb2df3",
+      "bytes": 5010
+    },
+    "content/common/difficulty.lua": {
+      "sha256": "574bc7f454f2ad6291b1e66ac1810c3a54589f72cbf60b5b48386cffddbd0291",
+      "bytes": 2112
+    },
+    "content/common/equip_slot_fix.lua": {
+      "sha256": "55c0b0ffe1daff8be112ee10127af84815486e89ad8de3e3c50b0e575f9913aa",
+      "bytes": 2039
+    },
+    "content/common/food_util.lua": {
+      "sha256": "6cdae5097679db475c8e738d36de35a1e652c90d1c8d85902e3bcd094598c2fc",
+      "bytes": 13876
+    },
+    "content/common/patch.lua": {
+      "sha256": "389fc3ea0eec78e6852d1aca8fb41a57a2dc66ba0bd3fde6d39f3c9b19e0562c",
+      "bytes": 27683
+    },
+    "content/common/um_compat_fixes.lua": {
+      "sha256": "0c6310e6018da9eb5ac601d277f9a33e51235320c89dcc18f7807b2fd0794c47",
+      "bytes": 2730
+    },
+    "content/common/walter_wixie_slingshot.lua": {
+      "sha256": "d96bafd303cdf3f43572c6800773606823d14a420af73484e9d36da64cb9f09d",
+      "bytes": 10990
+    },
+    "content/easy_other/containersort.lua": {
+      "sha256": "c065e30914b0628b5808ef7832d83006a61f2b9451314b4c8bf412c52f286775",
+      "bytes": 229830
+    },
+    "content/easy_other/easy_equipments.lua": {
+      "sha256": "72b18fd30f8bf90788f07005e0f53441403f520bf5c10d9a747eb181df3f4267",
+      "bytes": 295371
+    },
+    "content/easy_other/easy_items.lua": {
+      "sha256": "993d2f82739e9cb10fe1ce28799372f59df96b2fecc982fe4fdeb8db349ad6f5",
+      "bytes": 79818
+    },
+    "content/easy_other/easy_mechanics.lua": {
+      "sha256": "b5db2a5de8cdba21edb0886e122e27aa502dcf2494ea558a02f3d6c8a3295cbe",
+      "bytes": 34736
+    },
+    "content/easy_other/easy_structures.lua": {
+      "sha256": "e652ad956d907c6435ffa41d6db58fe949ae1ec3a0ae59b040cb28ec82fa97ab",
+      "bytes": 175914
+    },
+    "content/easy_other/exchangeclassic2hm.lua": {
+      "sha256": "975620502a474e41c4be42a5a96f4f51b9d9f1cacdd2cc135dc65004b7901a73",
+      "bytes": 9654
+    },
+    "content/easy_other/exchangemodes2hm.lua": {
+      "sha256": "538f203d217fb3075b9783616890e663a01d7bee4459067a4da86286530446b0",
+      "bytes": 1761
+    },
+    "content/easy_other/eyeturret2hm.lua": {
+      "sha256": "7e660d8b5277a8183a6ea7a0eb700a3617aeeb1dd8594f5b1f1be8fbd5c28e8d",
+      "bytes": 23509
+    },
+    "content/easy_other/lunar_shadow_items.lua": {
+      "sha256": "838d99b2de8293cb73fcd9cfc7c6c30c358c59bbc4b9bcee20f9c5ccd821371d",
+      "bytes": 62234
+    },
+    "content/easy_other/magician_private2hm.lua": {
+      "sha256": "b12c3dfaebe8dde29113087a49b7ecdd9d648e7236d3d4204a3a419c0636d2e6",
+      "bytes": 10357
+    },
+    "content/easy_other/shadowbank2hm.lua": {
+      "sha256": "a702ad8eb9f3896c2702bb55e519e0fcad50c37b19eaa2bea4220af8a1f84ceb",
+      "bytes": 7308
+    },
+    "content/easy_other/shadowvault.lua": {
+      "sha256": "ba7cb03fc6d9236fdae8c47abf1eb62ceef780f5d8dc75af7201b8d2aa31d2a4",
+      "bytes": 7151
+    },
+    "content/easy_other/shadowvaultplayer.lua": {
+      "sha256": "492afa994f0949c1dde573796d931d8e2f44de11534d291fa6b447ba4a7c7fcb",
+      "bytes": 1396
+    },
+    "content/easy_other/shadowvaultshared.lua": {
+      "sha256": "34061a51b76b0348ce34cc585df40578c29ae082d30cf1af4af6fd88dc5b7222",
+      "bytes": 6965
+    },
+    "content/easy_other/um_food_stats.lua": {
+      "sha256": "bcdebae95d9af26c1f7d6424afb1246401bcc041a7e8dcd82bd1973cb64b14f5",
+      "bytes": 11857
+    },
+    "content/easy_other/um_patch.lua": {
+      "sha256": "18d69f32058c30d67e83ca32f510c4fab126fa97483e5a08d234280f52688bfe",
+      "bytes": 38045
+    },
+    "content/easy_role/attackaction.lua": {
+      "sha256": "80d0d922d9caefd78b84db3d089bf4cc4748ef72f619a206942a4cd2d81935b2",
+      "bytes": 3021
+    },
+    "content/easy_role/rightaction.lua": {
+      "sha256": "6c0ced86f8c032b3309fed4666db47decffccf43cd0251ac8c8b32a3876c6007",
+      "bytes": 61820
+    },
+    "content/easy_role/rightselfaction.lua": {
+      "sha256": "49e37964f6c9e27c59f744a99deacca323a55066638ce8fa1f94d5cecabff2ba",
+      "bytes": 8838
+    },
+    "content/easy_role/walter_easy.lua": {
+      "sha256": "0e22e1474507252421f5df1819c1f6181e8b2abf78e739484be00a4311085fe1",
+      "bytes": 45909
+    },
+    "content/easy_role/wendy_easy.lua": {
+      "sha256": "1553bc4f411c1e9e6ff244a121814e118da6de4858cb5ddf20d449f01ad462c8",
+      "bytes": 51056
+    },
+    "content/easy_role/winona_easy.lua": {
+      "sha256": "b0ac740ffa373db2401327e8fb42acb7981bb7e2da01961450ff470efd0dc30c",
+      "bytes": 8214
+    },
+    "content/easy_role/winona_electrical.lua": {
+      "sha256": "79a59da6d5b091c0fa0a4b6fac9536a5c2479a1a622f95a35ebb9406f84321ca",
+      "bytes": 11794
+    },
+    "content/easy_role/winona_toolbox.lua": {
+      "sha256": "fbd1e6c5d340f38fe05f867aa02caadbabfd186fa38978553c11407d120cd549",
+      "bytes": 2592
+    },
+    "content/epic/antlion.lua": {
+      "sha256": "aec66c7e11692422043ac441aa9232d40af4a898d0813ddade062d7aed43a99f",
+      "bytes": 57625
+    },
+    "content/epic/dynamic_armor.lua": {
+      "sha256": "e556fd4678babe82ce653cdfeb83087b796e7453aa4f6cae3a4e55e66cade437",
+      "bytes": 6444
+    },
+    "content/epic/sharkboi.lua": {
+      "sha256": "4b98b5bb958776851e787c1c998e1f60b4ebe0b778358c2b6041d6ffad88e01f",
+      "bytes": 68071
+    },
+    "content/epic/sword_lunarplant_moonfire2hm.lua": {
+      "sha256": "aeb4087efa455ea42449ef021d8148f03455356bd077d480c24fbe2fdedd9e4e",
+      "bytes": 24477
+    },
+    "content/extra/frostjaw_trade.lua": {
+      "sha256": "511107f1988c9ee648b576164a4d0f3442a1c274249cbb334ca2075c8832b89d",
+      "bytes": 3441
+    },
+    "content/food/beefalo.lua": {
+      "sha256": "187aaf8d227476f6f5a9f67a2171cdbfc61b216a347776455fd691f819bb9ac7",
+      "bytes": 9135
+    },
+    "content/food/cooking.lua": {
+      "sha256": "d0327b2e80a8319a324dc8d604e7a1074fb35db44984bf6dd53f54868b5baad2",
+      "bytes": 16561
+    },
+    "content/food/fooddata.lua": {
+      "sha256": "f94321d71f2e1eecec771d05819c4fe4aa3e062e6a9b2c005be7106719604b2c",
+      "bytes": 1835
+    },
+    "content/modinfo.lua": {
+      "sha256": "2560a31c2c769dfc85831ee5b21afc42ebaa36612c77aec4fdbc2679c15bd6e7",
+      "bytes": 143443
+    },
+    "content/modmain.lua": {
+      "sha256": "e2e01b61fbaf0991261766fe6b050792185ead2d7ad8f5f61e36972465ffd5f4",
+      "bytes": 22483
+    },
+    "content/modservercreationmain.lua": {
+      "sha256": "99db4e3bbd200b199c5e08c44ff1e9a12ba0594f5a0bfb66eb759604e514d5aa",
+      "bytes": 8143
+    },
+    "content/ray/beye.lua": {
+      "sha256": "dff8c80aaa1eb3b464225eb86239c9eedbb22b25a9f1c4542822856173b30d6c",
+      "bytes": 11088
+    },
+    "content/ray/beye_actions.lua": {
+      "sha256": "c3a4230deb8905f16462343db189b4dc49838224c46dce92748d2cdbffbbd044",
+      "bytes": 30780
+    },
+    "content/ray/beye_crafting.lua": {
+      "sha256": "897a4332c0a211f54661650a0a8aa95b5ae38a20ff19f2d0d1926081c2ec91eb",
+      "bytes": 7516
+    },
+    "content/ray/deyeshengcun.lua": {
+      "sha256": "b33c925563bcbc5b5faad1c0c9feb810f9e2861ae700ab7f8d6b4b28e3e7e250",
+      "bytes": 11292
+    },
+    "content/role/clock_peril.lua": {
+      "sha256": "b1a5b9d2ec8a8787ca8b1ee91e4c3cceb37be04d6298df55aff771d895b1d203",
+      "bytes": 3380
+    },
+    "content/role/combat.lua": {
+      "sha256": "76d865fad63a6f70b2f6a17aa74277be6b5a4a799f3d718565c48bfc158942b8",
+      "bytes": 27112
+    },
+    "content/role/walter.lua": {
+      "sha256": "8901bb20af6c4de8f40d73d8f32f65ecc0cbdcb0b547d29a363eac5e71f8a3e8",
+      "bytes": 11712
+    },
+    "content/role/wendy.lua": {
+      "sha256": "a76e84ffd9d43e85d6e0ba9baa2a73cec19c46e37f755321fd771e4fb431242f",
+      "bytes": 21387
+    },
+    "content/scripts/bootlegnonslip2hm.lua": {
+      "sha256": "be354f731b231001d2912293e5b04bde32c11079a59215d4914809eb4b7a3970",
+      "bytes": 3474
+    },
+    "content/scripts/combatconfig2hm.lua": {
+      "sha256": "08856151bf3b795e606436d602a8129669e00c550271d4ae293abcaa8a03388b",
+      "bytes": 670
+    },
+    "content/scripts/components/dynamicarmor2hm.lua": {
+      "sha256": "d997df58aac665b90d407e23a8de99a3254d3b60740b42d358978f405e15e660",
+      "bytes": 6869
+    },
+    "content/scripts/components/exchangevariants2hm.lua": {
+      "sha256": "f689302dd99edf47e007f7e1a164067bde46744f52c07b87b7f3cf84e764c32c",
+      "bytes": 7239
+    },
+    "content/scripts/components/passive_shadows2hm.lua": {
+      "sha256": "399147d166583890397e267ded7a7b1bd5033fe3c336e8f6afe7d53aefc37301",
+      "bytes": 4572
+    },
+    "content/scripts/components/repairable2hm.lua": {
+      "sha256": "22aeae3bb04724b52a201f672bc6210f2d30a60232a0dcb6fbfb20273eb4b261",
+      "bytes": 9011
+    },
+    "content/scripts/components/shadowvault2hm.lua": {
+      "sha256": "82564695e94a1e01fdc6f3746b388e21143dc0d2166d5a3c041f726181f5093a",
+      "bytes": 65119
+    },
+    "content/scripts/cookpreviewlayout2hm.lua": {
+      "sha256": "06a324f8b1b5dec29664d7760136759e700eb2dd4a2b5ad3dd69c75d16441b21",
+      "bytes": 8673
+    },
+    "content/scripts/difficultyrating2hm.lua": {
+      "sha256": "b69648a7bbbd86756a1c0996f19e173d4ab26ea0b46f2a515c2727f17267c8dd",
+      "bytes": 8644
+    },
+    "content/scripts/exchangemode2hm.lua": {
+      "sha256": "42bd11f58ade1d66ee538f6a5b87d85d0710dd6f6c93210635428b5bf88defe8",
+      "bytes": 593
+    },
+    "content/scripts/exchangeoriginalmigration2hm.lua": {
+      "sha256": "044a562175e9f807fd3864a96d6ee9926b1e5a6177e90a583b2cdba51b2fc457",
+      "bytes": 8396
+    },
+    "content/scripts/fiveslotcookers2hm.lua": {
+      "sha256": "186db0f92839fcbcdd11681755c6724884fc0255f1064f8d6aa92341064df265",
+      "bytes": 15561
+    },
+    "content/scripts/ingredientcollect2hm.lua": {
+      "sha256": "8d3959c9377b178760c2be4c5e279bb8aeb78a6e4d7ba598120ad5f76faa401f",
+      "bytes": 859
+    },
+    "content/scripts/prefabs/bootleg2hm.lua": {
+      "sha256": "2bc84c0943917c0182273de19907aa927cb4a9355bdaf4988e3a5f007e1f17b2",
+      "bytes": 10123
+    },
+    "content/scripts/prefabs/bootleg_2hm.lua": {
+      "sha256": "fa82a9863f0209e8fe2c986b475a021c0d2e797aca2f6dec7417ac020f320b3e",
+      "bytes": 6245
+    },
+    "content/scripts/prefabs/dynamicarmor_indicator2hm.lua": {
+      "sha256": "b03738d3e0d32f6f3c88d9f700a44b53056bb5974283bf429b86bf632fb8f1b5",
+      "bytes": 1756
+    },
+    "content/scripts/prefabs/electrical_shock2hm.lua": {
+      "sha256": "eb2cbb3fbae748d376cf5437d0968dc596bd4f43db9f7f5010b65762bce0c780",
+      "bytes": 8569
+    },
+    "content/scripts/prefabs/eyeturret_safefire2hm.lua": {
+      "sha256": "256cef7aec75f461e1f07305fdfb1448dadb7667d54a37132ca2ffe01d8f0e8d",
+      "bytes": 2748
+    },
+    "content/scripts/prefabs/frostshrine2hm.lua": {
+      "sha256": "8c222b4d9ea654cc5ca5d5b29c22d63e0b73dacd6391ecf515ae85e25efda806",
+      "bytes": 9141
+    },
+    "content/scripts/prefabs/magician_private_container2hm.lua": {
+      "sha256": "17d79da29f43777de6ca63dec0615531a057cd3fa542e00eeeb459f348a627f2",
+      "bytes": 935
+    },
+    "content/scripts/prefabs/passive_shadow_fx2hm.lua": {
+      "sha256": "e945726209784b1aaa6bdea12c2df01850c2085ae8ffa85ee6cb5bea4c1ff933",
+      "bytes": 8673
+    },
+    "content/scripts/prefabs/slingshotammo_moonglass_walter2hm.lua": {
+      "sha256": "08b177da0d63d72ab2123c6e78c2b8431adac6454de8d94480b28bb2e071f1f8",
+      "bytes": 2513
+    },
+    "content/scripts/prefabs/winona_electrical2hm.lua": {
+      "sha256": "1be4c41d428eb7bb1e3d8c7e7bd605d862c4a392badadf5fee8d1f02ce3adf18",
+      "bytes": 1077
+    },
+    "content/scripts/prefabs/winona_toolbox2hm.lua": {
+      "sha256": "b3d1bed3c2511f1ce4a0661b55ded398942fccff2a19957d7d8ead06990b73ab",
+      "bytes": 1803
+    },
+    "content/scripts/progressivecombat2hm.lua": {
+      "sha256": "236d24d6395b3052a3b0546c50526ebde86bc767ddd289d37a1b5ede3a740f66",
+      "bytes": 8833
+    },
+    "content/scripts/shadowhalloween2hm.lua": {
+      "sha256": "8d3369b1e39e77e3cc30179f983a2a2a55ba3f4977b7625220f15ba13f783e81",
+      "bytes": 738
+    },
+    "content/scripts/shadowvaultconfig2hm.lua": {
+      "sha256": "dde3656c89f380caac92d0cd8538cb378f211afbca04f5bcacbebd33900ed803",
+      "bytes": 8635
+    },
+    "content/scripts/shadowvaultitems2hm.lua": {
+      "sha256": "7367f61fc182bea7d920a0e2dc019aefc1c63b244d7a4aafd2acd9e5939610d8",
+      "bytes": 8142
+    },
+    "content/scripts/shadowvaultnative2hm.lua": {
+      "sha256": "462cf3f9156157fb35e5882403e66b1c6e8f8686bd600ad42f5c86c703f4fe1e",
+      "bytes": 22355
+    },
+    "content/scripts/shadowvaultshared2hm.lua": {
+      "sha256": "cb4e3f3bcc585fe9348252c4dd039cfcf20b6e3797f7c86bc98cbe196c45446f",
+      "bytes": 16832
+    },
+    "content/scripts/umcompatguard2hm.lua": {
+      "sha256": "cae5e3025a02474da50f29b50e48e90858571bb9c2ade82b1e2ca5eab12ce971",
+      "bytes": 4836
+    },
+    "content/scripts/umcompatprofiles2hm.lua": {
+      "sha256": "a6a6150141c82b496e26850a733c63d9ce07ba34ad1542905debde04bc0b9b88",
+      "bytes": 6252
+    },
+    "content/scripts/umperformance2hm.lua": {
+      "sha256": "a6d3165b80fde62f92d1f12b4da93e4227357d9019a989f91b5b7bd725868933",
+      "bytes": 22667
+    },
+    "content/scripts/umtornado2hm.lua": {
+      "sha256": "8c3c6fd0862a3700e36b41f42f735e03cdc81f161af06bf697df9e0571d1dd7b",
+      "bytes": 18678
+    },
+    "content/scripts/umwinonaworker2hm.lua": {
+      "sha256": "c51dfe5e25de53533e4cfd5d1585c5f7c8a063be35778237714293e2a4d400ad",
+      "bytes": 3432
+    },
+    "content/scripts/weaponinfusionview2hm.lua": {
+      "sha256": "a5e7b93601649c2902ad4a040534293463ba1b5e77547bbc639c2b0662066c06",
+      "bytes": 1920
+    },
+    "content/scripts/winonabuilder2hm.lua": {
+      "sha256": "7f3999a3965b0d0f734160a03405d01e288fdf006fa589ff67e7f5991307a124",
+      "bytes": 1980
+    },
+    "content/scripts/winonaelectrical2hm.lua": {
+      "sha256": "c01f97681bc0975deb44b061c70e387facad48d3e2ead39c9330b7fbb8694d27",
+      "bytes": 11359
+    },
+    "content/scripts/wixieconfig2hm.lua": {
+      "sha256": "5ae1936a024db0d0a37d0098191a643924fe3ca5fdaad5238459837d96898005",
+      "bytes": 5532
+    },
+    "content/shadowworld.lua": {
+      "sha256": "8047eaf981079495338c0262ffa24fd719a8105beed9bb7e2a1cb46eb14cb47f",
+      "bytes": 87351
+    },
+    "content/tech/ancient_statue.lua": {
+      "sha256": "2788606ba011e5f4b724918bd268018c162a1d6f48a6765d8f7458294a888e80",
+      "bytes": 4916
+    },
+    "content/tech/prototyperlevel.lua": {
+      "sha256": "c78480f01ab5e7cef7ae26290afdb0fb047805a0f8dfd6249a904c5acf45ae3e",
+      "bytes": 18431
+    },
+    "content/tech/sleep.lua": {
+      "sha256": "15b8c4be05fe04ab443293cc9dd388cceeb7b26858a38abe840bd5fe655bcb71",
+      "bytes": 4271
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { articles as initial, meta } from './content.mjs';
+import { refreshWorldArticles } from './research/release-20261111-world.mjs';
 export { meta };
 export const categories = [
   {id:'start',name:'入门与说明'}, {id:'mechanics',name:'战斗与生存'}, {id:'world',name:'暗影世界与季节'},
@@ -114,7 +115,26 @@ about.sections[2].externalLinks.push(
  {label:'Steam 社区 · 联机版角色攻略',url:'https://steamcommunity.com/sharedfiles/filedetails/?id=2066554357'},
 );
 const gettingStarted=articles.find(a=>a.id==='getting-started');
-gettingStarted.sections.at(-1).paragraphs=[`配置大全覆盖当前 ${configData.total} 项实际配置。百科按玩法分类阅读，每篇可跳转到对应开关查看全部档位；遇到名称不同的配置，检索也支持配置键。`,'远古宝珠目前只有设计草案，未包含在当前发布版中。贝爷求生、德爷生存等参考站其他分支规则也不能直接套用。'];
+gettingStarted.sections.at(-1).paragraphs.unshift(`配置大全覆盖当前 ${configData.total} 项实际配置。百科按玩法分类阅读，每篇可跳转到对应开关查看全部档位；遇到名称不同的配置，检索也支持配置键。`);
+export const currentAuditIds=new Set();
+for(const part of ['roles','mechanics']){
+ const audit=await import(`./research/release-20261111-${part}.mjs`);
+ for(const {new:isNew,...patch} of audit.patches){
+  const article=articles.find(a=>a.id===patch.id);
+  if(currentAuditIds.has(patch.id)||Boolean(article)===Boolean(isNew))throw Error('Invalid release patch '+patch.id);
+  if(article)Object.assign(article,patch);
+  else articles.push({keywords:'',source:[],configKeys:[],...patch});
+  currentAuditIds.add(patch.id);
+ }
+ for(const [key,note] of Object.entries(audit.configNotes??{}))notes[key]={...notes[key],...note};
+}
+for(const id of refreshWorldArticles(articles,notes))currentAuditIds.add(id);
+for(const article of articles.filter(a=>currentAuditIds.has(a.id))){
+ if(article.category==='items')itemAuditIds.add(article.id);
+ if(article.category==='characters'||article.category==='buildings'||article.id.startsWith('boss-'))entityAuditIds.add(article.id);
+ if(article.category==='food'||article.category==='creatures'&&!article.id.startsWith('boss-'))lifeAuditIds.add(article.id);
+}
+about.sections[0].paragraphs.push('本轮重点更新至 2.8.15.0.23 的穿越与共享空间、生存模式、料理、战斗、角色与装备变化。未涉及变更的条目沿用原有核对记录；永不妥协测试版有独立的版本和词条。');
 const configByKey=new Map(configData.configs.map(c=>[c.key,c]));
 export const configId=key=>'cfg-'+createHash('sha1').update(key).digest('hex').slice(0,12);
 export const groupId=(mode,group)=>'group-'+createHash('sha1').update(mode+'/'+group).digest('hex').slice(0,10);

@@ -4,22 +4,51 @@ import {temperedTopics,temperedTopic} from './topics.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {articles,configs,groups,meta,iconManifest,iconLabels,protectedIconNames,defaultChoice,choiceText,itemAuditIds,entityAuditIds,lifeAuditIds} from './catalog.mjs';
+import {articles,configs,groups,meta,iconManifest,iconLabels,protectedIconNames,defaultChoice,choiceText,itemAuditIds,entityAuditIds,lifeAuditIds,currentAuditIds} from './catalog.mjs';
 const root=path.dirname(fileURLToPath(import.meta.url)),out=path.join(root,'dist');
 await fs.mkdir(out,{recursive:true});
 for(const entry of await fs.readdir(out,{withFileTypes:true}))if(entry.isFile()&&entry.name.endsWith('.html'))await fs.unlink(path.join(out,entry.name));
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const rawValue=v=>typeof v==='string'?`"${v}"`:String(v);
 const href=id=>`${id}.html`;
-const versions=['2.8.14.98.6','2.8.14.98.2','2.8.14.98.1','2.8.14.98','2.8.14.97.4','2.8.14.97.3','2.8.14.97.2','2.8.14.97.1','2.8.14.97','2.8.14.96.1','2.8.14.96'];
-const releaseTitles=['缩短穿越等待并修复两处崩溃','世界协同、巨兽摧毁与岛屿冒险修复','角色夜视合并、暗影分身与兼容修复','游戏内 Wiki、角色修复与寒霜美术更新','穿越机制、性能优化与陷阱必中','多人穿越与交互修复','沃尔特弹弓权限修正','弹弓崩溃热修','夜视、炮塔与穿越更新','淬炼之季更名','战斗机制与角色修复'];
+const releaseIndex=[
+ ['2.8.15.0.23','薇诺娜电气改造、过充与工作修复'],
+ ['2.8.15.0.22','圆形玻璃弹、天体同步与妥协运行优化'],
+ ['2.8.15.0.19','牛铃、法杖、腿靴与月火斩修复'],
+ ['2.8.15.0.17','模组五格锅兼容与影子转化修复'],
+ ['2.8.15.0.16','五格锅与智能料理预告'],
+ ['2.8.15.0.15','蝙蝠分身与魔术帽保存回档修复'],
+ ['2.8.15.0.12','刮地皮头盔、睡眠与手部换装修复'],
+ ['2.8.15.0.10','可选生存模式与私有难度查询'],
+ ['2.8.15.0.9','穿越三档、默认原版与旧枢纽迁移'],
+ ['2.8.15.0.8','暗影空间、注能显示与生命来源修复'],
+ ['2.8.15.0.7','新战斗默认档、动态减伤与眼球伞修复'],
+ ['2.8.15.0.6','跨层共享空间与动态减伤调整'],
+ ['2.8.15.0.5','特殊容器穿越兼容与存取优化'],
+ ['2.8.15.0.4','容器穿越与快捷存放交互'],
+ ['2.8.15.0.3','钓具空间与容器交互恢复'],
+ ['2.8.15.0.2','容器请求崩溃修复'],
+ ['2.8.15.0.1','鼠潮关闭后的播报修复'],
+ ['2.8.15.0','暗影枢纽、60 tick、料理与角色增强'],
+ ['2.8.14.98.6','缩短穿越等待并修复两处崩溃'],
+ ['2.8.14.98.2','世界协同、巨兽摧毁与岛屿冒险修复'],
+ ['2.8.14.98.1','角色夜视合并、暗影分身与兼容修复'],
+ ['2.8.14.98','游戏内 Wiki、角色修复与寒霜美术更新'],
+ ['2.8.14.97.4','穿越机制、性能优化与陷阱必中'],
+ ['2.8.14.97.3','多人穿越与交互修复'],
+ ['2.8.14.97.2','沃尔特弹弓权限修正'],
+ ['2.8.14.97.1','弹弓崩溃热修'],
+ ['2.8.14.97','夜视、炮塔与穿越更新'],
+ ['2.8.14.96.1','淬炼之季更名'],
+ ['2.8.14.96','战斗机制与角色修复'],
+];
 await fs.mkdir(path.join(root,'releases'),{recursive:true});
-for(const [i,v] of versions.entries()){
+for(const [v,releaseTitle] of releaseIndex){
  const file=`update-notes-${v}.txt`,copy=path.join(root,'releases',file);
  try{await fs.copyFile(path.join(root,'../workshop',file),copy);}catch(e){if(e.code!=='ENOENT')throw e;}
  const releaseText=(await fs.readFile(copy,'utf8')).replace(/，由 Yucca 持续维护与调整/g,'');
  await fs.writeFile(copy,releaseText);
- const lines=releaseText.replace(/^\uFEFF/,'').trim().split(/\r?\n/);if(lines[0].startsWith(v))lines.shift();
+ const lines=releaseText.replace(/^\uFEFF/,'').trim().split(/\r?\n/);if(lines[0].startsWith(v)||lines[0].startsWith('淬炼之季 '+v))lines.shift();
  const sections=[];let section={title:'更新内容',paragraphs:[],list:[]};
  for(let k=0;k<lines.length;k++){
   const line=lines[k].trim();if(!line)continue;
@@ -28,7 +57,7 @@ for(const [i,v] of versions.entries()){
   else if(line.startsWith('·'))section.list.push(line.slice(1).trim());else section.paragraphs.push(line);
  }
  if(section.paragraphs.length||section.list.length)sections.push(section);
- articles.push({id:`update-${v.replaceAll('.','-')}`,title:`v${v}`,category:'updates',tag:v===meta.version?'当前版本':'历史版本',summary:releaseTitles[i],keywords:`版本 更新 日志 ${v}`,sections,release:true,configKeys:[],source:[`workshop/${file}`]});
+ articles.push({id:`update-${v.replaceAll('.','-')}`,title:`v${v}`,category:'updates',tag:v===meta.version?'当前版本':'历史版本',summary:releaseTitle,keywords:`版本 更新 日志 ${v}`,sections,release:true,configKeys:[],source:[`workshop/${file}`]});
 }
 const articleMap=new Map(articles.map(a=>[a.id,a])),configMap=new Map(configs.map(c=>[c.key,c]));
 if(articleMap.size!==articles.length)throw Error('Duplicate article IDs');
@@ -104,18 +133,19 @@ for(const a of articles){
  const toc=`<aside class="toc" aria-label="本页目录"><h2>本页目录</h2><nav>${a.sections.map((s,i)=>`<a href="#${a.id}-s${i+1}">${esc(s.title)}</a>`).join('')}</nav>${a.configKeys.length?`<h2>相关配置</h2><div class="toc-config">${a.configKeys.map(configLink).join('')}</div>`:''}</aside>`;
  const peers=articles.filter(p=>p.topic===a.topic),position=peers.findIndex(p=>p.id===a.id);
  const adjacent='<nav class="adjacent-entries" aria-label="继续查阅">'+[peers[position-1],peers[position+1]].map((p,i)=>p?'<a href="'+p.id+'.html"><small>'+(i===0?'上一篇':'继续阅读')+'</small><strong>'+esc(p.title)+'</strong></a>':'<span></span>').join('')+'</nav>';
- const body=`<nav class="breadcrumbs" aria-label="当前位置"><a href="tempered.html">百科首页</a><span>/</span><a href="tempered.html?category=${a.topic}#encyclopedia">${catName(a.topic)}</a><span>/</span><span>${esc(a.title)}</span></nav>${articleHTML(a)}${adjacent}<div class="article-bottom"><span>按 v${meta.version} 核对 · ${meta.date}</span><a href="tempered.html#entry-${a.id}">回到连续阅读 ${icon('arrow',13)}</a></div>`;
+ const body=`<nav class="breadcrumbs" aria-label="当前位置"><a href="tempered.html">百科首页</a><span>/</span><a href="tempered.html?category=${a.topic}#encyclopedia">${catName(a.topic)}</a><span>/</span><span>${esc(a.title)}</span></nav>${articleHTML(a)}${adjacent}<div class="article-bottom"><span>按 v${meta.version} 核对 · ${meta.date}</span><a href="tempered.html#entry-${a.id}">返回词条索引 ${icon('arrow',13)}</a></div>`;
  await fs.writeFile(path.join(out,href(a.id)),shell(a.id,a.title,a.summary,body,toc));
 }
 const articleIndex=articles.map(a=>({id:a.id,href:href(a.id),kind:'article',title:a.title,category:catName(a.topic),categoryId:a.topic,topic:a.topic,summary:a.summary,aliases:a.aliases??[],keywords:[a.keywords,...a.configKeys].join(' '),text:a.sections.map(s=>[s.title,s.callout,...(s.paragraphs??[]),...(s.list??[]),...(s.table?.rows.flat()??[])].filter(Boolean).join(' ')).join(' ')}));
 const configIndex=configs.map(c=>({id:c.id,href:'settings.html#'+c.id,kind:'config',title:c.label,category:c.mode+' / '+c.group,summary:c.note.paragraphs?.[0]||c.description||`默认：${optionSummary(c)}`,keywords:c.key,text:[c.description,...(c.note.paragraphs??[]),...c.options.flatMap(o=>[o.label,o.description,rawValue(o.value)]),...c.requires.map(k=>configMap.get(k).label)].join(' '),status:c.note.status||''}));
 await fs.writeFile(path.join(out,'search-index.js'),`window.WIKI_INDEX=${JSON.stringify([...articleIndex,...configIndex]).replaceAll('<','\\u003c')};\n`);
+await fs.writeFile(path.join(out,'navigation-index.js'),`window.WIKI_INDEX=${JSON.stringify(articleIndex.map(({id,title,summary,href,category,aliases,kind,image})=>({id,title,summary,href,category,aliases,kind,image}))).replaceAll('<','\\u003c')};\n`);
 await fs.cp(path.join(root,'assets'),path.join(out,'assets'),{recursive:true});
 for(const [src,dest] of [['wiki.css','styles.css'],['wiki.js','app.js'],['theme.js','theme.js'],['search.js','search.js']])await fs.copyFile(path.join(root,'src',src),path.join(out,dest));
 await fs.appendFile(path.join(out,'styles.css'),'\n'+await fs.readFile(path.join(root,'src/refinements.css'),'utf8'));
-await fs.writeFile(path.join(root,'content-sources.json'),JSON.stringify({version:meta.version,checkedAt:meta.date,articles:articles.map(({id,source,configKeys,auditedVersion})=>({id,source,configKeys,auditedVersion})),configs:configs.map(c=>({key:c.key,id:c.id,sourceLine:c.line,status:c.note.status??'documented',requires:c.requires}))},null,2)+'\n');
+await fs.writeFile(path.join(root,'content-sources.json'),JSON.stringify({version:meta.version,checkedAt:meta.date,targetedRefresh:[...currentAuditIds],articles:articles.map(({id,source,configKeys,auditedVersion})=>({id,source,configKeys,auditedVersion})),configs:configs.map(c=>({key:c.key,id:c.id,sourceLine:c.line,status:c.note.status??'documented',requires:c.requires}))},null,2)+'\n');
 const lifeTargets=articles.filter(a=>a.category==='food'||(a.category==='creatures'&&!a.id.startsWith('boss-')));
 const entityTargets=articles.filter(a=>a.category==='characters'||a.category==='buildings'||a.id.startsWith('boss-'));
-await fs.writeFile(path.join(root,'coverage.json'),JSON.stringify({...counts,groups:groups.length,images:Object.keys(iconManifest).length,itemAudit:{version:meta.version,articles:itemAuditIds.size,items:articles.filter(a=>a.category==='items'&&itemAuditIds.has(a.id)).length,missing:articles.filter(a=>a.category==='items'&&!itemAuditIds.has(a.id)).map(a=>a.id)},entityAudit:{version:meta.version,articles:entityAuditIds.size,characters:entityTargets.filter(a=>a.category==='characters'&&entityAuditIds.has(a.id)).length,buildings:entityTargets.filter(a=>a.category==='buildings'&&entityAuditIds.has(a.id)).length,bosses:entityTargets.filter(a=>a.id.startsWith('boss-')&&entityAuditIds.has(a.id)).length,missing:entityTargets.filter(a=>!entityAuditIds.has(a.id)).map(a=>a.id)},lifeAudit:{version:meta.version,articles:lifeAuditIds.size,food:lifeTargets.filter(a=>a.category==='food'&&lifeAuditIds.has(a.id)).length,creatures:lifeTargets.filter(a=>a.category==='creatures'&&lifeAuditIds.has(a.id)).length,missing:lifeTargets.filter(a=>!lifeAuditIds.has(a.id)).map(a=>a.id)},notedSettings:configs.filter(c=>c.note.paragraphs?.length).length,implementationDifferences:configs.filter(c=>c.note.status).map(c=>({key:c.key,label:c.label,status:c.note.status})),unlinkedSettings:configs.filter(c=>!articles.some(a=>a.configKeys.includes(c.key))).map(c=>c.key)},null,2)+'\n');
+await fs.writeFile(path.join(root,'coverage.json'),JSON.stringify({...counts,targetedRefresh:{version:meta.version,articles:[...currentAuditIds],count:currentAuditIds.size},sourceAuditVersions:Object.fromEntries([...new Set(articles.map(a=>a.auditedVersion).filter(Boolean))].map(v=>[v,articles.filter(a=>a.auditedVersion===v).length])),groups:groups.length,images:Object.keys(iconManifest).length,itemAudit:{version:meta.version,articles:itemAuditIds.size,items:articles.filter(a=>a.category==='items'&&itemAuditIds.has(a.id)).length,missing:articles.filter(a=>a.category==='items'&&!itemAuditIds.has(a.id)).map(a=>a.id)},entityAudit:{version:meta.version,articles:entityAuditIds.size,characters:entityTargets.filter(a=>a.category==='characters'&&entityAuditIds.has(a.id)).length,buildings:entityTargets.filter(a=>a.category==='buildings'&&entityAuditIds.has(a.id)).length,bosses:entityTargets.filter(a=>a.id.startsWith('boss-')&&entityAuditIds.has(a.id)).length,missing:entityTargets.filter(a=>!entityAuditIds.has(a.id)).map(a=>a.id)},lifeAudit:{version:meta.version,articles:lifeAuditIds.size,food:lifeTargets.filter(a=>a.category==='food'&&lifeAuditIds.has(a.id)).length,creatures:lifeTargets.filter(a=>a.category==='creatures'&&lifeAuditIds.has(a.id)).length,missing:lifeTargets.filter(a=>!lifeAuditIds.has(a.id)).map(a=>a.id)},notedSettings:configs.filter(c=>c.note.paragraphs?.length).length,implementationDifferences:configs.filter(c=>c.note.status).map(c=>({key:c.key,label:c.label,status:c.note.status})),unlinkedSettings:configs.filter(c=>!articles.some(a=>a.configKeys.includes(c.key))).map(c=>c.key)},null,2)+'\n');
 await buildHub(out,meta,icon,[...articleIndex,...configIndex]);
 console.log(`Built ${counts.articles+3} Tempered pages, ${counts.articles} articles, all ${counts.configs} settings and ${counts.choices} choices.`);

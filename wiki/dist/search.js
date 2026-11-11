@@ -19,38 +19,52 @@
  }
  function prepare(entries,base,wiki){
   return entries.map(entry=>({...entry,wiki:entry.wiki??wiki,url:new URL(entry.href,base).href,imageUrl:entry.image?new URL(entry.image,base).href:null,
-   titleKey:normalize(entry.title),keywordsKey:normalize(entry.keywords),aliasesKey:(entry.aliases??[]).map(normalize),
+   titleKey:normalize(entry.title),summaryKey:normalize(entry.summary),keywordsKey:normalize(entry.keywords),aliasesKey:(entry.aliases??[]).map(normalize),
    hay:normalize([entry.title,entry.summary,entry.keywords,entry.text,entry.category,...(entry.aliases??[])].join(' ')),
   }));
  }
- let entries=prepare(window.WIKI_INDEX??[],location.href,document.body.dataset.wiki);
+ let entries=[],localPrepared=false,globalPrepared=false;
  let kind='all',selected=-1,loading=false,failed=false,loadStarted=false,pendingEnter=null;
+ let renderTimer=0,composing=false,renderedQuery=null;
+ function cancelRender(){if(renderTimer)clearTimeout(renderTimer);renderTimer=0;}
+ function scheduleRender(){
+  cancelRender();
+  if(!dialog.open)return;
+  renderTimer=setTimeout(()=>{renderTimer=0;if(dialog.open&&!composing)render();},100);
+ }
+ function useLocalIndex(){
+  if(localPrepared||globalPrepared)return;
+  entries=prepare(window.WIKI_INDEX??[],location.href,document.body.dataset.wiki);
+  localPrepared=true;
+ }
+ function useGlobalIndex(){
+  if(!globalPrepared){entries=prepare(window.WIKI_GLOBAL_INDEX,indexUrl);globalPrepared=true;}
+  failed=false;
+ }
  function finishLoading(){
   const pending=pendingEnter;
   pendingEnter=null;
-  if(!dialog.open)return;
+  if(!dialog.open||composing)return;
   render();
   if(pending?.query!==input.value)return;
   const links=[...results.querySelectorAll('a')];
   (links.find(a=>a.href===pending.url)??links[0])?.click();
  }
  function loadIndex(){
+  if(window.WIKI_GLOBAL_INDEX){useGlobalIndex();return;}
   if(loadStarted)return;
   loadStarted=true;
-  if(window.WIKI_GLOBAL_INDEX){
-   entries=prepare(window.WIKI_GLOBAL_INDEX,indexUrl);
-   return;
-  }
+  if(failed)useLocalIndex();
   loading=true;failed=false;
   const script=document.createElement('script');
   script.src=indexUrl.href;
   script.onload=()=>{
    loading=false;
-   if(window.WIKI_GLOBAL_INDEX)entries=prepare(window.WIKI_GLOBAL_INDEX,indexUrl);
-   else failed=true;
+   if(window.WIKI_GLOBAL_INDEX){if(dialog.open)useGlobalIndex();}
+   else {failed=true;loadStarted=false;script.remove();if(dialog.open)useLocalIndex();}
    finishLoading();
   };
-  script.onerror=()=>{loading=false;failed=true;loadStarted=false;script.remove();finishLoading();};
+  script.onerror=()=>{loading=false;failed=true;loadStarted=false;script.remove();if(dialog.open)useLocalIndex();finishLoading();};
   document.head.append(script);
  }
  function rank(entry,q,terms){
@@ -60,9 +74,12 @@
   return 1+(entry.titleKey===q?90:entry.titleKey.startsWith(q)?48:entry.titleKey.includes(q)?32:0)
    +(alias?82:entry.aliasesKey.some(a=>a.startsWith(q))?24:0)
    +(entry.keywordsKey===q?72:entry.keywordsKey.includes(q)?14:0)
-   +(normalize(entry.summary).includes(q)?7:0);
+   +(entry.summaryKey.includes(q)?7:0);
  }
  function render(){
+  cancelRender();
+  if(!dialog.open)return;
+  renderedQuery=input.value;
   const raw=input.value.trim();
   const q=normalize(raw);
   const terms=q.split(' ').filter(Boolean);
@@ -78,7 +95,7 @@
    let snippet=e.summary;
    if(e.jump)snippet='直达 · '+snippet;
    else if(e.aliasesKey.includes(q))snippet='相关名称 · '+e.aliases.join('、');
-   else if(q&&!normalize(snippet).includes(q)){
+   else if(q&&!e.summaryKey.includes(q)){
     const text=String(e.text??'');
     const hit=text.toLowerCase().indexOf(raw.toLowerCase());
     if(hit>=0)snippet=(hit>24?'…':'')+text.slice(Math.max(0,hit-24),hit+105)+'…';
@@ -103,7 +120,13 @@
   if(event.key==='Enter'&&!event.isComposing){event.preventDefault();openFromHeader();}
  });
  dialog.querySelector('#search-close').addEventListener('click',()=>dialog.close());
- input.addEventListener('input',()=>{pendingEnter=null;render();});
+ input.addEventListener('compositionstart',()=>{composing=true;pendingEnter=null;cancelRender();});
+ input.addEventListener('compositionend',()=>{composing=false;pendingEnter=null;scheduleRender();});
+ input.addEventListener('input',event=>{
+  pendingEnter=null;
+  if(composing||event.isComposing){cancelRender();return;}
+  scheduleRender();
+ });
  branch.addEventListener('change',()=>{pendingEnter=null;render();});
  kinds.forEach(button=>button.addEventListener('click',()=>{
   pendingEnter=null;
@@ -111,7 +134,7 @@
   kinds.forEach(item=>{item.classList.toggle('active',item===button);item.setAttribute('aria-pressed',String(item===button));});
   render();input.focus();
  }));
- dialog.addEventListener('close',()=>{pendingEnter=null;});
+ dialog.addEventListener('close',()=>{pendingEnter=null;composing=false;cancelRender();});
  dialog.addEventListener('click',event=>{
   if(event.target!==dialog)return;
   const r=dialog.getBoundingClientRect();
@@ -119,7 +142,9 @@
  });
  results.addEventListener('click',event=>{if(event.target.closest('a'))dialog.close();});
  dialog.addEventListener('keydown',event=>{
-  if(event.isComposing||event.target===branch)return;
+  if(event.isComposing||composing||event.target===branch)return;
+  if((event.key==='ArrowDown'||event.key==='ArrowUp'||event.key==='Enter')&&
+    (renderTimer||renderedQuery!==input.value))render();
   const links=[...results.querySelectorAll('a')];
   if(event.key==='ArrowDown'||event.key==='ArrowUp'){
    event.preventDefault();

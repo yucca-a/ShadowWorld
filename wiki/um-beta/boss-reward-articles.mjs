@@ -23,7 +23,7 @@ export const bossRewardArticles = [
       beta('init/init_recipes/recipes_wixie.lua', 7), prefab('charles_t_horse', 257), prefab('charles_t_horse', 347),
       prefab('charles_t_horse', 434), prefab('charles_t_horse', 449), beta('postinit/stategraphs/SGwilson.lua', 166),
       beta('postinit/stategraphs/SGwilson.lua', 190), beta('postinit/stategraphs/SGwilson.lua', 245),
-      beta('postinit/stategraphs/SGwilson.lua', 1801), name(563), name(564),
+      beta('postinit/stategraphs/SGwilson.lua', 1801), name(565), name(566),
     ],
   },
   {
@@ -40,7 +40,7 @@ export const bossRewardArticles = [
       drops(9), drops(31), beta('scripts/tools/um_commonfns.lua', 204), prefab('silksack', 1),
       prefab('silksack', 8), prefab('silksack', 36), prefab('silksack', 55), prefab('silksack', 93),
       beta('init/init_containers.lua', 250), beta('init/init_containers.lua', 294),
-      beta('postinit/components/unwrappable.lua', 5), name(236), name(237),
+      beta('postinit/components/unwrappable.lua', 5), name(237), name(238),
     ],
   },
   {
@@ -58,7 +58,7 @@ export const bossRewardArticles = [
       prefab('gore_horn_hat', 38), prefab('gore_horn_hat', 83), prefab('gore_horn_hat', 97),
       prefab('gore_horn_hat', 124), prefab('gore_horn_hat', 270), prefab('gore_horn_hat', 290),
       prefab('gore_horn_hat', 301), beta('init/init_tuning.lua', 218),
-      beta('postinit/components/locomotor.lua', 42), name(324),
+      beta('postinit/components/locomotor.lua', 42), name(325),
     ],
   },
 ];

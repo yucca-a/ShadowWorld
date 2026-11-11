@@ -20,15 +20,18 @@ export const characterArticles=[
  },
  {
   id:'winona',category:'characters',icon:'winona',title:'薇诺娜',aliases:['Winona','女工','工程师','投石机钓鱼','脆弱玫瑰','器械箱','电能转换套件','蓄电池'],
-  summary:'饱食状态影响工作效率和工具消耗。投石机捕鱼、脆弱玫瑰与专属配方也分别可调。',
+  summary:'按高、中、低三档饱食度调整工作量、工具消耗与额外耗饥，制作和采集动画另有自己的判定。',
   configs:['winonaworker','winonarose','winonafishing','winona_items'],
   sections:[
-   ['工作效率','饱食度至少 66.6% 时，砍伐、采矿、敲击和划船按 1.5 倍工作量结算，适用动作的工具耐久消耗乘 0.5。低于饥饿阈值时，分别改为 0.666 和 1.333 倍。中间区间沿用基础倍率。'],
-   ['工作耗饥','受影响的工作与攻击可额外消耗饱食度，重复触发间隔为 0.3 秒。高饱食区间中，砍伐基础消耗为 0.2，采矿与敲击为 0.333，挖掘为 0.5，之后乘角色当前饥饿速率修正。低于饥饿阈值或处于骑乘状态时，跳过额外饥饿消耗。'],
+   ['三档工作效率','工作能力默认开启。饱食度至少 66.6% 时，砍伐、采矿、敲击和划船按 1.5 倍工作量结算；饱食度低于 33.3% 时改为 0.666 倍；中间区间为基础倍率。岛屿冒险提供劈砍动作时，也将其纳入工作量调整。'],
+   ['工具耐久','高、中、低饱食区间的适用工具消耗依次为 0.5、1、1.333 倍。范围包括砍伐、采矿、敲击、挖掘、攻击、划船和耕地；有劈砍动作时也包含劈砍。采摘会额外耗饥，但没有这项工具消耗倍率。'],
+   ['高饱食额外耗饥','适用动作共用 0.3 秒的耗饥间隔。高饱食时，划船、耕地、采摘每次基础耗饥 0.1；砍伐 0.2；采矿、敲击和适用的劈砍 0.333；挖掘 0.5；攻击 0.15。各值再乘角色当前饥饿速率修正。'],
+   ['中低饱食与骑乘','中间区间对应基础耗饥依次为 0.05、0.1、0.166、0.25 和 0.1。低于 33.3% 或骑乘时，这段工作能力不再追加耗饥。工作量、工具耐久与额外耗饥是三项分别判定的效果，不能把制作速度直接当作工作倍率。'],
+   ['复活与采集','变鬼与复活有单独的工作状态回调，复活时重新按当前饱食度刷新工作倍率。采摘进入普通长动作时，具有饥饿制作标签的薇诺娜改用对应的饥饿制作动作；其他采集动作仍保留自身路由。'],
    ['投石机与脆弱玫瑰','默认开启投石机捕鱼调整，命中的适用海鱼会被抛出。默认开启玫瑰调整，薇诺娜受到致命伤时，若没有优先触发的复活道具，可消耗物品栏中的一朵脆弱玫瑰阻止死亡，将生命和理智设为 50%、饱食设为三分之二，并增加 25 个百分点的生命上限惩罚。'],
    ['专属制作','专属物品开关默认开启，添加器械箱、电能转换套件和蓄电池配方。电能转换套件在炼金引擎档解锁，一次制作蓄电池得到 3 个。'],
   ],
-  sources:[cfg(371),cfg(374),cfg(375),cfg(376),role('winona',9),role('winona',16),role('winona',106),role('winona',170),role('winona',459),beta('postinit/components/health.lua',149),beta('postinit/components/health.lua',180),beta('init/init_recipes/recipes.lua',289),cn('init/init_strings/init_strings.lua',876),names(433),names(461),names(474)],
+  sources:[cfg(371),cfg(374),cfg(375),cfg(376),role('winona',13),role('winona',29),role('winona',113),role('winona',12),role('winona',151),role('winona',157),role('winona',162),role('winona',175),role('winona',450),beta('postinit/components/health.lua',149),beta('postinit/components/health.lua',180),beta('init/init_recipes/recipes.lua',289),cn('init/init_strings/init_strings.lua',875),names(435),names(463),names(476)],
  },
  {
   id:'wanda',category:'characters',icon:'wanda',title:'旺达',aliases:['Wanda','钟表匠','警钟','第二次机会表','溯源表','裂缝表'],
@@ -61,7 +64,7 @@ export const characterArticles=[
   sections:[
    ['花瓣转化','默认开启。普通花瓣腐烂时，若直接由姐妹骨灰罐持有，腐烂产物会改为哀悼荣耀。把花瓣放在其他容器里腐烂仍走普通流程。转化使用花瓣自身的腐烂计时。'],
   ],
-  sources:[cfg(303),beta('init/init_postinit.lua',190),beta('postinit/prefabs/petals.lua',4),names(94),cn('init/init_strings/init_tooltips.lua',35)],
+  sources:[cfg(303),beta('init/init_postinit.lua',190),beta('postinit/prefabs/petals.lua',4),names(94),cn('init/init_strings/init_tooltips.lua',36)],
  },
  {
   id:'willow',category:'characters',icon:'willow',title:'薇洛',aliases:['Willow','火女','纵火者','伯尼','薇洛的打火机','潜伏恐惧','烟雾'],
@@ -71,20 +74,21 @@ export const characterArticles=[
    ['伯尼的暗影支配','默认开启。将未激活的伯尼装备在手上时，生成器判定角色具有暗影支配，跳过本次针对该角色的潜伏恐惧生成。'],
    ['用打火机清烟','打火机获得可引导施法能力后，引导期间每 0.3 秒移除 12 单位内带烟雾标签的实体。停止引导时停止清理。此功能走打火机的技能刷新逻辑，独立于伯尼开关。'],
   ],
-  sources:[cfg(301),role('willow_bernie',4),role('willow',13),beta('scripts/components/uncompromising_shadowcreaturespawner.lua',105),beta('scripts/components/uncompromising_shadowcreaturespawner.lua',159),names(15),names(84),cn('init/init_strings/init_strings.lua',884)],
+  sources:[cfg(301),role('willow_bernie',4),role('willow',13),beta('scripts/components/uncompromising_shadowcreaturespawner.lua',105),beta('scripts/components/uncompromising_shadowcreaturespawner.lua',159),names(15),names(84),cn('init/init_strings/init_strings.lua',883)],
  },
  {
-  id:'walter',category:'characters',icon:'walter',title:'沃尔特',aliases:['Walter','童子军','沃比','Woby','沃比饥饿表'],
+  id:'walter',category:'characters',icon:'walter',title:'沃尔特',aliases:['Walter','童子军','沃比','Woby','沃比饥饿表','zaspberry_lesser','viperfruit_lesser','moon_cap'],
   summary:'重做调整了沃比的变身门槛与饥饿表，沃尔特的诅咒另有受伤和恢复规则。',
   configs:['wixie_walter','woby_hunger_classic','vetcurse'],
   sections:[
    ['沃比变身','沃尔特与薇克茜重做默认开启。小沃比的饱食度达到 95% 时变大，大沃比降至 30% 时变小。大沃比降到 40% 或以下时可触发一次饥饿提醒，重新高于 40% 才会重置提醒。'],
+   ['可采摘食物识别','小电光浆果、小幽暗浆果与月亮蘑菇被加入可采摘食物清单，供沃尔特相关的原生食物采摘判断使用。该清单本身不额外赠送产量，也不解除目标自身的采摘限制。'],
    ['饥饿表','默认启用经典沃比饥饿表。该选项由沃尔特与薇克茜重做载入，对有沃尔特标记的角色隐藏原表并以沃比事件更新自定义表。'],
    ['沃比受击与安抚','沃比受击会让主人损失本次伤害量二十分之一的理智，同一只沃比的这项转移有 0.3 秒触发间隔。带老兵诅咒的玩家抚摸小沃比，每只小沃比每游戏日最多可帮玩家扣除 5 个百分点的理智上限惩罚。'],
    ['老兵诅咒','沃尔特实际获得诅咒后，符合条件的受伤会增加理智上限惩罚，最多 75%。普通伤害取绝对值的 50%，持续伤害取 25%，再按基础最大理智和防护修正换算。后续受伤通常重置一天计时，恢复程序每次扣除 10 个百分点。'],
   ],
   related:[link('veterans-curse','老兵诅咒'),link('wixie','薇克茜')],
-  sources:[cfg(258),cfg(261),beta('init/init_postinit.lua',342),beta('wixie_postinit/prefabs/wobysmall.lua',30),beta('wixie_postinit/prefabs/wobysmall.lua',60),beta('wixie_postinit/prefabs/wobysmall.lua',134),beta('wixie_postinit/prefabs/wobybig.lua',43),beta('wixie_postinit/widgets/controls.lua',26),role('walter',10),role('walter',27),names(81),cn('init/init_strings/init_strings.lua',880)],
+  sources:[cfg(258),cfg(261),beta('init/init_postinit.lua',342),beta('wixie_postinit/prefabs/wobysmall.lua',30),beta('wixie_postinit/prefabs/wobysmall.lua',60),beta('wixie_postinit/prefabs/wobysmall.lua',134),beta('wixie_postinit/prefabs/wobybig.lua',43),beta('wixie_postinit/widgets/controls.lua',26),role('walter',10),role('walter',16),role('walter',33),names(81),cn('init/init_strings/init_strings.lua',879)],
  },
  {
   id:'wurt',category:'characters',icon:'wurt',title:'沃特',aliases:['Wurt','鱼妹','鱼人妹','烤稻米','月亮鱼人'],
@@ -95,7 +99,7 @@ export const characterArticles=[
    ['烤稻米和月亮鱼人','烤稻米被登记为沃特的偏好食物，偏好倍率 1.33。开启鱼人调整时，月亮鱼人和月亮鱼人守卫更换领袖会跳过原本的领袖变更回调。'],
   ],
   related:[link('cave-worldgen','熔岩洞穴与潮湿陷坑')],
-  sources:[cfg(558),cfg(893),role('wurt',6),role('wurt',19),role('wurt',26),names(188),cn('init/init_strings/init_strings.lua',886)],
+  sources:[cfg(558),cfg(893),role('wurt',6),role('wurt',19),role('wurt',26),names(189),cn('init/init_strings/init_strings.lua',885)],
  },
  {
   id:'woodie',category:'characters',icon:'woodie',title:'伍迪',aliases:['Woodie','伐木工','海狸人','鹅人','鹅人 II','变鹅','鹅人防水'],

@@ -205,9 +205,11 @@ const geodePools=Object.fromEntries([...fields(assignment(geodeDefinitions,'GEOD
 const artworkIds=itemGroups.flatMap(g=>g.ids);
 const articleArtIds=[...new Set(articles.flatMap(a=>[a.icon??a.prefab,...a.sections.flatMap(([, ,guide])=>guide?.prefabs??[])].filter(Boolean)))].sort();
 const usedNames=new Set([...artworkIds,...articleArtIds,...recipes.flatMap(r=>[r.id,r.product,...r.ingredients.map(i=>i.id)])]);
+// The 6.0.3.9 ammo rename retains the Chinese patch's existing player-facing term.
+const cnNameAliases={um_slingshotammo_honey:'slingshotammo_honey'};
 const names=Object.fromEntries([...usedNames].sort().map(id=>{
  const game=gameNames[id]??{};
- return [id,{en:baseNames[id]??game.en??id,zh:cnNames[id]??game.zh??null}];
+ return [id,{en:baseNames[id]??game.en??id,zh:cnNames[id]??cnNames[cnNameAliases[id]]??game.zh??null}];
 }));
 const activeLines=new Map();
 const validatedCitations=new Map();

@@ -1,0 +1,84 @@
+{
+  "date": "2026-11-11",
+  "status": "validated_and_source_pushed_publication_unverified",
+  "temperedVersion": "2.8.15.0.23",
+  "temperedTargetedArticles": 37,
+  "temperedArticles": 278,
+  "temperedConfigurations": 439,
+  "temperedChoices": 3351,
+  "betaVersion": "6.0.3.9",
+  "cnVersion": "20261106",
+  "betaArticles": 115,
+  "betaNewArticles": [
+    "honey-rounds"
+  ],
+  "betaSubstantivelyUpdatedArticles": 9,
+  "betaCitationArticlesMigrated": 83,
+  "betaConfigurations": 203,
+  "betaRecipes": 163,
+  "htmlPages": 402,
+  "localLinksAndAnchors": 181569,
+  "temperedSearchEntries": 717,
+  "sourceFilesHashed": 93,
+  "performance": {
+    "comparison": "Same updated content before/after rendering optimization, uncompressed local build. Browser DOM counts match static HTML counts.",
+    "before": {
+      "tempered": {
+        "bytes": 2432669,
+        "elements": 44351,
+        "images": 3167
+      },
+      "beta": {
+        "bytes": 444241,
+        "elements": 7882
+      },
+      "detailLocalIndexBytes": 911273
+    },
+    "after": {
+      "tempered": {
+        "bytes": 745693,
+        "elements": 9115,
+        "images": 273
+      },
+      "beta": {
+        "bytes": 261471,
+        "elements": 3173,
+        "images": 287
+      },
+      "detailLocalIndexBytes": 70922
+    },
+    "limit": "Structural reduction and scheduler tests; no measured CPU/GPU power, fan speed, FPS, or user-device benchmark."
+  },
+  "browserChecks": [
+    "desktop 1366x900 and default narrow viewport",
+    "summary filter 200% returns full-text matches",
+    "article link opens full independent text",
+    "detail page loads navigation-index.js",
+    "cross-Wiki search and Enter open honey-rounds",
+    "legacy tempered.html#armor-s1 redirects to armor.html#armor-s1",
+    "armor config anchor opens correct setting",
+    "weather particles config filter shows one matching setting and one nav group",
+    "no page console errors during inspected configuration flow"
+  ],
+  "checks": [
+    "node build.mjs",
+    "node check.mjs with WIKI_TEMPERED_SOURCE",
+    "extract-config.py --check",
+    "UM extract.mjs --check",
+    "wiki-app-performance-regression.mjs",
+    "wiki-search-performance-regression.mjs"
+  ],
+  "publicUrl": "https://cuilian-wiki.pages.dev/",
+  "wikiRepository": "https://github.com/yucca-a/tempered-season-wiki",
+  "wikiCommit": "224649269c59ef97545c9cbc434f9bb260a15239",
+  "remoteCommitVerified": true,
+  "publicationVerification": {
+    "completed": false,
+    "publicHttp": "403 Forbidden from the current environment",
+    "inAppBrowser": "ERR_SOCKET_NOT_CONNECTED",
+    "desktopBrowser": "navigation timed out",
+    "githubCheckRuns": "two requests timed out during TLS handshake",
+    "githubDeploymentRecords": [],
+    "note": "Source is pushed to the configured production branch. Automatic deployment completion and live page contents were not verified. No hosting/access/security settings changed."
+  }
+}

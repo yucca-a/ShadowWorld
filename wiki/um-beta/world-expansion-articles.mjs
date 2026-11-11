@@ -18,7 +18,7 @@ export const worldExpansionArticles=[
    ['黑寡妇与活动石板','蛛网巢和虫茧指向黑寡妇战区。蜘蛛林和海象区域的一些活动石板下藏有连帽伏击蜘蛛。想找宝石可先查看黑寡妇的触发方式与能掉宝石的茧型。',null,[link('hooded-widow.html#hooded-widow-s1','黑寡妇的开战方式'),link('hooded-widower.html','连帽伏击蜘蛛'),link('gemology.html#gemology-s10','虫茧附魔宝石')]],
    ['巨型红杉的资源','完好的巨型红杉需要 25 点砍伐工作量。砍伐会从树冠抖落树枝、木头，也可能有青蛙或蜘蛛。砍到终点会再抖落一批资源，可能含鸟蛋、羽毛或鸟巢。树干留下并开始 3 天再生计时。'],
   ],
-  sources:[worldgen,cfg(539),task('giant_trees',4),task('giant_trees',11),task('giant_trees',55),task('giant_trees',84),room('gianttreesrooms',146),room('gianttreesrooms',173),room('gianttreesrooms',258),prefab('widowwebspawner',10),prefab('giant_tree',98),prefab('giant_tree',361),prefab('giant_tree',430),prefab('giant_tree',441),prefab('giant_tree',452),cn(232),cn(251),cn(303)],
+  sources:[worldgen,cfg(539),task('giant_trees',4),task('giant_trees',11),task('giant_trees',55),task('giant_trees',84),room('gianttreesrooms',146),room('gianttreesrooms',173),room('gianttreesrooms',258),prefab('widowwebspawner',10),prefab('giant_tree',98),prefab('giant_tree',361),prefab('giant_tree',430),prefab('giant_tree',441),prefab('giant_tree',452),cn(233),cn(252),cn(304)],
  },
  {
   id:'boiling-springs',category:'world',icon:'um_hotspring',title:'沸腾温泉与龙蝇荒地',aliases:['Boiling Springs','Broiling Hills','沸腾地带','温泉','浴球','泡澡','温暖洞穴'],
@@ -29,7 +29,7 @@ export const worldExpansionArticles=[
    ['浴球与生命上限','默认开启的浴球调整把配方改为 3 个月树花和 3 个硝石，科技为 CELESTIAL_THREE。投进沸腾温泉后，浴球效果持续 60 秒。待在池内每秒去除 0.9 个百分点的生命上限惩罚，并增加最多 4 点潮湿，防水可抵消这部分潮湿。池内每秒还会使体温上升 0.3℃。'],
    ['新月的黑水','新月状态变化时，未投浴球的温泉会变暗，并关闭投浴球功能。进入黑水会施加强制疯狂状态，离池时解除温泉施加的状态。之后白天状态变化时，未投浴球的暗色温泉会恢复原色。'],
   ],
-  sources:[worldgen,cfg(556),cfg(614),task('broiling_hills',12),task('broiling_hills',23),task('broiling_hills',52),task('broiling_hills',103),room('UM_BoilingFields',52),room('UM_BoilingFields',144),prefab('um_hotspring',95),prefab('um_hotspring',106),prefab('um_hotspring',145),prefab('um_hotspring',152),prefab('um_hotspring',197),prefab('um_hotspring',343),beta('init/init_recipes/recipe_changes.lua',154),cn(168),cn(176)],
+  sources:[worldgen,cfg(556),cfg(614),task('broiling_hills',12),task('broiling_hills',23),task('broiling_hills',52),task('broiling_hills',103),room('UM_BoilingFields',52),room('UM_BoilingFields',144),prefab('um_hotspring',95),prefab('um_hotspring',106),prefab('um_hotspring',145),prefab('um_hotspring',152),prefab('um_hotspring',197),prefab('um_hotspring',343),beta('init/init_recipes/recipe_changes.lua',154),cn(169),cn(177)],
  },
  {
   id:'oasis-desert',category:'world',icon:'antlion',title:'绿洲沙漠地形',aliases:['Oasis Desert','Lightning Bluff','蚁狮沙漠','荒地合并','猎犬丘'],
@@ -51,7 +51,7 @@ export const worldExpansionArticles=[
    ['采收与再生','靠近水稻可采收稻米，碰撞事件也可触发掉落并转为采过的状态。采后沿用芦苇的 3 天再生间隔，冬天停长。水稻再生时，若 1.5 单位内有船，会移除该株。'],
    ['生米、烤米与下锅','生稻米基础饱食为 12.5，食物类型为难吃蔬菜，能直接吃的角色取决于饮食规则。烤稻米属普通蔬菜，基础饱食 12.5、生命 −1，并有腐烂计时。下锅时两者均提供 1 蔬菜值，生米提供 1 稻米值，烤米只提供 0.5。',null,[link('um-rice-pudding.html','米布丁食谱'),link('seafoodpaella.html','海鲜饭食谱'),link('wurt.html','沃特的食物调整')]],
   ],
-  sources:[worldgen,cfg(552),task('squeltch',7),task('squeltch',36),task('squeltch',70),task('squeltch',85),prefab('riceplantspawner',116),prefab('riceplant',24),prefab('riceplant',47),prefab('riceplant',100),prefab('riceplant',122),prefab('rice',55),prefab('rice',120),prefab('rice',125),beta('init/init_food/init_crockpot.lua',553),beta('init/init_food/init_crockpot.lua',555),cn(186),cn(188),cn(190)],
+  sources:[worldgen,cfg(552),task('squeltch',7),task('squeltch',36),task('squeltch',70),task('squeltch',85),prefab('riceplantspawner',116),prefab('riceplant',24),prefab('riceplant',47),prefab('riceplant',100),prefab('riceplant',122),prefab('rice',55),prefab('rice',120),prefab('rice',125),beta('init/init_food/init_crockpot.lua',553),beta('init/init_food/init_crockpot.lua',555),cn(187),cn(189),cn(191)],
  },
  {
   id:'lunar-island',category:'world',icon:'um_beehive_moon',title:'月岛与腐臭蜂巢',aliases:['Lunar Island','Moon Island','Carrion Bees','腐臭蜂','腐臭蜂巢','月岛洞穴入口'],
@@ -62,7 +62,7 @@ export const worldExpansionArticles=[
    ['清理蜂巢','腐臭蜂巢有 900 生命，受击时会放出蜂群。野外腐臭蜂有 250 生命、34 点基础攻击。清醒时死亡通常会爆出孢子，对符合条件的玩家造成 25 点伤害，装备蜂帽可免这次爆炸伤害。电击命中后会令仍存活的腐臭蜂立即死亡，近身时也要留意孢子。击破蜂巢固定掉 3 份腐臭蜂蜜和 1 个同名的腐臭蜂巢材料。'],
    ['月亮风暴与配置','当前风暴节点脚本检查 LUNAR_BEES，菜单的腐臭蜂开关实际生成 MOON_BEES。月岛世界生成读取的是正确的菜单键，可以作为稳定的寻找路线。'],
   ],
-  sources:[worldgen,cfg(558),cfg(871),task('moonisland',1),task('moonisland',19),room('UM_moonisland',1),room('UM_moonisland',31),prefab('um_beehive_moon',125),prefab('um_beehive_moon',208),prefab('um_beehive_moon',233),prefab('um_bee_moon',116),prefab('um_bee_moon',133),prefab('um_bee_moon',153),prefab('um_bee_moon',257),prefab('um_bee_moon',264),beta('postinit/components/moonstorms.lua',40),beta('init/init_configs.lua',21),cn(729),cn(731),cn(732),cn(739)],
+  sources:[worldgen,cfg(558),cfg(871),task('moonisland',1),task('moonisland',19),room('UM_moonisland',1),room('UM_moonisland',31),prefab('um_beehive_moon',125),prefab('um_beehive_moon',208),prefab('um_beehive_moon',233),prefab('um_bee_moon',116),prefab('um_bee_moon',133),prefab('um_bee_moon',153),prefab('um_bee_moon',257),prefab('um_bee_moon',264),beta('postinit/components/moonstorms.lua',40),beta('init/init_configs.lua',21),cn(732),cn(734),cn(735),cn(744)],
  },
  {
   id:'rimeweed',category:'world',icon:'rimeweed_main',title:'尖刺霜草与局部暴雪',aliases:['Spiny Rimeweed','Rimeweed','霜草荆棘','霜花','霜冻藤蔓','霜鞭','局部暴雪'],
@@ -73,6 +73,6 @@ export const worldExpansionArticles=[
    ['何时清理','主株有 600 生命，荆棘有 200 生命。生成半天后进入第二阶段，再过一天进入第三阶段。扩散可在周边可采植物附近连成荆棘，成熟主株受攻击还会反击并施加寒冷。打掉主株可一起清掉相连的荆棘。离开冬季后霜草会清理。'],
    ['掉落与用途','第一阶段固定掉 1 根霜冻藤蔓。第二阶段掉 2 根，并有 25% 概率掉霜鞭。第三阶段也掉 2 根，另以各一半概率掉霜花或霜鞭。藤蔓可做霜冻外壳或下锅，霜花可用于冰镇龙舌兰。',null,[link('rimeweed-bramble-armor.html','霜冻外壳'),link('rimeweed-icepack.html','冰袋'),link('rime-helmet.html','霜兽头盔'),link('um-rimeweed-spagett.html','霜冻意面'),link('um-rimeweed-tequila.html','冰镇龙舌兰')]],
   ],
-  sources:[cfg(451),cfg(463),beta('init/init_weather/init_harder_weather.lua',130),beta('scripts/components/um_snow_stormspawner.lua',21),beta('scripts/components/um_snow_stormspawner.lua',30),beta('scripts/components/um_snow_stormspawner.lua',121),beta('scripts/components/snowstormwatcher.lua',49),prefab('um_rimeweed',43),prefab('um_rimeweed',273),prefab('um_rimeweed',383),prefab('um_rimeweed',450),prefab('um_rimeweed',463),prefab('um_rimeweed',496),prefab('um_rimeweed',519),prefab('um_rimeweed',603),prefab('um_rimeweed',634),prefab('um_rimeweed',726),beta('init/init_recipes/recipes.lua',127),beta('scripts/um_preparedfoods.lua',660),beta('scripts/um_preparedfoods.lua',696),cn(692),cn(695),cn(696),cn(697)],
+  sources:[cfg(451),cfg(463),beta('init/init_weather/init_harder_weather.lua',130),beta('scripts/components/um_snow_stormspawner.lua',21),beta('scripts/components/um_snow_stormspawner.lua',30),beta('scripts/components/um_snow_stormspawner.lua',121),beta('scripts/components/snowstormwatcher.lua',49),prefab('um_rimeweed',43),prefab('um_rimeweed',273),prefab('um_rimeweed',383),prefab('um_rimeweed',450),prefab('um_rimeweed',463),prefab('um_rimeweed',496),prefab('um_rimeweed',519),prefab('um_rimeweed',603),prefab('um_rimeweed',634),prefab('um_rimeweed',726),beta('init/init_recipes/recipes.lua',127),beta('scripts/um_preparedfoods.lua',660),beta('scripts/um_preparedfoods.lua',696),cn(694),cn(697),cn(698),cn(699)],
  },
 ];

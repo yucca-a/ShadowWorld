@@ -213,6 +213,16 @@
 .topic-selected .continuous-entry:not(.topic-expanded) .entry-bottom>:not(.entry-permalink){display:none}
 .topic-selected .continuous-entry:not(.topic-expanded){margin-bottom:12px}
 .topic-selected .continuous-entry:not(.topic-expanded) .entry-lead{margin-bottom:0}
+/* Keep index pages light; complete text lives on each article's own page. */
+.wiki-entry,.config-group,.directory-group,.wiki-heading,.wiki-welcome,.layout{
+ backdrop-filter:none;-webkit-backdrop-filter:none;
+}
+.wiki-entry,.config-group,.directory-group,.wiki-heading,.wiki-welcome{background:var(--bg);box-shadow:0 2px 12px #00000008}
+.continuous-entry{content-visibility:auto;contain-intrinsic-size:auto 270px}
+.config-card{content-visibility:auto;contain-intrinsic-size:auto 90px}
+.continuous-entry:target,.config-card:target{content-visibility:visible}
+@media(max-width:700px){.layout{background:var(--bg)}.wiki-entry,.config-group,.directory-group,.wiki-heading{box-shadow:none}}
+@media print{.continuous-entry,.config-card{content-visibility:visible;contain-intrinsic-size:none}}
 @media(max-width:700px){
  .topic-tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
  .topic-tab{padding:7px 8px;gap:6px}

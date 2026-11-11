@@ -21,6 +21,7 @@ export const betaTopics=[
 const newTemperedItems=new Set([
  'frost-core','frost-shrine','eternal-boots','anti-slip-boots','mourning-tomb','soul-bottle',
  'cracked-ageless-watch','vortex-sword','celestial-onion','small-candy','carrot-cake','four-season-fish-soup','dried-vegetables',
+ 'winona-toolbox','winona-electrical-upgrades','walter-moonglass-rounds',
 ]);
 const temperedOverrides={
  'frostjaw':'creatures','skill-tree':'characters','right-click-actions':'characters','character-mode-switches':'characters',

@@ -39,7 +39,7 @@ export const additionalArticles=[
    ['新增扫描对象','黑寡妇对应超级强化电路，可累积的生物数据上限为 6。蚜虫对应胃增益电路，上限 2；果蝠对应加速电路，上限 2；冰川青年座狼对应制冷电路，上限 6。',null,[{href:'hooded-widow.html',label:'黑寡妇'},{href:'fruitbat.html',label:'果蝠'},{href:'glacial-hound.html',label:'冰川青年座狼'}]],
   ],
   related:[link('powercell','蓄电池')],
-  sources:[cfg(304),cfg(305),role('wx78',29),role('wx78',41),role('wx78',49),role('wx78',75),role('wx78',110),beta('scripts/prefabs/zaspberry.lua',144),beta('scripts/prefabs/zaspberry.lua',162),beta('scripts/prefabs/zaspberryparfait.lua',53),beta('scripts/prefabs/powercell.lua',101),names(45),names(180),names(235),names(254),names(258),names(295),names(461)],
+  sources:[cfg(304),cfg(305),role('wx78',29),role('wx78',41),role('wx78',49),role('wx78',75),role('wx78',110),beta('scripts/prefabs/zaspberry.lua',144),beta('scripts/prefabs/zaspberry.lua',162),beta('scripts/prefabs/zaspberryparfait.lua',53),beta('scripts/prefabs/powercell.lua',101),names(45),names(181),names(236),names(255),names(259),names(296),names(463)],
  },
  {
   id:'wickerbottom',category:'characters',icon:'wickerbottom',title:'薇克巴顿',aliases:['Wickerbottom','老奶奶','图书管理员','月之魔典','实用求雨仪式'],
@@ -86,6 +86,6 @@ export const additionalArticles=[
    ['沃姆伍德技能','点出荆棘护甲后，沃姆伍德可连续命中 3 次主动释放冰刺。点出荆棘爆发后，受击触发时还会在 0.6 秒后再放一次。'],
   ],
   related:[link('wormwood','沃姆伍德'),link('snowstorms','暴风雪与雪堆')],
-  sources:[cfg(463),beta('init/init_recipes/recipes.lua',127),beta('scripts/prefabs/um_armor_bramble_rimeweed.lua',14),beta('scripts/prefabs/um_armor_bramble_rimeweed.lua',31),beta('scripts/prefabs/um_armor_bramble_rimeweed.lua',39),beta('scripts/prefabs/um_armor_bramble_rimeweed.lua',123),beta('scripts/prefabs/um_rimeweed.lua',48),beta('scripts/prefabs/um_rimeweed.lua',70),beta('scripts/prefabs/um_rimeweed.lua',148),cn('init/init_strings/init_descriptions/skilltreestrings.lua',200),names(695),names(701)],
+  sources:[cfg(463),beta('init/init_recipes/recipes.lua',127),beta('scripts/prefabs/um_armor_bramble_rimeweed.lua',14),beta('scripts/prefabs/um_armor_bramble_rimeweed.lua',31),beta('scripts/prefabs/um_armor_bramble_rimeweed.lua',39),beta('scripts/prefabs/um_armor_bramble_rimeweed.lua',123),beta('scripts/prefabs/um_rimeweed.lua',48),beta('scripts/prefabs/um_rimeweed.lua',70),beta('scripts/prefabs/um_rimeweed.lua',148),cn('init/init_strings/init_descriptions/skilltreestrings.lua',200),names(697),names(703)],
  },
 ];

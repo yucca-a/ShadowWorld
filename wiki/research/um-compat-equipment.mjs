@@ -23,9 +23,10 @@ export const articles = [{
     {
       title:'联动如何开启',
       paragraphs:[
-        '本页按淬炼之季工坊版 2.8.14.98.6 核对。和永不妥协同时加载后，“永不妥协补丁”默认开启，可单独开关。部分条目还会读取永不妥协自己的玩法设置，或淬炼之季的其他开关。',
+        '本页装备数值沿用淬炼之季 2.8.14.98.6 的专题核对记录。和永不妥协同时加载后，“永不妥协补丁”默认开启，可单独开关。部分条目还会读取永不妥协自己的玩法设置，或淬炼之季的其他开关。',
+        '后续版本新增的薇诺娜电气改造与过充、工作兼容和天气显示优化已有独立词条，按对应页面的条件使用；温蒂连续使用药剂的时长规则见当前角色词条。',
       ],
-      links:['um-item-compatibility'],
+      links:['um-item-compatibility','winona-electrical-upgrades','role-winona','role-wendy','um-performance-compatibility'],
     },
     {
       title:'修补工具包',

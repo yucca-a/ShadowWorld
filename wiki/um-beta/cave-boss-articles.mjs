@@ -15,7 +15,7 @@ export const caveBossArticles = [
       ['打法', '冲锋时用侧跑绕柱，看到它被柱子绊停再回身输出，注意撞击后周围的落石。生命低于 60% 后，蓄力跳可能接连续跳，低于 30% 后连段更长，等它真正落地停住再贴近。它还会喷出多轮黏液，落点附近会受到 50 点伤害并扣 5 理智，部分黏液会生成大暗影触手。'],
       ['掉落与二级附魔装备', '击败后会掉守护者之角、肉、支柱脚手架蓝图、雕塑草图和测试版追加的骷髅箱蓝图，随后出现大号华丽箱子。老兵诅咒房间设置为默认或始终开启时，首领额外掉犀牛帽。世界尚未记录找到远古钥匙时，箱内会放入一把。其余战利品随机抽取，包括铥矿、齿轮、普通宝石与遗迹装备。铥矿棒、懒人魔杖或唤星者魔杖若抽中，会带一项随机二级附魔，附魔耐久全满。提高首领生命档会增加箱内额外战利品的机会，远古钥匙排除在复制范围外。', null, [{ href: 'gemology.html#gemology-s10', label: '回到宝石学的高品质来源' }, { href: 'gemology.html#gemology-s6', label: '查二级附魔效果' }, { href: 'ancient-fuelweaver.html', label: '远古钥匙的下一站' }, { href: 'gore-horn-hat.html', label: '犀牛帽的冲锋与充能' }]],
     ],
-    sources: [cfg(959), cfg(999), health(2), health(227), health(263), beta('init/init_postinit.lua', 422), prefab('minotaur', 15), prefab('minotaur', 118), prefab('minotaur_drops', 6), prefab('vetcurse_drops', 20), beta('postinit/stategraphs/SGminotaur.lua', 141), beta('postinit/stategraphs/SGminotaur.lua', 213), beta('scripts/prefabs/shadow_goo.lua', 73), beta('scripts/prefabs/shadow_goo.lua', 274), beta('init/init_gemology/misc.lua', 105), beta('init/init_gemology/misc.lua', 118), beta('init/init_gemology/misc.lua', 152), names(324), names(336)],
+    sources: [cfg(959), cfg(999), health(2), health(227), health(263), beta('init/init_postinit.lua', 422), prefab('minotaur', 15), prefab('minotaur', 118), prefab('minotaur_drops', 6), prefab('vetcurse_drops', 20), beta('postinit/stategraphs/SGminotaur.lua', 141), beta('postinit/stategraphs/SGminotaur.lua', 213), beta('scripts/prefabs/shadow_goo.lua', 73), beta('scripts/prefabs/shadow_goo.lua', 274), beta('init/init_gemology/misc.lua', 105), beta('init/init_gemology/misc.lua', 118), beta('init/init_gemology/misc.lua', 152), names(325), names(338)],
   },
   {
     id: 'ancient-fuelweaver', category: 'creatures', icon: 'stalker_atrium', title: '远古织影者',
@@ -51,7 +51,7 @@ export const caveBossArticles = [
       ['打法', '洞穴战留意冲撞和连续近身攻击，冲撞开始后向侧面闪出，等连招做完再回头。拾荒疯猪会从废料堆翻武器，能挥击、冲撞或开炮，武器各有 3 次使用。测试版让大型废料堆可供应炮，看到它举炮就离开瞄准线。'],
       ['柱子与掉落', '洞穴的开裂柱子基础掉 3 块绝望石，另有 50% 机会多出第 4 块。梦魇疯猪还会掉纯粹恐惧、绝望石装备及墙的蓝图和雕塑草图。拾荒疯猪基础掉 5 个废料，50% 机会多出第 6 个，另有 50% 机会掉齿轮。固定蓝图包括 W.A.R.B.I.S. 盔甲、头戴齿轮、自动修理机、弹性空间制造器和船瓶，另有雕塑草图。简陋的杠杆、破旧的杠杆各自按世界记录，掉过的种类后续击败时不会再出。'],
     ],
-    sources: [cfg(1265), health(18), health(109), health(581), health(626), beta('init/init_tuning.lua', 740), prefab('daywalker', 15), prefab('daywalker', 43), prefab('daywalker', 64), prefab('daywalker', 78), prefab('daywalker', 127), prefab('daywalker', 139), names(713), names(722)],
+    sources: [cfg(1265), health(18), health(109), health(581), health(626), beta('init/init_tuning.lua', 740), prefab('daywalker', 15), prefab('daywalker', 43), prefab('daywalker', 64), prefab('daywalker', 78), prefab('daywalker', 127), prefab('daywalker', 139), names(715), names(724)],
   },
   {
     id: 'celestial-champion', category: 'creatures', icon: 'alterguardian_phase1', title: '天体英雄',
@@ -75,7 +75,7 @@ export const caveBossArticles = [
       ['主教重做打法', '默认开启重做。暗影主教在攻击中短暂无敌，会尝试传送到目标附近，然后朝选定方向冲锋。一级到三级分别连续 3／4／5 轮，攻击伤害为 15／25／35。看见转向蓄势就往侧面横移，等整轮结束再打。想缩短高等级主教阶段，可以优先解决它。'],
       ['暗影心房与王冠', '三级棋子击败后掉暗影心房、暗夜剑和暗夜甲，开启重做时加掉暗影王冠。二级开始就有额外噩梦燃料。提高房间里的棋子生命档也会为适用战利品增加额外掉落。', null, [{ href: 'ancient-fuelweaver.html#ancient-fuelweaver-s1', label: '用暗影心房召唤远古织影者' }]],
     ],
-    sources: [cfg(967), cfg(1293), health(68), health(351), health(560), beta('init/init_postinit.lua', 540), beta('init/init_tuning.lua', 686), prefab('shadowchesspieces', 15), beta('postinit/stategraphs/SGshadow_bishop.lua', 45), beta('postinit/stategraphs/SGshadow_bishop.lua', 61), beta('postinit/stategraphs/SGshadow_bishop.lua', 139), beta('postinit/stategraphs/SGshadow_bishop.lua', 242), names(212)],
+    sources: [cfg(967), cfg(1293), health(68), health(351), health(560), beta('init/init_postinit.lua', 540), beta('init/init_tuning.lua', 686), prefab('shadowchesspieces', 15), beta('postinit/stategraphs/SGshadow_bishop.lua', 45), beta('postinit/stategraphs/SGshadow_bishop.lua', 61), beta('postinit/stategraphs/SGshadow_bishop.lua', 139), beta('postinit/stategraphs/SGshadow_bishop.lua', 242), names(213)],
   },
   {
     id: 'great-depths-worm', category: 'creatures', icon: 'worm_boss', title: '巨大洞穴蠕虫',

@@ -31,7 +31,16 @@ for(const [file,term,asset] of [
   errors.push(`${file}: incorrect or missing icon for ${term}`);
  }
 }
-for(const file of ['app.js','theme.js','search.js','search-index.js','hub.js','legacy-home.js','um-beta/filter.js','um-beta/legacy-items.js'])new vm.Script(await fs.readFile(path.join(root,file),'utf8'),{filename:file});
+for(const file of ['app.js','theme.js','search.js','search-index.js','navigation-index.js','um-beta/navigation-index.js','hub.js','legacy-home.js','um-beta/filter.js','um-beta/legacy-items.js'])new vm.Script(await fs.readFile(path.join(root,file),'utf8'),{filename:file});
+for(const file of ['tempered.html','um-beta/index.html']){
+ const text=pages.get(file),nodes=(text.match(/<[a-z][^>]*>/gi)||[]).length;
+ if(nodes>12000)errors.push(file+': index page exceeds the 12,000 element budget');
+ if(/class="entry-body"/.test(text))errors.push(file+': complete articles should load on their own pages');
+}
+for(const file of ['winona-electrical-upgrades.html','um-beta/winona.html']){
+ const text=pages.get(file);
+ if(!text?.includes('src="navigation-index.js"')||text.includes('src="search-index.js"'))errors.push(file+': detail page loads the full-text index');
+}
 const portal=pages.get('index.html');
 for(const href of ['tempered.html','um-beta/index.html']){
  if(!portal?.includes(`class="hub-library-entry" href="${href}"`))errors.push('Missing clickable Wiki cover for '+href);
@@ -129,11 +138,20 @@ for(const c of configData.configs){if(!c.options.some(o=>o.value===c.default))er
 const modRoot=process.env.WIKI_TEMPERED_SOURCE;
 try{const source=await fs.readFile(modRoot?path.join(modRoot,'modinfo.lua'):new URL('../content/modinfo.lua',import.meta.url));if(createHash('sha256').update(source).digest('hex')!==configData.sourceHash)errors.push('Configuration source differs from the published snapshot; check WIKI_TEMPERED_SOURCE or rerun extract-config.py');}catch(e){if(e.code!=='ENOENT'||modRoot)throw e;}
 const provenance=JSON.parse(await fs.readFile(new URL('./content-sources.json',import.meta.url),'utf8'));
+const releaseAudit=JSON.parse(await fs.readFile(new URL('./data/release-20261111-sources.json',import.meta.url),'utf8'));
+if(releaseAudit.version!==configData.version)errors.push('Release source audit and configuration snapshot versions differ');
+if(JSON.stringify(releaseAudit.articles.map(a=>a.id).sort())!==JSON.stringify([...provenance.targetedRefresh].sort()))errors.push('Targeted release articles differ from the source audit');
 for(const article of provenance.articles)if(!article.source?.length)errors.push('Missing source reference for '+article.id);
 if(modRoot){
  const files=new Set(provenance.articles.flatMap(a=>a.source).filter(file=>file.startsWith('content/')));
  await Promise.all([...files].map(async file=>{
   try{await fs.access(path.join(modRoot,file.slice('content/'.length)));}catch(e){if(e.code!=='ENOENT')throw e;errors.push('Missing published source '+file);}
+ }));
+ await Promise.all(Object.entries(releaseAudit.files).map(async ([file,expected])=>{
+  try{
+   const source=await fs.readFile(path.join(modRoot,file.slice('content/'.length)));
+   if(source.length!==expected.bytes||createHash('sha256').update(source).digest('hex')!==expected.sha256)errors.push('Release source changed since review: '+file);
+  }catch(e){if(e.code!=='ENOENT')throw e;errors.push('Missing audited release source '+file);}
  }));
 }
 if(errors.length){console.error([...new Set(errors)].join('\n'));process.exitCode=1;}

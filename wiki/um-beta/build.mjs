@@ -208,7 +208,7 @@ export async function buildHub(out,tempered,icon,temperedIndex){
   const adjacent=`<nav class="adjacent-entries" aria-label="继续阅读">${[peers[i-1],peers[i+1]].map((p,i)=>p?`<a href="${articleHref(p)}"><small>${i?'下一篇':'上一篇'}</small><strong>${esc(p.title)}</strong></a>`:'<span></span>').join('')}</nav>`;
   const crumbs=`<nav class="breadcrumbs" aria-label="当前位置">${link('index.html','测试版百科')}<span>/</span>${link('index.html?category='+category.id+'#encyclopedia',category.name)}<span>/</span><span>${esc(a.title)}</span></nav>`;
   const toc=`<aside class="toc" aria-label="本页目录"><h2>本页目录</h2><nav>${a.sections.map((s,i)=>link('#'+sectionId(a,i),s.title)).join('')}</nav>${a.configs.length?`<h2>相关配置</h2><div class="toc-config">${a.configs.map(key=>configLink(configByKey.get(key))).join('')}</div>`:''}</aside>`;
-  const bottom=`<div class="article-bottom"><span>按 v${esc(auditedVersion)} 核对</span>${link('index.html#entry-'+a.id,'回到连续阅读 →')}</div>`;
+  const bottom=`<div class="article-bottom"><span>按 v${esc(auditedVersion)} 核对</span>${link('index.html#entry-'+a.id,'返回词条索引 →')}</div>`;
   await render(articleHref(a),a.id,a.title,a.summary,crumbs+reviewedNotice+ui.articleHTML(a)+adjacent+bottom,toc);
  }
  const configModeTabs=`<div class="config-mode-tabs"><button data-config-mode="all" aria-pressed="true">全部配置</button>${filterModes.map(mode=>`<button data-config-mode="${esc(mode)}" aria-pressed="false">${esc(mode)}</button>`).join('')}</div>`;
@@ -266,6 +266,7 @@ export async function buildHub(out,tempered,icon,temperedIndex){
  ];
  await fs.writeFile(path.join(out,'global-search-index.js'),`window.WIKI_GLOBAL_INDEX=${JSON.stringify(globalIndex).replaceAll('<','\\u003c')};\n`);
  await fs.writeFile(path.join(dir,'search-index.js'),`window.WIKI_INDEX=${JSON.stringify(index).replaceAll('<','\\u003c')};\n`);
+ await fs.writeFile(path.join(dir,'navigation-index.js'),`window.WIKI_INDEX=${JSON.stringify(index.filter(e=>e.kind==='article').map(({id,title,summary,href,category,aliases,kind,image})=>({id,title,summary,href,category,aliases,kind,image}))).replaceAll('<','\\u003c')};\n`);
  await fs.copyFile(new URL('./legacy-items.js',import.meta.url),path.join(dir,'legacy-items.js'));
  await fs.copyFile(new URL('./filter.js',import.meta.url),path.join(dir,'filter.js'));
  await fs.copyFile(new URL('./beta.css',import.meta.url),path.join(dir,'beta.css'));

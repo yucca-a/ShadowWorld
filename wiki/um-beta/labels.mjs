@@ -44,4 +44,4 @@ const techNames={
  HERMITCRABSHOP_FIVE:'隐士商店 V',HERMITCRABSHOP_SEVEN:'隐士商店 VII',
 };
 export const techName=key=>techNames[key]??key;
-export const extraNames={obsidian:'黑曜石',iron:'铁',um_gem_repair_kit:'修补工具包',um_gemology_geode_magma:'岩浆晶洞'};
+export const extraNames={obsidian:'黑曜石',iron:'铁',um_gem_repair_kit:'修复套件',um_gemology_geode_magma:'熔火晶洞'};

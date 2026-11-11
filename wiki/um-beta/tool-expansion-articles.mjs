@@ -30,9 +30,9 @@ export const toolExpansionArticles=[
   ],
   sources:[recipe(92),recipe(95),recipe(103),prefab('um_magnifier',45),prefab('um_magnifier',55),prefab('um_magnifier',57),
     beta('init/init_actions.lua',688),beta('scripts/components/gemologyscanner.lua',18),beta('scripts/components/gemologyscanner.lua',44),
-    prefab('um_gemologygems',174),beta('postinit/components/inventory.lua',24),names(853),names(854),
+    prefab('um_gemologygems',174),beta('postinit/components/inventory.lua',24),names(859),names(860),
     {kind:'cn',file:'init/init_strings/init_descriptions/skilltreestrings.lua',line:63},
-    {kind:'cn',file:'init/init_strings_other.lua',line:125}],
+    {kind:'cn',file:'init/init_strings_other.lua',line:126}],
  },
  {
   id:'sporepack',category:'new-items',prefab:'sporepack',title:'蟾蜍背包',
@@ -43,7 +43,7 @@ export const toolExpansionArticles=[
    ['获取','在炼金引擎旁用 1 张蘑菇皮、2 根绳子和 2 份腐烂物制作。蘑菇皮可打毒菌蟾蜍获得。若启用孢子猎犬，也可用 4 份蘑菇皮碎片和 2 条蛙腿合成蘑菇皮。',null,[link('toadstool.html','毒菌蟾蜍打法'),link('spore-hound.html','孢子猎犬与蘑菇皮碎片')]],
    ['存放','装备后打开 12 格容器。放进去的蘑菇或孢子会停止自然变质，每 3 秒恢复 0.5 个百分点的新鲜度。识别依据是物品的蘑菇、孢子或特殊孢子标签。其余会腐坏的物品以通常速度的 2 倍变质。背包可以放下继续保管，恢复任务在未装备时也会运行。'],
   ],
-  sources:[recipe(78),recipe(266),prefab('sporepack',56),prefab('sporepack',60),prefab('sporepack',66),prefab('sporepack',108),prefab('sporepack',116),prefab('sporepack',123),names(154)],
+  sources:[recipe(78),recipe(266),prefab('sporepack',56),prefab('sporepack',60),prefab('sporepack',66),prefab('sporepack',108),prefab('sporepack',116),prefab('sporepack',123),names(155)],
  },
  {
   id:'rimeweed-icepack',category:'new-items',prefab:'um_rimeweed_icepack',title:'冰袋',
@@ -57,7 +57,7 @@ export const toolExpansionArticles=[
   ],
   sources:[recipe(118),recipe(131),prefab('um_rimeweed',854),prefab('um_rimeweed',866),prefab('um_rimeweed',1038),
     prefab('um_rimeweed',1056),prefab('um_rimeweed',1077),prefab('um_rimeweed',1083),prefab('um_rimeweed',1085),
-    beta('postinit/components/temperature.lua',11),beta('postinit/components/temperature.lua',13),...healingSources,names(696),names(699),names(819)],
+    beta('postinit/components/temperature.lua',11),beta('postinit/components/temperature.lua',13),...healingSources,names(698),names(701),names(824)],
  },
  {
   id:'saltpack',category:'new-items',prefab:'saltpack',title:'盐瓶3000',
@@ -72,7 +72,7 @@ export const toolExpansionArticles=[
   sources:[recipe(118),recipe(123),prefab('saltpack',44),prefab('saltpack',49),prefab('saltpack',59),prefab('saltpack',64),prefab('saltpack',68),
     prefab('saltpack',101),prefab('saltpack',102),prefab('saltpack',121),prefab('saltpack',192),prefab('saltpack',195),prefab('saltpack',212),
     prefab('saltpile',27),prefab('saltpile',43),prefab('saltpile',48),prefab('saltpile',75),beta('scripts/components/snowstormwatcher.lua',107),
-    beta('postinit/prefabs/rock_ice.lua',6),prefab('snowpile',494),beta('init/init_batterypower.lua',66),names(153)],
+    beta('postinit/prefabs/rock_ice.lua',6),prefab('snowpile',494),beta('init/init_batterypower.lua',66),names(154)],
  },
  {
   id:'driftwood-fishing-rod',category:'new-items',prefab:'driftwoodfishingrod',title:'浮木钓杆',
@@ -85,7 +85,7 @@ export const toolExpansionArticles=[
    ['耐久与近战','新钓杆有 13.5 点耐久，每次成功收鱼扣 1 点。也可以近战敲打，基础伤害 4.25，每次命中耗 4 点耐久。想直接从海面收取鱼和漂浮物时，可用渔网。',null,[link('fishing-net.html','渔网的使用与耐久')]],
   ],
   sources:[recipe(238),prefab('driftwoodfishingrod',25),prefab('driftwoodfishingrod',60),prefab('driftwoodfishingrod',61),prefab('driftwoodfishingrod',65),
-    prefab('driftwoodfishingrod',66),prefab('driftwoodfishingrod',69),prefab('driftwoodfishingrod',72),names(346)],
+    prefab('driftwoodfishingrod',66),prefab('driftwoodfishingrod',69),prefab('driftwoodfishingrod',72),names(348)],
  },
  {
   id:'fishing-net',category:'new-items',prefab:'uncompromising_fishingnet',title:'渔网',
@@ -100,7 +100,7 @@ export const toolExpansionArticles=[
   sources:[recipe(242),prefab('uncompromising_fishingnet',60),prefab('uncompromising_fishingnet',67),beta('init/init_actions.lua',636),
     beta('postinit/components/fishingnet.lua',28),beta('postinit/components/fishingnet.lua',36),beta('postinit/components/fishingnet.lua',48),
     beta('postinit/components/fishingnet.lua',53),beta('postinit/components/fishingnet.lua',64),beta('postinit/components/fishingnet.lua',162),
-    beta('scripts/stategraphs/SGuncompromising_fishingnetvisualizer.lua',92),names(425)],
+    beta('scripts/stategraphs/SGuncompromising_fishingnetvisualizer.lua',92),names(427)],
  },
  {
   id:'rat-poison',category:'new-items',prefab:'ratpoisonbottle',title:'毒果酱与毒果酱陷阱',
@@ -127,7 +127,7 @@ export const toolExpansionArticles=[
    ['角色差异','沃姆伍德的专属老兵诅咒生效时，治疗部分改成缓慢回复，视野增益仍正常施加。',null,[link('wormwood.html','沃姆伍德的治疗机制')]],
   ],
   sources:[recipe(177),recipe(178),prefab('um_beehive_moon',233),prefab('um_eyebalm',38),prefab('um_eyebalm',55),prefab('um_eyebalm',60),
-    prefab('um_eyebalm',76),beta('postinit/player.lua',276),beta('postinit/sim.lua',168),...healingSources,names(731),names(732),names(740)],
+    prefab('um_eyebalm',76),beta('postinit/player.lua',276),beta('postinit/sim.lua',168),...healingSources,names(734),names(735),names(745)],
  },
  {
   id:'sludge-sack',category:'new-items',prefab:'sludge_sack',title:'海泥包',
@@ -140,6 +140,6 @@ export const toolExpansionArticles=[
   ],
   sources:[recipe(252),prefab('sludgestack',10),prefab('sludgestack',275),beta('postinit/prefabs/shark.lua',9),
     prefab('sludge_sack',21),prefab('sludge_sack',32),prefab('sludge_sack',69),prefab('sludge_sack',83),prefab('sludge_sack',98),prefab('sludge_sack',103),
-    beta('init/init_containers.lua',688),prefab('uncompromising_rat',148),names(446),names(449),names(450),names(455)],
+    beta('init/init_containers.lua',688),prefab('uncompromising_rat',148),names(448),names(451),names(452),names(457)],
  },
 ];

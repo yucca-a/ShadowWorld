@@ -23,7 +23,7 @@ function food(prefab, title, english, nameLine, summary, sections, sources, conf
 }
 
 export const foodArticles = [
-  food('blueberrypancakes', '爆汁蓝莓薄饼', 'Boomberry Pancakes', 266,
+  food('blueberrypancakes', '爆汁蓝莓薄饼', 'Boomberry Pancakes', 267,
     '用两份爆汁蓝莓与两份蛋值煮成，基础饱食为 75。',
     [
       ['食谱', '需要至少 2 份爆汁蓝莓，蛋值至少为 2。可用 2 份爆汁蓝莓与 2 个鸟蛋。'],
@@ -31,7 +31,7 @@ export const foodArticles = [
     ],
     [recipe(153), recipe(167), ingredients(549)],
   ),
-  food('um_boom_tart', '爆汁蓝莓挞', 'Boomberry Tart', 748,
+  food('um_boom_tart', '爆汁蓝莓挞', 'Boomberry Tart', 753,
     '便携烹饪锅料理。吃下后，攻击会溅射目标附近的敌人。',
     [
       ['食谱', '限便携烹饪锅。需要至少 2 份爆汁蓝莓，甜味剂值至少为 2。可用 2 份爆汁蓝莓与 2 份蜂蜜。'],
@@ -40,7 +40,7 @@ export const foodArticles = [
     ],
     [recipe(345), recipe(359), beta('scripts/prefabs/uncompromising_buffs.lua', 127), beta('scripts/prefabs/uncompromising_buffs.lua', 442)],
   ),
-  food('um_boomberrypie', '爆汁蓝莓派', 'Boomberry Pie', 833,
+  food('um_boomberrypie', '爆汁蓝莓派', 'Boomberry Pie', 839,
     '以至少三份爆汁蓝莓制作，吃下会触发一次带击退的范围爆炸。',
     [
       ['食谱', '需要至少 3 份爆汁蓝莓。可直接用 4 份爆汁蓝莓。'],
@@ -49,7 +49,7 @@ export const foodArticles = [
     ],
     [recipe(82), recipe(119), recipe(786), beta('scripts/prefabs/um_preparedfoods.lua', 125)],
   ),
-  food('um_sponge_cake', '多孔海绵蛋糕', 'Swiss Sponge Cake', 807,
+  food('um_sponge_cake', '多孔海绵蛋糕', 'Swiss Sponge Cake', 812,
     '以多孔海绵块、蛋和水果制作，吃下会减少潮湿度。',
     [
       ['食谱', '需要多孔海绵块、任意蛋值和至少 1 水果值。锅中不能有爆汁蓝莓、生西瓜或冰冻食材值。可用 1 份多孔海绵块、1 个鸟蛋与 2 份普通浆果。'],
@@ -58,7 +58,7 @@ export const foodArticles = [
     ],
     [recipe(368), recipe(383), recipe(387), ingredients(578)],
   ),
-  food('snowcone', '冰沙', 'Snowcone', 275,
+  food('snowcone', '冰沙', 'Snowcone', 276,
     '默认开启的低优先级冰食，用多份冰冻食材或冰冻食材与树枝煮成。',
     [
       ['食谱', '须开启冰沙设置。冰冻食材值超过 1 即可匹配，或同时放入任意冰冻食材值和树枝。可用 4 份冰。其他满足条件的高优先级料理会先出锅。'],
@@ -66,7 +66,7 @@ export const foodArticles = [
     ],
     [recipe(390), ingredients(659), beta('modinfo.lua', 703)], ['icecrockblocker'],
   ),
-  food('seafoodpaella', '海鲜饭', 'Seafood Paella', 192,
+  food('seafoodpaella', '海鲜饭', 'Seafood Paella', 193,
     '米、蔬菜和龙虾或鱼肉煮成的料理，也能延缓花粉症喷嚏。',
     [
       ['食谱', '需要任意米值、至少 2 蔬菜值，并满足活龙虾或至少 2 鱼值中的一项。可用 1 份稻米、2 根胡萝卜与 1 只活龙虾。'],
@@ -76,7 +76,7 @@ export const foodArticles = [
     ],
     [recipe(1), recipe(255), recipe(271), ingredients(553), beta('init/init_tuning.lua', 112), beta('scripts/components/hayfever.lua', 33), beta('modinfo.lua', 705)], ['generalcrockblocker'],
   ),
-  food('um_ghost_fajita', '恐怖卷饼', 'Ghastly Fajita', 747,
+  food('um_ghost_fajita', '恐怖卷饼', 'Ghastly Fajita', 752,
     '用幽灵辣椒、肉和蔬菜煮成，让活着的角色暂时半透明并穿过部分障碍。',
     [
       ['食谱', '需要任意肉值、幽灵辣椒与至少 2 蔬菜值。可用 1 份幽灵辣椒、2 根胡萝卜与 1 块大肉。'],
@@ -85,7 +85,7 @@ export const foodArticles = [
     ],
     [recipe(38), recipe(320), recipe(333), ingredients(577)],
   ),
-  food('um_rimeweed_spagett', '霜冻意面', 'Spaghetti Cryonara', 697,
+  food('um_rimeweed_spagett', '霜冻意面', 'Spaghetti Cryonara', 699,
     '以冰冻鼹鼠尾、霜冻藤蔓和蛋制作，吃下会向周围生物施加冰冻值。',
     [
       ['食谱', '需要冰冻鼹鼠尾、霜冻藤蔓与任意蛋值，锅中不能有水果值。可用 1 条冰冻鼹鼠尾、2 份霜冻藤蔓与 1 个鸟蛋。'],
@@ -94,7 +94,7 @@ export const foodArticles = [
     ],
     [recipe(658), recipe(673), recipe(674), ingredients(572), ingredients(659)],
   ),
-  food('um_rimeweed_tequila', '冰镇龙舌兰', 'Chillquilla', 698,
+  food('um_rimeweed_tequila', '冰镇龙舌兰', 'Chillquilla', 700,
     '霜花和冰煮成的便携烹饪锅料理，喝下能获得冰盾。',
     [
       ['食谱', '限便携烹饪锅。需要霜花、冰和至少 2.5 冰冻食材值，锅中不能有肉值或蛋值。可用 1 朵霜花与 3 份冰。'],
@@ -103,7 +103,7 @@ export const foodArticles = [
     ],
     [recipe(694), recipe(712), ingredients(570), ingredients(659), beta('scripts/prefabs/um_ice_shield.lua', 37), beta('scripts/prefabs/um_rimeweed.lua', 977)],
   ),
-  food('stuffed_peeper_poppers', '榴莲酿眼球', 'Stuffed Peeper Poppers', 467,
+  food('stuffed_peeper_poppers', '榴莲酿眼球', 'Stuffed Peeper Poppers', 469,
     '使用榴莲、乳白物和怪物食材制作，吃下会尝试召出两只友方小眼球。',
     [
       ['食谱', '需要乳白物、生榴莲或烤榴莲、任意肉值与至少 2 怪物食材值，锅中不能有不可食用值。可用 1 份乳白物、1 个榴莲与 2 块怪物肉。'],
@@ -112,7 +112,7 @@ export const foodArticles = [
     ],
     [recipe(406), recipe(424), recipe(454), ingredients(79), beta('scripts/prefabs/eyeofterror_mini_projectile_ally.lua', 1), beta('scripts/prefabs/um_preparedfoods.lua', 175)],
   ),
-  food('um_durian_cream_marshcake', '榴莲奶油软糖蛋糕', 'Durian Cream Marshcake', 705,
+  food('um_durian_cream_marshcake', '榴莲奶油软糖蛋糕', 'Durian Cream Marshcake', 707,
     '榴莲、乳制品与蛋做成的蛋糕，在春季以外有额外恢复。',
     [
       ['食谱', '需要生榴莲或烤榴莲、任意乳制品值与蛋值，锅中不能有不可食用值。可用 1 个榴莲、1 份电羊奶、1 个鸟蛋与 1 份普通浆果。'],
@@ -121,7 +121,7 @@ export const foodArticles = [
     ],
     [recipe(719), recipe(733)],
   ),
-  food('um_rice_pudding', '米布丁', 'Rice Pudding', 707,
+  food('um_rice_pudding', '米布丁', 'Rice Pudding', 709,
     '用至少两点米值和甜味剂煮成。稻米的米值比烤稻米高。',
     [
       ['食谱', '需要至少 2 米值与任意甜味剂值，锅中不能有肉值或不可食用值。稻米提供 1 米值，烤稻米提供 0.5 米值。可用 2 份稻米与 2 份蜂蜜。'],
