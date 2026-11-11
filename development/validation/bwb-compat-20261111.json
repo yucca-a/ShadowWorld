@@ -1,0 +1,264 @@
+{
+  "date": "2026-11-11",
+  "status": "validated_local_unpublished",
+  "base_release": "2.8.15.0.23",
+  "workshop_updated": false,
+  "version_changed": false,
+  "workshop_dependency": {
+    "id": "3360553731",
+    "version": "0.4.16.6",
+    "download": "official SteamCMD anonymous, isolated work directory",
+    "source_hashes": {
+      "modinfo.lua": {
+        "bytes": 27618,
+        "sha256": "ac45198fc77bbbe61204502686e05c7889072cfc6137b419eabaccaa72257ecc"
+      },
+      "scripts/mains/postinit/components/hunger.lua": {
+        "bytes": 5514,
+        "sha256": "0fee9d54605950385d70154abbfa12359f5b1673137e4dd52960804a2c314417"
+      },
+      "scripts/mains/init/widgets/hungerbadge.lua": {
+        "bytes": 6742,
+        "sha256": "8fa11634e7921c32875ee55ee8a814076a925bdfaa75ff449d14670ecac7986e"
+      },
+      "scripts/mains/init/widgets/statusdisplays.lua": {
+        "bytes": 20502,
+        "sha256": "703b924e32845f5e8c054d049fc4f11f3c377fe5cf10ce6370a58835b8f148d9"
+      },
+      "scripts/mains/postinit/components/seasons.lua": {
+        "bytes": 26540,
+        "sha256": "ce195f182575c07a085a23914cd451f9f99e03db58575a911775654f918390a4"
+      },
+      "scripts/mains/postinit/components/clock.lua": {
+        "bytes": 35540,
+        "sha256": "ad7b95c1f4ca9ccc63886ea537af006aa1c4653099c845f0c5e4f8f600f68e20"
+      },
+      "scripts/mains/init/shroom_compat.lua": {
+        "bytes": 8689,
+        "sha256": "e9f6138eb250434f44000d2d706de9ce2683eed862f77b555e78770702165929"
+      }
+    }
+  },
+  "production_changes": {
+    "role/hunger.lua": {
+      "before": {
+        "bytes": 12964,
+        "sha256": "55e0f1235c89db1e57970219543b9e2c0b6ce6613951675ce40f22266abe390e"
+      },
+      "after": {
+        "bytes": 14352,
+        "sha256": "e5cc8ca005dbdf373e18ee0802cd1beb28bac6d16b1bd54f919db3687f97953a"
+      }
+    },
+    "weather/autumn.lua": {
+      "before": {
+        "bytes": 4466,
+        "sha256": "abb602881c9f0a4ad3918cb0964ff0c1bb37bff42c8993a5e664b053085a701d"
+      },
+      "after": {
+        "bytes": 5132,
+        "sha256": "cfd03b976dfa306ee8edc29d77ddaa2562907aaddef5fd20f1e92aabda197f0d"
+      }
+    }
+  },
+  "intent": "Autumn recovery synchronizes both the surface autumn clock and BWB cave tranquil clock. Existing BWB phase gameplay and gem-cost choices remain.",
+  "fixes": [
+    "BWB unified recovery reaches SW hunger penalty exactly once",
+    "own hunger overlay and correct effective-cap text coexist with BWB and Combined Status",
+    "component-local hunger cap; saved limits loaded before hunger and synchronized after loading/transfer",
+    "set default autumn and authoritative BWB tranquil clocks; set corresponding moon clocks in three-gem mode",
+    "recognize synchronized BWB autumn phase; stop repeated gem consumption; preserve 0/1/3 costs and single-world guards"
+  ],
+  "unit_checks": 81,
+  "before_contrast_defects": 4,
+  "native_module_manifest_checks": 15,
+  "lua51_compilation_files": 425,
+  "native_reference_sha256": {
+    "scripts/components/hunger.lua": "6eb4e59a49fca0a8018c66497d0dfbab4ddcbd23ec2408aa7c8afcf29439a36f",
+    "scripts/components/maxhealer.lua": "01010114f2d7843f3c1418ef4aab79b12af973457e6c4d9c0cfc17d6c17e4aac",
+    "scripts/prefabs/archive_props.lua": "3e28cb5724d929b32f277319e4e3561f38e75dc13e893d27e54b44d9741b35b4",
+    "scripts/components/archivemanager.lua": "151516dd47494249e5d6c5f5139affe818362d7b01e8ef5931ca4b21a0416ea6"
+  },
+  "native_before_result": "work\\vault-hardened-hosted-g53f5ieg\\bwb-compat-result.json",
+  "native_runs": [
+    {
+      "case": "combined",
+      "result": "work\\vault-hardened-hosted-jlvxn14c\\bwb-compat-result.json",
+      "status": "passed",
+      "real_death": {
+        "before": {
+          "foreign": 0,
+          "current": 100,
+          "maximum": 150,
+          "foreignnet": 0,
+          "ownnet": 0.15,
+          "own": 0.15
+        },
+        "ate": true,
+        "ghost": true,
+        "revived": true,
+        "kind": "bwb_real_death",
+        "after": {
+          "foreign": 0,
+          "current": 100,
+          "maximum": 150,
+          "foreignnet": 0,
+          "ownnet": 0.13,
+          "own": 0.13133333333333
+        },
+        "dead": {
+          "foreign": 0,
+          "current": 100,
+          "maximum": 150,
+          "foreignnet": 0,
+          "ownnet": 0.15,
+          "own": 0.15
+        }
+      },
+      "after": {
+        "Master": {
+          "default_season": "autumn",
+          "cave_season": "tranquil",
+          "gems": 0,
+          "season": "autumn",
+          "cave_clock": true,
+          "kind": "bwb_state",
+          "shard": "1",
+          "current_clock": "default"
+        },
+        "Caves": {
+          "default_season": "autumn",
+          "cave_season": "tranquil",
+          "gems": 0,
+          "season": "tranquil",
+          "cave_clock": true,
+          "powered": false,
+          "kind": "bwb_state",
+          "shard": "2",
+          "current_clock": "cave"
+        }
+      },
+      "second_gift": {
+        "default_season": "autumn",
+        "cave_season": "tranquil",
+        "gems": 3,
+        "season": "tranquil",
+        "cave_clock": true,
+        "powered": true,
+        "kind": "bwb_state",
+        "shard": "2",
+        "current_clock": "cave"
+      },
+      "reload": {
+        "Master": {
+          "default_season": "autumn",
+          "cave_season": "tranquil",
+          "gems": 0,
+          "season": "autumn",
+          "cave_clock": true,
+          "kind": "bwb_state",
+          "shard": "1",
+          "current_clock": "default"
+        },
+        "Caves": {
+          "default_season": "autumn",
+          "cave_season": "tranquil",
+          "gems": 3,
+          "season": "tranquil",
+          "cave_clock": true,
+          "powered": true,
+          "kind": "bwb_state",
+          "shard": "2",
+          "current_clock": "cave"
+        }
+      }
+    },
+    {
+      "case": "standalone",
+      "result": "work\\vault-hardened-hosted-27u8tyfr\\bwb-compat-result.json",
+      "status": "passed",
+      "real_death": {
+        "before": {
+          "foreign": 0,
+          "current": 100,
+          "maximum": 150,
+          "foreignnet": 0,
+          "ownnet": 0.15,
+          "own": 0.15
+        },
+        "ate": true,
+        "ghost": true,
+        "revived": true,
+        "kind": "bwb_real_death",
+        "after": {
+          "foreign": 0,
+          "current": 100,
+          "maximum": 150,
+          "foreignnet": 0,
+          "ownnet": 0.13,
+          "own": 0.13133333333333
+        },
+        "dead": {
+          "foreign": 0,
+          "current": 100,
+          "maximum": 150,
+          "foreignnet": 0,
+          "ownnet": 0.15,
+          "own": 0.15
+        }
+      },
+      "after": {
+        "Master": {
+          "default_season": "autumn",
+          "gems": 0,
+          "season": "autumn",
+          "cave_clock": false,
+          "kind": "bwb_state",
+          "shard": "1"
+        },
+        "Caves": {
+          "default_season": "autumn",
+          "gems": 0,
+          "season": "autumn",
+          "cave_clock": false,
+          "powered": false,
+          "kind": "bwb_state",
+          "shard": "2"
+        }
+      },
+      "second_gift": {
+        "default_season": "autumn",
+        "gems": 3,
+        "season": "autumn",
+        "cave_clock": false,
+        "powered": true,
+        "kind": "bwb_state",
+        "shard": "2"
+      },
+      "reload": {
+        "Master": {
+          "default_season": "autumn",
+          "gems": 0,
+          "season": "autumn",
+          "cave_clock": false,
+          "kind": "bwb_state",
+          "shard": "1"
+        },
+        "Caves": {
+          "default_season": "autumn",
+          "gems": 3,
+          "season": "autumn",
+          "cave_clock": false,
+          "powered": true,
+          "kind": "bwb_state",
+          "shard": "2"
+        }
+      }
+    }
+  ],
+  "limits": [
+    "UI source hooks executed with headless widget substitutes, not a rendered client",
+    "Native clocks selected through BWB SetClock/SetSeasons on copied isolated worlds; no fresh BWB map-generation coverage",
+    "No player saves or installed workshop sources modified; no arbitrary mod-combination certification"
+  ]
+}

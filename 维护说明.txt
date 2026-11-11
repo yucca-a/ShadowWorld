@@ -3,6 +3,7 @@
 固定工坊条目：https://steamcommunity.com/sharedfiles/filedetails/?id=3832182265
 游戏：Don't Starve Together（322330）
 维护者：Yucca
+2026-11-11 发布 2.8.15.0.24：深埋之下饥饿上限恢复与秋季复苏兼容。官方上传器完成、Steam OK，线上版本与简短日志已核验；重新下载 489 个文件，488 个源码及资源逐字节一致，重建的 mod.manifest 索引及哈希集合一致。发布记录见 development/releases/v2.8.15.0.24-publication.json。
 2026-11-11 发布 2.8.15.0.23：薇诺娜电气改造与过充、淬炼工作制作修复及妥测死亡复活兼容。官方上传器完成、Steam OK、线上版本及完整更新日志已核验；重新下载 489 个文件，488 个源码与资源逐字节一致，上传器重建的 mod.manifest 索引与哈希集合一致。发布记录见 development/releases/v2.8.15.0.23-publication.json。
 2026-11-10 后续启动崩溃修复（原 2.8.15.0.20 准备改动，已包含于后续正式发布）：新增模块在 require 前向原生 ManifestManager 注册，content/mod.manifest 已补齐到全部 478 个文件。发布前运行 tests/update_mod_manifest.py --write 和 tests/run_module_manifest_tests.py；下载包也用 tests/update_mod_manifest.py --root <下载目录> 核对索引。详见 development/validation/module-manifest-20261110.txt。
 2026-11-10 已重新下载工坊 2.8.15.0.18，以已归档的 2.8.15.0.17 为共同基础，合入队友的眼球炮塔与牛犊成长改动，并完整保留本轮 15 个文件的本地修复。当前源码为 content/，版本 2.8.15.0.19 已上传工坊，官方上传器完成、Steam 上传结果 OK，线上版本标签及六条公开更新日志已核验。发布记录见 development/releases/v2.8.15.0.19-publication.json。合并证据、备份及校验见 development/validation/collaborative-merge-20261110.txt 与同名 JSON；本次按用户要求不进行在线或游戏实测。正式更新日志为 workshop/update-notes-2.8.15.0.19.txt。
@@ -19,7 +20,7 @@
 原始版本压缩包、清单和首次发布记录：backups（历史档案，不是待发布源码）
 本次迁移校验与上传器原配置备份：work（不纳入 Git）
 Git 远程仓库：https://github.com/yucca-a/ShadowWorld（私有），维护分支 codex/maintenance。
-当前发布标签：v2.8.15.0.23；另保留 v2.8.15.0.10、v2.8.14.98.1 及此前历史标签。完整索引见 README.md，回退方法见 development/版本回退说明.md。
+当前发布标签：v2.8.15.0.24；另保留 v2.8.15.0.10、v2.8.14.98.1 及此前历史标签。完整索引见 README.md，回退方法见 development/版本回退说明.md。
 Git 备份包含完整源码、资源、测试和维护资料；不包含玩家世界存档及本机临时工具。
 
 修改入口

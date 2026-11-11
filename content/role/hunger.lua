@@ -123,10 +123,30 @@ local function SetHungerPenalty(self, penalty)
     end
 end
 local function DeltaHungerPenalty(self, delta) if not self.disable_penalty and self.penalty2hm then self:SetPenalty2hm(self.penalty2hm + delta) end end
+local function HookBWBHunger(inst)
+    local self = inst.components.hunger
+    if not self or self._bwbcompat2hm or not self.ReduceUnifiedPenalty then return end
+    self._bwbcompat2hm = true
+    -- BWB keeps its own saved penalty. Its recovery must also reach our death
+    -- penalty, without charging/healing either store twice when BWB handles it.
+    local ReduceUnifiedPenalty = self.ReduceUnifiedPenalty
+    self.ReduceUnifiedPenalty = function(self, delta, ...)
+        local previous = self.penalty2hm
+        local result = ReduceUnifiedPenalty(self, delta, ...)
+        if delta ~= 0 and previous > 0 and self.penalty2hm == previous then self:DeltaPenalty2hm(delta) end
+        return result
+    end
+    local GetPenalizedMax = self.GetPenalizedMax
+    if GetPenalizedMax then
+        self.GetPenalizedMax = function(self, ...)
+            return math.min(GetPenalizedMax(self, ...), self.max * (1 - self.penalty2hm))
+        end
+    end
+end
 AddComponentPostInit("hunger", function(self)
     if not self.inst:HasTag("player") then return end
     self.penalty2hm = 0
-    if self.penalty and (self.SetPenalty or self.DeltaPenalty) then
+    if self.penalty and (self.SetPenalty or self.DeltaPenalty) and not self.ReduceUnifiedPenalty then
         self.SetPenalty2hm = self.SetPenalty or self.DeltaPenalty
         self.DeltaPenalty2hm = self.DeltaPenalty or self.SetPenalty
         return
@@ -142,38 +162,38 @@ AddComponentPostInit("hunger", function(self)
     end
     local OnLoad = self.OnLoad
     self.OnLoad = function(self, data, ...)
-        local haspenalty = data.penalty2hm ~= nil and data.penalty2hm > 0 and data.penalty2hm < 1
+        local haspenalty = data and data.penalty2hm ~= nil and data.penalty2hm >= 0 and data.penalty2hm < 1
+        -- Install the saved cap before native/BWB SetCurrent restores hunger,
+        -- then refresh it after the other component's loading callbacks.
         if haspenalty and self.SetPenalty2hm then self:SetPenalty2hm(data.penalty2hm) end
-        return OnLoad(self, data, ...)
+        local result = OnLoad(self, data, ...)
+        if haspenalty and self.SetPenalty2hm then self:SetPenalty2hm(data.penalty2hm) end
+        return result
     end
     local TransferComponent = self.TransferComponent
     self.TransferComponent = function(self, newinst, ...)
         TransferComponent(self, newinst, ...)
-        if self.penalty2hm > 0 then newinst.components.hunger.penalty2hm = self.penalty2hm end
+        if self.penalty2hm > 0 then newinst.components.hunger:SetPenalty2hm(self.penalty2hm) end
     end
-    local oldDoDelta = self.DoDelta
-    self.DoDelta = function(self, delta, overtime, ignore_invincible, ...)
-        if self.penalty2hm > 0 and self.redirect == nil and
-            not (not ignore_invincible and self.inst.components.health and self.inst.components.health:IsInvincible() or self.inst.is_teleporting) then
-            local max2hm = self.max - self.max * self.penalty2hm
-            local mathclamp = math.clamp
-            math.clamp = function(v, min, max, ...)
-                if max == self.max then max = max2hm end
-                local res = mathclamp(v, min, max, ...)
-                math.clamp = mathclamp
-                return res
-            end
-        end
-        return oldDoDelta(self, delta, overtime, ignore_invincible, ...)
+    local SetCurrent = self.SetCurrent
+    self.SetCurrent = function(self, current, ...)
+        -- Keep the cap local to this component. A global math.clamp override
+        -- can be consumed by another mod's earlier clamp and silently lost.
+        current = math.min(current, self.max * (1 - self.penalty2hm))
+        return SetCurrent(self, current, ...)
     end
+    self.inst:DoTaskInTime(0, HookBWBHunger)
 end)
 AddClassPostConstruct("widgets/statusdisplays", function(self)
     local SetHungerPercent = self.SetHungerPercent
     self.SetHungerPercent = function(self, pct, ...)
         if self.owner.components.hunger then
-            self.stomach.penalty2hm = self.owner.components.hunger.penalty2hm
+            self.stomach.penalty2hm = math.max(self.owner.components.hunger.penalty2hm or 0, self.owner.components.hunger.penalty or 0)
         elseif self.owner.player_classified and self.owner.player_classified.hungerpenalty2hm then
             self.stomach.penalty2hm = self.owner.player_classified.hungerpenalty2hm:value() / 200
+            if self.owner.player_classified.hungerpenalty then
+                self.stomach.penalty2hm = math.max(self.stomach.penalty2hm, self.owner.player_classified.hungerpenalty:value() / 200)
+            end
         else
             self.stomach.penalty2hm = 0
         end
@@ -186,7 +206,7 @@ local function processmaxnumshow(self)
         local CombinedStatusUpdateNumbers = self.CombinedStatusUpdateNumbers
         self.CombinedStatusUpdateNumbers = function(self, max, ...)
             CombinedStatusUpdateNumbers(self, max, ...)
-            if self.active and self.maxnum and self.penalty2hm and self.penalty2hm > 0 then
+            if self.active and self.maxnum and self.penalty2hm and self.penalty2hm > 0 and not self.bwb_hungerarrow then
                 self.maxval2hm = max or self.maxval2hm
                 self.maxnum:SetString(tostring(math.ceil((1 - self.penalty2hm) * self.maxval2hm)) .. "<" .. tostring(math.ceil(self.maxval2hm)))
             end
@@ -195,7 +215,7 @@ local function processmaxnumshow(self)
 end
 local UIAnim = require "widgets/uianim"
 AddClassPostConstruct("widgets/hungerbadge", function(self)
-    if self.topperanim then return end
+    if self.topperanim2hm then return end
     self.topperanim2hm = self.underNumber:AddChild(UIAnim())
     self.topperanim2hm:GetAnimState():SetBank("status_meter")
     self.topperanim2hm:GetAnimState():SetBuild("status_meter")
@@ -211,8 +231,9 @@ AddClassPostConstruct("widgets/hungerbadge", function(self)
     local SetPercent = self.SetPercent
     self.SetPercent = function(self, val, max, ...)
         self.maxval2hm = max or self.maxval2hm or 150
+        if self.bwb_hungerarrow then self.hungerpenalty = math.max(self.hungerpenalty or 0, self.penalty2hm or 0) end
         SetPercent(self, val, max, ...)
-        if not self.CombinedStatusUpdateNumbers and self.num and self.penalty2hm and self.penalty2hm > 0 then
+        if not self.bwb_hungerarrow and not self.CombinedStatusUpdateNumbers and self.num and self.penalty2hm and self.penalty2hm > 0 then
             local str = self.num:GetString()
             self.num:SetString(str .. "/" .. tostring(math.ceil((1 - self.penalty2hm) * self.maxval2hm)))
         end

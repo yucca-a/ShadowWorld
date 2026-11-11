@@ -1,0 +1,32 @@
+深埋之下兼容修复（2026-11-11，本地源码，尚未发布工坊）
+
+目标
+修复淬炼与深埋同时启用后的饥饿惩罚显示、恢复及档案馆秋季复苏。
+按用户澄清，秋季复苏触发时地表和地下必须同时切换，不能保留地下原来的阶段。
+地表为秋天，深埋地下使用其对应的稳定季 tranquil。保留深埋该阶段的天气、生态和其他玩法效果。
+
+输入
+淬炼基线为已发布 2.8.15.0.23。
+深埋之下工坊 3360553731，SteamCMD 匿名下载 0.4.16.6 到 work/newconstant-research/steamcmd/steamapps/workshop/content/322330/3360553731。
+原版组件与档案馆代码读取本机正版 scripts.zip；未将深埋或游戏实现复制进仓库。
+修复前冻结输入：work/vault-hardened-hosted-g53f5ieg/input。
+
+根因与修复
+1. 深埋的 ReduceUnifiedPenalty 只在其原版为爽识别标记下处理 penalty2hm，淬炼未被识别，导致该恢复路径漏掉淬炼惩罚。补齐漏掉的一次恢复；上游已经处理时不重复扣减。两份已有惩罚各自保存，恢复量不加倍。
+2. 饥饿徽章遇到深埋已有遮罩就提前退出，缺少淬炼遮罩与更新入口；双模组数字格式也可能重复。保留深埋组件、箭头与遮罩，补齐淬炼显示，并展示两份上限约束中实际生效的上限。普通与 Combined Status、主机数据与客户端网络数据均有钩子回归。
+3. 饥饿限制原先临时替换全局 math.clamp，可被另一模组较早的调用消耗。改在本组件 SetCurrent 限制，保留原生 DoDelta 的重定向、无敌等入口。读档在恢复饥饿前安装保存的上限，并在加载后同步；组件转移使用方法更新网络值。
+4. 秋季事件只改默认季节；深埋地下主控仍停在原阶段。统一设置默认秋季和深埋主控稳定季，并在三宝石档设置对应月相。地下稳定季与底层地表秋季均已同步时不再触发消耗；旧不同步状态可在下一次触发时同步两套主控。
+5. 0／1／3 颗宝石规则及单层／独行长路限制不变。默认三宝石档第一组仍作为切季费用，随后插入的三颗正常保留、供能，不重复吞宝石。
+
+验证
+python tests/run_bwb_compat_tests.py：81 项断言通过，覆盖加载顺序、独立惩罚、一次性恢复、保存读取、转移、界面及宝石档位边界。
+python tests/run_bwb_compat_tests.py --before：修复前对照复现 4 个恢复／界面缺陷。
+修复前完整双层观察：work/vault-hardened-hosted-g53f5ieg/bwb-compat-result.json。
+修复后完整淬炼＋深埋：work/vault-hardened-hosted-jlvxn14c/bwb-compat-result.json，passed。
+单开完整淬炼：work/vault-hardened-hosted-27u8tyfr/bwb-compat-result.json，passed。
+两组均覆盖真实 Kill → playerghost → respawnfromghost、吃肉干恢复，实际 AcceptGift 插宝石、第二组供能，正常保存关服重启后季节与档案馆通电状态保留。
+深埋分片切换使用其实际 SetClock/SetSeasons 接口；时钟来自原有隔离世界，未重新验收深埋世界生成。
+档案馆测试实体保持唤醒，以执行原生 animover 通电流程。未连接玩家存档，未进行真实客户端画面、键鼠及任意模组组合验收。
+
+修改仅在淬炼 role/hunger.lua 与 weather/autumn.lua；不递增版本、不上传工坊。
+源码哈希与详细结果汇总见同名 JSON。

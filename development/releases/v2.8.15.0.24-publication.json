@@ -1,0 +1,29 @@
+{
+  "workshop_id": "3832182265",
+  "version": "2.8.15.0.24",
+  "published_at_local": "2026-11-11T17:33:32+08:00",
+  "uploader_status": "Publish complete",
+  "steam_upload_result": "OK",
+  "steam_content_manifest_id": "154222386160394163",
+  "visibility": "Public",
+  "version_tag_verified": true,
+  "public_changelog_readback_verified": true,
+  "content_file_count": 489,
+  "archive": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\backups\\releases\\v2.8.15.0.24-content.zip",
+  "archive_sha256": "7463e1eabfd0f86d57eccb4a2e434a4d900cf6d0898afa27eedc3575bd841682",
+  "content_manifest": "development/releases/v2.8.15.0.24-content-manifest.json",
+  "patch_notes_file": "workshop/update-notes-2.8.15.0.24.txt",
+  "patch_notes_sha256": "e1d3644bbe9b709afac7945c29d3fa28347f4d93649125f4bd4b0cbc4db06671",
+  "downloaded_package_verified": true,
+  "downloaded_package_verification": {
+    "files": 489,
+    "source_files_matching": 488,
+    "uploader_generated_manifest_differs": true,
+    "manifest_indexes_all_files": true,
+    "manifest_hash_set_identical": true
+  },
+  "validation": [
+    "development/validation/bwb-compat-20261111.txt",
+    "development/validation/bwb-compat-20261111.json"
+  ]
+}
