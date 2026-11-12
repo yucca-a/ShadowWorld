@@ -1,7 +1,10 @@
 -- Reviewed against workshop stable 1.5.4.6 and beta 6.0.3.9 on 2026-11-10.
 -- Winona worker beta callbacks reviewed separately on 2026-11-11.
+-- Wortox beta pocket callbacks reviewed separately on 2026-11-12.
 -- Updating this allowlist requires source review and regression/native validation.
 return {
+    wortox_pocket_choose = {file = "postinit/components/health.lua", hashes = {["3cbe2934:680ecb92:713"] = true}},
+    wortox_pocket_trigger = {file = "postinit/components/health.lua", hashes = {["55f92ae6:028dc30a:2684"] = true}},
     battlesong_attack_filter = {file = "postinit/prefabs/battlesongs.lua", hashes = {["5cf929dc:4fe3ab2e:798"] = true}},
     winona_worker_drain = {file = "init/init_character_changes/winona.lua", hashes = {["52ed8ae8:5e39d605:2185"] = true}},
     winona_worker_update = {file = "init/init_character_changes/winona.lua", hashes = {["4f980ffc:5495bd0f:688"] = true}},

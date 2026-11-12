@@ -29,6 +29,13 @@ Assets = {
 	Asset("IMAGE", "images/inventoryimages/frostcore2hm.tex"),
 }
 
+-- Weighted skin meshes retain Klei's encrypted textures and original entitlement.
+for skin, build in pairs(require("hambatweightedskins2hm")) do
+    table.insert(Assets, Asset("DYNAMIC_ANIM", "anim/dynamic/" .. build .. ".zip"))
+    table.insert(Assets, Asset("PKGREF", "anim/dynamic/" .. build .. ".dyn"))
+    TheInventory:AddRestrictedBuildFromLua(build, skin, false)
+end
+
 AddMinimapAtlas("images/map_icons/tomb_repair.xml")
 RegisterInventoryItemAtlas("images/inventoryimages/bottle_soul.xml", "bottle_soul.tex")
 RegisterInventoryItemAtlas("images/inventoryimages/frostcore2hm.xml", "frostcore2hm.tex")

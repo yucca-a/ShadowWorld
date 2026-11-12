@@ -1,0 +1,34 @@
+{
+  "version": "2.8.15.0.28",
+  "workshop_id": "3832182265",
+  "date": "2026-11-12",
+  "files": 502,
+  "bytes": 22068150,
+  "archive": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\backups\\releases\\v2.8.15.0.28-content.zip",
+  "archive_sha256": "c23add68db52a6fda8df20a150e4aa17f6e9f75ddcb3b58475a583580b29c2b0",
+  "patch_notes_file": "workshop/update-notes-2.8.15.0.28.txt",
+  "patch_notes_sha256": "f093974362a8196eb24af966e6d846b1e7e2894330414430565b8782cc243244",
+  "content_manifest": "development/releases/v2.8.15.0.28-content-manifest.json",
+  "uploader_status": "Publish complete; Update completed",
+  "steam_content_manifest_id": "3542979440416557433",
+  "visibility": "Public",
+  "version_tag_verified": true,
+  "public_changelog_readback_verified": true,
+  "public_changelog_full_three_entries_match": true,
+  "changelog_timestamp": "1794483036",
+  "public_changelog_url": "https://steamcommunity.com/sharedfiles/filedetails/changelog/3832182265?l=schinese",
+  "downloaded_package_verified": true,
+  "downloaded_package_verification": {
+    "files": 502,
+    "source_files_matching": 501,
+    "uploader_generated_manifest_differs": true,
+    "manifest_indexes_all_files": true,
+    "manifest_hash_set_identical": true
+  },
+  "validation": [
+    "development/validation/hambat-weight-skins-20261112.txt",
+    "development/validation/wortox-balance-20261112.txt"
+  ],
+  "skin_validation": "Offline official client preview with original item GUID and restricted builds; native online ownership/equip flow not tested.",
+  "wiki_updated": false
+}

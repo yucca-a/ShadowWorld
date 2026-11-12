@@ -1,4 +1,4 @@
-version = "2.8.15.0.27"
+version = "2.8.15.0.28"
 -- Original authors: 繁花丶海棠 | 胜天一猫 | 小蓝鲸 | leo468
 author = "Yucca（维护）"
 forumthread = ""
@@ -810,8 +810,8 @@ configuration_options = {
     item("Wortox Use Soul Attack", i18n({"沃拓克斯的灵魂飞弹", "Wortox Use Soul Attack"})),
     item("Wortox damage upgrade", i18n({"沃拓克斯三维高时增伤", "Wortox Upgrade Damage"}),
         i18n({"每个高于90%的三维增加0.35伤害(困难模式0.25)", "Per >90% Hunger/Health/Sanity will add 0.35 damage,hard mode 0.25"})),
-    item("Wortox Auto Receive Soul", i18n({"沃拓克斯灵魂少时自动获得灵魂", "Wortox Auto Receive Soul"}),
-        i18n({"困难模式额外削弱免费排箫冷却", "Hard mode extra increase panflute inspiration time"})),
+    item("Wortox Auto Receive Soul", i18n({"沃拓克斯三维良好且灵魂少时自动获得灵魂", "Wortox Passive Souls When Healthy"}),
+        i18n({"生命、理智、饥饿均不低于75%，且身上及灵魂罐合计不足10魂时定时获得1魂；困难模式额外削弱免费排箫冷却", "Periodically gain 1 soul when health, sanity and hunger are all at least 75% and carried souls, including jars, total fewer than 10. Hard mode also increases panflute inspiration time"})),
     item("wormwood_easy", i18n({"-------------------- 󰀇 沃姆伍德总开关", "󰀇 Wormwood Master Switch"})),
     item("Wormwood Eat Food Normal", i18n({"沃姆伍德吃食物获得75%生命", "Wormwood Eat Food 75% Health"})),
     item("Wormwood Right Self To Hide", i18n({"沃姆伍德右键自身隐藏休憩", "Wormwood Right Self To Hide/Rest"})),

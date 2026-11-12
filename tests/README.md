@@ -371,3 +371,11 @@ python tests/run_native_exchange_travel.py newconstant --port 11017
 
 2026-11-10 工坊同步与圆形玻璃弹：`run_recipe_permission_tests.py` 检查实际双端科技权限函数的禁止标签/技能规则；`run_wixie_tests.py` 含新配方与既有武器权限回归。`run_native_walter_moonglass.py --um stable|beta --access on|off [--restart]` 串行验证两版实际配方、技能锁、圆/尖两种 build、装填、命中、UM 二级弹丸与身份保存。夹具注入技能并解锁配方，未验收玩家自然加点或祭坛 UI。工坊 .20 的天体改动与本地腿靴保护合并证明见[记录](../development/validation/workshop-sync-moonammo-20261110.txt)。
 2026-11-11 咸鱼切回原版兜底：`run_xianyu_classic_recovery_tests.py` 覆盖真实实体身份、满容量保留、原版穿越期间不插入、旧钓具引用、已有原版库存、此前已切回原版的旧库存和原传输凭据去重。`run_xianyu_classic_recovery_native.py` 使用冻结源码及隔离双层专服，先填满帽子／钓具第一和第二空间，再制造确认消息丢失，保存切回原版，核对物品守恒、腾位续迁、耐久及两轮重启。`--before --source <旧源码目录>` 复现旧空间隐藏；`run_xianyu_classic_resume_native.py <前一完整测试目录>` 用最终源码加载已完成回迁的双层存档，检查无重复恢复、钓具可打开及普通保存。使用专服模拟角色，不代表客户端界面验收；测试只操作自建进程和隔离存档。
+
+2026-11-12 战斗收益：`run_combat_rewards_tests.py` 使用原版武器与两版妥协的实际奖励回调检查牛铃保护、吸血、肾上腺素／脱战计时、暗影槌缠身及非生命目标分类；`run_native_combat_rewards.py --edition solo|stable|beta` 串行启动隔离服，验证真实牛铃／驯服、普通攻击和跳劈、歌谣与恐怖盾牌，`--observe-only --source <旧源码>` 用于复现修复前行为。结果见 `development/validation/combat-rewards-20261112.txt`。
+
+2026-11-12 女工玫瑰温度排查：`run_native_winona_rose_temperature.py --edition solo|stable|beta [--vanilla-rose]` 以真实致命伤害触发玫瑰，记录温度锁、无敌和复活状态，再等待引擎自然降温／升温；`--vanilla-rose` 关闭妥协直接免死配置以检查原版复活动画。只做观察与断言，未安装臆测的温度解锁补丁。结果及范围见 `development/validation/winona-rose-temperature-20261112.txt`。入口均应串行运行。
+
+2026-11-12 多重火腿皮肤重量修正：`run_hambat_weight_skin_tests.py` 对照游戏原始网格和淬炼原有 18 档手持资源，核对三款官方皮肤的尺寸、握持平移、转向帧、UV、加密贴图，以及真实组件的装备／重量／存档回调。`run_native_hambat_weight_skins.py --hold-final 300` 在隔离客户端用原生皮肤预览接口展示 1 重／10 重资源，供画面对照；离线角色没有皮肤所有权，不将资源预览当成真实拥有皮肤的联网装备授权验收。资源可通过 `development/tools/build_hambat_skin_weights.py` 从官方资源重新生成。详见 `development/validation/hambat-weight-skins-20261112.txt`。
+
+2026-11-12 沃托克斯平衡：`run_wortox_balance_tests.py` 使用真实妥测免死回调、原生 timer 与本地产魂函数，验证双尾心120秒角色冷却、配置边界、保存／转移、护符和75%三维门槛。`run_native_wortox_balance.py --edition beta|stable|solo [--overhaul off] [--real-time]` 串行启动隔离服；`--real-time` 实等120秒，其余快速组仅缩短夹具计时以检查恢复。详见 `development/validation/wortox-balance-20261112.txt`。

@@ -1,0 +1,37 @@
+沃托克斯双尾心冷却与三维产魂，2026-11-12（本地未发布）
+
+双尾心
+只在已加载工坊 3193922031 且实际 UM_CONFIG.WORTOX 启用时安装；不受本地可选 um_patch 性能／兼容开关控制。
+原生自动免死入口是妥测 health:SetVal 中的 StopDeathStuffHere，先由 HasPocketResurrection 选物品，再调用 TriggerPocketResurrection。
+在前者仅排除正在冷却的 wortox_reviver，在后者首次使用该物品时启动120秒角色 timer；生命护符和其他免死逻辑不改。
+在 PocketResurrection 事件之前启动计时，事件中的伤害不能抢先再次用心；不拦截背包 FindItem 或心的手动施法函数。
+冷却绑定实际获救角色，换心不重置；原生 timer 保存／加载／角色转移保留剩余时间。
+按照本项目现有实现检查机制，仅包装已审查的妥测函数。上游实现改变会提示并跳过，不在不明实现上盲改。
+已审查的函数指纹：HasPocketResurrection 3cbe2934:680ecb92:713；TriggerPocketResurrection 55f92ae6:028dc30a:2684。
+正式版没有这一双尾心入口；单开淬炼、正式版、关闭妥测沃托克斯改动都不添加冷却。
+
+本地产魂
+原有 Wortox Auto Receive Soul 选项和沃托克斯增强总开关照常控制。
+每次原有定时检查时，要求非幽灵、生命/实际理智/饥饿均至少75%，再按原逻辑统计身上与灵魂罐的灵魂，合计少于10才给1魂。
+生命/理智使用未扣罚前的自然上限作百分比；实际理智用 GetRealPercent，强制显示为高理智的效果不替代真实数值。
+保留原有120秒／240秒间隔，以及排箫相关调整；中英配置说明同步更新。
+
+验证
+run_wortox_balance_tests.py：60项，执行实际妥测 health 回调、原生 timer 和本地产魂函数。
+覆盖开关、非致命伤不计时、第一颗心、换心、保存加载、角色转移、生命护符不改计时、事件前已进入CD、到期恢复、未审查源码跳过，以及三维临界值、幽灵、灵魂罐计数、客户端和本地选项关闭。
+run_module_manifest_tests.py：20项；原生索引502项；432个产品Lua文件通过Lua5.1编译。
+原生隔离服四组完整通过：
+- beta / Wortox off：work\vault-hardened-hosted-koqz5_ej\wortox-balance-result.json
+- stable / Wortox on：work\vault-hardened-hosted-ozu5kwtf\wortox-balance-result.json
+- solo / Wortox on：work\vault-hardened-hosted-cc759yeq\wortox-balance-result.json
+- beta / Wortox on：work\vault-hardened-hosted-_h1b_yl3\wortox-balance-result.json
+妥测开启组实际等待冷却：到期前0.1秒仍不选心；自首次触发后120.20秒再次遭到致命伤，正常免死并重新计时。
+保存出来的角色副本在冷却中再次遭遇致命伤会正常死亡，心保持有效；同一冷却内生命护符照常免死。
+四组都检查三维恰为75%可产魂、任一项74%不产魂、携带11魂不再自动产魂；普通/困难间隔由真实任务读取，困难组为240秒。
+
+测试边界与夹具修正
+使用自建隔离专服和模拟角色，不操作用户世界。保存/加载用真实 GetSaveRecord/SpawnSaveRecord，转移由原生 timer:TransferComponent 单元检查，不冒充实际跨层联网旅程。
+手动双尾心施法函数未修改；本次未进行客户端手动施法UI验收。
+最初实等120秒的夹具后续在灵魂上限断言失败：GiveItem 把新灵魂合并并移除了原实体，之后再改原实体堆叠数没有改变真实库存。
+已改为在 GiveItem 前设置堆叠数，最终四组完整重跑通过；首次失败不计入完整通过结果。
+所有观察完成后均终止本次创建的专服进程。

@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-12",
+  "published": false,
+  "cooldown_seconds": 120,
+  "cooldown_owner": "beneficiary of automatic heart rescue",
+  "gate": "workshop-3193922031 loaded and UM_CONFIG.WORTOX enabled",
+  "timer": "wortox_reviver_cooldown2hm",
+  "health_gate": 0.75,
+  "sanity_gate": 0.75,
+  "hunger_gate": 0.75,
+  "soul_limit": 10,
+  "soul_jars_included": true,
+  "original_intervals_seconds": [
+    120,
+    240
+  ],
+  "unit_checks": 60,
+  "module_checks": 20,
+  "lua_compilation_files": 432,
+  "manifest_files": 502,
+  "native": [
+    {
+      "edition": "beta",
+      "overhaul": "off",
+      "real_time": false,
+      "cases": 5,
+      "report": "work\\vault-hardened-hosted-koqz5_ej\\wortox-balance-result.json"
+    },
+    {
+      "edition": "stable",
+      "overhaul": "on",
+      "real_time": false,
+      "cases": 3,
+      "report": "work\\vault-hardened-hosted-ozu5kwtf\\wortox-balance-result.json"
+    },
+    {
+      "edition": "solo",
+      "overhaul": "on",
+      "real_time": false,
+      "cases": 3,
+      "report": "work\\vault-hardened-hosted-cc759yeq\\wortox-balance-result.json"
+    },
+    {
+      "edition": "beta",
+      "overhaul": "on",
+      "real_time": true,
+      "cases": 7,
+      "report": "work\\vault-hardened-hosted-_h1b_yl3\\wortox-balance-result.json"
+    }
+  ],
+  "beta_health_source_sha256": "90f8f584bb867640ede6eed098cbffbf19d31eccca3c6a22b2a708b410dd1b9d",
+  "manual_heart_spell_modified": false
+}

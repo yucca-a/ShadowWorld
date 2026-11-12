@@ -55,13 +55,17 @@ local function TransformScale(weight)
     return math.max(1, math.pow(weight + 0, 0.4))
 end
 
--- Use the item's official skin build; only unskinned hambats use weight art.
+local weightedskins = require("hambatweightedskins2hm")
+
+-- Skin geometry uses the same discrete weight scale as the original hand art.
 local function UpdateHeldSymbol(self, owner)
     local skin_build = self.inst:GetSkinBuild()
-    if skin_build ~= nil then
+    local name = GetWeightName(TransformScale(self.weight))
+    if weightedskins[skin_build] ~= nil then
+        owner.AnimState:OverrideItemSkinSymbol("swap_object", weightedskins[skin_build], name, self.inst.GUID, name, name)
+    elseif skin_build ~= nil then
         owner.AnimState:OverrideItemSkinSymbol("swap_object", skin_build, "swap_ham_bat", self.inst.GUID, "swap_ham_bat")
     else
-        local name = GetWeightName(TransformScale(self.weight))
         owner.AnimState:OverrideSymbol("swap_object", name, name)
     end
 end

@@ -80,7 +80,8 @@ if autoreceivesoul then
 	end
     
     local function addsoul(inst)
-        if not inst:HasTag("playerghost") then
+        if not inst:HasTag("playerghost") and inst.components.health:GetPercent() >= .75 and
+            inst.components.sanity:GetRealPercent() >= .75 and inst.components.hunger:GetPercent() >= .75 then
 			-- 小恶魔检测物品栏内灵魂数量和容器
             local AllSoulAndContainer = inst.components.inventory:FindItems(function(item) return item:IsValid() and (item.prefab == "wortox_soul" or item.prefab == "wortox_souljar") end)
             local count = 0

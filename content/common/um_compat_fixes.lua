@@ -58,3 +58,6 @@ AddStategraphPostInit("wilson", function(sg)
         return state
     end
 end)
+
+-- Balance applies only while the beta Wortox overhaul is active.
+require("umwortox2hm").Install(env)

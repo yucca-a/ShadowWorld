@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-12",
+  "cause": "Published .27 only restored official skin selection, losing the weighted hand geometry.",
+  "product_files": 501,
+  "rendered_source_matches_current": true,
+  "resource_skins": [
+    "hambat_nautical",
+    "hambat_potroast",
+    "hambat_spiralcut"
+  ],
+  "weight_tiers": 18,
+  "geometry_checks": 495,
+  "component_checks": 68,
+  "module_checks": 20,
+  "client_cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-kpqxda9o",
+  "render_mode": "offline official skin resource preview",
+  "owned_item_authorization_flow_verified": false,
+  "visual_review": [
+    "all three skins at one and ten weight",
+    "ten weight spiralcut and default in one camera",
+    "turning",
+    "attack pose"
+  ],
+  "screenshots": [
+    "development/validation/hambat-weight-skins-all-20261112.png",
+    "development/validation/hambat-weight-ten-compare-20261112.png",
+    "development/validation/hambat-weight-attack-20261112.png",
+    "development/validation/hambat-weight-facing-20261112.png"
+  ],
+  "published": false,
+  "lua_compilation_files": 431,
+  "owned_test_processes_stopped": true
+}
