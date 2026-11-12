@@ -7,6 +7,8 @@ if manifest ~= nil and GLOBAL.IsWorkshopMod(modname) then
         "scripts/bootlegnonslip2hm.lua",
         "common/um_compat_fixes.lua",
         "common/beef_bell_pack.lua",
+        "common/combat_rewards.lua",
+        "scripts/combatbenefits2hm.lua",
         "scripts/umcompatguard2hm.lua",
         "scripts/umwinonaworker2hm.lua",
         "scripts/winonabuilder2hm.lua",
@@ -109,6 +111,7 @@ modimport("easy_role/winona_electrical.lua")
 
 if TUNING.DSTU then modimport("easy_other/um_patch.lua") end
 if TUNING.DSTU then modimport("common/um_compat_fixes.lua") end
+modimport("common/combat_rewards.lua")
 
 -- 模组相关-----------------------------------------------------------------------------
 if ((TUNING.TEMP2HM.openmods == nil and GetModConfigData("Show Mod Icon In Game")) or TUNING.TEMP2HM.openmods) and

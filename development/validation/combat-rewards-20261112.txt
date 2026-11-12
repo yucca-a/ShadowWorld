@@ -1,0 +1,48 @@
+战斗收益与受保护目标，2026-11-12（本地修复，未发布）
+
+范围
+按用户后续指示，取消沃托姆攻击驯服牛获得肾上腺素的机制；牛的武器免伤保留。
+同时处理此前请求的蝙蝠刀／暗影槌吸血、女武神歌谣与恐怖盾牌刷牌堆。
+牛的识别严格复用已有牛铃保护条件，包括影牛继承原牛绑定；关闭原保护选项时不扩展保护。
+
+原因与改动
+1. Combat:DoAttack 在目标 GetAttacked_Internal 之前发送 onattackother，武器回调也会继续执行。
+   因此已有牛免伤拦截无法阻止妥协的肾上腺素奖励或蝙蝠刀吸血。
+   只筛选沃托姆原奖励监听与淬炼延长脱战监听，正常战斗事件及耐久消耗继续执行；
+   原版蝙蝠刀吸血回调、暗影槌原版吸血与淬炼额外吸血共享牛保护条件。
+2. 暗影槌淬炼回调原先仍会给牛挂恐惧缠身；延迟伤害由无 weapon 的特效发起，可绕过武器免伤。
+   在挂缠身处排除受保护攻击，阻止无效命中生成持续伤害／易伤，不用伤害后回滚。
+3. 扑克牌牌堆有 health/combat 以支持洗牌，并在游戏 NON_LIFEFORM_TARGET_TAGS 中。
+   使用原生 IsLifeDrainable 检查歌谣收益及恐怖盾牌的有效食物目标，保留两版原有歌谣条件。
+   直接给盾牌喂 deck_of_cards 或 playing_card 的 Eater:CanEat 在修复前已经为 false；
+   实际复现的是攻击牌堆也积累咬食计数、回复耐久。
+
+修复前证据（work 下均为一次性隔离服）
+- vault-hardened-hosted-d9a1q9c6/combat-rewards-result.json：妥测，蝙蝠刀对牛伤害 0、回血 5.44、能量 +0.05；
+  暗影槌对牛伤害 0、回血 2.4、能量 +0.05；盾牌打牌堆耐久 +22、咬食计数 2.5。
+- vault-hardened-hosted-7swns9gx/combat-rewards-result.json：正式版，歌谣打牌堆回血 0.4、回理智 1；
+  盾牌打牌堆耐久 +22。妥测的既有实际命中歌谣修复已经阻止了这类牌堆奖励。
+
+验证
+- tests/run_combat_rewards_tests.py：78 项，含本机原版武器回调、Weapon:OnAttack、
+  IsLifeDrainable 及两版妥协的原始 OnAttackOther；保护开／关、绑定／未绑定、影牛、NPC、
+  持续伤害、其他攻击监听及战斗计时保留。
+- tests/run_wigfrid_recovery_tests.py：35 项，保留妥测已有实际命中歌谣恢复修复。
+- tests/run_module_manifest_tests.py：20 项；MNFS 文件索引 494 项；430 个产品 Lua 文件通过 Lua 5.1 编译。
+- 原生夹具使用真实牛铃绑定与驯服、Combat:DoAttack、wathomleap 状态图、原版歌谣和盾牌。
+  普通武器攻击及跳劈：受保护牛伤害／吸血／能量均为 0；跳劈事件仍触发一次；
+  不刷新脱战计时；敌方猪人跳劈伤害 68、能量 +0.05。
+  连打暗影槌不挂缠身，等待后牛仍不受延迟伤害。
+  歌谣打牌堆不回复，攻击猪人仍回复；盾牌打牌堆只消耗耐久，打猪人仍可咬食修复。
+
+测试边界
+隔离专服中的模拟角色，不代替玩家客户端输入和画面验收；不修改玩家实际存档。
+早期夹具漏加载角色、牛铃提前入包及正式版模拟角色缺少 playercontroller 的失败不计入产品修复证据。
+最初延时跳劈检查暴露的 102 点牛伤害来自之前暗影槌残留缠身，现单独检查持续伤害并修复其挂载入口。
+
+最终版本原生证据
+- 妥测：work/vault-hardened-hosted-je0co4qd/combat-rewards-result.json，16 项通过。
+  奖励监听使用原生 RemoveEventCallback / ListenForEvent 安装，维护正反两份监听登记；
+  对自有延长脱战回调的引用同步更新，未直接改写单边事件数组。
+- 妥协正式版：work/vault-hardened-hosted-21w65p30/combat-rewards-result.json，16 项通过。
+- 单开淬炼：work/vault-hardened-hosted-jfy18595/combat-rewards-result.json，6 项通过。

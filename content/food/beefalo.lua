@@ -168,6 +168,8 @@ AddComponentPostInit("domesticatable", function(self)
     end
 end)
 
+local CombatBenefits = require("combatbenefits2hm")
+CombatBenefits.beefaloprotection = true
 -- 2025.10.13 melon:绑牛铃的牛只能被空手打到。鬼魂复仇、阿比也不打。
 AddPrefabPostInit("beefalo", function(inst)
     if not TheWorld.ismastersim then return end
@@ -177,7 +179,7 @@ AddPrefabPostInit("beefalo", function(inst)
             -- 有鞍的
             -- if self.inst:HasTag("saddled") or self.inst:HasTag("swc2hm") and self.inst.swp2hm and self.inst.swp2hm:HasTag("saddled") then
             -- 有牛铃的
-            if self.inst.components.follower:GetLeader() or self.inst:HasTag("swc2hm") and self.inst.swp2hm and self.inst.swp2hm.components.follower:GetLeader() then
+            if CombatBenefits.IsBellBoundBeefalo(self.inst) then
                 if attacker and attacker:HasTag("player") and weapon then return end -- 玩家的武器不打 10.4
                 -- 鬼魂复仇、阿比不打有鞍牛
                 if attacker and (attacker:HasTag("playerghost") or attacker.prefab == "abigail") then return end

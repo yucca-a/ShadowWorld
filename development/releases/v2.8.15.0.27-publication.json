@@ -1,0 +1,32 @@
+{
+  "version": "2.8.15.0.27",
+  "workshop_id": "3832182265",
+  "date": "2026-11-12",
+  "files": 494,
+  "bytes": 21870104,
+  "archive": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\backups\\releases\\v2.8.15.0.27-content.zip",
+  "archive_sha256": "92e83f01a120e976168d6ffbc5390da970ae0d3f9037ee6a5ae91da978abd3f4",
+  "patch_notes_file": "workshop/update-notes-2.8.15.0.27.txt",
+  "patch_notes_sha256": "ec5d2a1b627ec4a35f406d36392bd9f88ebe523f8d37d9ad2275f8b6f66d44eb",
+  "content_manifest": "development/releases/v2.8.15.0.27-content-manifest.json",
+  "uploader_status": "Publish complete; Update completed",
+  "steam_content_manifest_id": "5421723268657212702",
+  "visibility": "Public",
+  "version_tag_verified": true,
+  "public_changelog_readback_verified": true,
+  "changelog_timestamp": "1794468274",
+  "public_changelog_url": "https://steamcommunity.com/sharedfiles/filedetails/changelog/3832182265#1794468274",
+  "downloaded_package_verified": true,
+  "downloaded_package_verification": {
+    "files": 494,
+    "source_files_matching": 493,
+    "uploader_generated_manifest_differs": true,
+    "manifest_indexes_all_files": true,
+    "manifest_hash_set_identical": true
+  },
+  "validation": [
+    "development/validation/combat-rewards-20261112.txt"
+  ],
+  "skin_validation": "Native isolated host, simulated official skin metadata and init; no client visual acceptance.",
+  "wiki_updated": false
+}

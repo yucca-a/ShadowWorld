@@ -34,6 +34,7 @@ W.A.R.B.I.S.老瓦甲 日常15%加速打架迅速叠满30%
 --------------------------------------------------------------------------------
 -- 引用
 local UpvalueHacker = require("upvaluehacker2hm")
+local CombatBenefits = require("combatbenefits2hm")
 --------------------------------------------------------------------------------
 -- 月对暗影加成1.2，影对月加成1.2--------------------------------------------------
 TUNING.WEAPONS_LUNARPLANT_VS_SHADOW_BONUS = 1.2
@@ -995,10 +996,13 @@ local function SBAOnAttack(weapon, attacker, target)
     if target.components.health and target.components.health:IsDead() then return end
     if not attacker or not attacker:IsValid() then return end
 
+    if CombatBenefits.IsProtectedWeaponHit(attacker, target) then return end
+
     -- 恐惧缠身: 挂一层(最多5层), 叠满5层触发buff(易伤)
     SBADoHit(attacker, target)
     -- buff期间攻击该怪: 吸血翻倍(补吸一份), san按回血一半扣(满血不掉san)
     if target._sba_buff2hm and weapon._lifesteal and weapon._lifesteal > 0
+        and CombatBenefits.CanLifeSteal(attacker, target)
         and attacker.components.health and attacker.components.health:IsHurt() then
         local mult = attacker.components.aoediminishingreturns and attacker.components.aoediminishingreturns.mult:Get() or 1
         attacker.components.health:DoDelta(weapon._lifesteal * mult, false, "shadow_battleaxe")

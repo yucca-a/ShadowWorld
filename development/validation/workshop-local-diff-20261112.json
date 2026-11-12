@@ -1,35 +1,32 @@
 {
   "workshop_id": "3832182265",
-  "checked_at_local": "2026-11-12",
-  "workshop_version": "version = \"2.8.15.0.25\"",
-  "local_version": "version = \"2.8.15.0.25\"",
-  "downloaded_file_count": 490,
-  "local_file_count": 492,
+  "checked_at": "2026-11-12T15:20:07.739154+08:00",
+  "workshop_version": "2.8.15.0.26",
+  "content_manifest_id": "191279528702570259",
+  "workshop_updated_at": "2026-11-12T09:31:47+08:00",
+  "workshop_file_count": 492,
+  "local_file_count": 494,
+  "unchanged_file_count": 486,
+  "workshop_only": [],
+  "local_only": [
+    "common/combat_rewards.lua",
+    "scripts/combatbenefits2hm.lua"
+  ],
   "changed": [
-    "common/food_util.lua",
-    "easy_other/containersort.lua",
     "easy_other/easy_equipments.lua",
-    "easy_other/easy_structures.lua",
-    "epic/dynamic_armor.lua",
-    "epic/epic_ruin.lua",
+    "easy_other/lunar_shadow_items.lua",
+    "food/beefalo.lua",
     "mod.manifest",
-    "scripts/components/dynamicarmor2hm.lua",
-    "scripts/components/removeleaveinventory2hm.lua",
-    "scripts/fiveslotcookers2hm.lua",
-    "weather/moonisland.lua"
+    "modmain.lua",
+    "scripts/components/hambat2hm.lua"
   ],
-  "added": [
-    "scripts/complexsmartpot2hm.lua",
-    "scripts/cookingredientcollect2hm.lua"
+  "matches_published_archive_except_generated_manifest": true,
+  "published_archive_differing_paths": [
+    "mod.manifest"
   ],
-  "removed": [],
-  "unchanged_count": 479,
-  "steam_installed_manifest": "\"size\"\t\t\"21846854\"\n\t\t\t\"timeupdated\"\t\t\"1794401890\"\n\t\t\t\"manifest\"\t\t\"5603528844635537051\"",
-  "downloaded_package_matches_archived_v2_8_15_0_25_except_generated_manifest": true,
-  "changelog_file": "workshop/update-notes-local-after-2.8.15.0.25.txt",
-  "restored_to_workshop_at_user_request": [
-    "modworldgenmain.lua",
-    "modinfo.lua"
-  ],
-  "other_content_files_unchanged_during_restore": true
+  "changelog": "workshop/update-notes-local-after-2.8.15.0.26.txt",
+  "full_comparison": "work/workshop-compare-20261112/comparison.json",
+  "source_diff": "work/workshop-compare-20261112/source.diff",
+  "published": false,
+  "product_source_changed_for_comparison": false
 }

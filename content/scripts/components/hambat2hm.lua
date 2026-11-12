@@ -55,6 +55,17 @@ local function TransformScale(weight)
     return math.max(1, math.pow(weight + 0, 0.4))
 end
 
+-- Use the item's official skin build; only unskinned hambats use weight art.
+local function UpdateHeldSymbol(self, owner)
+    local skin_build = self.inst:GetSkinBuild()
+    if skin_build ~= nil then
+        owner.AnimState:OverrideItemSkinSymbol("swap_object", skin_build, "swap_ham_bat", self.inst.GUID, "swap_ham_bat")
+    else
+        local name = GetWeightName(TransformScale(self.weight))
+        owner.AnimState:OverrideSymbol("swap_object", name, name)
+    end
+end
+
 local function UpdateDamage(inst, weight, dirty)
     local perishtime = inst.components.perishable and inst.components.perishable:GetPercent() or 0
     inst.components.weapon:SetDamage(UpdateAttack(perishtime, weight, dirty))
@@ -84,8 +95,7 @@ local function onweight(self, weight)
     if self.inst.components.inventoryitem then
         local owner = self.inst.components.inventoryitem:GetGrandOwner()
         if owner and owner.components.inventory and owner.components.inventory:IsItemEquipped(self.inst) then
-            local name = GetWeightName(TransformScale(self.weight))
-            owner.AnimState:OverrideSymbol("swap_object", name, name)
+            UpdateHeldSymbol(self, owner)
         end
     end
 end
@@ -112,8 +122,7 @@ local hambat2hm = Class(function(self, inst)
 
     self.euipFunc = function(inst, data)
         UpdateDamage(inst, self.weight, self.dirty)
-        local name = GetWeightName(TransformScale(self.weight))
-        data.owner.AnimState:OverrideSymbol("swap_object", name, name)
+        UpdateHeldSymbol(self, data.owner)
         data.owner.AnimState:Show("ARM_carry")
         data.owner.AnimState:Hide("ARM_normal")
     end

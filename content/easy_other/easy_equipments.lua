@@ -2681,7 +2681,8 @@ if GetModConfigData("Shieldofterror Eat Owner") then
 		"card"
     }
     local function IsValidVictim(victim)
-        return victim.components.health and not victim.components.health:IsDead() and victim.components.combat and not victim:HasOneOfTags(nocreaturetags)
+        return victim.components.health and not victim.components.health:IsDead() and victim.components.combat and
+            IsLifeDrainable(victim) and not victim:HasOneOfTags(nocreaturetags)
     end
     local function endeatattackertask(inst) inst.eatattacker2hmtask = nil end
     local function onattacked(inst, owner, data)
