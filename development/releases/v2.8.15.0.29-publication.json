@@ -1,0 +1,38 @@
+{
+  "version": "2.8.15.0.29",
+  "workshop_id": "3832182265",
+  "date": "2026-11-12",
+  "files": 502,
+  "bytes": 22076216,
+  "archive": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\backups\\releases\\v2.8.15.0.29-content.zip",
+  "archive_sha256": "93d5404e4bd8012cb5957671f3b39efd749705267090f04ae2297b42cadf6c91",
+  "patch_notes_file": "workshop/update-notes-2.8.15.0.29.txt",
+  "patch_notes_sha256": "7bcd8699ccc4d3e6f5d15c02dd5a9a27e49198618db3dd55f7dee1f63f3f34ad",
+  "content_manifest": "development/releases/v2.8.15.0.29-content-manifest.json",
+  "status": "published_verified",
+  "version_tag_verified": true,
+  "public_changelog_readback_verified": true,
+  "downloaded_package_verified": true,
+  "validation": [
+    "development/validation/equip-moonstorm-20261112.json",
+    "development/validation/exchange-recovery-cluster19-20261112.json"
+  ],
+  "publication_scope": "Storage migration fallback plus head/body selected-slot swapping; no brightshade behavior change.",
+  "uploader_status": "Publish complete; Update completed",
+  "steam_content_manifest_id": "8354360511682322678",
+  "visibility": "Public",
+  "downloaded_package_verification": {
+    "files": 502,
+    "source_files_matching": 501,
+    "uploader_generated_manifest_differs": true,
+    "manifest_indexes_all_files": true,
+    "manifest_hash_set_identical": true,
+    "all_release_content_matches": true,
+    "download_path": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\release-2.8.15.0.29\\downloaded",
+    "downloaded_version": "2.8.15.0.29"
+  },
+  "public_changelog_full_two_entries_match": true,
+  "changelog_timestamp": "1794490564",
+  "public_changelog_url": "https://steamcommunity.com/sharedfiles/filedetails/changelog/3832182265?l=schinese",
+  "wiki_updated": false
+}

@@ -2,7 +2,8 @@
 -- verbatim from the installed game; inventories, items and server actions are real.
 local InstallNativeControls = require("equip_native_controls")
 
-return function(run, check, fixed, oncomplete)
+return function(run, check, fixed, oncomplete, equip_slot)
+    local EQUIP_TEST_SLOT = equip_slot or EQUIPSLOTS.HANDS
     local pairs_tested, presses, queued_messages = 0, 0, 0
     local function controls(p, queued)
         local scope = setmetatable({Input = {}, FrontEnd = {}, PlayerHud = {}, InvSlot = {}, PlayerController = {}}, {__index = _G})
@@ -102,7 +103,9 @@ return function(run, check, fixed, oncomplete)
     local function setup(inv, a, b, spawn)
         check(inv.maxslots == 15, "covers every native player inventory slot")
         local all = {a, b}
-        local prefabs = {"spear", "axe", "pickaxe", "shovel", "hammer", "pitchfork", "bugnet"}
+        local prefabs = EQUIP_TEST_SLOT == EQUIPSLOTS.HEAD and {"footballhat", "strawhat"}
+            or EQUIP_TEST_SLOT == EQUIPSLOTS.BODY and {"armorwood", "armorgrass"}
+            or {"spear", "axe", "pickaxe", "shovel", "hammer", "pitchfork", "bugnet"}
         for i = 3, 16 do all[i] = spawn(prefabs[(i - 1) % #prefabs + 1]) end
         return all
     end
@@ -127,7 +130,7 @@ return function(run, check, fixed, oncomplete)
         end
     end
     local function layout(inv, model)
-        check(inv:GetEquippedItem(EQUIPSLOTS.HANDS) == model.hand, "selected weapon is equipped")
+        check(inv:GetEquippedItem(EQUIP_TEST_SLOT) == model.hand, "selected weapon is equipped")
         local seen = {}
         if model.hand then
             seen[model.hand] = true

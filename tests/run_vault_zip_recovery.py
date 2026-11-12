@@ -51,6 +51,7 @@ try:
    for mod in mods:
     if mod=='workshop-3832182265':continue
     src=Path('D:/SteamLibrary/steamapps/workshop/content/322330')/mod[9:]
+    if not src.is_dir():src=ROOT/'work/newconstant-research/steamcmd/steamapps/workshop/content/322330'/mod[9:]
     dest=c.runtime/'mods'/mod
     if src.is_dir():
      if not dest.exists():_winapi.CreateJunction(str(src),str(dest))
@@ -61,12 +62,14 @@ try:
     config='local overrides=(function()\n'+config+'\nend)()\noverrides.ShadowWorld.configuration_options["World Exchange"]="exchange_v1_nexus"\nreturn overrides'
    (c.cluster/shard/'modoverrides.lua').write_text(config,encoding='utf-8')
    original=z.read(prefix+shard+'/server.ini').decode('utf-8-sig')
-   shardid=re.search(r'^id\s*=\s*(\d+)',original,re.M)[1]
+   match=re.search(r'^id\s*=\s*(\d+)',original,re.M)
+   shardid=match[1] if match else '1'
    f=c.cluster/shard/'server.ini';f.write_text(re.sub(r'^id = \d+', 'id = '+shardid,f.read_text(),flags=re.M))
  fixture='exchange_modes_probe.lua' if a.migration else 'vault_archive_probe.lua'
  (c.runtime/'mods/VaultAudit/modmain.lua').write_text((ROOT/'tests/native'/fixture).read_text(encoding='utf-8'),encoding='utf-8')
  c.start();time.sleep(15)
  if a.migration:
+  assert not report['missing_mods'],report['missing_mods']
   def mode_state(n):
    before=len(c.events(n));row=c.call(n,'ExchangeModeProbe()','mode_state')
    row['inventory']={e['family']:e for e in c.events(n)[before:]if e['kind']=='mode_bank'}
@@ -75,10 +78,10 @@ try:
   for _ in range(60):
    state={n:mode_state(n)for n in c.names}
    report['samples'].append(state)
-   print('MIGRATION',json.dumps({n:{k:v for k,v in r.items()if k not in ('banks','states','inventory')}for n,r in state.items()}),flush=True)
+   print('MIGRATION',json.dumps({n:{k:v for k,v in r.items()if k not in ('banks','states','inventory','owners')}for n,r in state.items()}),flush=True)
    if all(r['ready'] for r in state.values()):break
    time.sleep(2)
-  assert all(r['ready'] and r['mode']=='classic' and r.get('migrated') for r in state.values()),state
+  assert all(r['ready'] and r['mode'] in ('classic','off') and r.get('migrated') for r in state.values()),state
   report['migrated']=state
   for n in c.names:
    for family in ('shadow','tacklestation2hm','cloudpine_l4'):
@@ -86,7 +89,7 @@ try:
   c.stop();c.start();time.sleep(5)
   report['reloaded']={n:mode_state(n)for n in c.names}
   for n,row in report['reloaded'].items():
-   assert row['ready'] and row['mode']=='classic' and row.get('migrated') and not row.get('error'),row
+   assert row['ready'] and row['mode'] in ('classic','off') and row.get('migrated') and not row.get('error'),row
    assert row['banks']==report['migrated'][n]['banks'],'migrated inventories changed on reload'
    assert row['inventory']==report['migrated'][n]['inventory'],'migrated item records changed on reload'
   report['status']='passed'

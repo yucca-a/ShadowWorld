@@ -14,6 +14,7 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--variant", choices=["vanilla", "patch", "full", "disabled"], default="patch")
+parser.add_argument("--slot", choices=["hands", "head", "body"], default="hands")
 parser.add_argument("--equip-patch-source", type=Path, help="Override only the equipment patch for before/after regression checks")
 parser.add_argument("--game", type=Path, default=Path("D:/SteamLibrary/steamapps/common/Don't Starve Together"))
 parser.add_argument("--seed", type=Path, default=ROOT / "work/reuse-audit/config/Audit/Master/save",
@@ -24,7 +25,7 @@ if not seed.is_relative_to((ROOT / "work").resolve()):
     parser.error("Seed must be an isolated test save under this repository's work directory")
 if not seed.is_dir():
     parser.error("Missing disposable seed; provide --seed with an existing isolated test world's Master/save")
-out = Path(tempfile.mkdtemp(prefix="native-equip-slot-" + args.variant + "-", dir=ROOT / "work"))
+out = Path(tempfile.mkdtemp(prefix="native-equip-slot-" + args.variant + "-" + args.slot + "-", dir=ROOT / "work"))
 runtime = out / "runtime"
 (runtime / "bin64").mkdir(parents=True)
 for source in (args.game / "bin64").iterdir():
@@ -84,6 +85,7 @@ assert "]====]" not in source
     + "\n]====], '@installed_dst_input_methods'))\nsetfenv(fn, scope)\nfn()\nend\n", encoding="utf-8")
 (out / "native-input-manifest.json").write_text(json.dumps(native_sources, indent=2), encoding="utf-8")
 with (mod / "modmain.lua").open("a", encoding="utf-8") as file:
+    file.write('\nEQUIP_SLOT_TEST_SLOT=EQUIPSLOTS.' + args.slot.upper() + '\n')
     file.write('\nEQUIP_SLOT_TEST_FIXED=' + ("false" if args.variant == "vanilla" else "true") + '\nmodimport("equip_slot_fixture.lua")\n')
 cluster = out / "config/Audit"
 master = cluster / "Master"
@@ -151,7 +153,7 @@ logtext = logpath.read_text(encoding="utf-8", errors="replace")
 lines = [line for line in logtext.splitlines() if "[EQUIP_SLOT_TEST]" in line or "LUA ERROR" in line]
 passed = (not timed_out and process.returncode == 0 and "LUA ERROR" not in logtext
           and any("RESULT" in line and "failures=0" in line for line in lines))
-result = {"pass": passed, "variant": args.variant, "exit_code": process.returncode,
+result = {"pass": passed, "variant": args.variant, "slot": args.slot, "exit_code": process.returncode,
           "timed_out": timed_out, "log": str(logpath), "checks": lines,
           "limitation": "Installed native Input/FrontEnd/HUD/InvSlot methods in a headless UI shell; real server items/actions; queued native client/RPC methods simulate pending messages without client prediction. No physical keyboard/mouse, rendered client or real network."}
 (out / "result.json").write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")

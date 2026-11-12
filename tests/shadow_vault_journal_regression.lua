@@ -147,4 +147,53 @@ check(not message and reason=="too_large","whole large pages still cannot fit in
 local saved=j:Capture()
 check(saved and #saved.pages["1"].items==6 and #saved.pages["1"].items[6].data.padding==100000,
     "whole large pages can be committed to the local journal")
+-- Broken bank references require proof before any old physical contents are
+-- retired. Preserve the real entity when only native temperature time differs.
+local function reconstruction(conflict)
+    Ents={}
+    local j,v=journal();v.id="1";v.master=true
+    v.native_bases={shadow=v.base};v.pages={["1"]=v.base}
+    v.GuardPage=function()end
+    local source=VA_TEST.box(false)
+    function source:GetPersistData()return {container={}}end
+    local item=SpawnPrefab("goldnugget");item.data={edible={chill=.6},stackable={stack=7},custom={marker="keep"}}
+    source.components.container:GiveItem(item,1)
+    local payload=require("shadowvaultnative2hm").ExportPage(v,source)
+    payload.items[1].data.edible.chill=.4
+    if conflict then payload.items[1].data.stackable.stack=6 end
+    local variants={banks={hosted={}},journal_recovery_sources={[source]="shadow",[v.base]="shadow"}}
+    v.inst={components={exchangevariants2hm=variants},PocketDimensionContainers={shadow=v.base}}
+    function v.inst:SetPocketDimensionContainer(f,e)self.PocketDimensionContainers[f]=e end
+    v.saved_native_world={version=1,shared=true,owners={["1"]="1"},epochs={["1"]=0}}
+    local saved={schema=4,pages={["1"]=payload},rows={},registry={["1"]={imported=true}},
+        protocol={mode="journal"},native=deepcopy(v.saved_native_world)}
+    return j,v,source,item,saved,variants
+end
+j,v,source,item,saved,variants=reconstruction(false)
+local oldbase=v.base
+local ok,why=j:Restore(saved)
+check(ok,"complete journal can reconstruct a bank whose references are stale: "..tostring(why))
+check(v.pages["1"]==source and source.components.container.slots[1]==item,"reconstruction keeps the unique actual item instead of replacing it with an older checkpoint")
+check(item.data.edible.chill==.6 and item.data.custom.marker=="keep","native temperature and arbitrary item component data are preserved")
+check(v.inst.PocketDimensionContainers.shadow==source and not oldbase:IsValid(),"empty constructor cannot override the journal goods")
+check(variants.banks.hosted.shadow==source and not variants.journal_recovery_sources,"reconstructed references are current and recovery completes once")
+j,v,source,item,saved=reconstruction(true)
+local originalbase=v.base
+ok,why=j:Restore(saved)
+check(not ok and why=="migration_source_conflict","a stack-count difference is a protected conflict rather than a temperature update")
+check(source:IsValid() and source.components.container.slots[1]==item and originalbase:IsValid(),"conflict preserves every original source and its real item")
+j,v,source,item,saved=reconstruction(false)
+for _,id in ipairs({"2","3"})do
+    saved.pages[id]=deepcopy(saved.pages["1"]);saved.native.owners[id]="1";saved.native.epochs[id]=0
+    saved.registry[id]={imported=true}
+end
+ok,why=j:Restore(saved)
+check(not ok and why=="migration_source_conflict" and source:IsValid(),"three identical page candidates cannot prove where an updated real source belongs")
+local absent={schema=4,pages={},rows={},registry={},protocol={mode="journal",active={name="missing"}}}
+ok,why=j:Restore(absent)
+check(not ok and why=="missing_transfer_record","missing durable transfer row remains protected after the journal has loaded")
+local vault=require("components/shadowvault2hm")
+v.pages={["1"]=VA_TEST.box(false)};v.reserved={}
+check(vault.Reserve(v,"native_page",{op="N",page="1",state="active"}),"restored whole-page transfer needs no numeric item slot")
+check(v.pages["1"].components.container.readonlycontainer and not next(v.reserved),"whole-page restoration locks the page without a nil slot reservation")
 print("Independent vault journal custody: "..n.." checks passed")

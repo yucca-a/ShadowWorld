@@ -138,4 +138,44 @@ check(nexus.components.container.readonlycontainer and not original.components.c
 saved=service:OnSave();TUNING.EXCHANGE_MODE2HM='hosted';w=world(original)
 service=Variants(w);service:Restore({[original.GUID]={entity=original},[nexus.GUID]={entity=nexus}},{exchangevariants2hm=saved})
 check(service.ready and w.PocketDimensionContainers.shadow==nexus and nexus.components.container.slots[1].prefab=='cutstone','returning to Nexus retains its distinct real inventory')
+-- A pending migration must not trust IDs carried through a failed earlier boot.
+TUNING.EXCHANGE_MODE2HM='off'
+local function pending_world(journal,other)
+    local base=pocket('log');base.prefab='shadow_container'
+    local w=world(base)
+    local s=Variants(w);s.probed=true;s.journal_legacy=journal
+    local data={exchangevariants2hm={active='hosted',migration_pending=true,banks={hosted={shadow=999}}},
+        shadowvault2hm={status='active',journal_version=4}}
+    if other then data.exchangevariants2hm.banks.classic={shadow=998}end
+    return s,w,base,data
+end
+service,w,base,saved=pending_world(true)
+local tree={prefab='evergreen',components={},IsValid=function()return true end}
+local private=pocket('rocks');private.prefab=base.prefab;private.userid='KU_offline'
+service:Restore({[999]={entity=tree},[base.GUID]={entity=base},[private.GUID]={entity=private}},saved)
+check(service.migrating and not service.ready and not service.error,'stale GUID can recover from the unfinished authoritative journal')
+check(service.banks.hosted.shadow==base and service.journal_recovery_sources[base]=='shadow','real current source stays referenced and frozen until journal validation')
+check(not service.journal_recovery_sources[tree] and not service.journal_recovery_sources[private],'ordinary entities and private offline storage are excluded')
+check(base.components.container.readonlycontainer,'candidate contents cannot change while journal fingerprints are checked')
+service,w,base,saved=pending_world(false)
+service:Restore({},saved)
+check(service.error=='missing_mechanism_container' and not service.ready,'missing journal never authorizes empty replacement or release')
+service,w,base,saved=pending_world(true,true)
+service:Restore({},saved)
+check(service.error=='missing_mechanism_container' and not service.ready,'missing independent original bank is protected even when a Nexus journal exists')
+service,w,base,saved=pending_world(true)
+saved.exchangevariants2hm.migration_pending=nil
+service:Restore({},saved)
+check(service.error=='missing_mechanism_container' and not service.ready,'manual switches do not replay a historical journal')
+service,w,base,saved=pending_world(true)
+local wrong=pocket('cutstone');wrong.prefab='other_pocket'
+service:Restore({[999]={entity=wrong},[base.GUID]={entity=base}},saved)
+check(service.journal_recovery and service.banks.hosted.shadow==base,'reused GUID of another container family is rejected')
+service,w,base,saved=pending_world(true)
+base.GUID=4321
+service:OnLoad(saved.exchangevariants2hm);service.probing=true
+service:Restore({[999]={entity=base}},saved)
+local persisted,refs=service:OnSave()
+check(persisted.banks.hosted.shadow==4321 and refs[1]==4321,'save during asynchronous startup remaps the loaded GUID and returns its native reference')
+check(service.saved.banks.hosted.shadow==999,'pending save does not mutate IDs needed by the unfinished load pass')
 print('Three-mode regression: '..n..' checks passed')

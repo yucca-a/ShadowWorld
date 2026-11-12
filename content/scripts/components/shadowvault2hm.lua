@@ -175,7 +175,11 @@ function Vault:Initialize()
         row.escrow.components.container:EnableReadOnlyContainer(true)
         if self.master and row.state == "active" then self:Reserve(name,row) end
     end
-    if self.protocol.active and not self.rows[self.protocol.active.name] then self:Fail("missing_transfer_record") end
+    -- Journal-backed worlds can omit the transient row from the world image.
+    -- Validate the durable row when loading that journal, not before it loads.
+    if self.protocol.active and not self.rows[self.protocol.active.name] and self.journal_version~=4 then
+        self:Fail("missing_transfer_record")
+    end
     Journal.Attach(self)
 end
 function Vault:LocalBase(page)
@@ -237,6 +241,11 @@ end
 function Vault:Reserve(name,row)
     local page = self.pages[row.page]
     if not valid(page) then return false end
+    if row.op=="N" then
+        -- Whole-page transfers have no item slot to reserve.
+        page.components.container:EnableReadOnlyContainer(true);page.dcs2hm=true
+        return true
+    end
     self.reserved[row.page] = self.reserved[row.page] or {}
     if row.op ~= "I" then self.reserved[row.page][row.slot] = name end
     local item=compound(row.op) and page.components.container.slots[row.slot]

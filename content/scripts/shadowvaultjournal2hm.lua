@@ -118,12 +118,17 @@ function Journal:TryRecover()
 end
 function Journal:Restore(saved)
     local v=self.v
+    local variants=v.inst and v.inst.components and v.inst.components.exchangevariants2hm
+    local recovery=variants and variants.journal_recovery_sources
     if saved.schema~=4 or type(saved.pages)~="table" or type(saved.rows)~="table" or
         type(saved.registry)~="table" or type(saved.protocol)~="table" or saved.protocol.mode~="journal" then
         return false,"invalid_vault_journal"
     end
     if saved.native and (saved.native.version~=1 or type(saved.native.owners)~="table" or type(saved.native.epochs)~="table") then
         return false,"invalid_native_page_directory"
+    end
+    if saved.protocol.active and not saved.rows[saved.protocol.active.name] then
+        return false,"missing_transfer_record"
     end
     -- Materialize every replacement before removing any saved container. A
     -- missing prefab protects the vault instead of converting it into emptiness.
@@ -148,7 +153,7 @@ function Journal:Restore(saved)
         local active=saved.protocol.active
         local transfer=active and active.name and active.name:match("^N:"..id..":")
         local existing=v.pages[id]
-        if native and world and native.owners[id]==v.id and world.owners[id]==v.id and
+        if not recovery and native and world and native.owners[id]==v.id and world.owners[id]==v.id and
             (native.epochs[id]==world.epochs[id] or native.shared and world.shared and
                 (world.epochs[id]or 0)>(native.epochs[id]or 0)) and not transfer and valid(existing) then
             staged_pages[id]=existing
@@ -178,6 +183,56 @@ function Journal:Restore(saved)
         local r=deepcopy(row);r.payload=nil;r.prefab=nil;r.escrow=e
         staged_rows[name]=r
     end
+    if recovery then
+        -- Missing GUIDs make native singleton registration ambiguous. An empty
+        -- constructor must not override a nonempty authoritative journal page.
+        -- Check every old real container before deleting any of them, including
+        -- duplicates no longer referenced by the failed world's component data.
+        local function fingerprint(payload,temperature)
+            local items=payload.items
+            if temperature then
+                items=deepcopy(items)
+                for _,record in pairs(items)do
+                    local edible=record.data and record.data.edible
+                    if edible and type(edible.chill)=="number" then edible.chill=nil end
+                end
+            end
+            return DataDumper({items=items,layout=payload.layout,metadata=payload.metadata},nil,false)
+        end
+        local known,candidates,changing,claimed={},{},{},{}
+        for _,row in pairs(saved.rows)do if row.page then changing[row.page]=true end end
+        for id,payload in pairs(saved.pages)do
+            local family=Config.Family(id);known[family]=known[family] or {}
+            known[family][fingerprint(payload)]=true
+            if saved.native and saved.native.owners[id]==v.id and not changing[id] then
+                local key=family..":"..fingerprint(payload,true)
+                -- Multiple identical pages cannot identify a particular source.
+                if candidates[key]~=nil then candidates[key]=false else candidates[key]=id end
+            end
+        end
+        for _,row in pairs(saved.rows)do
+            local family=Config.Family(row.page or "")
+            if row.payload then
+                known[family]=known[family] or {};known[family][fingerprint(row.payload)]=true
+            end
+        end
+        for entity,family in pairs(recovery)do
+            if valid(entity) and next(entity.components.container.slots) then
+                local payload=require("shadowvaultnative2hm").ExportPage(v,entity)
+                local page=payload and candidates[family..":"..fingerprint(payload,true)]
+                if page and not claimed[page] then
+                    -- Native edible temperature can differ from the last journal
+                    -- checkpoint. Keep the actual source and all its current data;
+                    -- never erase that difference or manufacture another item.
+                    local staged=staged_pages[page]
+                    if staged~=entity and not is_native(staged) then clear(staged)end
+                    staged_pages[page]=entity;retained[entity]=true;claimed[page]=true
+                elseif not payload or not (known[family] and known[family][fingerprint(payload)]) then
+                    discard();return false,"migration_source_conflict"
+                end
+            end
+        end
+    end
     local tacklepage=Config.TacklePage(v.id)
     local localpages={}
     for family in pairs(v.native_bases or {}) do localpages[#localpages+1]=Config.Page(v.id,family) end
@@ -197,7 +252,7 @@ function Journal:Restore(saved)
                     local proxy=entity.components.container_proxy
                     if proxy and proxy:GetMaster()==base then proxy:SetMaster(replacement) end
                 end
-                clear(base)
+                if not retained[base] then clear(base)end
             end
         elseif v.master and valid(base) and (payload or id==v.id or id==tacklepage) then
             -- Unrecorded extra pockets have not entered journal custody yet.
@@ -264,6 +319,21 @@ function Journal:Restore(saved)
     v.reserved={}
     for name,row in pairs(v.rows) do if v.master and row.state=="active" then v:Reserve(name,row) end end
     for id,page in pairs(v.pages) do v:GuardPage(id,page);page.components.container:EnableReadOnlyContainer(true) end
+    if recovery then
+        for entity,family in pairs(recovery)do
+            local replacement=v.native_bases[family]
+            if valid(entity) and entity~=replacement and not retained[entity] then
+                for _,entrance in pairs(Ents)do
+                    local p=entrance.components.container_proxy
+                    if p and p:GetMaster()==entity then p:SetMaster(replacement)end
+                end
+                clear(entity)
+            end
+        end
+        variants.banks.hosted={}
+        for family,entity in pairs(v.native_bases)do variants.banks.hosted[family]=entity end
+        variants.journal_recovery_sources=nil
+    end
     return true
 end
 function Journal.Attach(v)

@@ -1,0 +1,144 @@
+{
+  "date": "2026-11-12",
+  "publication": "Published in 2.8.15.0.29 on 2026-11-12; workshop package and public notes verified.",
+  "crash_log": {
+    "path": "D:/Users/Yucca/Downloads/client_log.txt",
+    "sha256": "74d1eadc430cbd83fbc564075e4d65b7b23f32e483fc8e6867d25f1181d9d2e4",
+    "finding": "Native crash after DoRestart, world/player serialization and lobby removal. No Lua exception or stack identifying this mod. Attribution unresolved; no crash-specific change."
+  },
+  "equipment": {
+    "head": {
+      "passed": true,
+      "variant": "full",
+      "slot": "head",
+      "summary": "[00:00:49]: [EQUIP_SLOT_TEST] RESULT\tcases=40\tchecks=486995\tfailures=0\tPATCHED\t",
+      "result_path": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-equip-slot-full-head-za3i10jx\\result.json",
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-equip-slot-full-head-za3i10jx\\native.log"
+    },
+    "body": {
+      "passed": true,
+      "variant": "full",
+      "slot": "body",
+      "summary": "[00:00:50]: [EQUIP_SLOT_TEST] RESULT\tcases=41\tchecks=487001\tfailures=0\tPATCHED\t",
+      "result_path": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-equip-slot-full-body-ue5bizpe\\result.json",
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-equip-slot-full-body-ue5bizpe\\native.log"
+    },
+    "hands": {
+      "passed": true,
+      "variant": "full",
+      "slot": "hands",
+      "summary": "[00:00:49]: [EQUIP_SLOT_TEST] RESULT\tcases=40\tchecks=486995\tfailures=0\tPATCHED\t",
+      "result_path": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-equip-slot-full-hands-_2yhuf1u\\result.json",
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-equip-slot-full-hands-_2yhuf1u\\native.log"
+    },
+    "before_head": {
+      "passed": false,
+      "variant": "patch",
+      "slot": "head",
+      "summary": "[00:00:42]: [EQUIP_SLOT_TEST] RESULT\tcases=40\tchecks=342019\tfailures=16\tPATCHED\t",
+      "result_path": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-equip-slot-patch-head-vy9_5kd6\\result.json",
+      "log": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-equip-slot-patch-head-vy9_5kd6\\native.log",
+      "expected_failure": true,
+      "failed_cases": [
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tFAIL\tempty_hands_selected_slot_swap\t[string \"../mods/EquipSlotProbe/equip_slot_fixture.l...\"]:12: old hand goes to selected slot 2\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tFAIL\tduplicate_equip\t[string \"../mods/EquipSlotProbe/equip_slot_fixture.l...\"]:12: duplicate request succeeds without replay\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tFAIL\tfull_inventory\t[string \"../mods/EquipSlotProbe/equip_slot_fixture.l...\"]:12: full inventory swaps safely\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tFAIL\tlate_equip_action\t[string \"../mods/EquipSlotProbe/equip_slot_fixture.l...\"]:12: validated next action works\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tFAIL\tsave_reload_selected_swap_all_15_slots\t[string \"../mods/EquipSlotProbe/equip_slot_fixture.l...\"]:12: reloaded equipment enters selected slot 2\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tFAIL\toccupied_return_slot_uses_selected_slot\t[string \"../mods/EquipSlotProbe/equip_slot_fixture.l...\"]:12: weapon returns to newly vacated selected slot\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tFAIL\tlegacy_fixed_slot_field_ignored\t[string \"../mods/EquipSlotProbe/equip_slot_fixture.l...\"]:12: legacy equipped item uses selected slot rather than first empty\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tFAIL\tsource_not_persisted_or_locked\t[string \"../mods/EquipSlotProbe/equip_slot_fixture.l...\"]:12: manual relocation does not lock outgoing position\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tFAIL\tkeyboard_all_pairs_false_false\t[string \"../mods/EquipSlotProbe/equip_slot_fixture.l...\"]:12: selected-slot exchange layout at 1\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tFAIL\tkeyboard_all_pairs_false_true\t[string \"../mods/EquipSlotProbe/equip_slot_fixture.l...\"]:12: selected-slot exchange layout at 2\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tFAIL\tkeyboard_all_pairs_true_false\t[string \"../mods/EquipSlotProbe/equip_slot_fixture.l...\"]:12: selected-slot exchange layout at 1\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tFAIL\trightclick_all_pairs_false_false\t[string \"../mods/EquipSlotProbe/equip_slot_fixture.l...\"]:12: selected-slot exchange layout at 1\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tFAIL\trightclick_all_pairs_false_true\t[string \"../mods/EquipSlotProbe/equip_slot_fixture.l...\"]:12: selected-slot exchange layout at 2\t",
+        "[00:00:17]: [EQUIP_SLOT_TEST]\tFAIL\trightclick_all_pairs_true_false\t[string \"../mods/EquipSlotProbe/equip_slot_fixture.l...\"]:12: selected-slot exchange layout at 1\t",
+        "[00:00:18]: [EQUIP_SLOT_TEST]\tFAIL\tkeyboard_occupied_history_all_pairs\t[string \"../mods/EquipSlotProbe/equip_slot_fixture.l...\"]:12: selected-slot exchange layout at 2\t",
+        "[00:00:18]: [EQUIP_SLOT_TEST]\tFAIL\trightclick_occupied_history_all_pairs\t[string \"../mods/EquipSlotProbe/equip_slot_fixture.l...\"]:12: selected-slot exchange layout at 2\t"
+      ]
+    }
+  },
+  "moonstorm": {
+    "result_path": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-awk9vcoz\\moonstorm-goggles-result.json",
+    "result": {
+      "checks": 27,
+      "limitation": "Real entities and native callbacks; storm state is injected on this test player, not a generated storm area.",
+      "kind": "moonstorm_goggles",
+      "passed": true,
+      "cases": [
+        {
+          "name": "prepare_real_helm_tool",
+          "passed": true
+        },
+        {
+          "name": "outside_protection",
+          "passed": true
+        },
+        {
+          "name": "enter_storm_keep_helm",
+          "passed": true
+        },
+        {
+          "name": "take_tool_while_wearing_in_storm",
+          "passed": true
+        },
+        {
+          "name": "equip_ordinary_inside_storm",
+          "passed": true
+        },
+        {
+          "name": "dedicated_moon_goggles",
+          "passed": true
+        },
+        {
+          "name": "brightshade_moon_protection",
+          "passed": true
+        },
+        {
+          "name": "remove_brightshade_restores_penalty",
+          "passed": true
+        },
+        {
+          "name": "swap_brightshade_to_ordinary",
+          "passed": true
+        },
+        {
+          "name": "ordinary_after_brightshade",
+          "passed": true
+        },
+        {
+          "name": "leave_storm_restore",
+          "passed": true
+        }
+      ]
+    },
+    "headless_checks": 43,
+    "before_source_headless_checks": 43,
+    "production_change": false
+  },
+  "compile": {
+    "production_lua_files": 432,
+    "native_fixtures": 4,
+    "passed": true
+  },
+  "manifest": {
+    "indexed_files": 502,
+    "passed": true
+  },
+  "source_sha256": {
+    "content/common/equip_slot_fix.lua": "0056c647ea3493500f24a4ec0417d38c27e1b3090a693865710e99a5f5d226ed",
+    "content/weather/moonisland.lua": "cc8bee1f401541fbbdf75b7322a7d402ddcb4548af89b929422f7c6d80a806a2"
+  },
+  "limitations": [
+    "Offline disposable servers, real entities/actions/components.",
+    "Input methods are native code executed in a headless UI shell; queued RPCs do not reproduce real client prediction/network.",
+    "Storm state injected on test player; no generated storm area or rendered-client inspection."
+  ],
+  "corrected_test_assumptions": [
+    "Initial test helper attempted to read mod-environment variables as globals; corrected by passing the slot explicitly to require helpers.",
+    "Initial brightshade mock omitted its native goggles tag. Actual hats.lua and real prefab disproved this; unnecessary vision change reverted."
+  ],
+  "published_version": "2.8.15.0.29",
+  "release_record": "development/releases/v2.8.15.0.29-publication.json"
+}

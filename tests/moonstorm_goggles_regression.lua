@@ -25,14 +25,14 @@ local Vision=load(vision_source)
 local Watcher=load(watcher_source)
 local nativeoverlay=load(overlay_source)
 for _,mode in ipairs({'server','client'})do
- local hooks,players,widgets={},{},{}
+ local hooks,players,widgets,prefabs={},{},{},{}
  TheWorld={ismastersim=mode=='server',net={components={}},state={}}
  TheNet={IsDedicated=function()return mode=='server'end}
  GetModConfigData=function()return true end
  AddComponentPostInit=function(name,fn)hooks[name]=fn end
  AddPlayerPostInit=function(fn)players[#players+1]=fn end
  AddClassPostConstruct=function(path,fn)widgets[path]=fn end
- AddPrefabPostInit=function()end
+ AddPrefabPostInit=function(name,fn)prefabs[name]=fn end
  load(patch_source)
  local p=entity();local storm=STORM_TYPES.NONE;local head
  local inventory={GetEquippedItem=function()return head end,Unequip=function()error('moonstorm must not unequip the hat')end,
@@ -53,8 +53,10 @@ for _,mode in ipairs({'server','client'})do
     dust={SetEffect=function(self,e)self.effect=e end},UpdateAlphaRangeShaderUniforms=function()end}
   nativeoverlay(overlay,p);widgets['widgets/moonstormover'](overlay,p)
  end
- local function equip(tags)
-  head={prefab='antlionhat',tags=tags,components={},tool={}}
+ local function equip(tags,prefab)
+  head={prefab=prefab or 'antlionhat',tags=tags,components={},tool={}}
+  function head:AddTag(tag)self.tags[tag]=true end
+  if prefabs[head.prefab]then prefabs[head.prefab](head)end
   p:PushEvent('equip');p:RunTasks()
  end
  local function refresh()
@@ -76,6 +78,17 @@ for _,mode in ipairs({'server','client'})do
  refresh()
  check(v:HasGoggleVision()and p.speed==nil,'dedicated and upgraded moon goggles still protect')
  if overlay then check(overlay.blind==0 and overlay.dust.effect=='shaders/moonstorm_goggles.ksh','moon goggles enable native protection shader')end
+ equip({goggles=true},'lunarplanthat')
+ check(head.tags.moonstormgoggles and head.tags.goggles and v.gogglevision,'brightshade combines native goggles with moonstorm tag hook')
+ check(v:HasGoggleVision(),'brightshade helm protects inside moonstorm')
+ if mode=='server'then check(p.speed==nil,'brightshade equip clears moonstorm slowing')end
+ if overlay then check(overlay.blind==0 and overlay.dust.effect=='shaders/moonstorm_goggles.ksh','brightshade equip enables moonstorm protection overlay')end
+ storm=STORM_TYPES.NONE;refresh();check(v:HasGoggleVision(),'brightshade retains native goggles outside moonstorms')
+ storm=STORM_TYPES.MOONSTORM;refresh()
+ check(v:HasGoggleVision()and p.speed==nil,'entering moonstorm in brightshade restores protection')
+ head=nil;p:PushEvent('unequip');p:RunTasks();refresh()
+ check(not v:HasGoggleVision()and p.speed==.3,'removing brightshade restores moonstorm penalty')
+ if overlay then check(overlay.blind==1 and overlay.dust.effect=='shaders/moonstorm.ksh','removing brightshade restores moonstorm overlay')end
  equip({goggles=true})
  if mode=='server'then check(p.speed==.3,'switching back to ordinary goggles immediately restores storm penalty')end
  if overlay then check(overlay.blind==1,'switching back to ordinary goggles immediately restores native blind')end

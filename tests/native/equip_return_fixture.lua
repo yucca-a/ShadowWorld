@@ -1,4 +1,5 @@
-return function(run, check)
+return function(run, check, equip_slot)
+    local EQUIP_TEST_SLOT = equip_slot or EQUIPSLOTS.HANDS
     run("save_reload_selected_swap_all_15_slots", function(p, inv, a, b, spawn)
         for slot = 1, 15 do
             inv:RemoveItem(a, true)
@@ -12,7 +13,7 @@ return function(run, check)
             restored.components.inventory:DropEverything()
             restored.components.inventory:OnLoad(data, {})
             local loaded = restored.components.inventory
-            local held = loaded:GetEquippedItem(EQUIPSLOTS.HANDS)
+            local held = loaded:GetEquippedItem(EQUIP_TEST_SLOT)
             check(held ~= nil, "equipment restored")
             loaded:Equip(loaded:GetItemInSlot(target))
             check(loaded:GetItemInSlot(target) == held and loaded:GetItemInSlot(slot) == nil, "reloaded equipment enters selected slot " .. target)
@@ -46,7 +47,7 @@ return function(run, check)
         local restored = spawn("wilson").components.inventory
         restored:DropEverything()
         restored:OnLoad(data, {})
-        local held = restored:GetEquippedItem(EQUIPSLOTS.HANDS)
+        local held = restored:GetEquippedItem(EQUIP_TEST_SLOT)
         restored:Equip(restored:GetItemInSlot(12))
         check(restored:GetItemInSlot(12) == held, "legacy equipped item uses selected slot rather than first empty")
     end)

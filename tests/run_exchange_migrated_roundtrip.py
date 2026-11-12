@@ -11,6 +11,7 @@ for i,n in enumerate(c.names):
  configs[n]=(a.seed/n/'modoverrides.lua').read_text(encoding='utf-8')
  for mod in re.findall(r'workshop-\d+',configs[n]):
   source=Path('D:/SteamLibrary/steamapps/workshop/content/322330')/mod[9:];dest=c.runtime/'mods'/mod
+  if not source.is_dir():source=ROOT/'work/newconstant-research/steamcmd/steamapps/workshop/content/322330'/mod[9:]
   if source.is_dir()and not dest.exists():_winapi.CreateJunction(str(source),str(dest))
  oldid=re.search(r'^id\s*=\s*(\d+)',(a.seed/n/'server.ini').read_text(),re.M)[1]
  f=c.cluster/n/'server.ini';t=re.sub(r'^id = \d+','id = '+oldid,f.read_text(),flags=re.M)

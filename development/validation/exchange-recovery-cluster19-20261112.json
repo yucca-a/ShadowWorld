@@ -1,0 +1,76 @@
+{
+  "date": "2026-11-12",
+  "archive": "D:\\Users\\Yucca\\Downloads\\Cluster_19_已修复_20261112.zip",
+  "input_sha256": "5e9870b463910090a1083611dc88fbece78427bd44e4cb06dbbc090bd8ee9ba5",
+  "output_sha256": "8b23db105fd3dfcb265b2dc5bedec734e14e7716ca046087894aacb68ad9cf59",
+  "input_unchanged": true,
+  "original_zip_entries_unchanged": 299,
+  "added_files": [
+    "Master/save/session/5A817008AD57A272/0000001530",
+    "Master/save/session/5A817008AD57A272/0000001530.meta",
+    "Caves/save/session/515115A1E1B6BD7C/0000001530",
+    "Caves/save/session/515115A1E1B6BD7C/0000001530.meta"
+  ],
+  "mod_metadata_matches_original": true,
+  "no_test_players_or_mod_aliases": true,
+  "item_conservation": {
+    "Master/shadow_container": {
+      "occupied_slots": 1,
+      "count": 1
+    },
+    "Master/tacklestation2hm": {
+      "occupied_slots": 18,
+      "count": 165
+    },
+    "Caves/tacklestation2hm": {
+      "occupied_slots": 16,
+      "count": 107
+    }
+  },
+  "full_item_record_comparison": "All item records match except one native edible temperature cache field; real current item retained.",
+  "world_time_advance_seconds": {
+    "Master": 8.0665435791,
+    "Caves": 6.1999053955
+  },
+  "world_cycles_unchanged": true,
+  "reports": {
+    "migration": {
+      "status": "passed",
+      "path": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-v0zpwtin\\archive-zip-report.json"
+    },
+    "old_release_repaired_zip": {
+      "status": "passed",
+      "path": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-p4ret5ga\\archive-zip-report.json"
+    },
+    "explicit_mode_roundtrip": {
+      "status": "passed",
+      "path": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-5511m9rt\\migrated-mode-roundtrip.json"
+    }
+  },
+  "regressions": {
+    "exchange_variants": 58,
+    "vault_journal_custody": 37,
+    "xianyu_to_original": 43,
+    "base_protocol": 518,
+    "item_adapter": 86
+  },
+  "production_lua_compilation": {
+    "files": 432,
+    "passed": true
+  },
+  "manifest_indexed_files": 502,
+  "source_sha256": {
+    "content/easy_other/exchangemodes2hm.lua": "941be967d51996c4441ca69a4191a739ec56ef3cb3d992ddcd832d509d4b4a79",
+    "content/scripts/components/exchangevariants2hm.lua": "a3b851f95a52155f56a88338350a611fd444d0a435dfa45c6aec2c54688cda50",
+    "content/scripts/components/shadowvault2hm.lua": "7faf3d93baa7a0efb27c6c81217c47c26693000ab7957e1deaa36db89f57ea8e",
+    "content/scripts/shadowvaultjournal2hm.lua": "105fac8d95c0b2f9e10eb224d3b8102339f1f671342e7d2eee0793925adce180"
+  },
+  "publication": "Published in 2.8.15.0.29 on 2026-11-12; workshop package and public notes verified.",
+  "limitations": [
+    "Offline disposable dedicated servers; no rendered-client or physical mouse validation.",
+    "Original player profiles and historical files are retained byte-for-byte in delivered ZIP.",
+    "Unknown or ambiguous source differences remain protected; no timeout-based forced unlock."
+  ],
+  "published_version": "2.8.15.0.29",
+  "release_record": "development/releases/v2.8.15.0.29-publication.json"
+}

@@ -27,7 +27,14 @@ AddComponentPostInit("container",function(c)
         if variants and not variants.ready and self.inst:HasTag("pocketdimension_container") and
             not (type(self.inst.userid)=="string" and self.inst.userid~="") then
             if player and player.components.talker then
-                player.components.talker:Say(TUNING.isCh2hm and "正在恢复并迁移旧空间，请稍候。" or "Restoring and migrating old storage. Please wait.")
+                local vault=TheWorld.components.shadowvault2hm
+                local failed=variants.error or vault and (vault.error or vault.journal and vault.journal.error)
+                if failed then
+                    player.components.talker:Say(TUNING.isCh2hm and "旧空间恢复遇到数据异常，已保留原物品并暂停迁移。" or
+                        "Old storage recovery is paused due to a data conflict. The original items are preserved.")
+                else
+                    player.components.talker:Say(TUNING.isCh2hm and "正在恢复并迁移旧空间，请稍候。" or "Restoring and migrating old storage. Please wait.")
+                end
             end
             return false
         end

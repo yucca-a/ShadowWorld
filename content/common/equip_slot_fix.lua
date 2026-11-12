@@ -8,18 +8,19 @@ EquipSlot.Initialize = function(...)
     return Initialize(...)
 end
 
--- 手部换装与本次选中的物品栏格交换，复用原版 Equip/GiveItem 的归位流程。
+-- 手部、头部和身体换装与本次选中的物品栏格交换，复用原版 Equip/GiveItem 的归位流程。
 -- 始终加载，不受难度或功能开关控制。
 AddComponentPostInit("inventory", function(self)
     local Equip = self.Equip
     self.Equip = function(self, item, old_to_active, ...)
         local equippable = item and item.components.equippable
-        if not (equippable and equippable.equipslot == EQUIPSLOTS.HANDS and item:IsValid()) then
+        local slot = equippable and equippable.equipslot
+        if not ((slot == EQUIPSLOTS.HANDS or slot == EQUIPSLOTS.HEAD or slot == EQUIPSLOTS.BODY) and item:IsValid()) then
             return Equip(self, item, old_to_active, ...)
         end
 
-        -- 重复的装备请求不应先移除手中的同一件物品；主动卸下仍走原版 Unequip。
-        local olditem = self:GetEquippedItem(EQUIPSLOTS.HANDS)
+        -- 重复的装备请求不应先移除已装备的同一件物品；主动卸下仍走原版 Unequip。
+        local olditem = self:GetEquippedItem(slot)
         if olditem == item then return true end
 
         local source = self:GetItemSlot(item)
@@ -31,7 +32,7 @@ AddComponentPostInit("inventory", function(self)
             olditem.prevslot, olditem.prevcontainer = source, nil
         end
         local result = Equip(self, item, old_to_active, ...)
-        if swap and self:GetEquippedItem(EQUIPSLOTS.HANDS) == olditem then
+        if swap and self:GetEquippedItem(slot) == olditem then
             -- 装备限制、禁止卸下等拒绝换装时，保留原来的元数据。
             olditem.prevslot, olditem.prevcontainer = oldslot, oldcontainer
         end

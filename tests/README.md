@@ -1,5 +1,11 @@
 # 回归测试
 
+## Cluster_19 旧空间迁移卡住（2.8.15.0.29 已发布）
+
+`python tests/run_vault_zip_recovery.py --archive <ZIP> --migration` 用隔离双层专服复现/验证旧枢纽迁移、容器打开和保存重启，支持默认地表ID及关闭穿越设置；缺少模组时不进行迁移验收。已用用户原档验证新代码自动恢复，用修复包验证未加本次补丁的2.8.15.0.28可直接加载。`python tests/run_exchange_migrated_roundtrip.py --seed <前一测试的 config/Audit>` 验证显式切到新枢纽、保存并切回原版，不重放旧日志且原版物品不变。
+
+三档回归增加坏GUID、引用到普通/其他族实体、私人空间排除、缺少日志、独立库存保护及异步保存引用重映射；独立日志回归增加真实实体复用、温度缓存保留、数量冲突、候选不唯一、耐久转移行缺失和整页锁定。分别58项、37项通过，咸鱼恢复43项及原有协议/物品/快照回归继续通过。[修复与验证记录](../development/validation/exchange-recovery-cluster19-20261112.txt)。
+
 ## 韦伯随从免疫与妥测甲削（2.8.15.0.26 已发布）
 
 `python tests/run_hattrick_armor_tests.py` 加载游戏原生护甲组件与本机妥测真实护甲重制，检查65%／75%免疫门槛、单开／正式版／关闭重制时的80%／90%规则，以及摘帽撤销、弱帽替换、10%耐久分摊和兼容标记；740项通过。实体事件、调度与状态效果方法为替身，未启动游戏。[验证记录](../development/validation/hattrick-armor-20261112.txt)。
@@ -129,6 +135,12 @@
 `python tests/run_health_cause_tests.py` 使用游戏原生命名／血量代码，对照本机原版为爽与已归档的淬炼2.8.15.0.7；需本机 `backups/releases/v2.8.15.0.7-content.zip`。108项检查覆盖取名内部拼接空名称、异常返回值、缺方法及三个血量入口，包含正常伤害和死亡原因。
 
 `python tests/run_native_health_cause.py` 在独立完整淬炼＋妥测专服生成真实无名潮湿来源，验证直接取名仍复现原生错误、经过三个血量入口的转换后不崩溃且扣血正确。只操作独立测试目录，不连接玩家世界。结果见[验证记录](../development/validation/health-cause-20261107.txt)。
+
+## 头部、身体换装及亮茄防风暴核验（2.8.15.0.29 已发布）
+
+`python tests/run_native_equip_slot_tests.py --variant full --slot head` 与 `--slot body` 复用手部的全部格位、键盘／右键、重复 RPC、连续切换、限制装备和组件保存恢复测试。旧装备进入本次选中物品腾出的格子；身体槽另核对原生背包不能入栏时仍正常落地并保留内容。`--slot hands` 检查原手部行为，默认值仍为 `hands`。可用 `--equip-patch-source <旧补丁>` 对照修复前代码。
+
+`python tests/run_moonstorm_goggles_tests.py` 使用原生视野、减速及遮罩回调，增加亮茄标签钩子，核对进出风暴、穿脱和切换。亮茄原生已有 `goggles`，淬炼已添加 `moonstormgoggles`；修改前后均通过，不需要新增防护逻辑。`--source <旧 moonisland.lua>` 可核对旧源码。`python tests/run_native_moonstorm_goggles.py` 另外用真实亮茄头盔核对防护和原生移动减速。隔离原生专服测试不代表真实客户端画面或联机网络验收；记录见 [本次验证](../development/validation/equip-moonstorm-20261112.txt)。
 
 ## 手部装备换装交换规则（2026-11-08 更新）
 
