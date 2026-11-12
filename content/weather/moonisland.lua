@@ -280,22 +280,61 @@ TUNING.LUNARHAIL_DEBRIS_KEEP_CHANCE = TUNING.LUNARHAIL_DEBRIS_KEEP_CHANCE / 2
 if GetModConfigData("moonisland") ~= -1 then
     AddPrefabPostInit("moonstorm_goggleshat", function(inst) inst:AddTag("moonstormgoggles") end)
     AddPrefabPostInit("lunarplanthat", function(inst) inst:AddTag("moonstormgoggles") end)
-    -- 月亮风暴会掉落非月亮风暴的护目镜
+    -- 月亮风暴只限制护目镜的防护效果，不卸下装备或影响其容器。
+    local function IsInMoonstorm(inst)
+        local watcher = inst.components.stormwatcher
+        if watcher then return watcher:GetCurrentStorm() == STORM_TYPES.MOONSTORM end
+        return inst.GetStormLevel ~= nil and inst:GetStormLevel(STORM_TYPES.MOONSTORM) > 0
+    end
+    AddComponentPostInit("playervision", function(self)
+        local HasGoggleVision = self.HasGoggleVision
+        self.HasGoggleVision = function(self, ...)
+            local enabled = HasGoggleVision(self, ...)
+            if enabled and not self.forcegogglevision and IsInMoonstorm(self.inst) then
+                local inventory = self.inst.replica.inventory
+                return inventory ~= nil and inventory:EquipHasTag("moonstormgoggles")
+            end
+            return enabled
+        end
+    end)
+    AddComponentPostInit("moonstormwatcher", function(self)
+        local function RefreshAfterEquip(inst)
+            -- 两顶帽子都有 goggles 时，原生 playervision 不会再次发送 gogglevision。
+            inst:DoTaskInTime(0, function()
+                if inst.components.moonstormwatcher == self then self:UpdateMoonstormWalkSpeed() end
+            end)
+        end
+        self.inst:ListenForEvent("equip", RefreshAfterEquip)
+        self.inst:ListenForEvent("unequip", RefreshAfterEquip)
+    end)
+    if not TheNet:IsDedicated() then
+        AddClassPostConstruct("widgets/moonstormover", function(self, owner)
+            local function RefreshGoggles()
+                local vision = owner and owner.components.playervision
+                local enabled = vision ~= nil and vision:HasGoggleVision()
+                self:BlindTo(enabled and 0 or 1, TheFrontEnd:GetFadeLevel() >= 1)
+                self.dust:SetEffect(enabled and "shaders/moonstorm_goggles.ksh" or "shaders/moonstorm.ksh")
+                self:UpdateAlphaRangeShaderUniforms()
+            end
+            if owner then
+                -- 原生遮罩直接使用 gogglevision 事件的原始值；按当前风暴重新判定。
+                self.inst:ListenForEvent("gogglevision", RefreshGoggles, owner)
+                self.inst:ListenForEvent("stormlevel", RefreshGoggles, owner)
+                self.inst:ListenForEvent("equip", RefreshGoggles, owner)
+                self.inst:ListenForEvent("unequip", RefreshGoggles, owner)
+                RefreshGoggles()
+            end
+        end)
+    end
     local stormvisiontext = {
-        TUNING.isCh2hm and "太多光晕了" or "Many Halo",
-        TUNING.isCh2hm and "太多沙尘了" or "Many Sand",
-        TUNING.isCh2hm and "太多雪花了" or "Many Snow"
+        [2] = TUNING.isCh2hm and "太多沙尘了" or "Many Sand",
+        [3] = TUNING.isCh2hm and "太多雪花了" or "Many Snow"
     }
     local function ongogglevision(inst, data)
         local say
         if not inst:HasTag("playerghost") and data and data.enabled and inst.components.stormwatcher and inst.components.inventory then
             if inst.components.stormwatcher:GetCurrentStorm() == STORM_TYPES.MOONSTORM then
-                local v = inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HEAD)
-                if v and v:HasTag("goggles") and not v:HasTag("moonstormgoggles") then
-                    inst.components.inventory:Unequip(EQUIPSLOTS.HEAD)
-                    inst.components.inventory:GiveItem(v)
-                    say = 1
-                end
+                return
             elseif inst.components.stormwatcher:GetCurrentStorm() == STORM_TYPES.SANDSTORM then
                 local v = inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HEAD)
 				if v and v.prefab == "scrap_monoclehat" and v:HasTag("goggles") and not v:HasTag("sandstormgoggles") then

@@ -1,0 +1,613 @@
+{
+  "date": "2026-11-11",
+  "status": "local_only_not_published",
+  "workshop_id": "3744378627",
+  "upstream_version": "1.2.1.0",
+  "client_runs": [
+    {
+      "kind": "complex",
+      "status": "passed",
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-4ox14axt\\craftpot-client-result.json",
+      "preview_cases": 6,
+      "collection": [
+        {
+          "monster": 0,
+          "remainingmonster": 7,
+          "passed": true,
+          "remainingcarrot": 0,
+          "carrot": 7,
+          "blocked": 7,
+          "kind": "collection",
+          "meat": 7,
+          "remainingmeat": 0
+        }
+      ],
+      "routing": []
+    },
+    {
+      "kind": "classic",
+      "status": "passed",
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-ud8ksexs\\craftpot-client-result.json",
+      "preview_cases": 6,
+      "collection": [
+        {
+          "monster": 0,
+          "remainingmonster": 7,
+          "passed": true,
+          "remainingcarrot": 0,
+          "carrot": 7,
+          "blocked": 7,
+          "kind": "collection",
+          "meat": 7,
+          "remainingmeat": 0
+        }
+      ],
+      "routing": [
+        {
+          "checks": [
+            {
+              "target": 1,
+              "step": 1,
+              "passed": true
+            },
+            {
+              "target": 2,
+              "step": 2,
+              "passed": true
+            },
+            {
+              "target": 3,
+              "step": 3,
+              "passed": true
+            },
+            {
+              "target": 4,
+              "step": 4,
+              "passed": true
+            },
+            {
+              "target": 5,
+              "step": 5,
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "kind": "routing",
+          "prefab": "cookpot",
+          "fullrejected": true
+        },
+        {
+          "checks": [
+            {
+              "target": 1,
+              "step": 1,
+              "passed": true
+            },
+            {
+              "target": 2,
+              "step": 2,
+              "passed": true
+            },
+            {
+              "target": 3,
+              "step": 3,
+              "passed": true
+            },
+            {
+              "target": 4,
+              "step": 4,
+              "passed": true
+            },
+            {
+              "target": 5,
+              "step": 5,
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "kind": "routing",
+          "prefab": "portablecookpot",
+          "fullrejected": true
+        },
+        {
+          "checks": [
+            {
+              "target": 1,
+              "step": 1,
+              "passed": true
+            },
+            {
+              "target": 2,
+              "step": 2,
+              "passed": true
+            },
+            {
+              "target": 3,
+              "step": 3,
+              "passed": true
+            },
+            {
+              "target": 4,
+              "step": 4,
+              "passed": true
+            },
+            {
+              "target": 5,
+              "step": 5,
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "kind": "routing",
+          "prefab": "medal_cookpot",
+          "fullrejected": true
+        },
+        {
+          "checks": [
+            {
+              "target": 1,
+              "predicted": 1,
+              "step": 1,
+              "passed": true
+            },
+            {
+              "target": 2,
+              "predicted": 2,
+              "step": 2,
+              "passed": true
+            },
+            {
+              "target": 3,
+              "predicted": 3,
+              "step": 3,
+              "passed": true
+            },
+            {
+              "target": 4,
+              "predicted": 4,
+              "step": 4,
+              "passed": true
+            },
+            {
+              "target": 5,
+              "predicted": 5,
+              "step": 5,
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "kind": "routing",
+          "prefab": "dragonflyfurnace",
+          "fullrejected": true
+        },
+        {
+          "checks": [
+            {
+              "target": 6,
+              "predicted": 6,
+              "step": 1,
+              "passed": true
+            },
+            {
+              "target": 1,
+              "predicted": 1,
+              "step": 2,
+              "passed": true
+            },
+            {
+              "target": 2,
+              "predicted": 2,
+              "step": 3,
+              "passed": true
+            },
+            {
+              "target": 3,
+              "predicted": 3,
+              "step": 4,
+              "passed": true
+            },
+            {
+              "target": 4,
+              "predicted": 4,
+              "step": 5,
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "kind": "routing",
+          "prefab": "simmeredmoonlight",
+          "fullrejected": true
+        },
+        {
+          "checks": [
+            {
+              "target": 6,
+              "predicted": 6,
+              "step": 1,
+              "passed": true
+            },
+            {
+              "target": 1,
+              "predicted": 1,
+              "step": 2,
+              "passed": true
+            },
+            {
+              "target": 2,
+              "predicted": 2,
+              "step": 3,
+              "passed": true
+            },
+            {
+              "target": 3,
+              "predicted": 3,
+              "step": 4,
+              "passed": true
+            },
+            {
+              "target": 4,
+              "predicted": 4,
+              "step": 5,
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "kind": "routing",
+          "prefab": "simmeredmoonlight_pro",
+          "fullrejected": true
+        },
+        {
+          "checks": [
+            {
+              "target": 21,
+              "predicted": 21,
+              "step": 1,
+              "passed": true
+            },
+            {
+              "target": 1,
+              "predicted": 1,
+              "step": 2,
+              "passed": true
+            },
+            {
+              "target": 2,
+              "predicted": 2,
+              "step": 3,
+              "passed": true
+            },
+            {
+              "target": 3,
+              "predicted": 3,
+              "step": 4,
+              "passed": true
+            },
+            {
+              "target": 4,
+              "predicted": 4,
+              "step": 5,
+              "passed": true
+            },
+            {
+              "target": 22,
+              "predicted": 22,
+              "step": 6,
+              "passed": true
+            },
+            {
+              "target": 6,
+              "predicted": 6,
+              "step": 7,
+              "passed": true
+            },
+            {
+              "target": 7,
+              "predicted": 7,
+              "step": 8,
+              "passed": true
+            },
+            {
+              "target": 8,
+              "predicted": 8,
+              "step": 9,
+              "passed": true
+            },
+            {
+              "target": 9,
+              "predicted": 9,
+              "step": 10,
+              "passed": true
+            },
+            {
+              "target": 23,
+              "predicted": 23,
+              "step": 11,
+              "passed": true
+            },
+            {
+              "target": 11,
+              "predicted": 11,
+              "step": 12,
+              "passed": true
+            },
+            {
+              "target": 12,
+              "predicted": 12,
+              "step": 13,
+              "passed": true
+            },
+            {
+              "target": 13,
+              "predicted": 13,
+              "step": 14,
+              "passed": true
+            },
+            {
+              "target": 14,
+              "predicted": 14,
+              "step": 15,
+              "passed": true
+            },
+            {
+              "target": 24,
+              "predicted": 24,
+              "step": 16,
+              "passed": true
+            },
+            {
+              "target": 16,
+              "predicted": 16,
+              "step": 17,
+              "passed": true
+            },
+            {
+              "target": 17,
+              "predicted": 17,
+              "step": 18,
+              "passed": true
+            },
+            {
+              "target": 18,
+              "predicted": 18,
+              "step": 19,
+              "passed": true
+            },
+            {
+              "target": 19,
+              "predicted": 19,
+              "step": 20,
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "kind": "routing",
+          "prefab": "simmeredmoonlight_inf",
+          "fullrejected": true
+        },
+        {
+          "checks": [
+            {
+              "target": 21,
+              "predicted": 21,
+              "step": 1,
+              "passed": true
+            },
+            {
+              "target": 1,
+              "predicted": 1,
+              "step": 2,
+              "passed": true
+            },
+            {
+              "target": 2,
+              "predicted": 2,
+              "step": 3,
+              "passed": true
+            },
+            {
+              "target": 3,
+              "predicted": 3,
+              "step": 4,
+              "passed": true
+            },
+            {
+              "target": 4,
+              "predicted": 4,
+              "step": 5,
+              "passed": true
+            },
+            {
+              "target": 22,
+              "predicted": 22,
+              "step": 6,
+              "passed": true
+            },
+            {
+              "target": 6,
+              "predicted": 6,
+              "step": 7,
+              "passed": true
+            },
+            {
+              "target": 7,
+              "predicted": 7,
+              "step": 8,
+              "passed": true
+            },
+            {
+              "target": 8,
+              "predicted": 8,
+              "step": 9,
+              "passed": true
+            },
+            {
+              "target": 9,
+              "predicted": 9,
+              "step": 10,
+              "passed": true
+            },
+            {
+              "target": 23,
+              "predicted": 23,
+              "step": 11,
+              "passed": true
+            },
+            {
+              "target": 11,
+              "predicted": 11,
+              "step": 12,
+              "passed": true
+            },
+            {
+              "target": 12,
+              "predicted": 12,
+              "step": 13,
+              "passed": true
+            },
+            {
+              "target": 13,
+              "predicted": 13,
+              "step": 14,
+              "passed": true
+            },
+            {
+              "target": 14,
+              "predicted": 14,
+              "step": 15,
+              "passed": true
+            },
+            {
+              "target": 24,
+              "predicted": 24,
+              "step": 16,
+              "passed": true
+            },
+            {
+              "target": 16,
+              "predicted": 16,
+              "step": 17,
+              "passed": true
+            },
+            {
+              "target": 17,
+              "predicted": 17,
+              "step": 18,
+              "passed": true
+            },
+            {
+              "target": 18,
+              "predicted": 18,
+              "step": 19,
+              "passed": true
+            },
+            {
+              "target": 19,
+              "predicted": 19,
+              "step": 20,
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "kind": "routing",
+          "prefab": "simmeredmoonlight_pro_inf",
+          "fullrejected": true
+        }
+      ]
+    },
+    {
+      "kind": "refresh",
+      "status": "passed",
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-hh9cp95l\\craftpot-client-result.json",
+      "preview_cases": 6,
+      "collection": [
+        {
+          "monster": 0,
+          "remainingmonster": 7,
+          "passed": true,
+          "remainingcarrot": 0,
+          "carrot": 7,
+          "blocked": 7,
+          "kind": "collection",
+          "meat": 7,
+          "remainingmeat": 0
+        }
+      ],
+      "routing": []
+    },
+    {
+      "kind": "bundled",
+      "status": "passed",
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-ts3oqak3\\craftpot-client-result.json",
+      "preview_cases": 6,
+      "collection": [
+        {
+          "monster": 0,
+          "remainingmonster": 7,
+          "passed": true,
+          "remainingcarrot": 0,
+          "carrot": 7,
+          "blocked": 7,
+          "kind": "collection",
+          "meat": 7,
+          "remainingmeat": 0
+        }
+      ],
+      "routing": []
+    }
+  ],
+  "native_server_runs": [
+    {
+      "edition": "solo",
+      "dynamic_stats": false,
+      "optional_patch_disabled": false,
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-five-slot-solo-1y9xkekz\\result.json",
+      "passed": true,
+      "result_lines": [
+        "[00:00:33]: [FIVE_SLOT_TEST] RESULT\tcases=18\tchecks=218\tfailures=0\t"
+      ]
+    },
+    {
+      "edition": "stable",
+      "dynamic_stats": false,
+      "optional_patch_disabled": false,
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-five-slot-stable-6jl9jijd\\result.json",
+      "passed": true,
+      "result_lines": [
+        "[00:00:36]: [FIVE_SLOT_TEST] RESULT\tcases=18\tchecks=218\tfailures=0\t"
+      ]
+    },
+    {
+      "edition": "beta",
+      "dynamic_stats": true,
+      "optional_patch_disabled": true,
+      "report": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\native-five-slot-beta-53k4yaj9\\result.json",
+      "passed": true,
+      "result_lines": [
+        "[00:00:46]: [FIVE_SLOT_TEST] RESULT\tcases=18\tchecks=229\tfailures=0\t"
+      ]
+    }
+  ],
+  "local_checks": {
+    "complex_ingredients_routing": 60,
+    "existing_cooking_preview": 44,
+    "five_slot_um_routing": 190,
+    "layout_viewports": 360,
+    "manifest_loader": 20,
+    "compiled_content_lua": 428,
+    "manifest_files": 492
+  },
+  "current_source_sha256": {
+    "common/food_util.lua": "136a17796337bbf593b8eabe0bbbd5987ef6e6ecc492dd69eeb3063433387e41",
+    "easy_other/containersort.lua": "ddc14103c4a4e37f6380d556bef3d7b1c061b0cc2c669fa67bee9f8b8859ffa7",
+    "easy_other/easy_structures.lua": "7256f4fb05eb15ba815fa7ff768f68d0ef3b3f41d1e99b33ccd31cd61ad36327",
+    "scripts/fiveslotcookers2hm.lua": "bb7b32140b9c1ac751fc5f61cebf79ee68a7cf69d70908d9a9661f3ae0318b3a",
+    "scripts/complexsmartpot2hm.lua": "3fea2259825dd74c20bdaa309628a99a5607b5d85122918dd46dcdf152cf154f",
+    "scripts/cookingredientcollect2hm.lua": "679b99a116726211edf25f77cd92ef0b87850f5d716641c770458de7b74e99eb",
+    "mod.manifest": "ec13a54ee40ed2b54cbcc646fd0cb4ade9758aec508f287752866005c2b7c3be"
+  },
+  "limitations": [
+    "Client tests invoke real widget controls and native inventory transfer RPCs; no manual mouse/screenshot acceptance.",
+    "Successful routing client used the same code before a comment and indentation cleanup.",
+    "Optional compatibility targets documented in the adjacent text record."
+  ]
+}

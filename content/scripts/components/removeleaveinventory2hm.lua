@@ -208,10 +208,19 @@ local Record = function(self)
         elseif self.inst.components.armor and self.superhat.components.armor then
             self.inst.components.armor:SetCondition(self.superhat.components.armor.maxcondition)
             self.original = self.inst.components.armor.condition
+            local armor = self.inst.components.armor
+            local nofreeze = TUNING.NoFreezePercent
+            local nofireandscare = TUNING.NoFireAndScarePercent
+            -- 妥测护甲重制将原 80%/90% 档映射为 65%/75%，仅同步戏法免疫门槛。
+            -- 检查实际组件标记，避免单开、正式版或关闭护甲重制时误降门槛。
+            if TUNING.DSTU and armor.umabsorbremap ~= nil and type(armor.UMOverrideAbsorption) == "function" then
+                nofreeze = math.min(nofreeze, 0.65)
+                nofireandscare = math.min(nofireandscare, 0.75)
+            end
             -- print("穿戴护甲 " .. tostring(self.inst.components.armor.absorb_percent))
             -- print(TUNING.NoFreezePercent)
             -- print(TUNING.NoFireAndScarePercent)
-            if self.inst.components.armor.absorb_percent and self.inst.components.armor.absorb_percent >= TUNING.NoFreezePercent then
+            if armor.absorb_percent and armor.absorb_percent >= nofreeze then
                 -- print(tostring(self.owner.components.freezable))
                 -- print(tostring(self.owner.components.sleeper))
                 if self.owner.components.freezable then
@@ -247,7 +256,7 @@ local Record = function(self)
                     self.owner.components.sleeper.setGoToSleep2hm_set = true
                 end
             end
-            if self.inst.components.armor.absorb_percent and self.inst.components.armor.absorb_percent >= TUNING.NoFireAndScarePercent then
+            if armor.absorb_percent and armor.absorb_percent >= nofireandscare then
                 self.owner:AddTag("noscare2hm")
                 if self.owner.components.health then
                     if not self.owner.components.health.setDoFireDamage2hm then

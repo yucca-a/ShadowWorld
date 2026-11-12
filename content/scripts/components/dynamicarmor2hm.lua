@@ -87,17 +87,18 @@ function DynamicArmor:UpdateFX()
     local health = self.inst.components.health
     if resistance <= 0 or not self:IsEligible() or health == nil or health:IsDead() or self.inst:IsAsleep() then
         self:RemoveFX()
-        return
+        return false
     end
     if self.fx == nil or not self.fx:IsValid() then
         self.fx = SpawnPrefab("dynamicarmor_indicator2hm")
-        if self.fx == nil then return end
+        if self.fx == nil then return true end -- Retry a temporarily unavailable effect.
         self.fx.persists = false
         self.fx.entity:SetParent(self.inst.entity)
         self.fx.Transform:SetPosition(0, 0, 0)
         self.fx:SetTarget(self.inst)
     end
     self.fx:SetResistance(resistance)
+    return true
 end
 
 function DynamicArmor:StopTask()
@@ -105,16 +106,21 @@ function DynamicArmor:StopTask()
 end
 
 function DynamicArmor:Refresh()
-    self:UpdateFX()
-    if self.pressure > 0 and self.task == nil then
-        self.task = self.inst:DoPeriodicTask(UPDATE_PERIOD, function()
-            self:UpdateFX()
-            if self.pressure <= 0 then self:StopTask() end
-        end)
-    elseif self.pressure <= 0 then
+    -- Damage/save queries already decay by elapsed game time. Below the visual
+    -- threshold there is nothing to animate, including while the boss sleeps.
+    if not self:UpdateFX() then
         self:StopTask()
+    elseif self.task == nil then
+        self.task = self.inst:DoPeriodicTask(UPDATE_PERIOD, function() self:Refresh() end)
     end
 end
+
+function DynamicArmor:OnEntitySleep()
+    self:StopTask()
+    self:RemoveFX()
+end
+
+DynamicArmor.OnEntityWake = DynamicArmor.Refresh
 
 function DynamicArmor:CalculateDamage(damage)
     local health = self.inst.components.health

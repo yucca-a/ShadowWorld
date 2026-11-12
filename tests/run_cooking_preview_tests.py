@@ -5,6 +5,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'work/test-python'))
 from lupa.lua51 import LuaRuntime
 lua=LuaRuntime(unpack_returned_tuples=True)
+lua.globals().package.path = str(ROOT/'content/scripts/?.lua').replace('\\','/')+';'+lua.globals().package.path
 load=lua.eval('function(s,n)return assert(loadstring(s,n))end')
 base=ROOT/'work/smartpot-workshop-audit/steamapps/workshop/content/322330'
 classic=(base/'727774324/scripts/widgets/foodcrafting.lua').read_text(encoding='utf-8-sig')

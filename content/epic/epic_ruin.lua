@@ -29,11 +29,25 @@ local function GetEpicRuinData(inst)
     return persistent and persistent.data.epicruin2hm
 end
 
-local function DailyDecayEpicDamage(inst)
-    if not inst.components.health then return end
-
+local DailyDecayEpicDamage
+local function RefreshDecayWatch(inst)
     local data = GetEpicRuinData(inst)
-    if not data or data.totalEpicDamage <= 0 then return end
+    local needed = inst.components.health ~= nil and data ~= nil and data.totalEpicDamage > 0
+    if needed and not inst._epicruinwatching2hm then
+        inst._epicruinwatching2hm = true
+        inst:WatchWorldState("cycles", DailyDecayEpicDamage)
+    elseif not needed and inst._epicruinwatching2hm then
+        inst._epicruinwatching2hm = nil
+        inst:StopWatchingWorldState("cycles", DailyDecayEpicDamage)
+    end
+end
+
+DailyDecayEpicDamage = function(inst)
+    local data = GetEpicRuinData(inst)
+    if not inst.components.health or not data or data.totalEpicDamage <= 0 then
+        RefreshDecayWatch(inst)
+        return
+    end
 
     local currentDay = TheWorld.state.cycles or 0
     local lastDecayDay = data.lastDecayDay or 0
@@ -46,6 +60,7 @@ local function DailyDecayEpicDamage(inst)
         data.totalEpicDamage = math.max(0, data.totalEpicDamage - decayAmount)
         data.lastDecayDay = currentDay
     end
+    RefreshDecayWatch(inst)
 end
 
 local function RecordEpicDamage(inst, damage, attacker)
@@ -60,6 +75,7 @@ local function RecordEpicDamage(inst, damage, attacker)
 
     local maxHealth = inst.components.health.maxhealth
     data.totalEpicDamage = math.min(data.totalEpicDamage + damage, maxHealth)
+    RefreshDecayWatch(inst)
 end
 
 local function CalculateReduceRatio(inst)
@@ -138,8 +154,8 @@ AddPrefabPostInitAny(function(inst)
 
         ModifyLootDropper(inst)
 
-        inst:WatchWorldState("cycles", function()
-            DailyDecayEpicDamage(inst)
-        end)
+        -- Component data has loaded by now. Untouched creatures need no daily
+        -- callback; positive records from old saves keep their original decay.
+        RefreshDecayWatch(inst)
     end)
 end)

@@ -2325,23 +2325,13 @@ if dragonflyfurnace then
         return (slot == 1 and item.prefab == "redgem") or ((slot == nil or slot > 1) and not item:HasTag("irreplaceable"))
     end
     containers.params.dragonflyfurnace.usespecificslotsforitems = true
+    require("fiveslotcookers2hm").InstallInputRouting(env)
     AddPrefabPostInit("dragonflyfurnace", function(inst)
+        require("fiveslotcookers2hm").RouteInputs(inst, function(item)
+            return item.prefab=="redgem" and {1} or {2,3,4,5}
+        end)
         if not TheWorld.ismastersim then return end
         if inst.components.container ~= nil then
-            local GetSpecificSlotForItem = inst.components.container.GetSpecificSlotForItem
-            inst.components.container.GetSpecificSlotForItem = function(self, item, ...)
-                local result = GetSpecificSlotForItem(self, item, ...)
-                if result and result >= 2 then
-                    for i = self.numslots, 2, -1 do
-                        local item = self.slots[i]
-                        if not item then return i end
-                    end
-                elseif result == 1 then
-                    local item = self.slots[1]
-                    if not item then return 1 end
-                end
-                return result
-            end
             if inst.components.incinerator then
                 InstallFurnaceCleanup(inst, inst.components.container, inst.components.incinerator)
             end

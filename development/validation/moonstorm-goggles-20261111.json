@@ -1,0 +1,46 @@
+{
+  "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-sabplfxw",
+  "result": {
+    "checks": 17,
+    "limitation": "Real entities and native callbacks; storm state is injected on this test player, not a generated storm area.",
+    "kind": "moonstorm_goggles",
+    "passed": true,
+    "cases": [
+      {
+        "name": "prepare_real_helm_tool",
+        "passed": true
+      },
+      {
+        "name": "outside_protection",
+        "passed": true
+      },
+      {
+        "name": "enter_storm_keep_helm",
+        "passed": true
+      },
+      {
+        "name": "take_tool_while_wearing_in_storm",
+        "passed": true
+      },
+      {
+        "name": "equip_ordinary_inside_storm",
+        "passed": true
+      },
+      {
+        "name": "dedicated_moon_goggles",
+        "passed": true
+      },
+      {
+        "name": "leave_storm_restore",
+        "passed": true
+      }
+    ]
+  },
+  "status": "passed",
+  "date": "2026-11-11",
+  "publication": "local_only",
+  "unit_checks": 30,
+  "nightvision_regression_checks": 423,
+  "content_lua_compiled": 428,
+  "source_sha256": "cc8bee1f401541fbbdf75b7322a7d402ddcb4548af89b929422f7c6d80a806a2"
+}

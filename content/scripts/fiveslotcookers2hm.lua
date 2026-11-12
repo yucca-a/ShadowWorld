@@ -9,9 +9,72 @@ local function RowSlots(rows, row)
     return {first + 1, first + 2, first + 3, first + 4, Extra(rows, row)}
 end
 
+-- Saved indices stay unchanged. Automatic insertion follows the visible input
+-- positions on both the predicting client and server, never an output slot.
+local function PatchInputContainer(c, order, server)
+    if not c or c.cookerinputroute2hm then return end
+    c.cookerinputroute2hm = true
+    c.usespecificslotsforitems = true
+    c.GetSpecificSlotForItem = function(self, item)
+        if (server and self.readonlycontainer) or (not server and self:IsReadOnlyContainer()) then return end
+        local slots = type(order)=="function" and order(item) or order
+        local empty
+        for _, slot in ipairs(slots) do
+            if self:CanTakeItemInSlot(item, slot) then
+                local other = self:GetItemInSlot(slot)
+                local stack = other and (server and other.components.stackable or other.replica.stackable)
+                if other and self:AcceptsStacks() and stack and not stack:IsFull() and stack:CanStackWith(item) then
+                    return slot
+                elseif not other and not empty then
+                    empty = slot
+                end
+            end
+        end
+        -- nil would let GiveItem merge into every slot, including outputs.
+        -- The prediction wrapper below rejects this sentinel before indexing.
+        return empty or self:GetNumSlots()+1
+    end
+    if server then
+        local give = c.GiveItem
+        c.GiveItem = function(self, item, slot, ...)
+            return give(self, item, slot or (item and self:GetSpecificSlotForItem(item)), ...)
+        end
+    end
+end
+
+function M.RouteInputs(inst, order)
+    inst.cookerinputorder2hm = order
+    PatchInputContainer(inst.replica and inst.replica.container, order, false)
+    PatchInputContainer(inst.components and inst.components.container, order, true)
+end
+
+local routinginstalled
+function M.InstallInputRouting(api)
+    if routinginstalled then return end
+    routinginstalled = true
+    -- Client replicas can be created after the prefab's post-init callback.
+    api.AddClassPostConstruct("components/container_replica", function(c)
+        local order = c.inst.cookerinputorder2hm
+        if order then PatchInputContainer(c, order, false) end
+    end)
+    api.AddPrefabPostInit("container_classified", function(inst)
+        local receive = inst.ReceiveItem
+        if not receive then return end -- server has no prediction interface
+        inst.ReceiveItem = function(self, item, count, slot, ...)
+            local c = self._parent and self._parent.replica.container
+            if not slot and c and c.cookerinputroute2hm then
+                slot = c:GetSpecificSlotForItem(item)
+                if not slot or slot<1 or slot>c:GetNumSlots() then return end
+            end
+            return receive(self, item, count, slot, ...)
+        end
+    end)
+end
+
 function M.Install(api, cooking, needfuel, refuel)
     if cooking.fiveslotcookers2hm then return end
     cooking.fiveslotcookers2hm = true
+    M.InstallInputRouting(api)
     local containers = require("containers")
     local function BuildRow(items, rows, row)
         local ingredients, names, dishes, spices = {}, {}, {}, {}
@@ -35,6 +98,7 @@ function M.Install(api, cooking, needfuel, refuel)
         local data = api.deepcopy(original)
         containers.params[name] = data
         local widget = data.widget
+        data.usespecificslotsforitems = true
         for row=1,rows do
             local first = widget.slotpos[(row - 1) * 5 + 1]
             widget.slotpos[Extra(rows, row)] = api.Vector3(first.x - 75, first.y, first.z)
@@ -242,6 +306,12 @@ function M.Install(api, cooking, needfuel, refuel)
         if rows then
             inst.fiveslotrows2hm = rows
             needfuel(inst)
+            local order = {}
+            for row=1,rows do
+                order[#order+1] = Extra(rows, row) -- new leftmost ingredient
+                for column=1,4 do order[#order+1] = (row-1)*5+column end
+            end
+            M.RouteInputs(inst, order)
         end
         if not api.TheWorld.ismastersim then return end
         if rows and inst.components.moonsimmered then PatchMoon(inst.components.moonsimmered) end

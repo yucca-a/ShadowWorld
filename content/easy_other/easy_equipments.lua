@@ -5071,7 +5071,7 @@ local function enhance_ruinshat(inst)
             return oldTakeDamage(self, damage_amount)
         end
     end
-    -- 装备期间每次挨打回1血(周期任务维护owner监听, 兼容重进游戏)
+    -- 装备事件维护监听；未装备的强化头盔不再周期检查持有者。
     if not inst._ancient_hat_heal_task then
         inst._ancient_hat_heal_task = true
         local function onhatattacked(owner, data)
@@ -5081,20 +5081,23 @@ local function enhance_ruinshat(inst)
             end
         end
         inst._ancient_hat_onattacked = onhatattacked
-        inst:DoPeriodicTask(2, function(inst)
-            if not inst:IsValid() then return end
+        local function refreshowner(inst)
             local owner = inst.components.inventoryitem and inst.components.inventoryitem.owner
-            if owner and owner:IsValid() and inst.components.equippable and inst.components.equippable:IsEquipped() then
-                if inst._ancient_hat_owner ~= owner then
-                    if inst._ancient_hat_owner then inst._ancient_hat_owner:RemoveEventCallback("attacked", inst._ancient_hat_onattacked) end
-                    inst._ancient_hat_owner = owner
-                    owner:ListenForEvent("attacked", inst._ancient_hat_onattacked)
-                end
-            elseif inst._ancient_hat_owner then
-                inst._ancient_hat_owner:RemoveEventCallback("attacked", inst._ancient_hat_onattacked)
-                inst._ancient_hat_owner = nil
+            if not (owner and owner:IsValid() and inst.components.equippable and inst.components.equippable:IsEquipped()) then owner = nil end
+            if inst._ancient_hat_owner == owner then return end
+            if inst._ancient_hat_owner then
+                inst:RemoveEventCallback("attacked", onhatattacked, inst._ancient_hat_owner)
             end
-        end)
+            inst._ancient_hat_owner = owner
+            -- The item owns this subscription, so removal also cleans it up.
+            if owner then inst:ListenForEvent("attacked", onhatattacked, owner) end
+        end
+        inst:ListenForEvent("equipped", refreshowner)
+        inst:ListenForEvent("unequipped", refreshowner)
+        inst:ListenForEvent("onputininventory", refreshowner)
+        inst:ListenForEvent("ondropped", refreshowner)
+        refreshowner(inst)
+        inst:DoTaskInTime(0, refreshowner) -- Saved equipment may be restored later.
     end
 end
 
@@ -5178,6 +5181,135 @@ end)
 
 -- 魔光护符(yellowamulet)强化: 放背包也生效(照明+20%移速+回理智), 检查护符切换开关(与视野扩展器同款交互)
 -- 开关默认开(nil视为开), 检查护符时在开/关间切换; 装备时仍用原版效果, 未装备(背包)时生效
+local RefreshAncientMagi2hm
+local function QueueAncientMagi2hm(inst)
+    if inst._ancient_magi_refresh_task or not inst:IsValid() then return end
+    inst._ancient_magi_refresh_task = inst:DoTaskInTime(0, function(inst)
+        inst._ancient_magi_refresh_task = nil
+        RefreshAncientMagi2hm(inst, false, true)
+    end)
+end
+
+local function SetAncientMagiSpeed2hm(inst, owner)
+    local previous = inst._ancient_magi_speed_owner
+    if previous ~= owner then
+        local sources = previous and previous._ancient_magi_sources2hm
+        if sources then
+            sources[inst] = nil
+            if next(sources) == nil then
+                if previous:IsValid() and previous.components.playerspeedmult then
+                    previous.components.playerspeedmult:RemoveCappedPredictedSpeedMult("ancient_magi2hm")
+                end
+                previous._ancient_magi_sources2hm = nil
+                previous._ancient_magi_speed_component2hm = nil
+            end
+        end
+        inst._ancient_magi_speed_owner = owner
+    end
+    if owner then
+        owner._ancient_magi_sources2hm = owner._ancient_magi_sources2hm or {}
+        owner._ancient_magi_sources2hm[inst] = true
+        local speed = owner.components.playerspeedmult
+        if speed and owner._ancient_magi_speed_component2hm ~= speed then
+            speed:SetCappedPredictedSpeedMult("ancient_magi2hm", 1.2)
+            owner._ancient_magi_speed_component2hm = speed
+        end
+    end
+end
+
+local function ClearAncientMagi2hm(inst)
+    if inst._ancient_magi_light and inst._ancient_magi_light:IsValid() then inst._ancient_magi_light:Remove() end
+    inst._ancient_magi_light = nil
+    inst._ancient_magi_light_owner = nil
+    SetAncientMagiSpeed2hm(inst, nil)
+end
+
+local ANCIENT_MAGI_OWNER_EVENTS2HM = {"onputininventory", "ondropped", "onremove", "death", "ms_respawnedfromghost"}
+local function WatchAncientMagiOwners2hm(inst)
+    for _, watch in ipairs(inst._ancient_magi_watches or {}) do
+        inst:RemoveEventCallback(watch.event, watch.fn, watch.source)
+    end
+    local watches, seen = {}, {[inst] = true}
+    inst._ancient_magi_watches = watches
+    if not inst._ancient_magi_ownerchanged then
+        inst._ancient_magi_ownerchanged = function() QueueAncientMagi2hm(inst) end
+    end
+    local child = inst
+    local function watch(source, event, fn)
+        watches[#watches + 1] = {source = source, event = event, fn = fn}
+        inst:ListenForEvent(event, fn, source)
+    end
+    while child.components.inventoryitem do
+        local owner = child.components.inventoryitem.owner
+        if not owner or not owner:IsValid() or seen[owner] then break end
+        seen[owner] = true
+        local item = child
+        local function moved(_, data)
+            if data and (data.item == item or data.prev_item == item) then QueueAncientMagi2hm(inst) end
+        end
+        watch(owner, "itemget", moved)
+        watch(owner, "itemlose", moved)
+        for _, event in ipairs(ANCIENT_MAGI_OWNER_EVENTS2HM) do
+            watch(owner, event, inst._ancient_magi_ownerchanged)
+        end
+        child = owner
+    end
+end
+
+local function TickAncientMagi2hm(inst) RefreshAncientMagi2hm(inst, true) end
+
+RefreshAncientMagi2hm = function(inst, tick, rebind)
+    if not inst:IsValid() then return end
+    if rebind then WatchAncientMagiOwners2hm(inst) end
+    local owner = inst.components.inventoryitem and inst.components.inventoryitem:GetGrandOwner()
+    local equipped = inst.components.equippable and inst.components.equippable:IsEquipped()
+    local fueled = inst.components.fueled
+    local enhanced = inst:HasTag(ANCIENT_ENHANCE_TAG)
+    local active = enhanced and inst._ancient_magi_on2hm ~= false and owner and owner:IsValid() and
+        owner:HasTag("player") and not equipped and owner.components.health and not owner.components.health:IsDead() and
+        not (fueled and fueled:IsEmpty())
+    if active then
+        if not inst._ancient_magi_light or not inst._ancient_magi_light:IsValid() or inst._ancient_magi_light_owner ~= owner then
+            ClearAncientMagi2hm(inst)
+            local light = SpawnPrefab("minerhatlight")
+            if light then
+                light.entity:SetParent(owner.entity)
+                light.Light:SetRadius(4)
+                light.Light:SetIntensity(0.7)
+                light.Light:SetFalloff(0.5)
+                light.Light:SetColour(0.65, 0.75, 1)
+                light.Light:Enable(true)
+                inst._ancient_magi_light = light
+                inst._ancient_magi_light_owner = owner
+            end
+        end
+        SetAncientMagiSpeed2hm(inst, owner)
+        if tick and owner.components.sanity then owner.components.sanity:DoDelta(1 / 60) end
+    else
+        ClearAncientMagi2hm(inst)
+    end
+    if fueled and enhanced then
+        local want = not equipped and active or false
+        if equipped then want = nil end -- Native equip callbacks own fuel use.
+        if inst._ancient_magi_fuel_state ~= want or (want ~= nil and fueled.consuming ~= want) then
+            inst._ancient_magi_fuel_state = want
+            if want == true then fueled:StartConsuming()
+            elseif want == false then fueled:StopConsuming() end
+        end
+    end
+    -- Ground/chest recharge is intentional too. Only idle, full or nighttime
+    -- items can stop ticking; world/fuel/ownership events start them again.
+    local solar = enhanced and fueled and not equipped and TheWorld.state.isday and not TheWorld:HasTag("cave") and fueled:GetPercent() < 1
+    if tick and solar then fueled:DoDelta(0.5) end
+    solar = solar and fueled:GetPercent() < 1
+    if active or solar then
+        if not inst._ancient_magi_task then inst._ancient_magi_task = inst:DoPeriodicTask(0.5, TickAncientMagi2hm) end
+    elseif inst._ancient_magi_task then
+        inst._ancient_magi_task:Cancel()
+        inst._ancient_magi_task = nil
+    end
+end
+
 local function enhance_yellowamulet(inst)
     if not TheWorld.ismastersim then return end
     if not inst._ancient_magi_inspect_hooked then
@@ -5190,21 +5322,18 @@ local function enhance_yellowamulet(inst)
                 self.inst._ancient_magi_on2hm = not self.inst._ancient_magi_on2hm
                 local state = self.inst._ancient_magi_on2hm and (TUNING.isCh2hm and "开" or "ON") or (TUNING.isCh2hm and "关" or "OFF")
                 desc = (desc or "") .. (TUNING.isCh2hm and ("\n" .. "魔光生效: " .. state) or ("\n" .. "Pocket active: " .. state))
+                QueueAncientMagi2hm(inst)
             end
             return desc, filter_context, author
         end
         -- 护符删除时清理挂载的光源与移速
         inst:ListenForEvent("onremove", function()
-            if inst._ancient_magi_light and inst._ancient_magi_light:IsValid() then inst._ancient_magi_light:Remove() end
-            inst._ancient_magi_light = nil
-            if inst._ancient_magi_speed_owner and inst._ancient_magi_speed_owner:IsValid() and
-                inst._ancient_magi_speed_owner.components.playerspeedmult then
-                inst._ancient_magi_speed_owner.components.playerspeedmult:RemoveCappedPredictedSpeedMult("ancient_magi2hm")
-            end
-            inst._ancient_magi_speed_owner = nil
+            ClearAncientMagi2hm(inst)
+            if inst._ancient_magi_task then inst._ancient_magi_task:Cancel(); inst._ancient_magi_task = nil end
+            if inst._ancient_magi_refresh_task then inst._ancient_magi_refresh_task:Cancel(); inst._ancient_magi_refresh_task = nil end
         end)
-        -- 背包耗尽防崩: 背包生效时护符未装备, 原版depleted回调(turnoff)依赖_owner(仅装备时赋值)会因nil崩溃
-        -- 包装depleted: 有持有者补owner正常清理, 无持有者只停消耗
+        -- 保留上游耗尽行为（原生会移除护符）；兼容依赖_owner的其他回调。
+        -- 有持有者补owner正常清理，无持有者只停消耗。
         if not inst._ancient_magi_depleted_hooked then
             inst._ancient_magi_depleted_hooked = true
             local fueled = inst.components.fueled
@@ -5225,85 +5354,18 @@ local function enhance_yellowamulet(inst)
             end
         end
     end
-    -- 背包生效管理(照明+移速+回理智), 每0.5秒检测拥有者与开关
     if not inst._ancient_magi_task_started then
         inst._ancient_magi_task_started = true
-        inst:DoPeriodicTask(0.5, function(inst)
-            if not inst:IsValid() or not inst:HasTag(ANCIENT_ENHANCE_TAG) then return end
-            local owner = inst.components.inventoryitem and inst.components.inventoryitem:GetGrandOwner()
-            local equipped = inst.components.equippable and inst.components.equippable:IsEquipped()
-            -- 开关默认开(nil视为开), 检查可切换; 仅未装备(背包)时生效, 燃料耗尽即停效
-            local active = inst._ancient_magi_on2hm ~= false and owner and owner:IsValid() and
-                owner:HasTag("player") and not equipped and owner.components.health and not owner.components.health:IsDead() and
-                not (inst.components.fueled and inst.components.fueled:IsEmpty())
-            if active then
-                -- 照明: 光源挂到拥有者身上(owner变化时先换光)
-                if inst._ancient_magi_light == nil or not inst._ancient_magi_light:IsValid() or inst._ancient_magi_light_owner ~= owner then
-                    if inst._ancient_magi_light and inst._ancient_magi_light:IsValid() then inst._ancient_magi_light:Remove() end
-                    local light = SpawnPrefab("minerhatlight")
-                    if light then
-                        light.entity:SetParent(owner.entity)
-                        light.Light:SetRadius(4)
-                        light.Light:SetIntensity(0.7)
-                        light.Light:SetFalloff(0.5)
-                        light.Light:SetColour(0.65, 0.75, 1) -- 魔光蓝白光
-                        light.Light:Enable(true)
-                        inst._ancient_magi_light = light
-                        inst._ancient_magi_light_owner = owner
-                    end
-                end
-                -- 移速+回理智(owner变化时先移除旧owner的移速)
-                if inst._ancient_magi_speed_owner ~= owner then
-                    if inst._ancient_magi_speed_owner and inst._ancient_magi_speed_owner:IsValid() and
-                        inst._ancient_magi_speed_owner.components.playerspeedmult then
-                        inst._ancient_magi_speed_owner.components.playerspeedmult:RemoveCappedPredictedSpeedMult("ancient_magi2hm")
-                    end
-                    inst._ancient_magi_speed_owner = owner
-                end
-                if owner.components.playerspeedmult then
-                    owner.components.playerspeedmult:SetCappedPredictedSpeedMult("ancient_magi2hm", 1.2)
-                end
-                if owner.components.sanity then
-                    owner.components.sanity:DoDelta(1 / 60) -- 每分钟回2理智(0.5秒一次)
-                end
-            else
-                if inst._ancient_magi_light and inst._ancient_magi_light:IsValid() then inst._ancient_magi_light:Remove() end
-                inst._ancient_magi_light = nil
-                inst._ancient_magi_light_owner = nil
-                if inst._ancient_magi_speed_owner and inst._ancient_magi_speed_owner:IsValid() and
-                    inst._ancient_magi_speed_owner.components.playerspeedmult then
-                    inst._ancient_magi_speed_owner.components.playerspeedmult:RemoveCappedPredictedSpeedMult("ancient_magi2hm")
-                end
-                inst._ancient_magi_speed_owner = nil
-            end
-            -- 燃料管理: 背包生效时正常消耗耐久(噩梦燃料), 装备中不干预(原版管理), 其余情况停止消耗
-            local fueled = inst.components.fueled
-            if fueled then
-                local want
-                if equipped then
-                    want = nil -- 装备中: 原版 onequip 管理
-                elseif active then
-                    want = true
-                else
-                    want = false
-                end
-                if inst._ancient_magi_fuel_state ~= want then
-                    inst._ancient_magi_fuel_state = want
-                    if want == true then
-                        fueled:StartConsuming()
-                    elseif want == false then
-                        fueled:StopConsuming()
-                    end
-                end
-                -- 太阳能(升级版特权): 白天+地面+未装备(在物品栏)时缓慢恢复耐久
-                -- 恢复速率与消耗持平(每秒+1, 0.5秒任务每次+0.5)→ 白天地面启用时净零消耗; 空护符也能缓慢回满
-                if not equipped and TheWorld.state.isday and not TheWorld:HasTag("cave") then
-                    if fueled:GetPercent() < 1 then
-                        fueled:DoDelta(0.5)
-                    end
-                end
+        for _, event in ipairs({"onputininventory", "ondropped", "onownerputininventory", "onownerdropped", "equipped", "unequipped"}) do
+            inst:ListenForEvent(event, QueueAncientMagi2hm)
+        end
+        inst:ListenForEvent("percentusedchange", function(inst, data)
+            if not inst._ancient_magi_task or data and type(data.percent) == "number" and (data.percent <= 0 or data.percent >= 1) then
+                QueueAncientMagi2hm(inst)
             end
         end)
+        inst:WatchWorldState("isday", QueueAncientMagi2hm)
+        QueueAncientMagi2hm(inst) -- Also covers enhancement while already held.
     end
 end
 

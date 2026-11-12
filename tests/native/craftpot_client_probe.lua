@@ -88,15 +88,25 @@ AddSimPostInit(function()
                     Sleep(1)
                     local controls=p.HUD.controls
                     local view=controls.foodcrafting or controls.craftpot
+                    if COOK_PREVIEW_COMPLEX then
+                        view=require("ui/recipe_panel_manager").GetPanel(p._cookpreviewpot)
+                    end
                     local widget=controls.containers[p._cookpreviewpot]
                     local actual={};local visible,icons=0,0
                     if view then
+                        if COOK_PREVIEW_COMPLEX then
+                            for name in pairs(view._highlighted_recipes or {}) do actual[#actual+1]=name end
+                            for _, child in pairs(view.scroll_list and view.scroll_list.widgets_to_update or {}) do
+                                if child._icon and child._icon:IsVisible() then icons=icons+1 end
+                            end
+                            visible=#view.scroll_list.items
+                        end
                         for _,food in ipairs(view.selfoods or view.visible or {}) do
                             -- 刷新版状态在条目上，经典版状态在条目的 recipe 上。
                             local recipe=food.ready ~= nil and food or (food.recipe or food)
                             if recipe.readytocook or recipe.ready then actual[#actual+1]=recipe.name end
                         end
-                        visible=#(view.selfoods or view.visible or {})
+                        if not COOK_PREVIEW_COMPLEX then visible=#(view.selfoods or view.visible or {}) end
                         for _,slot in ipairs(view.foodslots or view.slots or {}) do
                             local item=slot.fooditem or slot.entry
                             if item and (slot.fooditem and slot.fooditem.shown or slot.entry and slot.icon and slot.icon.shown) then
@@ -106,7 +116,7 @@ AddSimPostInit(function()
                     end
                     local expected=p._cookpreviewstate
                     local matches=not expected.full and #actual==0 or expected.full and table.contains(actual,expected.product)
-                    local opened=view and (view.IsOpen and view:IsOpen() or view.isopen) or false
+                    local opened=view and (COOK_PREVIEW_COMPLEX and view:IsVisible() or view.IsOpen and view:IsOpen() or view.isopen) or false
                     local passed=not not (view and widget and opened and matches and (not expected.full or icons>0))
                     local nativeicons=0
                     local layoutchecks={}
@@ -155,6 +165,8 @@ AddSimPostInit(function()
                     Sleep(.3)
                 end
             end
+            if COOK_PREVIEW_COLLECT then CookingIngredientClientProbe(p, emit) end
+            if COOK_PREVIEW_ROUTING then CookerRoutingClientProbe(p, emit) end
             emit({kind="finished"})
         end)
     end)

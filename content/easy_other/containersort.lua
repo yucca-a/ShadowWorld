@@ -3347,8 +3347,8 @@ if itemscfg then
                     if istag then
                         collectrecipefn(doer, food, nil, doer, nil, function(v)
                             local data = cooking.ingredients[foodaliases[v.prefab] or v.prefab]
-                            return data ~= nil and data.tags ~= nil and data.tags[food] ~= nil and
-                                (food == "monster" or data.tags.monster == nil)
+                            return data ~= nil and data.tags ~= nil and (data.tags[food] or 0) > 0 and
+                                (food == "monster" or (data.tags.monster or 0) <= 0)
                         end)
                     else
                         collectrecipefn(doer, food, nil, doer)
@@ -3422,6 +3422,7 @@ if itemscfg then
         end
         AddModRPCHandler("MOD_HARDMODE", "collectfoodingredient2hm", collectfoodingredientfn)
         local function collectfoodingredientclientfn(doer, food, istag, neednum, toplayer, disabledatastr)
+            if not doer or not doer:IsValid() then return end
             if not food or food == "" or type(food) ~= "string" then return end
             if doer.components.inventory ~= nil then
                 collectfoodingredientfn(doer, food, istag, neednum, toplayer, disabledatastr)
@@ -3430,8 +3431,9 @@ if itemscfg then
                     disabledatastr)
             end
         end
+        require("cookingredientcollect2hm").Install(env, collectfoodingredientclientfn)
         -- is_min代表需要的素材,is_name代表需要指定食物还是指定属性食物,alias代表食物的名字或属性名字，quantity代表数目
-        if isModuleAvailable("widgets/foodingredientui") then
+        do
             local function buildSequence(mix, arr)
                 for cid, conj in ipairs(mix) do
                     if conj.amt then
@@ -3454,9 +3456,9 @@ if itemscfg then
                     (self.quantity > self.on_hand and (TUNING.isCh2hm and "收集" or "Collect") or
                         (TUNING.isCh2hm and "填充" or "Filling")) .. "\n" ..
                     TheInput:GetLocalizedControl(TheInput:GetControllerID(), CONTROL_SECONDARY) .. ": " ..
-                    (TUNING.isCh2hm and "收集更多" or "Collect More"))
+                    (TUNING.isCh2hm and "收集到背包" or "Collect to Inventory"))
             end
-            AddClassPostConstruct("widgets/foodingredientui", function(self, ...)
+            local function PatchIngredient(self, ...)
                 if self.is_min and self.owner and self.prefab and self.is_name ~= nil and self.quantity and self.atlas and self.item_tex and self.img then
                     self.on_hand = 0
                     local Update = self.Update
@@ -3485,7 +3487,10 @@ if itemscfg then
                     self.imgbtn2hm.AllowOnControlWhenSelected = true
                     if self.quant then self.quant:MoveToFront() end
                 end
-            end)
+            end
+            for _, path in ipairs({"widgets/foodingredientui", "widgets/craftpot/foodingredientui"}) do
+                if isModuleAvailable(path) then AddClassPostConstruct(path, PatchIngredient) end
+            end
         end
     end
     -- ctrl右键道具快速存放道具

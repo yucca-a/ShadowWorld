@@ -1,0 +1,61 @@
+{
+  "version": "2.8.15.0.26",
+  "date": "2026-11-12",
+  "status": "passed",
+  "checks": [
+    {
+      "test": "run_complex_smartpot_tests.py",
+      "exit_code": 0,
+      "output": "Complex Smart Pot and ingredient collection: 60 checks passed\n"
+    },
+    {
+      "test": "run_cooking_preview_tests.py",
+      "exit_code": 0,
+      "output": "Cooker rules and actual Craft Pot methods: 44 checks passed\n"
+    },
+    {
+      "test": "run_five_slot_routing_tests.py",
+      "exit_code": 0,
+      "output": "All content Lua 5.1 syntax checks passed\nFive-slot UM routing and reuse: 190 checks passed\n"
+    },
+    {
+      "test": "run_dynamic_armor_tests.py",
+      "exit_code": 0,
+      "output": "PASS dynamic armor regression: 207 assertions (native health/explosion/resistance; simulated engine)\n"
+    },
+    {
+      "test": "run_epic_ruin_tests.py",
+      "exit_code": 0,
+      "output": "Epic Ruin save, reload and rollback checks passed\nEpic Ruin save, reload and rollback checks passed\nEpic Ruin save, reload and rollback checks passed\nEpic Ruin save, reload and rollback checks passed\n"
+    },
+    {
+      "test": "run_moonstorm_goggles_tests.py",
+      "exit_code": 0,
+      "output": "Moonstorm goggles/native vision, speed and overlay: 30 checks passed\n"
+    },
+    {
+      "test": "run_hattrick_armor_tests.py",
+      "exit_code": 0,
+      "output": "Hat trick / native armor + UM beta rework: 740 checks passed\n"
+    },
+    {
+      "test": "run_antlionhat_tools_tests.py",
+      "exit_code": 0,
+      "output": "Changed gameplay sources compile in Lua 5.1\nAntlion hat tool actions: 883 checks passed\n"
+    },
+    {
+      "test": "run_module_manifest_tests.py",
+      "exit_code": 0,
+      "output": "Native require / manifest regressions: 20 checks passed\n"
+    },
+    {
+      "test": "all_content_lua51_compile",
+      "exit_code": 0,
+      "files": 428
+    },
+    {
+      "test": "dream_archipelago_matches_workshop_2.8.15.0.25",
+      "exit_code": 0
+    }
+  ]
+}

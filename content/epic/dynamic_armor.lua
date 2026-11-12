@@ -18,6 +18,15 @@ local function Attach(inst)
     if inst.components.dynamicarmor2hm == nil then inst:AddComponent("dynamicarmor2hm") end
     if inst.dynamicarmor2hm_events then return end
     inst.dynamicarmor2hm_events = true
+    -- Settle at the old maximum before changing the HP-based cooling floor.
+    -- Only eligible bosses need this hook; ordinary health components do not.
+    local health = inst.components.health
+    local SetMaxHealth = health.SetMaxHealth
+    health.SetMaxHealth = function(self, ...)
+        local armor = self.inst.components.dynamicarmor2hm
+        if armor ~= nil then armor:Decay() end
+        return SetMaxHealth(self, ...)
+    end
     local PushEvent = inst.PushEvent
     inst.PushEvent = function(self, event, data, ...)
         local health = self.components.health

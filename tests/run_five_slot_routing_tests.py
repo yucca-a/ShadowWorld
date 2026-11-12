@@ -25,7 +25,7 @@ for _,um in ipairs({false,true})do
       local calls=0
       local scope=setmetatable({TUNING={DSTU=um,hardmode2hm=hard},UM_CONFIG={FOOD_STATS=dynamic},
         require=function(name)
-            if name=='umperformance2hm'then return {Install=function()end}end
+            if name=='umperformance2hm'or name=='umwinonaworker2hm'then return {Install=function()end}end
             return {}
         end,
         GetModConfigData=function(key)return ({um_patch=optional,food_change=food,cooking_change=mode})[key]end,

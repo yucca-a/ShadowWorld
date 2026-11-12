@@ -5,12 +5,14 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from run_vault_comparison import Cluster, ROOT, GAME
 
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('--kind', choices=['bundled', 'classic', 'refresh'], default='bundled')
+parser.add_argument('--kind', choices=['bundled', 'classic', 'refresh', 'complex'], default='bundled')
 parser.add_argument('--source', type=Path, default=ROOT/'content')
 parser.add_argument('--audit', action='store_true')
 parser.add_argument('--mod-cookers', action='store_true')
 parser.add_argument('--port', type=int)
 parser.add_argument('--hold-final', type=int, default=0)
+parser.add_argument('--collect', action='store_true')
+parser.add_argument('--routing', action='store_true')
 args = parser.parse_args()
 sys.stdout.reconfigure(encoding='utf-8')
 c = Cluster('hosted', 1, ROOT/'work/reuse-audit/config/Audit', args.source.resolve())
@@ -21,15 +23,17 @@ if args.port:
 client = None
 report = {'cluster': str(c.out), 'kind': args.kind, 'audit': args.audit,
           'mod_cookers': args.mod_cookers,
+          'collect': args.collect, 'routing_requested': args.routing,
           'source': str(args.source.resolve()),
           'helper_sha256': hashlib.sha256((c.out/'input/common/food_util.lua').read_bytes()).hexdigest()}
 try:
     probe = c.runtime/'mods/CookingPreviewAudit'
     probe.mkdir()
     (probe/'modinfo.lua').write_text('name="Cooking Preview Audit"\ndescription="Disposable"\nauthor="Local"\nversion="1"\napi_version=10\ndst_compatible=true\nall_clients_require_mod=true\npriority=-99998\n')
-    (probe/'modmain.lua').write_text(('COOK_PREVIEW_MOD_COOKERS=true\n' if args.mod_cookers else '')+(ROOT/'tests/native/craftpot_client_probe.lua').read_text(encoding='utf-8'), encoding='utf-8')
+    (probe/'modmain.lua').write_text(('COOK_PREVIEW_ROUTING=true\n'+(ROOT/'tests/native/cooker_routing_client_probe.lua').read_text(encoding='utf-8')+'\n' if args.routing else '')+('COOK_PREVIEW_COLLECT=true\n'+(ROOT/'tests/native/cookingredient_client_probe.lua').read_text(encoding='utf-8')+'\n' if args.collect else '')+('COOK_PREVIEW_COMPLEX=true\n' if args.kind=='complex' else '')+('COOK_PREVIEW_MOD_COOKERS=true\n' if args.mod_cookers else '')+(ROOT/'tests/native/craftpot_client_probe.lua').read_text(encoding='utf-8'), encoding='utf-8')
     cp = c.runtime/'mods/CraftPotAudit'
-    original = (Path('D:/SteamLibrary/steamapps/workshop/content/322330/3161120380') if args.kind=='bundled' else
+    original = (Path('D:/SteamLibrary/steamapps/workshop/content/322330/3744378627') if args.kind=='complex' else
+                Path('D:/SteamLibrary/steamapps/workshop/content/322330/3161120380') if args.kind=='bundled' else
                 ROOT/'work/smartpot-workshop-audit/steamapps/workshop/content/322330'/('727774324' if args.kind=='classic' else '3822775840'))
     shutil.copytree(original, cp)
     # Only the isolated copy's defaults change; the real modmain/widgets stay intact.
@@ -38,7 +42,7 @@ try:
     if args.kind=='bundled':
         shutil.copytree(Path('D:/SteamLibrary/steamapps/workshop/content/322330/3161117403'),c.runtime/'mods/BirdSpringAudit')
     extra=''
-    if args.mod_cookers:
+    if args.mod_cookers or args.routing:
         for uid in ['1392778117','1909182187']:
             _winapi.CreateJunction(str(Path('D:/SteamLibrary/steamapps/workshop/content/322330')/uid),str(c.runtime/'mods'/('workshop-'+uid)))
             extra+=',["workshop-'+uid+'"]={enabled=true}'
@@ -84,7 +88,7 @@ try:
     log=c.out/'client.log'
     with log.open('wb') as stream:
         client=subprocess.Popen([str(runtime/'bin64/dontstarve_steam_x64.exe'),'-persistent_storage_root',str(c.out),'-conf_dir','client','-skipintromovie','-console','-offline','-windowed'],cwd=runtime/'bin64',stdout=stream,stderr=subprocess.STDOUT,creationflags=subprocess.CREATE_NO_WINDOW,startupinfo=startup)
-    deadline=time.monotonic()+240
+    deadline=time.monotonic()+(480 if args.routing else 240)
     dispatched=0
     while time.monotonic()<deadline:
         c.events('Master')
@@ -104,6 +108,12 @@ try:
         if finished:
             report['cases']=[r for r in rows if r.get('kind')=='case']
             report['result']=finished
+            if args.collect:
+                report['collection']=[r for r in rows if r.get('kind')=='collection']
+                assert report['collection'] and all(r['passed'] for r in report['collection']), report['collection']
+            if args.routing:
+                report['routing']=[r for r in rows if r.get('kind')=='routing']
+                assert len(report['routing'])==8 and all(r['passed'] for r in report['routing']), report['routing']
             failures=[r for r in report['cases'] if not r['passed']]
             assert finished.get('error') is None, finished
             if args.audit: assert failures, 'Original unexpectedly passed'

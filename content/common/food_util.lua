@@ -73,6 +73,7 @@ function TUNING.util2hm.InstallCookingRules2hm(cooking, api)
     -- 在实际 HUD 上按接口识别，兼容独立版及修改过模块路径的内置版。
     -- 专服只需要上面的配方规则，不加载客户端控件。
     if api.TheNet and api.TheNet:IsDedicated() then return end
+    require("complexsmartpot2hm").Install(cooking, api)
     local function PatchPreview(self)
         if not self or self.cookingrules2hm or type(self._UpdateFoodStats) ~= "function" or
             type(self.SortFoods) ~= "function" or type(self.allfoods) ~= "table" then return end

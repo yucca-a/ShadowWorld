@@ -1,0 +1,145 @@
+{
+  "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-pvtk161_",
+  "phases": [
+    {
+      "checks": 8,
+      "phase": 1,
+      "kind": "performance_phase1",
+      "passed": true
+    },
+    {
+      "checks": 13,
+      "phase": 2,
+      "kind": "performance_phase1",
+      "passed": true
+    },
+    {
+      "checks": 16,
+      "phase": 3,
+      "kind": "performance_phase1",
+      "passed": true
+    },
+    {
+      "checks": 17,
+      "phase": 4,
+      "kind": "performance_phase1",
+      "passed": true
+    },
+    {
+      "checks": 20,
+      "phase": 5,
+      "kind": "performance_phase1",
+      "passed": true
+    },
+    {
+      "checks": 25,
+      "phase": 6,
+      "kind": "performance_phase1",
+      "passed": true
+    },
+    {
+      "checks": 26,
+      "phase": 7,
+      "kind": "performance_phase1",
+      "passed": true
+    },
+    {
+      "checks": 27,
+      "phase": 8,
+      "kind": "performance_phase1",
+      "passed": true
+    },
+    {
+      "checks": 28,
+      "phase": 9,
+      "kind": "performance_phase1",
+      "passed": true
+    },
+    {
+      "checks": 29,
+      "phase": 10,
+      "kind": "performance_phase1",
+      "passed": true
+    },
+    {
+      "checks": 31,
+      "phase": 11,
+      "kind": "performance_phase1",
+      "passed": true
+    },
+    {
+      "checks": 33,
+      "phase": 12,
+      "kind": "performance_phase1",
+      "passed": true
+    },
+    {
+      "checks": 34,
+      "phase": 13,
+      "kind": "performance_phase1",
+      "passed": true
+    },
+    {
+      "checks": 35,
+      "phase": 14,
+      "kind": "performance_phase1",
+      "passed": true
+    },
+    {
+      "checks": 36,
+      "phase": 15,
+      "kind": "performance_phase1",
+      "passed": true
+    },
+    {
+      "checks": 48,
+      "phase": 16,
+      "kind": "performance_phase1",
+      "passed": true
+    },
+    {
+      "checks": 55,
+      "phase": 17,
+      "kind": "performance_phase1",
+      "passed": true
+    },
+    {
+      "checks": 58,
+      "phase": 18,
+      "kind": "performance_phase1",
+      "passed": true
+    },
+    {
+      "checks": 60,
+      "phase": 19,
+      "kind": "performance_phase1",
+      "passed": true
+    },
+    {
+      "checks": 64,
+      "phase": 20,
+      "kind": "performance_phase1",
+      "passed": true
+    }
+  ],
+  "status": "passed",
+  "source_sha256": {
+    "easy_other/easy_equipments.lua": "402b5e1423bb703c15ce35c7d0fcfb248aac29609c012de9ec17a7adfd5613b0",
+    "epic/dynamic_armor.lua": "868ee3562f34eee078b91489c288eb593225437b0e0340eed590add8661be3b5",
+    "epic/epic_ruin.lua": "974cc0f733723b4df21d08024f0500b8fd31159366fba22b9644daedadf56636",
+    "scripts/components/dynamicarmor2hm.lua": "adad8fbdd940935a278f80014e826c80299e0a964e910a348585c4aafba88d32"
+  },
+  "local_checks": {
+    "lua51_compile": 428,
+    "dynamic_armor_assertions": 207,
+    "progressive_combat_assertions": 129,
+    "antlionhat_tool_assertions": 883,
+    "epic_ruin_configurations": 4,
+    "module_manifest_checks": 20
+  },
+  "limits": [
+    "Isolated offline dedicated server; no player saves or installed mods modified.",
+    "Native save-record round trips, not a whole-world cold restart or multiplayer travel test.",
+    "No rendered client/FPS/long-duration CPU or process-memory benchmark."
+  ]
+}

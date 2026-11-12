@@ -1,0 +1,21 @@
+韦伯帽子戏法与妥测护甲重制适配（2026-11-12）
+
+原因：removeleaveinventory2hm 的免疫检查使用复制帽子的实际防御值，
+但固定与 80%/90% 比较。妥测 armor_rework 将这两档映射为 65%/75%。
+
+改动：仅在 TUNING.DSTU 存在，且实际 armor 组件同时有 umabsorbremap
+和 UMOverrideAbsorption 时，采用 65% 的冻结/睡眠门槛与 75% 的火焰/惊吓门槛。
+不修改护甲防御值或全局门槛。单开、正式版和关闭护甲重制时仍用 80%/90%。
+护甲重制中的特例帽子也按最终防御值判断，不按物品名恢复原版免疫档位。
+
+验证：work/python-3.12.8/python.exe tests/run_hattrick_armor_tests.py
+740 项检查通过。加载本机原生 Class、armor、SourceModifierList 与妥测真实
+postinit/armor_rework.lua；覆盖四种启用组合、猪皮帽/铥矿皇冠/特例帽子、
+65%/75% 边界、免疫方法拦截、原方法回退、摘帽撤销、弱帽替换、
+10% 耐久分摊和不完整兼容标记。
+
+以 Git HEAD 的旧组件作为参数运行同一测试，复现 beta-on 猪皮帽未免疫 Freeze。
+修复后的组件通过相同检查。
+
+实体事件、调度、冻结/睡眠/火焰效果方法为测试替身，未启动游戏或验证客户端画面。
+未发布工坊，未改动玩家存档。

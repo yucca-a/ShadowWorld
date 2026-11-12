@@ -16,7 +16,15 @@ local function spawn(saved)
     end}
     function inst:AddComponent(name) self.components[name] = Persistent(self) end
     function inst:DoTaskInTime(_, fn) self.initialize = fn end
-    function inst:WatchWorldState(_, fn) self.onDay = fn end
+    function inst:WatchWorldState(_, fn)
+        assert(not self.onDay, "only one daily listener per creature")
+        self.onDay = fn
+        self.registrations = (self.registrations or 0) + 1
+    end
+    function inst:StopWatchingWorldState(_, fn)
+        assert(self.onDay == fn, "remove the registered callback")
+        self.onDay = nil
+    end
     -- Native order is prefab post-init, saved data, then scheduled tasks.
     inst.OnPreLoad = function(self) self.preloaded = true end
     Initialize(inst)
@@ -54,14 +62,25 @@ TheWorld.state.cycles = 11
 assert(lootAfterFinish(spawn(saved)) == ExpectedAfterOneDay, "one in-game day still decays boss damage by 20% max health")
 
 local untouched = spawn()
-untouched.onDay()
+assert(not untouched.onDay, "untouched creatures have no daily listener")
 assert(not untouched.components.persistent2hm, "daily decay must not allocate a record for an untouched creature")
 
 local rested = spawn(saved)
 TheWorld.state.cycles = 15
-rested.onDay()
+assert(rested.onDay, "positive saved records restore daily decay")
+rested.onDay(rested)
+assert(not rested.onDay, "zero damage removes the daily listener")
 TheWorld.state.cycles = 16
 rested.components.health:SetVal(100, "heal")
 rested.components.health:SetVal(10, "epic", boss)
+assert(rested.onDay and rested.registrations == 2, "a later boss hit starts daily decay again")
 assert(lootAfterFinish(rested) == ExpectedRemaining, "expired damage must not decay a new boss hit")
+local ordinary = spawn()
+ordinary.components.health:SetVal(90, "player", player)
+assert(not ordinary.onDay and not ordinary.components.persistent2hm, "ordinary damage does not start tracking")
+ordinary.components.health:SetVal(80, "epic", boss)
+ordinary.components.health:SetVal(70, "epic", boss)
+assert(ordinary.registrations == 1, "repeated hits reuse the daily listener")
+local empty = snapshot(spawn())
+assert(not spawn(empty).onDay, "unwounded save reload stays unregistered")
 print("Epic Ruin save, reload and rollback checks passed")
