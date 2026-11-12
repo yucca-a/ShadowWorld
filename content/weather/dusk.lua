@@ -306,11 +306,9 @@ if dusk_mode ~= true then
         end
         AddPrefabPostInit("woodie", function(inst)
             if not TheWorld.ismastersim then return end
-            local oldOnLoad = inst.OnLoad
-            inst.OnLoad = function(...)
-                if oldOnLoad then oldOnLoad(...) end
+            SetOnLoad(inst, function(...)
                 enableplayervision(...)
-            end
+            end)
             enableplayervision(inst)
             inst:ListenForEvent("transform_person", enableplayervision)
             inst:ListenForEvent("transform_wereplayer", enableplayervision)

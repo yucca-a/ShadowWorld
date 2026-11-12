@@ -18,13 +18,15 @@ AddPrefabPostInitAny(function(inst) -- 全世界生效
 	-- end
 			local jiubaocun = inst.OnSave
 			inst.OnSave = function(inst, data,...)  ----修改保存
+				local refs
 				if jiubaocun then
-					pcall(jiubaocun,inst, data,...)
+					local ok, result = pcall(jiubaocun,inst, data,...)
+					if ok then refs = result end
 				end
 				if data and inst.ray_shengwudamiejve_jianceguo then
 					data.ray_shengwudamiejve_jianceguo = inst.ray_shengwudamiejve_jianceguo
 				end
-				
+				return refs
 			end
 			
 			
@@ -215,13 +217,15 @@ AddPrefabPostInit("world", function(inst)-----单独修改世界
 		
 			local jiubaocun = inst.OnSave
 			inst.OnSave = function(inst, data,...)  ----修改保存
+				local refs
 				if jiubaocun then
-					pcall(jiubaocun,inst, data,...)
+					local ok, result = pcall(jiubaocun,inst, data,...)
+					if ok then refs = result end
 				end
 				if data and inst.ray_shengwudamiejvemingdan then
 					data.ray_shengwudamiejvemingdan = inst.ray_shengwudamiejvemingdan
 				end
-				
+				return refs
 			end
 			
 			

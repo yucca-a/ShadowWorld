@@ -129,12 +129,26 @@ end)
 -- 饥荒会在服务器重载时生成全部玩家的角色,加载其数据再保存其数据,再把角色删除,此时角色的存档数据就被重写了一次
 -- 然后等到玩家真正连接到服务器时,再次生成玩家的角色,用角色最新的存档数据加载角色
 -- 这一步需要非常小心,加载保存处理不当就会丢失掉玩家角色的很多存档数据
-function SetOnSave2hm(inst, fn)
-    local OnSave = inst.onsave2hm
-    inst.onsave2hm = OnSave and function(...)
-        OnSave(...)
-        fn(...)
+local function MergeSaveRefs2hm(first, second)
+    if type(first) ~= "table" then return second end
+    if type(second) ~= "table" then return first end
+    local refs, seen = {}, {}
+    for _, list in ipairs({first, second}) do
+        for _, guid in ipairs(list) do
+            if not seen[guid] then refs[#refs + 1] = guid; seen[guid] = true end
+        end
+    end
+    return refs
+end
+local function AppendSaveCallback2hm(inst, field, fn)
+    local previous = inst[field]
+    inst[field] = previous and function(...)
+        local refs = previous(...)
+        return MergeSaveRefs2hm(refs, fn(...))
     end or fn
+end
+function SetOnSave2hm(inst, fn)
+    AppendSaveCallback2hm(inst, "onsave2hm", fn)
 end
 function SetOnLoad2hm(inst, fn)
     local OnLoad = inst.onload2hm
@@ -152,11 +166,7 @@ function SetOnPreLoad(inst, fn)
     end or fn
 end
 function SetOnSave(inst, fn)
-    local OnSave = inst.OnSave
-    inst.OnSave = OnSave and function(...)
-        OnSave(...)
-        fn(...)
-    end or fn
+    AppendSaveCallback2hm(inst, "OnSave", fn)
 end
 function SetOnLoad(inst, fn)
     local OnLoad = inst.OnLoad
@@ -180,10 +190,11 @@ end
 
 function SetComponentSave(component, fn)
     local OnSave = component.OnSave
-    component.OnSave = function(self)
-        local data = OnSave and OnSave(self) or {}
-        fn(self, data)
-        return data
+    component.OnSave = function(self, ...)
+        local data, refs
+        if OnSave then data, refs = OnSave(self, ...) end
+        data = data or {}
+        return data, MergeSaveRefs2hm(refs, fn(self, data, ...))
     end
 end
 

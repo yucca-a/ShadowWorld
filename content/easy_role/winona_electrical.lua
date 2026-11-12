@@ -40,15 +40,14 @@ local function SetupLamp(inst)
         electrical.Convert(inst)
         electrical.InstallGround(inst, ground)
     end)
-    local OnSave, OnLoad = inst.OnSave, inst.OnLoad
+    local OnLoad = inst.OnLoad
     local OnPreLoad = inst.OnPreLoad
     inst.OnPreLoad = function(inst, data, ...)
         if OnPreLoad then OnPreLoad(inst, data, ...) end
         -- Identify converted saves before native components load their fuel amounts.
         inst.electricalconverted2hm = data and (data.upgraded or data.electrical2hm) or nil
     end
-    inst.OnSave = function(inst, data, ...)
-        if OnSave then OnSave(inst, data, ...) end
+    SetOnSave(inst, function(inst, data, ...)
         if inst.electricalconverted2hm then
             data.upgraded = true
             data.electrical2hm = true
@@ -57,7 +56,7 @@ local function SetupLamp(inst)
             -- Retire the old percent-based restores and their delayed callbacks.
             data.saved_fuel_value = nil
         end
-    end
+    end)
     inst.OnLoad = function(inst, data, ...)
         local upgraded = data and (data.upgraded or data.electrical2hm)
         local clean = data
@@ -152,11 +151,9 @@ local function SetupWeapon(inst)
         end)
     end
     local OnLoad = inst.OnLoad
-    local OnSave = inst.OnSave
-    inst.OnSave = function(inst, data, ...)
-        if OnSave then OnSave(inst, data, ...) end
+    SetOnSave(inst, function(inst, data, ...)
         data.electricalunlocked2hm = inst.electricalunlocked2hm or nil
-    end
+    end)
     inst.OnLoad = function(inst, data, ...)
         inst.electricalunlocked2hm = data and data.electricalunlocked2hm or nil
         local clean = data

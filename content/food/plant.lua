@@ -256,16 +256,12 @@ if Boulderbough then
                 if not inst.been_fertilized2hm and node ~= nil then inst.components.timer:PauseTimer("grow")end
             end)
         end
-        local oldonsave = inst.OnSave
-        inst.OnSave = function(inst, data)
-            if oldonsave then oldonsave(inst, data) end
+        SetOnSave(inst, function(inst, data)
             if inst.been_fertilized2hm then
                 data.been_fertilized2hm = true
             end
-        end
-        local oldonload = inst.OnLoad
-        inst.OnLoad = function(inst, data)
-            if oldonload then oldonload(inst, data) end
+        end)
+        SetOnLoad(inst, function(inst, data)
             if data and data.been_fertilized2hm then
                 inst:AddTag("been_fertilized2hm")
                 inst.been_fertilized2hm = true
@@ -273,7 +269,7 @@ if Boulderbough then
                     inst.components.timer:ResumeTimer("grow")
                 end
             end
-        end
+        end)
         if not inst.components.inspectable then inst:AddComponent("inspectable") end
         local GetDescription = inst.components.inspectable.GetDescription
         inst.components.inspectable.GetDescription = function(self, ...)

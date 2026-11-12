@@ -124,16 +124,12 @@ AddPrefabPostInit("archive_orchestrina_main", function(inst)
             text.archive_orchestrina2hm = true
         end
     end)
-    local oldonsave = inst.OnSave
-    inst.OnSave = function(inst, data)
-        if oldonsave then oldonsave(inst,data) end
+    SetOnSave(inst, function(inst, data)
         if inst.worldcreate2hm then data.worldcreate2hm = true end
-    end
-    local oldonload = inst.OnLoad
-    inst.OnLoad = function(inst, data)
-        if oldonload then oldonload(inst,data) end
+    end)
+    SetOnLoad(inst, function(inst, data)
         if data and data.worldcreate2hm then inst.worldcreate2hm = true end
-    end
+    end)
 end)
 
 AddPrefabPostInit("wagstaff_item_2", function(inst)
@@ -150,14 +146,10 @@ AddPrefabPostInit("wagstaff_item_2", function(inst)
             return  desc, filter_context, author
         end   
     end
-    local oldonsave = inst.OnSave
-    inst.OnSave = function(inst, data)
-        if oldonsave then oldonsave(inst,data) end
+    SetOnSave(inst, function(inst, data)
         if inst.archive_orchestrina2hm then data.archive_orchestrina2hm = true end
-    end
-    local oldonload = inst.OnLoad
-    inst.OnLoad = function(inst, data)
-        if oldonload then oldonload(inst,data) end
+    end)
+    SetOnLoad(inst, function(inst, data)
         if data and data.archive_orchestrina2hm then inst.archive_orchestrina2hm = true end
-    end
+    end)
 end)

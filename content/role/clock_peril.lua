@@ -89,22 +89,18 @@ AddPrefabPostInit("cave_network", OnWorldNetworkPostInit)
 AddPrefabPostInit("world", function(inst)
     if not TheWorld.ismastersim then return end
 
-    local _orig_OnSave = inst.OnSave
-    inst.OnSave = function(inst, data)
-        if _orig_OnSave then _orig_OnSave(inst, data) end
+    SetOnSave(inst, function(inst, data)
         local save_data = Server.OnSave()
         if save_data then
             data.clock_peril = save_data
         end
-    end
+    end)
 
-    local _orig_OnLoad = inst.OnLoad
-    inst.OnLoad = function(inst, data)
-        if _orig_OnLoad then _orig_OnLoad(inst, data) end
+    SetOnLoad(inst, function(inst, data)
         if data and data.clock_peril then
             Server.OnLoad(data.clock_peril)
         end
-    end
+    end)
 end)
 
 AddClassPostConstruct("widgets/uiclock", Client.HookUIClock)

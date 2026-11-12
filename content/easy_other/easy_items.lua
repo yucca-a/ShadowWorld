@@ -293,7 +293,7 @@ if GetModConfigData("boat use shadowheart upgrade") then
         AddPrefabPostInit(boat, function(inst)
             if not TheWorld.ismastersim then return end
             if not inst.components.persistent2hm then inst:AddComponent("persistent2hm") end
-            inst.onload2hm = processpersistent
+            SetOnLoad2hm(inst, processpersistent)
         end)
     end
     -- 黑心落到船上后,会升级船为暗影船,并产生升级特效

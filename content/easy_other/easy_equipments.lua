@@ -4266,16 +4266,12 @@ if GetModConfigData("Horizon Expandinator") then
 			end
 			return  desc, filter_context, author
 		end
-		local oldsave = inst.OnSave
-		inst.OnSave = function(inst, data, ...)
-			if oldsave then oldsave(inst, data, ...) end
+		SetOnSave(inst, function(inst, data, ...)
 			_upgradeonsave(inst, data)
-		end
-		local oldload = inst.OnLoad
-		inst.OnLoad = function(inst, data, ...)
-			if oldload then oldload(inst, data, ...) end
+		end)
+		SetOnLoad(inst, function(inst, data, ...)
 			_upgradeonload(inst, data)
-		end
+		end)
 	end)
 	-- 可用各类护目镜升级视野帽拥有防风沙功能
 	local function upgradehatPG(inst, doer, target, pos, act)

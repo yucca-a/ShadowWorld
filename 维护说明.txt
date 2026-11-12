@@ -1,3 +1,5 @@
+
+2026-11-13 发布 2.8.15.0.31：角色右键、妥协滑行、材料修理及存档回调修复。上传器完成；工坊 510 文件及索引核验通过，公开日志网页因 HTTP 429 未能读回。记录见 development/releases/v2.8.15.0.31-publication.json。
 为爽而虐/暗影世界 淬炼之季
 
 固定工坊条目：https://steamcommunity.com/sharedfiles/filedetails/?id=3832182265

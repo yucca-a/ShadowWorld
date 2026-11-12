@@ -519,8 +519,8 @@ for _, shadowchesspiece in ipairs(shadowchesspieces) do
         if not inst.components.healthtrigger then inst:AddComponent("healthtrigger") end
         inst.levelsummon2hm = {}
         if not inst.components.persistent2hm then inst:AddComponent("persistent2hm") end
-        inst.onsave2hm = onshadowchesspiecesave
-        inst.onload2hm = onshadowchesspieceload
+        SetOnSave2hm(inst, onshadowchesspiecesave)
+        SetOnLoad2hm(inst, onshadowchesspieceload)
         inst.continueattackindex2hm = 1
         inst.components.healthtrigger:AddTrigger(0.75031, on75percenthealth)
         inst.components.healthtrigger:AddTrigger(0.66731, on66percenthealth)

@@ -176,16 +176,12 @@ local function circular_horn2hm(inst)
 end
 
 local function saveandload(inst)
-    local _Save = inst.OnSave
-    inst.OnSave = function(inst, data, ...)
-        if _Save then _Save(inst, data, ...) end
+    SetOnSave(inst, function(inst, data, ...)
         if inst.spawnbyepic2hm == true then data.spawnbyepic2hm = true end
-    end
-    local _Load = inst.OnLoad
-    inst.OnLoad = function(inst, data, ...)
-        if _Load then _Load(inst, data, ...) end
+    end)
+    SetOnLoad(inst, function(inst, data, ...)
         if data and data.spawnbyepic2hm then inst.spawnbyepic2hm =true end
-    end
+    end)
 end
 
 AddPrefabPostInit("ruinsnightmare", function(inst)

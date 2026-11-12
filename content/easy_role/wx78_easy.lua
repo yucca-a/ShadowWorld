@@ -887,9 +887,7 @@ AddPrefabPostInit("wx78", function(inst)
 
     -- 2025.11.29 YeFeng: 修复穿越世界后电路效果失效的问题
     -- OnLoad时重新应用所有电路效果
-    local old_OnLoad = inst.OnLoad
-    inst.OnLoad = function(inst, data)
-        if old_OnLoad then old_OnLoad(inst, data) end
+    SetOnLoad(inst, function(inst, data)
 
         -- 延迟重新应用所有电路效果
         inst:DoTaskInTime(0.5, function(inst)
@@ -902,7 +900,7 @@ AddPrefabPostInit("wx78", function(inst)
                 UpdateTemperatureBalance(inst)
             end
         end)
-    end
+    end)
 end)
 
 
@@ -1062,22 +1060,18 @@ AddPrefabPostInit("wx78", function(inst)
         end
     end)
     -- 保存时清理任务
-    local old_OnSave = inst.OnSave
-    inst.OnSave = function(inst, data)
-        if old_OnSave then old_OnSave(inst, data) end
+    SetOnSave(inst, function(inst, data)
         if inst.overload_time2hm and inst.overload_time2hm > 0 then
             data.overload_time2hm = inst.overload_time2hm
         end
-    end
+    end)
     -- 加载时恢复状态
-    local old_OnLoad = inst.OnLoad
-    inst.OnLoad = function(inst, data)
-        if old_OnLoad then old_OnLoad(inst, data) end
+    SetOnLoad(inst, function(inst, data)
         if data and data.overload_time2hm then
             inst.overload_time2hm = data.overload_time2hm
             EnterOverloadState(inst)
         end
-    end
+    end)
 end)
 
 -- 2025.11.24 YeFeng: 为发电机添加battery组件，使WX-78可以触摸发电机触发超载

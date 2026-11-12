@@ -10,6 +10,9 @@ if manifest ~= nil and GLOBAL.IsWorkshopMod(modname) then
         "common/combat_rewards.lua",
         "scripts/combatbenefits2hm.lua",
         "scripts/shadowmagic2hm.lua",
+        "scripts/keybindingmodel2hm.lua",
+        "scripts/keybindings2hm.lua",
+        "scripts/keybindingscreen2hm.lua",
         "scripts/wx78config2hm.lua",
         "scripts/wx78draft2hm.lua",
         "common/wx78_mode.lua",
@@ -126,6 +129,7 @@ if TUNING.DSTU then modimport("common/um_compat_fixes.lua") end
 modimport("common/combat_rewards.lua")
 
 -- 模组相关-----------------------------------------------------------------------------
+require("keybindings2hm").Install(env, modname)
 if ((TUNING.TEMP2HM.openmods == nil and GetModConfigData("Show Mod Icon In Game")) or TUNING.TEMP2HM.openmods) and
     not TheNet:IsDedicated() then modimport("easy_other/ui.lua") end
 if not TheNet:IsDedicated() then

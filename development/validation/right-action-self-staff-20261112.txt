@@ -1,0 +1,22 @@
+角色自身技能优先级／妥协滑行手杖右键修复（本地待发布）
+
+源码：content/easy_role/rightaction.lua。
+
+问题与处理
+1. 原生选择器先检查装备对目标动作，再检查目标自身动作。启用右键施法的奔雷矛等会挡住 RIGHTSELFACTION2HM；Ctrl 分支还会用盈能替换装备动作。现在装备对自身分支先查询实际可用、通过过滤的自身技能，且不再被 Ctrl 点技能覆盖。
+2. 妥测的翼装／allow_action_on_impassable 专用选择器，对带 aoetargeting 的装备无条件过滤非 CASTAOE 动作，连锁定技能时的自身交互也丢弃。现在该路径没有返回动作且真实目标为自身时，先恢复有效的自身交互，再考虑盈能等点技能。使用鼠标悬停与显式目标两种入口；真实原生瞄准、法术书、光标物品和禁用右键时不走这一恢复入口。
+3. 妥测滑行杖通过 UMCommonFns.HasRightClickAction 递归调用 DoGetMouseActions 判断是否应让位；递归检查把盈能兜底当作现成的交互，因此阻止 CASTSPELL。现在检测到手持装备的 um_checkingactions 递归标记时，只暂停本模组角色点技能；实际场景交互、装备和其它模组回调照常判断。普通右键滑行，Ctrl＋右键在盈能可用时选盈能。
+4. 用户明确要求锁定所有角色的自身逻辑。已核对 AddRightSelfAction / AddReadBookRightSelfAction 的所有注册，女工折叠、奶奶书架、旺达裂隙表、机器人芯片箱、韦伯蜘蛛容器等共用 RIGHTSELFACTION2HM，因此按公共入口保护；点击自身时，即使自身技能冷却或条件不满足，也不再兜底选本模组的盈能、冲刺、穿梭或闪袭。原有自身技能条件、冷却与显式 Ctrl 设置继续生效。
+
+验证入口
+work/python-3.12.8/python.exe tests/run_right_action_compat_tests.py
+work/python-3.12.8/python.exe tests/run_native_right_action_self_staff.py --edition all
+旧代码对照：上述原生脚本加 --edition beta --source work/right-action-self-before/content --label before。
+
+Lua 5.1 回归 1965 项通过，加载游戏真实选择器与右键派发、实际自身动作回调、能力勋章跳跃回调及妥测递归检查函数。补充全部原版角色公共能力入口的普通／Ctrl 自身优先级和自身冷却时禁用地面兜底，另覆盖盈能可用／冷却、装备右键、自身技能冷却与过滤、光标物品、显式自身 Ctrl 设置、原生 steering/rightclickoverride、鼠标实际悬停自身与妥测动作过滤后的恢复。
+
+原生专服采用单开淬炼、妥协正式版、妥测三个独立离线副本，使用真实女工、斧头、滑行手杖、锁定／启用技能的奔雷矛、妥测特殊选择器和附近科学机器。检查普通／Ctrl 与盈能可用／冷却组合，实际执行折叠空间观察建筑 NOBLOCK／NOCLICK，并进入真实 charles_charge 状态执行手杖施法、核对消耗 20 点燃料。完整结果及日志路径见同名前缀 before-beta.json、after-all.json。
+原生专服另外加载奶奶、旺达、WX-78、韦伯的实际自身动作注册，开启全员冲刺制造竞争，逐一检查两种奔雷矛、普通／妥测特殊路径和普通／Ctrl，以及自身技能冷却时不会变成地面技能。
+最终结果：单开74项、妥协正式版87项、妥测87项，共248项全部通过。三个隔离副本中的 rightaction.lua 均与最终本地源码逐字节一致，SHA-256 与一致性结果已记入 after-all.json。WX-78 原有自身条件明确要求 Ctrl，普通右键不应错误开放芯片箱；该条件照常保留。
+
+范围限制：Ctrl 由测试控制器提供，原生专服使用显式鼠标目标；无头回归额外使用鼠标悬停入口。未做真实多人客户端画面与远程网络输入验收；启用奔雷矛技能通过原生 aoetargeting 与本模组状态刷新接口模拟技能树授权。所有测试只修改隔离副本，不修改玩家存档。未递增版本号，未发布工坊。

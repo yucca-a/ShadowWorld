@@ -67,16 +67,12 @@ end
 ---------------------------------------------------------------
 -- 改变inst的保存与载入函数，增加存储是否加装甲参数.
 local function saveandloadtarget2hm(inst)
-    local oldsave = inst.OnSave
-    inst.OnSave = function(inst, data)
-        if oldsave ~= nil then oldsave(inst, data) end
+    SetOnSave(inst, function(inst, data)
         data.toBoss2hm = inst.toBoss2hm -- 记录是否是boss
-    end
-    local oldload = inst.OnLoad
-    inst.OnLoad = function(inst, data)
-        if oldload ~= nil then oldload(inst, data) end
+    end)
+    SetOnLoad(inst, function(inst, data)
         inst.toBoss2hm = data and data.toBoss2hm -- 记录是否是boss
-    end
+    end)
 end
 local RETARGET_MUST_TAGS = { "player" } -- 只找玩家
 local RETARGET_CANT_TAGS = { "structure" }  -- 随便写一个

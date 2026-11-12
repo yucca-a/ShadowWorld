@@ -1,0 +1,36 @@
+右键入口、快捷键配置、材料修理及源码复用检查（本地，未发布）
+
+问题结论
+- 右键自身和妥协滑行杖的问题来自装备选择器、角色地面技能兜底和妥协递归探测之间的优先级冲突。公共入口现在锁定“目标是自身时不兜底地面技能”，原有角色技能条件及冷却照常判断。普通右键滑行，Ctrl＋右键选择盈能。详见 right-action-self-staff-20261112.txt 及 before/after JSON。
+- 铥矿皇冠修理选项丢失：影魔法赠送补丁重新注册 USEITEM/inventoryitem，覆盖 common/common.lua 唯一收集器。现只追加 TUNING.USEITEMFNS2HM，保留材料修理、升级及其它功能；新开世界也会触发旧缺陷，并非回档数据损坏。
+- 肉丸 50→37.5：food/cooking.lua 的现有五格锅相关配置会安装 50～70% 新鲜度档，饥饿收益×0.75，颜色仍为绿色。本轮没有修改食物属性或新鲜度机制。原生 edible:GetHunger 与实际食用均复现；三套环境基础值不同，妥协正式版测试肉丸为40→30。最初 solo/materials 夹具的实际食用量被测试无敌抑制，随后修正夹具，其余组实际食用检查通过，不将首组0作为游戏故障。
+
+快捷键配置
+- 小扫把“游戏内查看模组”菜单与 Wiki 并列入口。识别当前淬炼角色自身／指向技能，以及手持装备支持的原生施法／蓄力能力；不声称可自动枚举任意第三方私有技能。
+- 点击绑定、按键并全部松开，显示单键／组合键，确认保存。支持最多4键、清除、重录、冲突提示；Esc／Enter／控制台键保留。
+- 默认全部未绑定，本机按角色持久保存，通用入口共享；换档／回档保留。复用已有角色动作、装备动作、控制器及服务器权限判断，不另建动作注册表，不改角色技能冷却。
+- 聊天、控制台、其它界面、放置模式禁止施法；蓄力在松键、打开界面、死亡时清理。处理原生虚拟控制键，避免将10000以上虚拟控制值传入C++输入接口。
+- 实际离线客户端／房主验证：小扫把入口、单键F7/F8与Ctrl+F6录制、冲突禁用保存、持久化冷启动、折叠空间dolongaction、盈能rotate_weapon2hm、滑行charles_charge及20%燃料消耗。截图 keybindings-ui-20261113.png；日志 work/keybinding-client-kvk0vkl_/client-restart.log。Windows输入工具不能可靠注入Shift，本次没有声称Shift物理键实机通过；模型测试覆盖规范Shift及未知键拒绝。没有进行两台真实多人客户端联网验收。
+
+全量扫描与复用修正
+- 扫描全部440个Lua文件，组件动作收集器22个唯一入口，检查字面动作／RPC注册与动态注册调用点，并复查动作选择器、保存／加载等回调赋值。机器清单 action-registration-audit-20261113.json；字面重复检查不能证明所有第三方动态组合绝无冲突。
+- 容器排序删除重复注册后备分支，统一追加公共 INVENTORYFNS2HM。沃尔特的点动作包装保留第二返回坐标。
+- 暗影棋子、暗影船改用现有 SetOnSave2hm/SetOnLoad2hm；妥协knook/roship/bight掉落表保存加载改用 SetOnSave/SetOnLoad，保留原回调。
+- 公共保存函数合并原生与新增GUID引用，保留参数和数据；组件保存保留第二返回引用。
+- 生态灭绝的两处pcall保存包装保留成功返回的实体引用，原有异常隔离继续有效；钓鱼佬保存包装补回原生返回引用；生命强化复用 SetComponentSave；女工电器保存改用 SetOnSave，加载迁移仍保留其专用顺序。
+- 14个文件共31个“先调用旧回调，再追加数据”的手写包装改用公共 SetOnSave/SetOnLoad。范围：装备、建筑、女工电器、WX-78、猪人Boss、巨兽装甲、植物、发条、遗迹梦魇、随机大小、时钟险境、垃圾堆守卫、远古知识、漫漫长夜。保留需要前置处理、显式替换、错误隔离、存档迁移顺序或引用重建的专用包装，不机械改动语义不同的实现。
+- 新增防回归检查：同一组件动作入口重复注册失败；新增persistent2hm保存加载回调须使用公共追加函数；原有修理与影魔法赠送并存；旧保存数据、GUID引用及加载参数不得丢失。
+
+验证
+- run_right_action_compat_tests.py：1965项；原生三环境自身技能／滑行248项，见 after-all.json。
+- run_keybinding_tests.py：65项，全部440个Lua通过5.1编译。
+- run_action_registration_tests.py：全量登记扫描和7项分发回归。
+- run_callback_chain_tests.py：42项，含三类发条、六种船旧回调保留，以及生态灭绝两处成功／失败的保护调用。
+- run_random_size_loot_tests.py：189项掉落、46项捕获；run_monster_nightvision_tests.py：423项；run_clock_sleep_tests.py：38项；run_epic_ruin_tests.py：4组；run_crash_audit_tests.py：43项。
+- run_shadowmagic_tests.py：43项；run_module_manifest_tests.py：35项；原生MNFS索引已同步新增模块。
+- run_native_ruinshat_repair.py --edition all：最新源码三环境每组30项实际材料修复及保存记录重建。
+- run_native_material_repair_rollback.py：三环境×材料／直接护符六组通过；每组实际角色存档、世界回档、冷重启，皇冠和护符各三种位置。详见 material-repair-rollback-20261113.json。
+- run_native_magician_rollback.py --um：10人真实帽子保存、回档、重新开启及重启通过，结果 work/vault-hardened-hosted-6mqqezfk/magician-rollback-result.json。
+- 女工电器保存回调改用公共函数后，run_native_winona_electrical.py --edition beta 的最新160项通过，报告 winona-electrical-save-audit-20261113.json；生命伤害原因专项108项通过。
+
+所有原生测试使用一次性离线副本，未修改玩家世界；无关Wiki工作保留。版本仍为2.8.15.0.30，未发布工坊。

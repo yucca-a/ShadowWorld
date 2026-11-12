@@ -268,17 +268,13 @@ local function qianghua(inst, myscale, loot)
 end
 
 local function saveandload(inst) ----保存与载入，主要是保存生物的各种数据已贴图
-    local oldsave = inst.OnSave
-    inst.OnSave = function(inst, data)
-        if oldsave ~= nil then oldsave(inst, data) end
+    SetOnSave(inst, function(inst, data)
         data.ray_suijidaxiao = inst.ray_suijidaxiao
         data.ray_nars2hm = inst.ray_nars2hm
         if inst.myscale ~= nil then data.myscale = inst.myscale end
-    end
+    end)
 
-    local oldload = inst.OnLoad
-    inst.OnLoad = function(inst, data)
-        if oldload ~= nil then oldload(inst, data) end
+    SetOnLoad(inst, function(inst, data)
         if data and data.ray_suijidaxiao ~= nil then inst.ray_suijidaxiao = data.ray_suijidaxiao end
         -- 为爽改动:感染性继承
         if data and data.ray_nars2hm ~= nil then
@@ -286,7 +282,7 @@ local function saveandload(inst) ----保存与载入，主要是保存生物的�
             if inst.ray_nars2hm then inst:AddTag("ray_nars2hm") end
         end
         if data and data.myscale ~= nil then inst.myscale = data.myscale end
-    end
+    end)
     local old_OnPreLoad = inst.OnPreLoad
     inst.OnPreLoad = function(inst, data)
         if old_OnPreLoad ~= nil then old_OnPreLoad(inst, data) end

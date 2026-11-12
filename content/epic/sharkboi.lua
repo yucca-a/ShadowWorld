@@ -829,7 +829,7 @@ local function savaandload(inst)
         elseif inst.stock_ then
             data.stock_ = inst.stock_
         end
-        if oldonsave then oldonsave(inst, data, ...) end
+        if oldonsave then return oldonsave(inst, data, ...) end
     end
     local oldOnLoad = inst.OnLoad
     inst.OnLoad = function(inst, data, ...)

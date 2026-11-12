@@ -1,4 +1,4 @@
-version = "2.8.15.0.30"
+version = "2.8.15.0.31"
 -- Original authors: 繁花丶海棠 | 胜天一猫 | 小蓝鲸 | leo468
 author = "Yucca（维护）"
 forumthread = ""

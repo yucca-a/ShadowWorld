@@ -3804,11 +3804,9 @@ if itemscfg then
                 if hasitemsstore then table.insert(actions, ACTIONS.STORE2HM) end
             end
         end
-        if TUNING.INVENTORYFNS2HM ~= nil then
-            table.insert(TUNING.INVENTORYFNS2HM, itemcheckfn)
-        else
-            AddComponentAction("INVENTORY", "inventoryitem", itemcheckfn)
-        end
+        -- common/common.lua owns this collector. Feature modules only append;
+        -- registering inventoryitem again would replace every earlier feature.
+        table.insert(TUNING.INVENTORYFNS2HM, itemcheckfn)
         AddComponentPostInit("playeractionpicker", function(self)
             local oldGetInventoryActions = self.GetInventoryActions
             self.GetInventoryActions = function(self, ...)

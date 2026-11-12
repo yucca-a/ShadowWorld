@@ -2,6 +2,7 @@ local TextListPopup = require "screens/redux/textlistpopup"
 local ModConfigurationScreen = require "screens/redux/modconfigurationscreen"
 local ImageButton = require "widgets/imagebutton"
 local SeasonWiki = require "seasonwiki2hm"
+local KeyBindings = require "keybindings2hm"
 
 local enableshow = ((TUNING.TEMP2HM.openmods == nil and GetModConfigData("Show Mod Icon In Game")) or TUNING.TEMP2HM.openmods)
 
@@ -108,7 +109,10 @@ end
 
 local function viewWorldModsConfigData(self)
     self.server_listing = getWorldModsListing()
-    local mods_list = {{text = TUNING.isCh2hm and "打开淬炼之季 Wiki" or "Open Season of Tempering Wiki", onclick = SeasonWiki.Open}}
+    local mods_list = {
+        {text = TUNING.isCh2hm and "打开淬炼之季 Wiki" or "Open Season of Tempering Wiki", onclick = SeasonWiki.Open},
+        {text = TUNING.isCh2hm and "快捷键绑定配置" or "Configure key bindings", onclick = KeyBindings.Open},
+    }
     for _, mod in pairs(self.server_listing.mods_description) do
         local onclick = nil
         local needprocess

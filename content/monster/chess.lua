@@ -319,16 +319,12 @@ for _, monster in ipairs(chessmonsters) do
         inst.components.combat.customdamagemultfn = CustomCombatDamage
         inst.components.combat:AddNoAggroTag("minotaur")
         inst.components.combat:AddNoAggroTag("minotaur2hm")
-        local oldOnSave = inst.OnSave
-        inst.OnSave = function(...)
-            if oldOnSave then oldOnSave(...) end
+        SetOnSave(inst, function(...)
             onsave(...)
-        end
-        local oldOnLoad = inst.OnLoad
-        inst.OnLoad = function(...)
-            if oldOnLoad then oldOnLoad(...) end
+        end)
+        SetOnLoad(inst, function(...)
             onload(...)
-        end
+        end)
         if TUNING.shadowworld2hm then inst:ListenForEvent("killed", onkilled) end
     end)
 end
@@ -469,16 +465,12 @@ for junk, monster in pairs(junks) do
                 end
             end
         end
-        local oldOnSave = inst.OnSave
-        inst.OnSave = function(...)
-            if oldOnSave then oldOnSave(...) end
+        SetOnSave(inst, function(...)
             onsave(...)
-        end
-        local oldOnLoad = inst.OnLoad
-        inst.OnLoad = function(...)
-            if oldOnLoad then oldOnLoad(...) end
+        end)
+        SetOnLoad(inst, function(...)
             onload(...)
-        end
+        end)
     end)
 end
 

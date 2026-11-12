@@ -1,0 +1,32 @@
+{
+  "version": "2.8.15.0.31",
+  "workshop_id": "3832182265",
+  "date": "2026-11-13",
+  "files": 510,
+  "bytes": 22127200,
+  "archive": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\backups\\releases\\v2.8.15.0.31-content.zip",
+  "archive_sha256": "df45f7db511039a8e64ab0becdbd3c498bde0babec2ae702202fc19a904237d6",
+  "patch_notes_file": "workshop/update-notes-2.8.15.0.31.txt",
+  "patch_notes_sha256": "27bf14069d9f1bd892dd37a777e236b52e941f2dcdc0fefbf0137d7a05ffde05",
+  "content_manifest": "development/releases/v2.8.15.0.31-content-manifest.json",
+  "status": "published_package_verified",
+  "uploader_status": "Publish complete; Update completed",
+  "version_tag_verified": true,
+  "public_changelog_readback_verified": false,
+  "public_changelog_readback_error": "Steam community HTTP 429",
+  "downloaded_package_verified": true,
+  "download_method": "SteamCMD anonymous workshop_download_item validate",
+  "downloaded_package_verification": {
+    "files": 510,
+    "source_files_matching": 509,
+    "uploader_generated_manifest_differs": true,
+    "manifest_indexes_all_files": true,
+    "downloaded_version": "2.8.15.0.31",
+    "keybinding_files_match": true
+  },
+  "validation": [
+    "development/validation/input-repair-audit-20261113.txt",
+    "development/validation/right-action-self-staff-20261112.txt"
+  ],
+  "limitations": "No two-client real multiplayer network acceptance test."
+}

@@ -238,41 +238,41 @@ end
 -- 妥协地下蟹兵螃蟹生成的发条重上游戏掉落物重置bug修复
 if TUNING.DSTU then AddPrefabPostInit("knook", function(inst)
 		if not TheWorld.ismastersim then return end
-		inst.OnSave = function(inst, data)
+		SetOnSave(inst, function(inst, data)
 		data.chanceloottable = inst.components.lootdropper.chanceloottable
 		-- print(data.chanceloottable)
-		end
-		inst.OnLoad = function(inst, data)
+		end)
+		SetOnLoad(inst, function(inst, data)
 			if data and data.chanceloottable then
 				inst.components.lootdropper:SetChanceLootTable(data.chanceloottable)
 			end
-		end
+		end)
 	end)
 end
 if TUNING.DSTU then AddPrefabPostInit("roship",function(inst)
 		if not TheWorld.ismastersim then return end
-		inst.OnSave = function(inst, data)
+		SetOnSave(inst, function(inst, data)
 		data.chanceloottable = inst.components.lootdropper.chanceloottable
 		-- print(data.chanceloottable)
-		end
-		inst.OnLoad = function(inst, data)
+		end)
+		SetOnLoad(inst, function(inst, data)
 			if data and data.chanceloottable then
 				inst.components.lootdropper:SetChanceLootTable(data.chanceloottable)
 			end
-		end
+		end)
 	end)
 end
 if TUNING.DSTU then AddPrefabPostInit("bight",function(inst)
 		if not TheWorld.ismastersim then return end
-		inst.OnSave = function(inst, data)
+		SetOnSave(inst, function(inst, data)
 		data.chanceloottable = inst.components.lootdropper.chanceloottable
 		-- print(data.chanceloottable)
-		end
-		inst.OnLoad = function(inst, data)
+		end)
+		SetOnLoad(inst, function(inst, data)
 			if data and data.chanceloottable then
 				inst.components.lootdropper:SetChanceLootTable(data.chanceloottable)
 			end
-		end
+		end)
 	end)
 end
 

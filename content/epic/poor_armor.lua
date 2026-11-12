@@ -35,18 +35,14 @@ end
 ---------------------------------------------------------------------------------
 -- 改变inst的保存与载入函数，增加存储是否加装甲参数.
 local function saveandload2hm(inst)
-    local oldsave = inst.OnSave
-    inst.OnSave = function(inst, data)
-        if oldsave ~= nil then oldsave(inst, data) end
+    SetOnSave(inst, function(inst, data)
         data.hasjudgedpoor_armor2hm = inst.hasjudgedpoor_armor2hm  -- 是否判定过
         data.haspoor_armor2hm = inst.haspoor_armor2hm  -- 有装甲
-    end
-    local oldload = inst.OnLoad
-    inst.OnLoad = function(inst, data)
-        if oldload ~= nil then oldload(inst, data) end
+    end)
+    SetOnLoad(inst, function(inst, data)
         inst.hasjudgedpoor_armor2hm = data and data.hasjudgedpoor_armor2hm
         inst.haspoor_armor2hm = data and data.haspoor_armor2hm
-    end
+    end)
 end
 local function hastag2hm(inst, tagtable) -- 判断inst是否有tagtable中的tag
     if inst == nil or tagtable == nil then return false end

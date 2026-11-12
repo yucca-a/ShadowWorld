@@ -134,11 +134,11 @@ if GetModConfigData("Walter Hide Woby") then
                 local pointspecialactionsfn = inst.components.playeractionpicker.pointspecialactionsfn
                 if pointspecialactionsfn and ACTIONS.WOBY_HERE and ACTIONS.WOBY_STAY then
                     inst.components.playeractionpicker.pointspecialactionsfn = function(inst, ...)
-                        local actions, usedefault = pointspecialactionsfn(inst, ...)
+                        local actions, pos2 = pointspecialactionsfn(inst, ...)
                         if actions and (actions[1] == ACTIONS.WOBY_HERE or actions[1] == ACTIONS.WOBY_STAY) and inst:HasTag("hidewoby2hm") then
                             table.remove(actions, 1)
                         end
-                        return actions
+                        return actions, pos2
                     end
                 end
             end

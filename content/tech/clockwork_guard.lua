@@ -63,16 +63,12 @@ end
 -- 垃圾堆守护 世界生成时垃圾堆附近生成2个发条--------------------------------------------
 if select_clockwork == 1 then
     local function saveandloadtarget2hm(inst)
-        local oldsave = inst.OnSave
-        inst.OnSave = function(inst, data)
-            if oldsave ~= nil then oldsave(inst, data) end
+        SetOnSave(inst, function(inst, data)
             data.spawnknight2hm = inst.spawnknight2hm -- 记录是否生成过
-        end
-        local oldload = inst.OnLoad
-        inst.OnLoad = function(inst, data)
-            if oldload ~= nil then oldload(inst, data) end
+        end)
+        SetOnLoad(inst, function(inst, data)
             inst.spawnknight2hm = data and data.spawnknight2hm -- 记录是否生成过
-        end
+        end)
     end
     -- 世界生成时垃圾堆附近生成2个发条knight/bishop
     local function StartSpawn2hm(inst)

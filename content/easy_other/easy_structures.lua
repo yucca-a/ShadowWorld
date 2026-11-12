@@ -847,8 +847,10 @@ if GetModConfigData("Prestihatitator Redeem shadowmagic Tag") then
     local ShadowMagic = require("shadowmagic2hm")
     -- Native alltrader offers non-tradable materials on left click. Explicitly
     -- offer the requested right-click GIVE for this fuel and these two targets.
-    AddComponentAction("USEITEM", "inventoryitem", function(item, doer, target, actions, right)
-        if not right or item.prefab ~= "nightmarefuel" or not target:HasTag("alltrader") or target:HasTag("burnt") then return end
+    -- inventoryitem has one USEITEM collector per mod. Append to the shared
+    -- dispatcher so shadow-magic gifts cannot replace repairs and upgrades.
+    table.insert(TUNING.USEITEMFNS2HM, function(item, doer, target, actions, right)
+        if not right or target == nil or item.prefab ~= "nightmarefuel" or not target:HasTag("alltrader") or target:HasTag("burnt") then return end
         local station = target.prefab == "researchlab3" or
             (target.prefab == "reskin_tool" and target.linkprototyper2hm and target.linkprototyper2hm:value() == "researchlab3")
         local rider = doer.replica.rider
@@ -1838,18 +1840,14 @@ if GetModConfigData("townportal use sandstone activate") then
     end
     -- 2025.8.31 melon:每个塔随机一个标记，随机之后固定 -----
     local function saveandloadmarkid2hm(inst) -- 保存
-        local oldsave = inst.OnSave
-        inst.OnSave = function(inst, data)
-            if oldsave ~= nil then oldsave(inst, data) end
+        SetOnSave(inst, function(inst, data)
             data.mark_id2hm = inst.mark_id2hm
             data.mark_color2hm = inst.mark_color2hm
-        end
-        local oldload = inst.OnLoad
-        inst.OnLoad = function(inst, data)
-            if oldload ~= nil then oldload(inst, data) end
+        end)
+        SetOnLoad(inst, function(inst, data)
             inst.mark_id2hm = data and data.mark_id2hm
             inst.mark_color2hm = data and data.mark_color2hm
-        end
+        end)
     end
     -- 生成，刚做的时候展示
     local mark_colors = {

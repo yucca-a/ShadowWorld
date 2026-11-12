@@ -192,13 +192,17 @@ local function equipaoetargeting(inst)
     -- Enabled item skills keep plain right-click; Ctrl selects our ability.
     return not IsRightActionCtrlPressed(inst) and EquippedPointAbilityEnabled(inst)
 end
-local function InstallRightPointAction(inst, actionfn, needctrl)
+local function InstallRightPointAction(inst, actionfn, needctrl, definition)
     local picker = inst.components.playeractionpicker
     if picker == nil then return end
     local old = picker.pointspecialactionsfn
     local function guardedaction(player, pos, useitem, right, ...)
         local inventory = player.replica.inventory
         local controller = player.components.playercontroller
+        local tool = inventory ~= nil and inventory:GetEquippedItem(EQUIPSLOTS.HANDS) or nil
+        -- UM probes DoGetMouseActions recursively before offering staff spells.
+        -- Our fallback is not a competing scene interaction in that probe.
+        if tool ~= nil and tool.um_checkingactions then return {} end
         if useitem ~= nil or player:HasTag("playerghost") or player.ingym2hm or
             (player.weremode ~= nil and player.weremode:value() ~= 0) or
             (inventory ~= nil and inventory:GetActiveItem() ~= nil) or
@@ -207,6 +211,7 @@ local function InstallRightPointAction(inst, actionfn, needctrl)
     end
     picker.rightaction2hm = guardedaction
     picker.rightactionneedctrl2hm = needctrl
+    picker.rightactiondef2hm = definition
     picker.pointspecialactionsfn = function(...)
         -- Extra skills (including medal/skill-tree callbacks) keep plain RMB.
         -- Ctrl selection is resolved by GetPointSpecialActions after filtering.
@@ -237,7 +242,7 @@ local function GetPointSpecialActions_DODGE(inst, pos, useitem, right)
 end
 local function OnSetOwner_DODGE(inst)
     if inst.components.playeractionpicker ~= nil then
-        InstallRightPointAction(inst, GetPointSpecialActions_DODGE)
+        InstallRightPointAction(inst, GetPointSpecialActions_DODGE, nil, ACTIONS.DODGE_WALTER)
         if inst.prefab == "walter" and TUNING.DSTU and inst.components.playeractionpicker.rightclickoverride and not inst.rightaction2hm_beefalo then
             local old = inst.components.playeractionpicker.rightclickoverride
             inst.components.playeractionpicker.rightclickoverride = function(...)
@@ -340,7 +345,7 @@ local function GetPointSpecialActions_Rotate(inst, pos, useitem, right)
     return {}
 end
 local function OnSetOwner_Rotate(inst)
-    InstallRightPointAction(inst, GetPointSpecialActions_Rotate)
+    InstallRightPointAction(inst, GetPointSpecialActions_Rotate, nil, ACTIONS.ROTATE_WINONA2HM)
 end
 local function delayOnSetOwner_Rotate(inst) inst:DoTaskInTime(0, OnSetOwner_Rotate) end
 function AddRotateAbility(inst)
@@ -434,7 +439,7 @@ local function GetPointSpecialActions_WARPFRONT(inst, pos, useitem, right)
     return {}
 end
 local function OnSetOwner_WARPFRONT(inst)
-    InstallRightPointAction(inst, GetPointSpecialActions_WARPFRONT, ctrlwrapback)
+    InstallRightPointAction(inst, GetPointSpecialActions_WARPFRONT, ctrlwrapback, ACTIONS.WARPFRONT_WANDA)
 end
 -- 穿梭到未来添加新的N个坐标
 local function positionalwarpaddfuturepos(self, frontdata2hm)
@@ -628,7 +633,7 @@ local function GetPointSpecialActions_WARPBACK(inst, pos, useitem, right)
     return {}
 end
 local function OnSetOwner_WARPBACK(inst)
-    InstallRightPointAction(inst, GetPointSpecialActions_WARPBACK, ctrlwrapback)
+    InstallRightPointAction(inst, GetPointSpecialActions_WARPBACK, ctrlwrapback, ACTIONS.WARPBACK_WANDA)
 end
 function AddWrapAbility(inst)
     inst.rightaction2hm = net_bool(inst.GUID, "player.rightaction2hm", "rightaction2hmdirty")
@@ -978,7 +983,7 @@ local function GetPointSpecialActions_Lunge(inst, pos, useitem, right)
     return {}
 end
 local function OnSetOwner_Lunge(inst)
-    InstallRightPointAction(inst, GetPointSpecialActions_Lunge, ctrlLunge)
+    InstallRightPointAction(inst, GetPointSpecialActions_Lunge, ctrlLunge, ACTIONS.Lunge_WAXWELL2HM)
 end
 local function delayOnSetOwner_Lunge(inst) inst:DoTaskInTime(0, OnSetOwner_Lunge) end
 function AddLungeAbility(inst)
@@ -987,7 +992,24 @@ function AddLungeAbility(inst)
 end
 
 -- 扩展动作使用范围
+local function GetRightSelfSceneAction(picker)
+    for _, action in ipairs(picker:GetSceneActions(picker.inst, true)) do
+        if action.action == ACTIONS.RIGHTSELFACTION2HM then return action end
+    end
+end
 AddComponentPostInit("playeractionpicker", function(self)
+    local GetEquippedItemActions = self.GetEquippedItemActions
+    self.GetEquippedItemActions = function(self, target, useitem, right, ...)
+        -- Self skills must be considered before equipped target spells, which
+        -- would otherwise hide them even while the point ability is cooling down.
+        -- Keep the native picker in charge of cursor items, steering, spellbooks
+        -- and rightclickoverride; only change its equipped-on-self branch.
+        if right and target == self.inst then
+            local action = GetRightSelfSceneAction(self)
+            if action ~= nil then return {action} end
+        end
+        return GetEquippedItemActions(self, target, useitem, right, ...)
+    end
     local GetPointSpecialActions = self.GetPointSpecialActions
     self.GetPointSpecialActions = function(self, pos, useitem, right, ...)
         local actions = GetPointSpecialActions(self, pos, useitem, right, ...)
@@ -1027,11 +1049,23 @@ AddComponentPostInit("playeractionpicker", function(self)
             self.inst.components.playercontroller:IsControlPressed(CONTROL_FORCE_STACK)
         local inventory = self.inst.replica.inventory
         local tool = inventory:GetEquippedItem(EQUIPSLOTS.HANDS)
+        local selftargeted = target == self.inst or (target == nil and position == nil and
+            not self.inst.components.playercontroller:IsAOETargeting() and TheInput:GetWorldEntityUnderMouse() == self.inst)
+        -- UM's wingsuit/impassable picker strips equipped actions for every
+        -- aoetargeting item, including locked skills. Restore a valid self
+        -- interaction before considering any ground-ability fallback.
+        if rightaction == nil and not self.disable_right_click and inventory:GetActiveItem() == nil and spellbook == nil and
+            not self.inst.components.playercontroller:IsAOETargeting() and not TheInput:GetHUDEntityUnderMouse() and
+            selftargeted then
+            rightaction = GetRightSelfSceneAction(self)
+        end
         local overrideitem = ctrlpressed and (EquippedPointAbilityEnabled(self.inst) or
             (tool ~= nil and rightaction ~= nil and rightaction.invobject == tool))
         local overridepointskill = ctrlpressed and self.rightclickoverride ~= nil and rightaction ~= nil and
             rightaction.target == nil and rightaction.pos ~= nil
-        if (rightaction == nil or (ctrlpressed and self.rightactionneedctrl2hm) or overrideitem or overridepointskill) and
+        local selfaction = rightaction ~= nil and rightaction.target == self.inst and
+            rightaction.action == ACTIONS.RIGHTSELFACTION2HM
+        if not selftargeted and not selfaction and (rightaction == nil or (ctrlpressed and self.rightactionneedctrl2hm) or overrideitem or overridepointskill) and
             self.rightaction2hm and not self.disable_right_click and inventory:GetActiveItem() == nil and spellbook == nil and
             (self.inst.components.playercontroller.reticule == nil or self.inst.components.playercontroller:GetActiveSpellBook() == nil) and
             not TheInput:GetHUDEntityUnderMouse() then

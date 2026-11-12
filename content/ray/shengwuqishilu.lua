@@ -57,15 +57,12 @@ if healthrate or healthabsorb then
                 SetMaxHealth(self, ...)
                 delayupdatehealth(self.inst)
             end
-            local OnSave = self.OnSave
-            self.OnSave = function(self, ...)
-                local data = OnSave(self, ...)
+            SetComponentSave(self, function(self, data)
                 if self.save_maxhealth then
                     data.newhealth2hm = self.inst.newhealth2hm
                     data.oldhealth2hm = self.inst.oldhealth2hm
                 end
-                return data
-            end
+            end)
             local OnLoad = self.OnLoad
             self.OnLoad = function(self, data, ...)
                 if data.maxhealth ~= nil then
