@@ -9,6 +9,11 @@ if manifest ~= nil and GLOBAL.IsWorkshopMod(modname) then
         "common/beef_bell_pack.lua",
         "common/combat_rewards.lua",
         "scripts/combatbenefits2hm.lua",
+        "scripts/shadowmagic2hm.lua",
+        "scripts/wx78config2hm.lua",
+        "scripts/wx78draft2hm.lua",
+        "common/wx78_mode.lua",
+        "common/wx78_recovery.lua",
         "scripts/hambatweightedskins2hm.lua",
         "scripts/umcompatguard2hm.lua",
         "scripts/umwinonaworker2hm.lua",
@@ -60,6 +65,8 @@ if GetModConfigData("gelblob_storage_kit upgrade") then modimport("epic/gelblob_
 modimport("easy_other/magician_private2hm.lua")
 
 -- 简单模式----------------------------------------------------------------------------------
+local wx78settings2hm = require("wx78config2hm").Resolve(GetModConfigData, TUNING)
+TUNING.wx78easyhard2hm = wx78settings2hm.easyhard
 if TUNING.easymode2hm then
     -- 简单模式非角色改动-----------------------------------------------
     modimport("easy_other/easy_living_things.lua") -- 生物(动物、植物)
@@ -82,7 +89,7 @@ if TUNING.easymode2hm then
         if GetModConfigData("willow_easy") then modimport("easy_role/willow_easy.lua") end
         if GetModConfigData("wolfgang_easy") then modimport("easy_role/wolfgang_easy.lua") end
         if GetModConfigData("wendy_easy") then modimport("easy_role/wendy_easy.lua") end
-        if GetModConfigData("wx78_easy") then modimport("easy_role/wx78_easy.lua") end
+        if wx78settings2hm.easy then modimport("easy_role/wx78_easy.lua") end
         if GetModConfigData("wickerbottom_easy") then modimport("easy_role/wickerbottom_easy.lua") end
         if GetModConfigData("woodie_easy") then modimport("easy_role/woodie_easy.lua") end
         if GetModConfigData("wes_easy") then modimport("easy_role/wes_easy.lua") end 
@@ -106,6 +113,9 @@ if TUNING.easymode2hm then
         if GetModConfigData("avoidselfdmg") then TUNING.avoidselfdmg2hm = true end
     end
 end
+
+-- WX-78 has one independent selector; the default retains old per-mode gates.
+modimport("common/wx78_mode.lua")
 
 -- 即使关闭增强，也要能读取旧存档中的工具箱。
 modimport("easy_role/winona_toolbox.lua")
@@ -207,7 +217,7 @@ if TUNING.hardmode2hm then
         if GetModConfigData("taste") then modimport("role/taste.lua") end
         if GetModConfigData("willow") then modimport("role/willow.lua") end
         if GetModConfigData("webber") then modimport("role/webber.lua") end
-        if GetModConfigData("wx-78") then modimport("role/wx78.lua") end
+        if TUNING.wx78mode2hm == "legacy" and TUNING.wx78hard2hm then modimport("role/wx78.lua") end
         if GetModConfigData("wendy") then modimport("role/wendy.lua") end
         if GetModConfigData("wolfgang") then modimport("role/wolfgang.lua") end
         if GetModConfigData("wickerbottom") then modimport("role/wickerbottom.lua") end

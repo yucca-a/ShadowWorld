@@ -844,27 +844,28 @@ end
 
 -- 暗影操控器兑换暗影魔法
 if GetModConfigData("Prestihatitator Redeem shadowmagic Tag") then
+    local ShadowMagic = require("shadowmagic2hm")
+    -- Native alltrader offers non-tradable materials on left click. Explicitly
+    -- offer the requested right-click GIVE for this fuel and these two targets.
+    AddComponentAction("USEITEM", "inventoryitem", function(item, doer, target, actions, right)
+        if not right or item.prefab ~= "nightmarefuel" or not target:HasTag("alltrader") or target:HasTag("burnt") then return end
+        local station = target.prefab == "researchlab3" or
+            (target.prefab == "reskin_tool" and target.linkprototyper2hm and target.linkprototyper2hm:value() == "researchlab3")
+        local rider = doer.replica.rider
+        if station and (not rider or not rider:IsRiding() or
+            (target.replica.inventoryitem and target.replica.inventoryitem:IsGrandOwner(doer))) and not table.contains(actions, ACTIONS.GIVE) then
+            table.insert(actions, ACTIONS.GIVE)
+        end
+    end)
     local function OnRefuseItem(inst, giver, item)
         if inst.components.workable then inst.components.workable.onwork(inst) end
         inst.SoundEmitter:PlaySound("dontstarve/common/researchmachine_lvl3_ding")
-    end
-    
-    local function RemoveTag(inst)
-        if inst.components.persistent2hm and inst.components.persistent2hm.data.shadowmagiccycle and TheWorld.state.cycles -
-            inst.components.persistent2hm.data.shadowmagiccycle > 20 then
-            local shadowmagic_tag = inst.components.persistent2hm.data.shadowmagic_tag
-            local magician_tag = inst.components.persistent2hm.data.magician_tag
-            local magician_component = inst.components.persistent2hm.data.magician_component
-            if inst:HasTag("shadowmagic") and not shadowmagic_tag then inst:RemoveTag("shadowmagic") end
-            if inst:HasTag("magician") and not magician_tag then inst:RemoveTag("magician") end
-            if inst.components.magician and not magician_component then inst:RemoveComponent("magician") end
-            if inst.components.reader ~= nil then
-                inst.components.reader:SetSanityPenaltyMultiplier(inst.components.persistent2hm.data.originalsanity_mult or 1)
-            end
-            local fx = SpawnPrefab("shadow_despawn")
-            inst:AddChild(fx)
-            if inst.components.talker then inst.components.talker:Say((TUNING.isCh2hm and "我体内的暗影魔法渴望燃料..." or "The shadow magic within me craves fuel...")) end
-            inst:StopWatchingWorldState("cycles", RemoveTag)
+        if item and item.prefab == "nightmarefuel" and giver and giver.components.talker then
+            local cost = ShadowMagic.Cost(giver)
+            giver.components.talker:Say(cost > 0 and
+                (TUNING.isCh2hm and string.format("需要%d个噩梦燃料才能补满20天暗影魔法。", cost) or
+                    string.format("I need %d nightmare fuel to refill 20 days of shadow magic.", cost)) or
+                (TUNING.isCh2hm and "暗影魔法权限已充足，无需续费。" or "My shadow magic needs no renewal."))
         end
     end
 
@@ -889,27 +890,18 @@ if GetModConfigData("Prestihatitator Redeem shadowmagic Tag") then
                 return
             end
         end
-        if item.components.stackable.stacksize < 4 then
-            OnRefuseItem(inst, giver)
+        local cost = ShadowMagic.Cost(giver)
+        if cost <= 0 or not item.components.stackable or item.components.stackable:StackSize() < cost then
+            OnRefuseItem(inst, giver, item)
             giver.components.inventory:GiveItem(item, nil, inst:GetPosition())
             return
         end
-        item.components.stackable:Get(4):Remove()
+        item.components.stackable:Get(cost):Remove()
         if inst.components.prototyper then inst.components.prototyper.onactivate(inst, giver) end -- 2026.2.15 YeFeng:补传giver参数，修复官方更新后onactivate延迟回调中doer为nil导致崩溃的问题
         -- if inst.components.prototyper then inst.components.prototyper.onactivate(inst) end
         inst.SoundEmitter:PlaySound("dontstarve/common/researchmachine_alchemy_gift_recieve")
         if giver ~= nil then
-            if giver:HasTag("shadowmagic") then giver.components.persistent2hm.data.shadowmagic_tag = true end
-            if giver:HasTag("magician") then giver.components.persistent2hm.data.magician_tag = true end
-            if giver.components.magician then giver.components.persistent2hm.data.magician_component = true end
-            if not giver:HasTag("shadowmagic") then giver:AddTag("shadowmagic") end
-            if not giver:HasTag("magician") then giver:AddTag("magician") end
-            if not giver.components.magician then giver:AddComponent("magician") end
-            if giver.components.reader ~= nil and (giver.components.reader.sanity_mult or 1) > 1 then
-                giver.components.persistent2hm.data.originalsanity_mult = giver.components.reader.sanity_mult or 1
-                giver.components.reader:SetSanityPenaltyMultiplier(1)
-            end
-            if giver.components.persistent2hm then giver.components.persistent2hm.data.shadowmagiccycle = TheWorld.state.cycles end
+            ShadowMagic.SetRemaining(giver, 20 * TUNING.TOTAL_DAY_TIME)
             if giver.components.rider and not giver.components.rider:IsRiding() then
                 giver.sg:GoToState("changeoutsidewardrobe")
             else
@@ -921,35 +913,27 @@ if GetModConfigData("Prestihatitator Redeem shadowmagic Tag") then
             end
             local equip = giver.components.inventory and giver.components.inventory:GetEquippedItem(EQUIPSLOTS.HEAD)
             if equip and equip:IsValid() and equip.checkstatus2hm then equip:checkstatus2hm() end
-            giver:WatchWorldState("cycles", RemoveTag)
+            if item:IsValid() then giver.components.inventory:GiveItem(item, nil, inst:GetPosition()) end
+            if giver.components.talker then
+                giver.components.talker:Say(TUNING.isCh2hm and string.format("消耗%d个噩梦燃料，暗影魔法权限已补满20天。", cost) or
+                    string.format("Used %d nightmare fuel. Shadow magic renewed for 20 days.", cost))
+            end
         end
     end
 
     local function AcceptTest(inst, item, giver)
         if inst:HasTag("burnt") then return false end
         if item and item.prefab == "reskin_tool" and item.prefab ~= inst.prefab and 
-        giver and giver.components.persistent2hm and giver.components.persistent2hm.data.shadowmagiccycle then 
+        giver and ShadowMagic.Enrolled(giver) then
             return true 
         end
         if inst.components.burnable ~= nil and inst.components.burnable:IsBurning() then return false end
-        if item.prefab ~= "nightmarefuel" or giver == nil then return false end
-        if not giver:HasTag("shadowmagic") or not giver:HasTag("magician") or not giver.components.magician or
-            (giver.components.reader ~= nil and (giver.components.reader.sanity_mult or 1) > 1) then return true end
-        return false
+        if not item or item.prefab ~= "nightmarefuel" or giver == nil then return false end
+        local cost = ShadowMagic.Cost(giver)
+        return cost > 0 and item.components.stackable ~= nil and item.components.stackable:StackSize() >= cost
     end
     local function resetshadowmagic(inst)
-        if inst.components.persistent2hm and inst.components.persistent2hm.data.shadowmagiccycle and TheWorld.state.cycles -
-            inst.components.persistent2hm.data.shadowmagiccycle <= 20 then
-            if not inst:HasTag("shadowmagic") then inst:AddTag("shadowmagic") end
-            if not inst:HasTag("magician") then inst:AddTag("magician") end
-            if not inst.components.magician then inst:AddComponent("magician") end
-            if inst.components.reader ~= nil and (inst.components.reader.sanity_mult or 1) > 1 then
-                inst.components.reader:SetSanityPenaltyMultiplier(1)
-            end
-            local equip = inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HEAD)
-            if equip and equip:IsValid() and equip.checkstatus2hm then equip:checkstatus2hm() end
-            inst:WatchWorldState("cycles", RemoveTag)
-        end
+        ShadowMagic.Refresh(inst, true)
     end
     AddPlayerPostInit(function(inst)
         if not TheWorld.ismastersim then return end
@@ -968,7 +952,7 @@ if GetModConfigData("Prestihatitator Redeem shadowmagic Tag") then
     AddComponentPostInit("magician", function(self)
         local OnRemoveFromEntity = self.OnRemoveFromEntity
         self.OnRemoveFromEntity = function(self, ...)
-            if self.inst:IsValid() and self.inst:HasTag("player") and self.inst.components.persistent2hm then
+            if self.inst:IsValid() and self.inst:HasTag("player") and self.inst.shadowmagicactive2hm then
                 self.inst:DoTaskInTime(0, resetshadowmagic)
             end
             if OnRemoveFromEntity then OnRemoveFromEntity(self, ...) end
@@ -994,9 +978,8 @@ if GetModConfigData("Prestihatitator Redeem shadowmagic Tag") then
             local TakeFuelItem = inst.components.fueled.TakeFuelItem
             inst.components.fueled.TakeFuelItem = function(self, item, doer, ...)
                 local result = TakeFuelItem(self, item, doer, ...)
-                if result and doer and doer:IsValid() and doer:HasTag("player") and doer.components.persistent2hm and
-                    doer.components.persistent2hm.data.shadowmagiccycle then
-                    if TheWorld.state.cycles - doer.components.persistent2hm.data.shadowmagiccycle > 20 and doer.sg and not IsEntityDeadOrGhost(doer) then
+                if result and doer and doer:IsValid() and doer:HasTag("player") and ShadowMagic.Enrolled(doer) then
+                    if ShadowMagic.Remaining(doer) <= 0 and doer.sg and not IsEntityDeadOrGhost(doer) then
                         if doer.components.rider and not doer.components.rider:IsRiding() then
                             doer.sg:GoToState("changeoutsidewardrobe")
                         else
@@ -1006,9 +989,7 @@ if GetModConfigData("Prestihatitator Redeem shadowmagic Tag") then
                             doer:AddChild(fx)
                         end
                     end
-                    doer.components.persistent2hm.data.shadowmagiccycle = math.max(doer.components.persistent2hm.data.shadowmagiccycle + 1,
-                                                                                   TheWorld.state.cycles - 20)
-                    resetshadowmagic(doer)
+                    ShadowMagic.RenewJournal(doer)
                 end
                 return result
             end
@@ -1024,10 +1005,10 @@ if GetModConfigData("Prestihatitator Redeem shadowmagic Tag") then
         inst.components.trader.onaccept = OnGivenItem
         inst.components.trader.onrefuse = OnRefuseItem
         local oldAcceptGift = inst.components.trader.AcceptGift
-        inst.components.trader.AcceptGift = function(inst, giver, item, count)
+        inst.components.trader.AcceptGift = function(self, giver, item, count)
             if item == nil then return end
-            if item.prefab == "nightmarefuel" then count = count or 4 end
-            return oldAcceptGift(inst, giver, item, count)
+            if item.prefab == "nightmarefuel" then count = ShadowMagic.Cost(giver) end
+            return oldAcceptGift(self, giver, item, count)
         end
         inst:ListenForEvent("onburnt", function() 
             inst:RemoveComponent("trader") 

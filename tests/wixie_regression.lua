@@ -109,6 +109,17 @@ for _,o in ipairs(saved)do if o.name~='walter'then check(o.saved==false,'hidden 
 for _,id in ipairs({'workshop-2039181790','workshop-3193922031','2039181790','Uncompromising Mode: Public Beta'})do
     enabled={id};s=screen();check(#s.options==5,'enabled stable/Beta/local exposes Wixie and Wathom options '..id)
 end
+local beforewx=all
+all={{name='WX-78 Mode',default='legacy',saved='draft',options={}},
+    {name='wx78_easy',default=true,saved=false,options={}},
+    {name='wx-78',default=true,saved=true,options={}}}
+s=screen();check(#s.options==1,'WX-78 exposes only the merged mode selector')
+saved=s:CollectSettings();check(#saved==3,'WX-78 hidden old switches survive a settings save')
+for _,o in ipairs(saved)do
+    if o.name=='wx78_easy'then check(o.saved==false,'WX-78 preserves disabled old easy setting')end
+    if o.name=='wx-78'then check(o.saved==true,'WX-78 preserves enabled old hard setting')end
+end
+all=beforewx
 enabled={};check(#screen('other').options==5,'other mods never filtered')
 local failing=function()error('injected GUI constructor failure')end
 KnownModIndex.LoadModConfigurationOptions=failing

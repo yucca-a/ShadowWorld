@@ -1,4 +1,4 @@
-version = "2.8.15.0.29"
+version = "2.8.15.0.30"
 -- Original authors: 繁花丶海棠 | 胜天一猫 | 小蓝鲸 | leo468
 author = "Yucca（维护）"
 forumthread = ""
@@ -383,8 +383,8 @@ configuration_options = {
         i18n({"返还一半素材,小数点部分概率返还,绿宝石升级两次", "Give items returns 50% ingredients;Greengen levelup"})),
     item("Prestihatitator Redeem shadowmagic Tag", i18n({"暗影操控器兑换暗影魔法", "Prestihatitator Redeem shadowmagic Tag"}),
         i18n({
-            "给予4噩梦燃料获得暗影魔法和工具标签并让读魔法书理智消耗变为1倍",
-            "Give 4 nightmare fuels offers shadow magic/tool tag and consumes normal reading sanity"
+            "给予噩梦燃料补满20天暗影魔法/工具权限及1倍读书理智消耗；每个续5天，不足5天按5天收费；绑定四本的扫把也可续费",
+            "Nightmare fuel refills shadow magic/tool access to 20 days, charged per 5 days rounded up. Also works on a sweeper linked to this station. Reading sanity cost is capped at 1x."
         })),
     item("Terra Firma Tamper Redeem Desert Stone", i18n({"土地夯实器兑换沙之石", "Terra Firma Tamper Redeem Desert Stone"}),
         i18n({"给予蛋和玩具等可兑换沙之石;铥矿升级", "Give eggs and toy for desert stones;Thulecite levelup"}), true, nil, nil, -1,
@@ -629,7 +629,22 @@ configuration_options = {
             i18n({"仅温蒂可打开", "Wendy can open"}),
             i18n({"全员可开", "Everyone can open"})
         }, i18n({"禁用", "Disable"}), false),
-    item("wx78_easy", i18n({"-------------------- 󰀔 WX-78总开关", "󰀔 WX-78 Master Switch"})),
+    {
+        name = "WX-78 Mode",
+        label = i18n({"-------------------- 󰀔 WX-78方案", "󰀔 WX-78 Mode"}),
+        hover = i18n({"默认沿用当前方案及旧档开关；草案测试需手动选择。其余档位独立于简单/困难总开关，下方细项仅供旧方案使用。",
+            "Default preserves existing settings. Opt in to Draft to test it. Explicit modes are independent of global easy/hard switches; options below apply to legacy modes."}),
+        options = {
+            {description = i18n({"当前方案（兼容旧档）", "Current (preserve settings)"}), data = "legacy"},
+            {description = i18n({"旧方案·简单", "Legacy easy"}), data = "easy"},
+            {description = i18n({"旧方案·困难", "Legacy hard"}), data = "hard"},
+            {description = i18n({"草案测试", "Draft test"}), data = "draft"},
+            {description = i18n({"关闭改动", "Off"}), data = "off"},
+        },
+        default = "legacy",
+    },
+    -- Kept in the schema for old world settings; hidden by wixieconfig2hm.
+    item("wx78_easy", "WX-78 legacy easy"),
     item("WX-78 Safe Remove Module", i18n({"WX-78拆电路板无损耗", "WX-78 Safe Remove Module"})),
     item("WX-78 Integrated Upgrade Module Level", i18n({"WX-78同种电路板融合升级", "WX-78 Integrated Upgrade Module Level"}),
         i18n({"同一个电路板最多发挥Max格插脚能力,生物数据修理", "The same circuit can have up to max pins,repair with Bio Data"})),

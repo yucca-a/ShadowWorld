@@ -7,6 +7,7 @@ GetModConfigData=function(k)return enabled[k] or false end
 TUNING={hardmode2hm=false};STRINGS={};GLOBAL=_G
 AddPrefabPostInit=function(name,fn)hooks[name]=hooks[name]or{};table.insert(hooks[name],fn)end
 AddPlayerPostInit=function()end;AddComponentPostInit=function()end
+AddComponentAction=function()end
 net_byte=function()local value=0;return {set=function(_,v)value=v end,value=function()return value end}end
 SetOnSave2hm=function(i,fn)i.onsave2hm=fn end
 SetOnLoad2hm=function(i,fn)i.onload2hm=fn end

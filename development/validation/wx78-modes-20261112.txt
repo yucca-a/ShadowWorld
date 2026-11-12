@@ -1,0 +1,30 @@
+WX-78 unified modes / draft validation - 2026-11-12
+Status: PASSED. Local implementation only; not uploaded.
+
+Lua 5.1 compilation: 436 product files.
+64 legacy switch combinations: original gates and easy/hard flags retained; default triggers no fusion/box migration.
+256 explicit selector cases, circuit tiers/caps/deactivation and nutrition arithmetic: passed.
+Native GUI configuration collection: 733 checks; layout: 32652; require/manifest: 30.
+Native manifest: all 506 package paths indexed.
+
+Final native runs:
+- beta / draft: passed; work\vault-hardened-hosted-m0flvcc5\wx78-modes-result.json
+- solo / draft: passed; work\vault-hardened-hosted-n3j00bq5\wx78-modes-result.json
+- solo / easy: passed; work\vault-hardened-hosted-wozt6x8z\wx78-modes-result.json
+- solo / hard: passed; work\vault-hardened-hosted-nqodeb69\wx78-modes-result.json
+- solo / legacy: passed; work\vault-hardened-hosted-00c3pl3d\wx78-modes-result.json
+- solo / off: passed; work\vault-hardened-hosted-59js3b0c\wx78-modes-result.json
+- stable / draft: passed; work\vault-hardened-hosted-39973_2b\wx78-modes-result.json
+
+Draft coverage: armor-before-absorption (100-15 with native wood armor), planar unchanged, sanity tiers/passive separation, charge deactivation, actual food gain/overflow/electric food/remainder save, possessed-body leader skill changes, fused module quantity/durability/refund save, virtual box no repeated recovery, seven-to-six-slot refund, legacy scanner preload save/recovery.
+Solo + stable wood armor: 17 damage; Beta wood armor retains its own absorption and yields 29.75. No armor tuning overridden.
+
+Actual old implementation -> draft -> old implementation across isolated process restarts: passed.
+work\vault-hardened-hosted-vrwv7qjt\wx78-modes-result.json
+Saved a real Lv3 installed circuit, gear enhancement and virtual box; draft imports one ordinary installed circuit and two ordinary refunds, returns stored items, rebuilds base maximum health; return to old mode retains ordinary circuits without repeated refund.
+
+During development, the possessed body did not refresh draft effects on leader skill deactivation; corrected native modifier removal/health callbacks and verified in all three final draft environments. Fixture corrections used actual armor absorption, native full-charge override and GetAllModules (NumModules is deprecated and returns zero).
+
+Limits: fabricated native characters and injected skill flags; not client UI/natural skill learning, live user worlds, multiplayer cross-shard travel, or long natural play. The cross-mode character record roundtrip predates the final scanner-only recovery branch; that branch is separately covered by the final three draft runs and Off run.
+All test processes and saves are disposable and isolated. Existing workspace wiki changes were left untouched.
+Source hashes and complete selected native results: wx78-modes-20261112.json.

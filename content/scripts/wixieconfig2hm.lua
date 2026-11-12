@@ -60,7 +60,7 @@ function M.Install(G, modname)
                     for key, value in pairs(option) do migrated[key] = value end
                     migrated.saved = saved
                     table.insert(visible, migrated)
-                elseif hideUMOptions and umOptions[option.name] then
+                elseif option.name == "wx78_easy" or option.name == "wx-78" or (hideUMOptions and umOptions[option.name]) then
                     local value = option.saved
                     if value == nil then value = option.default end
                     table.insert(hidden, {name = option.name, label = option.label, options = option.options,

@@ -1,0 +1,25 @@
+Shadow magic renewal / continuous expiry - 2026-11-12
+Status: PASSED. Local implementation; workshop not uploaded.
+
+Offline: 43 shadow-magic checks; 40 native station/foreign preview cleanup checks; 35 native require/manifest checks.
+Existing WX-78 configuration/arithmetic and all product Lua syntax checks passed. All 507 package paths indexed.
+
+Native runs (all five changed product files byte-match current source):
+- beta / disabled=False: passed; work\vault-hardened-hosted-qzavvhbl\shadowmagic-result.json
+- solo / disabled=False: passed; work\vault-hardened-hosted-poeypnfb\shadowmagic-result.json
+- solo / disabled=True: passed; work\vault-hardened-hosted-ix1xvun7\shadowmagic-result.json
+- stable / disabled=False: passed; work\vault-hardened-hosted-7w1pgc40\shadowmagic-result.json
+
+Verified actual native right-click action collection + GIVE: initial 4 fuel / 20 days, 14 days remaining costs exactly 2 fuel, large offered stack retains surplus, insufficient or exact-full balance consumes none, 5-day rounding and expired 4-fuel refill.
+A real reskin_tool was linked through the original station trade callback. Inventory, ground and saved/restored bindings all use the same dynamic fee. Rebinding to a science machine does not offer the new renewal action.
+Crossing dawn by advancing the native clock 1 second consumed approximately 1.0000043 seconds from 9600, not a full day. The authority snapshot avoids mixed old-cycle/new-time replicated fields.
+Journal success adds a full day after expiry and caps at 20; it cannot enroll a player without prior purchase.
+Native short-duration expiry removes borrowed abilities after repeated renewal and restores a 2.5x reader multiplier. A pre-existing magician tag is retained even when the borrowed native component removes its own tag. Maxwell innate abilities are retained.
+A synthetic native legacy cycle record migrates to 14 days and retains the exact deadline after save/load (solo and stable). Offline cases also cover expired and excess historical stockpiles.
+
+Cold restart: actual world SaveGame plus native character record stored, server process stopped/restarted. Saved deadline remains identical; approximately 14.25 days remains minus elapsed running time, within 5-second fixture tolerance.
+Saved deadline: 7324.1874542236; restored remaining seconds: 6838.69972229
+
+Development findings: native alltrader exposes ordinary non-tradable materials mainly on left click, so the right-click path is explicitly registered only for nightmare fuel and the station/fourth-tier-bound sweeper. Native clock fields can briefly disagree around dawn, so production uses a single clock snapshot.
+Limits: native constructed characters and action execution, not actual graphical client mouse testing, live user worlds, multiplayer travel or long natural play. Old records lack fractional purchase times; the migration cannot reconstruct that missing information.
+Detailed selected results and source hashes: shadowmagic-renewal-20261112.json.

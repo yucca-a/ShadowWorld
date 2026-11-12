@@ -1,0 +1,170 @@
+local G=GLOBAL
+G.setmetatable(env,{__index=function(_,key)return G.rawget(G,key)end})
+local json=require("json")
+local function emit(row)print("[VAUDIT] "..json.encode(row))end
+AddSimPostInit(function()TheWorld:DoTaskInTime(1,function()emit({kind="ready"})end)end)
+G.VaultAudit={}
+local M=require("shadowmagic2hm")
+local D=TUNING.TOTAL_DAY_TIME
+local serial=0
+local function player(prefab,record)
+    local p=record and SpawnSaveRecord(record)or SpawnPrefab(prefab or "wilson")
+    serial=serial+1;p.userid="KU_SHADOWMAGIC_"..serial
+    local x,y,z=TheWorld.components.playerspawner:GetAnySpawnPoint()
+    p.Transform:SetPosition(x,y,z);p.entity:SetCanSleep(false)
+    p.components.health:SetInvincible(true);p.components.hunger:SetRate(0)
+    return p
+end
+local function near(a,b,tolerance)
+    assert(math.abs(a-b)<(tolerance or .001),tostring(a).." ~= "..tostring(b))
+end
+local function fuel(p,n)
+    local f=SpawnPrefab("nightmarefuel");f.components.stackable:SetStackSize(n)
+    p.components.inventory:GiveItem(f);return f
+end
+local function size(f)return f:IsValid()and f.components.stackable:StackSize()or 0 end
+local function give(p,target,f)
+    local offered={};f:CollectActions("USEITEM",p,target,offered,true)
+    assert(table.contains(offered,ACTIONS.GIVE),"right-click GIVE missing")
+    return ACTIONS.GIVE.fn(BufferedAction(p,target,ACTIONS.GIVE,f))
+end
+local function row(name,more)
+    more=more or{};more.kind="shadowmagic_case";more.case=name;emit(more)
+end
+function G.VaultAudit.shadowmagic()
+    TheWorld:StartThread(function()
+        local p=player();Sleep(.3)
+        local station=SpawnPrefab("researchlab3")
+        station.Transform:SetPosition(p.Transform:GetWorldPosition())
+        if SHADOWMAGIC_DISABLED then
+            assert(not station.components.trader)
+            row("option_off");p:Remove();station:Remove();emit({kind="shadowmagic",passed=true});return
+        end
+        local f=fuel(p,10)
+        assert(give(p,station,f));assert(size(f)==6,"initial purchase did not consume four")
+        near(M.Remaining(p),20*D)
+        assert(p:HasTag("shadowmagic")and p.components.magician)
+        row("initial_four_for_twenty",{remaining=M.Remaining(p),fuel=size(f)})
+        local deadline=p.components.persistent2hm.data.shadowmagicexpires2hm
+        assert(not station.components.trader:AcceptGift(p,f));near(deadline,p.components.persistent2hm.data.shadowmagicexpires2hm)
+        assert(size(f)==6)
+        M.SetRemaining(p,14*D);assert(give(p,station,f));assert(size(f)==4);near(M.Remaining(p),20*D)
+        row("fourteen_days_costs_two",{fuel=size(f)})
+        M.SetRemaining(p,14*D);f.components.stackable:SetStackSize(1)
+        deadline=p.components.persistent2hm.data.shadowmagicexpires2hm
+        assert(not station.components.trader:AcceptGift(p,f));assert(size(f)==1)
+        near(deadline,p.components.persistent2hm.data.shadowmagicexpires2hm)
+        row("insufficient_and_full_no_charge")
+        f.components.stackable:SetStackSize(10)
+        for _,case in ipairs({{15,1},{19.25,1},{10,2},{5,3},{0,4}})do
+            f.components.stackable:SetStackSize(10)
+            M.SetRemaining(p,case[1]*D)
+            local before=size(f);assert(give(p,station,f));assert(before-size(f)==case[2])
+            near(M.Remaining(p),20*D)
+        end
+        row("price_rounding_and_expired_refill")
+        local broom=SpawnPrefab("reskin_tool");p.components.inventory:GiveItem(broom)
+        Sleep(.1) -- Let the existing sweeper's deferred initialization finish.
+        assert(not broom.components.trader)
+        assert(station.components.trader:AcceptGift(p,broom),"broom binding failed")
+        assert(broom.linkprototyper2hm:value()=="researchlab3"and broom.components.trader)
+        p.components.inventory:ReturnActiveItem()
+        M.SetRemaining(p,14*D)
+        f.components.stackable:SetStackSize(10)
+        local before=size(f);assert(give(p,broom,f));assert(before-size(f)==2);near(M.Remaining(p),20*D)
+        local broomrecord=broom:GetSaveRecord()
+        local restored=SpawnSaveRecord(broomrecord);Sleep(.3)
+        row("sweeper_restore_state",{record_id=broomrecord.data.persistent2hm.prototyper_GUID,
+            linked=restored.linkprototyper2hm:value()})
+        assert(restored.components.trader and restored.linkprototyper2hm:value()=="researchlab3")
+        M.SetRemaining(p,14*D);before=size(f)
+        assert(give(p,restored,f));assert(before-size(f)==2)
+        row("inventory_sweeper_and_saved_binding")
+        p.components.inventory:DropItem(broom,true,true)
+        M.SetRemaining(p,19*D);before=size(f)
+        assert(give(p,broom,f));assert(before-size(f)==1)
+        row("ground_sweeper_same_pricing")
+        local science=SpawnPrefab("researchlab")
+        assert(science.components.trader:AcceptGift(p,broom))
+        assert(broom.linkprototyper2hm:value()=="researchlab")
+        local actions={};f:CollectActions("USEITEM",p,broom,actions,true)
+        assert(not table.contains(actions,ACTIONS.GIVE),"renewal right-click leaked onto another science binding")
+        row("other_science_binding_unchanged")
+        science:Remove()
+        local clock=TheWorld.net.components.clock
+        local delta=(.999-TheWorld.state.time)%1*D
+        clock:LongUpdate(delta)
+        M.SetRemaining(p,20*D)
+        local time=M.Now();clock:LongUpdate(1)
+        near(M.Remaining(p),20*D-(M.Now()-time),.1)
+        assert(M.Remaining(p)>19.99*D,"daybreak lost a whole day")
+        row("daybreak_continuous_time",{remaining=M.Remaining(p)})
+        local saved=p:GetSaveRecord();local q=player(nil,saved);Sleep(.3)
+        near(q.components.persistent2hm.data.shadowmagicexpires2hm,p.components.persistent2hm.data.shadowmagicexpires2hm)
+        assert(q:HasTag("shadowmagic"));q:Remove()
+        row("save_load_deadline_unchanged")
+        local legacy=player()
+        legacy.components.persistent2hm.data.shadowmagiccycle=math.floor(M.Now()/D)-6
+        M.Refresh(legacy);near(M.Remaining(legacy),14*D)
+        local expiry=legacy.components.persistent2hm.data.shadowmagicexpires2hm
+        local migrated=player(nil,legacy:GetSaveRecord());Sleep(.3)
+        near(migrated.components.persistent2hm.data.shadowmagicexpires2hm,expiry)
+        assert(migrated:HasTag("shadowmagic"));near(M.Remaining(migrated),14*D,1)
+        legacy:Remove();migrated:Remove()
+        row("legacy_date_migrates_once_and_survives_save")
+        local journal=SpawnPrefab("waxwelljournal")
+        journal.components.fueled:SetPercent(.3)
+        M.SetRemaining(p,0)
+        local one=SpawnPrefab("nightmarefuel")
+        assert(journal.components.fueled:TakeFuelItem(one,p));near(M.Remaining(p),D)
+        M.SetRemaining(p,19.5*D)
+        assert(journal.components.fueled:TakeFuelItem(SpawnPrefab("nightmarefuel"),p));near(M.Remaining(p),20*D)
+        local n=player();assert(not M.Enrolled(n))
+        journal.components.fueled:TakeFuelItem(SpawnPrefab("nightmarefuel"),n)
+        assert(not M.Enrolled(n));n:Remove()
+        row("journal_one_full_day_and_cap")
+        local reader=player("wickerbottom")
+        reader:AddTag("magician") -- Pre-existing tag without the native component.
+        reader.components.reader:SetSanityPenaltyMultiplier(2.5)
+        M.SetRemaining(reader,1.5);near(reader.components.reader.sanity_mult,1)
+        M.SetRemaining(reader,1.5)
+        Sleep(2.5)
+        assert(not reader:HasTag("shadowmagic")and not reader.components.magician)
+        assert(reader:HasTag("magician"),"native component removed a pre-existing tag")
+        near(reader.components.reader.sanity_mult,2.5)
+        assert(not reader.shadowmagicexpirycheck2hm)
+        row("natural_expiry_after_renewal_and_reader_restore")
+        reader:Remove()
+        local maxwell=player("waxwell");Sleep(.1)
+        if not maxwell.components.reader or maxwell.components.reader.sanity_mult<=1 then assert(M.Cost(maxwell)==0)end
+        M.SetRemaining(maxwell,.1);Sleep(.3)
+        assert(maxwell:HasTag("shadowmagic")and maxwell.components.magician)
+        maxwell:Remove();row("native_magician_preserved")
+        restored:Remove();broom:Remove();station:Remove();journal:Remove();p:Remove()
+        emit({kind="shadowmagic",passed=true})
+    end)
+end
+function G.VaultAudit.export_shadowmagic()
+    TheWorld:StartThread(function()
+        local p=player();M.SetRemaining(p,14.25*D)
+        local data={record=p:GetSaveRecord(),deadline=p.components.persistent2hm.data.shadowmagicexpires2hm}
+        TheSim:SetPersistentString("shadowmagic_precise_record",DataDumper(data,nil,true),false,function(ok)
+            assert(ok)
+            SaveGame(false,function()emit({kind="shadowmagic_export",passed=true,deadline=data.deadline})end)
+        end)
+    end)
+end
+function G.VaultAudit.import_shadowmagic()
+    TheSim:GetPersistentString("shadowmagic_precise_record",function(ok,str)
+        assert(ok);local parsed,data=RunInSandbox(str);assert(parsed)
+        local p=player(nil,data.record)
+        TheWorld:StartThread(function()
+            Sleep(.3)
+            near(p.components.persistent2hm.data.shadowmagicexpires2hm,data.deadline)
+            assert(p:HasTag("shadowmagic")and M.Remaining(p)<=20*D)
+            near(M.Remaining(p),14.25*D,5)
+            emit({kind="shadowmagic_import",passed=true,deadline=data.deadline,remaining=M.Remaining(p)})
+            p:Remove()
+        end)
+    end)
+end

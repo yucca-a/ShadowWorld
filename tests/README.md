@@ -1,5 +1,13 @@
 # 回归测试
 
+## 暗影魔法续费与精确计时（2.8.15.0.30）
+
+`run_shadowmagic_tests.py` 检查每5天一燃料的按需收费、20天上限、换日连续时间、旧日期迁移和能力归还。`run_native_shadowmagic.py --edition solo|stable|beta [--restart]` 串行使用隔离专服检查真实右键动作、四本及绑定扫把给予、材料数量、扫把保存加载、秘典续期、自然到期和时钟／角色保存冷启动；`--disabled` 检查配置关闭。`run_prototyper_preview_tests.py` 覆盖临时科技预览实体的清理兼容。见 [实装说明](../development/暗影魔法续费与精确计时_20261112.md) 和 [验证记录](../development/validation/shadowmagic-renewal-20261112.txt)。
+
+## WX-78 统一方案与草案测试档（2.8.15.0.30）
+
+`run_wx78_modes_tests.py` 检查旧配置组合、默认不迁移、草案数值、停电、回电与 Lua 编译；`run_wixie_tests.py` 检查设置界面只显示统一方案并保留两个隐藏旧值。`run_native_wx78_modes.py --edition solo|stable|beta --mode draft|legacy|easy|hard|off` 串行使用隔离原生专服验证真实电路、护甲、食物、附身躯体与物品恢复，`--roundtrip` 另验证实际旧方案保存记录经重启切入草案、再切回旧方案。仅操作独立测试存档，不发布工坊。范围与限制见 [实装说明](../development/WX-78草案测试档_实装说明_20261112.md) 和 [验证记录](../development/validation/wx78-modes-20261112.txt)。
+
 ## Cluster_19 旧空间迁移卡住（2.8.15.0.29 已发布）
 
 `python tests/run_vault_zip_recovery.py --archive <ZIP> --migration` 用隔离双层专服复现/验证旧枢纽迁移、容器打开和保存重启，支持默认地表ID及关闭穿越设置；缺少模组时不进行迁移验收。已用用户原档验证新代码自动恢复，用修复包验证未加本次补丁的2.8.15.0.28可直接加载。`python tests/run_exchange_migrated_roundtrip.py --seed <前一测试的 config/Audit>` 验证显式切到新枢纽、保存并切回原版，不重放旧日志且原版物品不变。

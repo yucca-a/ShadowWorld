@@ -18,7 +18,7 @@ bootstrap = (ROOT / "content/modmain.lua").read_text(encoding="utf-8-sig").split
 with ZipFile(ROOT / "backups/merges/20261110-104808/workshop-2.8.15.0.18.zip") as z:
     old_index = set(decode(z.read("mod.manifest")))
 
-modules = ["shadowhalloween2hm", "bootlegnonslip2hm", "exchangexianyurecovery2hm"]
+modules = ["shadowhalloween2hm", "bootlegnonslip2hm", "exchangexianyurecovery2hm", "wx78config2hm", "wx78draft2hm", "shadowmagic2hm"]
 sources = {f"scripts/{name}.lua": (ROOT / f"content/scripts/{name}.lua").read_text(encoding="utf-8-sig") for name in modules}
 checks = 0
 

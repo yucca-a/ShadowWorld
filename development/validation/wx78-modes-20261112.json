@@ -1,0 +1,379 @@
+{
+  "date": "2026-11-12",
+  "status": "passed",
+  "publication": "local only; workshop version unchanged",
+  "offline": {
+    "legacy_combinations": 64,
+    "explicit_cases": 256,
+    "config_checks": 733,
+    "layout_checks": 32652,
+    "manifest_checks": 30,
+    "lua_files": 436
+  },
+  "sources": {
+    "content/modmain.lua": "62d7c728f99f93d216495c94114b1dd9e38843d2493f52732b88e5aa631b2588",
+    "content/modinfo.lua": "0eb5efa3c58844b4bb96a864cf6db4065daca755e7c8c3cb30cb5d2a54a7b046",
+    "content/mod.manifest": "0ab912936ab767b7057a65b1ea7eadab0c447e09e3dae7ab271d01cf4fb65d32",
+    "content/easy_role/wx78_easy.lua": "85c5c83e5f97748294b33ee7a58fb34bc9ca2e979c8ae37d56728e5bb4df4ba1",
+    "content/scripts/wixieconfig2hm.lua": "5e84b36d1b497e81904feacf9f0ef9f849b7d133de503545998c6b8f84e41dc5",
+    "content/common/wx78_mode.lua": "93002b1958a810938ee9fc1e8e249c7800e12751d2053f67150230e63b18ee63",
+    "content/common/wx78_recovery.lua": "cd39def7ad5e4c04813bc54f71b10a262304e734d479cc4e0787cf1453c98561",
+    "content/scripts/wx78config2hm.lua": "edc4e3ccc4c6ad7093871a15265c49565d38eecf79f63ff1a0e3f70f614d1b5d",
+    "content/scripts/wx78draft2hm.lua": "5d17227f017f71c21e228081313bb8c800ccd5dd70f2a2ce3c0707cfbc67869d"
+  },
+  "native": [
+    {
+      "edition": "beta",
+      "mode": "draft",
+      "evidence": "work\\vault-hardened-hosted-m0flvcc5\\wx78-modes-result.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-m0flvcc5",
+      "result": {
+        "passed": true,
+        "kind": "wx78_modes"
+      },
+      "cases": [
+        {
+          "mode": "draft",
+          "kind": "wx78_case",
+          "fusion": false,
+          "slots": 6,
+          "case": "mode_isolation"
+        },
+        {
+          "case": "armor_order_and_planar",
+          "planar": 10,
+          "kind": "wx78_case",
+          "damage": 29.75
+        },
+        {
+          "case": "sanity_tiers_deactivation",
+          "kind": "wx78_case"
+        },
+        {
+          "case": "food_actual_gain_overflow_electric_save",
+          "kind": "wx78_case"
+        },
+        {
+          "case": "possessed_body_follows_leader_skills",
+          "kind": "wx78_case"
+        },
+        {
+          "kind": "wx78_case",
+          "refunds": 2,
+          "case": "fusion_refund_and_reload"
+        },
+        {
+          "items": 1,
+          "kind": "wx78_case",
+          "case": "virtual_box_recovery_and_reload"
+        },
+        {
+          "installed": 6,
+          "kind": "wx78_case",
+          "refunds": 1,
+          "case": "oversized_bar_refund"
+        },
+        {
+          "scanners": 1,
+          "kind": "wx78_case",
+          "case": "legacy_scanner_recovery"
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "edition": "solo",
+      "mode": "draft",
+      "evidence": "work\\vault-hardened-hosted-n3j00bq5\\wx78-modes-result.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-n3j00bq5",
+      "result": {
+        "passed": true,
+        "kind": "wx78_modes"
+      },
+      "cases": [
+        {
+          "mode": "draft",
+          "kind": "wx78_case",
+          "fusion": false,
+          "slots": 6,
+          "case": "mode_isolation"
+        },
+        {
+          "case": "armor_order_and_planar",
+          "planar": 10,
+          "kind": "wx78_case",
+          "damage": 17
+        },
+        {
+          "case": "sanity_tiers_deactivation",
+          "kind": "wx78_case"
+        },
+        {
+          "case": "food_actual_gain_overflow_electric_save",
+          "kind": "wx78_case"
+        },
+        {
+          "case": "possessed_body_follows_leader_skills",
+          "kind": "wx78_case"
+        },
+        {
+          "kind": "wx78_case",
+          "refunds": 2,
+          "case": "fusion_refund_and_reload"
+        },
+        {
+          "items": 1,
+          "kind": "wx78_case",
+          "case": "virtual_box_recovery_and_reload"
+        },
+        {
+          "installed": 6,
+          "kind": "wx78_case",
+          "refunds": 1,
+          "case": "oversized_bar_refund"
+        },
+        {
+          "scanners": 1,
+          "kind": "wx78_case",
+          "case": "legacy_scanner_recovery"
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "edition": "solo",
+      "mode": "easy",
+      "evidence": "work\\vault-hardened-hosted-wozt6x8z\\wx78-modes-result.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-wozt6x8z",
+      "result": {
+        "passed": true,
+        "kind": "wx78_modes"
+      },
+      "cases": [
+        {
+          "mode": "easy",
+          "kind": "wx78_case",
+          "fusion": true,
+          "slots": 6,
+          "case": "mode_isolation"
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "edition": "solo",
+      "mode": "hard",
+      "evidence": "work\\vault-hardened-hosted-nqodeb69\\wx78-modes-result.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-nqodeb69",
+      "result": {
+        "passed": true,
+        "kind": "wx78_modes"
+      },
+      "cases": [
+        {
+          "mode": "hard",
+          "kind": "wx78_case",
+          "fusion": true,
+          "slots": 6,
+          "case": "mode_isolation"
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "edition": "solo",
+      "mode": "legacy",
+      "evidence": "work\\vault-hardened-hosted-00c3pl3d\\wx78-modes-result.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-00c3pl3d",
+      "result": {
+        "passed": true,
+        "kind": "wx78_modes"
+      },
+      "cases": [
+        {
+          "mode": "legacy",
+          "kind": "wx78_case",
+          "fusion": true,
+          "slots": 6,
+          "case": "mode_isolation"
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "edition": "solo",
+      "mode": "off",
+      "evidence": "work\\vault-hardened-hosted-59js3b0c\\wx78-modes-result.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-59js3b0c",
+      "result": {
+        "passed": true,
+        "kind": "wx78_modes"
+      },
+      "cases": [
+        {
+          "mode": "off",
+          "kind": "wx78_case",
+          "fusion": false,
+          "slots": 6,
+          "case": "mode_isolation"
+        },
+        {
+          "kind": "wx78_case",
+          "refunds": 2,
+          "case": "fusion_refund_and_reload"
+        },
+        {
+          "items": 1,
+          "kind": "wx78_case",
+          "case": "virtual_box_recovery_and_reload"
+        },
+        {
+          "installed": 6,
+          "kind": "wx78_case",
+          "refunds": 1,
+          "case": "oversized_bar_refund"
+        },
+        {
+          "scanners": 1,
+          "kind": "wx78_case",
+          "case": "legacy_scanner_recovery"
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "edition": "stable",
+      "mode": "draft",
+      "evidence": "work\\vault-hardened-hosted-39973_2b\\wx78-modes-result.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-39973_2b",
+      "result": {
+        "passed": true,
+        "kind": "wx78_modes"
+      },
+      "cases": [
+        {
+          "mode": "draft",
+          "kind": "wx78_case",
+          "fusion": false,
+          "slots": 6,
+          "case": "mode_isolation"
+        },
+        {
+          "case": "armor_order_and_planar",
+          "planar": 10,
+          "kind": "wx78_case",
+          "damage": 17
+        },
+        {
+          "case": "sanity_tiers_deactivation",
+          "kind": "wx78_case"
+        },
+        {
+          "case": "food_actual_gain_overflow_electric_save",
+          "kind": "wx78_case"
+        },
+        {
+          "case": "possessed_body_follows_leader_skills",
+          "kind": "wx78_case"
+        },
+        {
+          "kind": "wx78_case",
+          "refunds": 2,
+          "case": "fusion_refund_and_reload"
+        },
+        {
+          "items": 1,
+          "kind": "wx78_case",
+          "case": "virtual_box_recovery_and_reload"
+        },
+        {
+          "installed": 6,
+          "kind": "wx78_case",
+          "refunds": 1,
+          "case": "oversized_bar_refund"
+        },
+        {
+          "scanners": 1,
+          "kind": "wx78_case",
+          "case": "legacy_scanner_recovery"
+        }
+      ],
+      "status": "passed"
+    }
+  ],
+  "roundtrip_evidence": "work\\vault-hardened-hosted-vrwv7qjt\\wx78-modes-result.json",
+  "roundtrip": {
+    "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-vrwv7qjt",
+    "edition": "solo",
+    "mode": "draft",
+    "legacy_export": {
+      "passed": true,
+      "kind": "wx78_export"
+    },
+    "draft_import": {
+      "refunds": 2,
+      "kind": "wx78_import",
+      "passed": true,
+      "back": false
+    },
+    "legacy_return": {
+      "refunds": 2,
+      "kind": "wx78_import",
+      "passed": true,
+      "back": true
+    },
+    "result": {
+      "passed": true,
+      "kind": "wx78_modes"
+    },
+    "cases": [
+      {
+        "mode": "draft",
+        "kind": "wx78_case",
+        "fusion": false,
+        "slots": 6,
+        "case": "mode_isolation"
+      },
+      {
+        "case": "armor_order_and_planar",
+        "planar": 10,
+        "kind": "wx78_case",
+        "damage": 17
+      },
+      {
+        "case": "sanity_tiers_deactivation",
+        "kind": "wx78_case"
+      },
+      {
+        "case": "food_actual_gain_overflow_electric_save",
+        "kind": "wx78_case"
+      },
+      {
+        "case": "possessed_body_follows_leader_skills",
+        "kind": "wx78_case"
+      },
+      {
+        "kind": "wx78_case",
+        "refunds": 2,
+        "case": "fusion_refund_and_reload"
+      },
+      {
+        "items": 1,
+        "kind": "wx78_case",
+        "case": "virtual_box_recovery_and_reload"
+      },
+      {
+        "installed": 6,
+        "kind": "wx78_case",
+        "refunds": 1,
+        "case": "oversized_bar_refund"
+      }
+    ],
+    "status": "passed"
+  },
+  "limits": [
+    "Constructed native characters, injected skills; no real client UI or natural skill progression.",
+    "Character records saved with native serializers and reloaded; cross-mode roundtrip also restarted isolated server processes.",
+    "No real player world, multiplayer travel, workshop upload or long-term natural play acceptance."
+  ]
+}

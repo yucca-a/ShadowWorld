@@ -1,0 +1,50 @@
+{
+  "version": "2.8.15.0.30",
+  "workshop_id": "3832182265",
+  "date": "2026-11-12",
+  "files": 507,
+  "bytes": 22098345,
+  "archive": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\backups\\releases\\v2.8.15.0.30-content.zip",
+  "archive_sha256": "28e9ce0c03c5897e5ec50215f98a5c4d9ef418fe47243ca150811945ce1375d9",
+  "patch_notes_file": "workshop/update-notes-2.8.15.0.30.txt",
+  "patch_notes_sha256": "ecd9deb3a6347282ea0e78c5b26b737d6315af0c87291d2cb770b6b881ff37b7",
+  "content_manifest": "development/releases/v2.8.15.0.30-content-manifest.json",
+  "status": "published_verified",
+  "validation": [
+    "development/validation/wx78-modes-20261112.json",
+    "development/validation/shadowmagic-renewal-20261112.json"
+  ],
+  "tested_gameplay_sources_match": [
+    "content/easy_role/wx78_easy.lua",
+    "content/scripts/wixieconfig2hm.lua",
+    "content/common/wx78_mode.lua",
+    "content/common/wx78_recovery.lua",
+    "content/scripts/wx78config2hm.lua",
+    "content/scripts/wx78draft2hm.lua",
+    "content/scripts/shadowmagic2hm.lua",
+    "content/easy_other/easy_structures.lua"
+  ],
+  "version_tag_verified": true,
+  "public_changelog_readback_verified": true,
+  "downloaded_package_verified": true,
+  "uploader_status": "Publish complete; Update completed",
+  "steam_upload_result": "OK",
+  "steam_content_manifest_id": "8582475436624533132",
+  "visibility": "Public",
+  "downloaded_package_verification": {
+    "files": 507,
+    "source_files_matching": 506,
+    "uploader_generated_manifest_differs": true,
+    "manifest_indexes_all_files": true,
+    "manifest_hash_set_identical": true,
+    "all_release_content_matches": true,
+    "download_path": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\release-2.8.15.0.30\\after\\downloaded",
+    "downloaded_version": "2.8.15.0.30"
+  },
+  "public_changelog_full_six_entries_match": true,
+  "changelog_timestamp": "1794495148",
+  "public_changelog_url": "https://steamcommunity.com/sharedfiles/filedetails/changelog/3832182265?l=schinese&p=1",
+  "public_changelog_verification_method": "Public Steam changelog read back in in-app browser AX state",
+  "publication_scope": "WX-78 opt-in draft mode and legacy defaults, plus shadow-magic renewal/continuous time and linked-sweeper support.",
+  "wiki_updated": false
+}

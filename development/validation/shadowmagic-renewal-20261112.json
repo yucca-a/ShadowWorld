@@ -1,0 +1,278 @@
+{
+  "date": "2026-11-12",
+  "status": "passed",
+  "publication": "local only; workshop version unchanged",
+  "offline": {
+    "shadowmagic_checks": 43,
+    "preview_checks": 40,
+    "manifest_checks": 35,
+    "wx78_explicit_cases": 256,
+    "wx78_legacy_combinations": 64,
+    "package_paths": 507,
+    "lua_files": 437
+  },
+  "source_sha256": {
+    "content/scripts/shadowmagic2hm.lua": "7a93d4e006b225292b479dd7b375d70441245dcb87e7db9deaa029d1964cf719",
+    "content/easy_other/easy_structures.lua": "a856fab78664e899ab737530b396293ae1c6598722a1a9d183b0f0d8590436c3",
+    "content/modinfo.lua": "24648e3a64b63c5cdcae2e61ad980744c54906a7cc044002d228598b84c8f65e",
+    "content/modmain.lua": "73e5013921b3f19181d179c8d24dc577ed07ff717c2b0144e708eafdb66a456a",
+    "content/mod.manifest": "8d1f07240ab6ca5c1bf872aaaa97039ec4e084f6b902f4b43b56cfa5f3fd9568"
+  },
+  "native": [
+    {
+      "evidence": "work\\vault-hardened-hosted-qzavvhbl\\shadowmagic-result.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-qzavvhbl",
+      "edition": "beta",
+      "disabled": false,
+      "result": {
+        "passed": true,
+        "kind": "shadowmagic"
+      },
+      "cases": [
+        {
+          "fuel": 6,
+          "remaining": 9600,
+          "kind": "shadowmagic_case",
+          "case": "initial_four_for_twenty"
+        },
+        {
+          "fuel": 4,
+          "kind": "shadowmagic_case",
+          "case": "fourteen_days_costs_two"
+        },
+        {
+          "case": "insufficient_and_full_no_charge",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "case": "price_rounding_and_expired_refill",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "record_id": "121099",
+          "kind": "shadowmagic_case",
+          "linked": "researchlab3",
+          "case": "sweeper_restore_state"
+        },
+        {
+          "case": "inventory_sweeper_and_saved_binding",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "case": "ground_sweeper_same_pricing",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "case": "other_science_binding_unchanged",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "remaining": 9598.9999957383,
+          "kind": "shadowmagic_case",
+          "case": "daybreak_continuous_time"
+        },
+        {
+          "case": "save_load_deadline_unchanged",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "case": "journal_one_full_day_and_cap",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "case": "natural_expiry_after_renewal_and_reader_restore",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "case": "native_magician_preserved",
+          "kind": "shadowmagic_case"
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "evidence": "work\\vault-hardened-hosted-poeypnfb\\shadowmagic-result.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-poeypnfb",
+      "edition": "solo",
+      "disabled": false,
+      "result": {
+        "passed": true,
+        "kind": "shadowmagic"
+      },
+      "cases": [
+        {
+          "fuel": 6,
+          "remaining": 9600,
+          "kind": "shadowmagic_case",
+          "case": "initial_four_for_twenty"
+        },
+        {
+          "fuel": 4,
+          "kind": "shadowmagic_case",
+          "case": "fourteen_days_costs_two"
+        },
+        {
+          "case": "insufficient_and_full_no_charge",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "case": "price_rounding_and_expired_refill",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "record_id": "120568",
+          "kind": "shadowmagic_case",
+          "linked": "researchlab3",
+          "case": "sweeper_restore_state"
+        },
+        {
+          "case": "inventory_sweeper_and_saved_binding",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "case": "ground_sweeper_same_pricing",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "case": "other_science_binding_unchanged",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "remaining": 9598.9999957383,
+          "kind": "shadowmagic_case",
+          "case": "daybreak_continuous_time"
+        },
+        {
+          "case": "save_load_deadline_unchanged",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "case": "legacy_date_migrates_once_and_survives_save",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "case": "journal_one_full_day_and_cap",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "case": "natural_expiry_after_renewal_and_reader_restore",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "case": "native_magician_preserved",
+          "kind": "shadowmagic_case"
+        }
+      ],
+      "export": {
+        "kind": "shadowmagic_export",
+        "passed": true,
+        "deadline": 7324.1874542236
+      },
+      "import": {
+        "remaining": 6838.69972229,
+        "kind": "shadowmagic_import",
+        "passed": true,
+        "deadline": 7324.1874542236
+      },
+      "status": "passed"
+    },
+    {
+      "evidence": "work\\vault-hardened-hosted-ix1xvun7\\shadowmagic-result.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-ix1xvun7",
+      "edition": "solo",
+      "disabled": true,
+      "result": {
+        "passed": true,
+        "kind": "shadowmagic"
+      },
+      "cases": [
+        {
+          "case": "option_off",
+          "kind": "shadowmagic_case"
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "evidence": "work\\vault-hardened-hosted-7w1pgc40\\shadowmagic-result.json",
+      "cluster": "D:\\Users\\Yucca\\Documents\\ChatGPT\\ShadowWorld\\work\\vault-hardened-hosted-7w1pgc40",
+      "edition": "stable",
+      "disabled": false,
+      "result": {
+        "passed": true,
+        "kind": "shadowmagic"
+      },
+      "cases": [
+        {
+          "fuel": 6,
+          "remaining": 9600,
+          "kind": "shadowmagic_case",
+          "case": "initial_four_for_twenty"
+        },
+        {
+          "fuel": 4,
+          "kind": "shadowmagic_case",
+          "case": "fourteen_days_costs_two"
+        },
+        {
+          "case": "insufficient_and_full_no_charge",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "case": "price_rounding_and_expired_refill",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "record_id": "121077",
+          "kind": "shadowmagic_case",
+          "linked": "researchlab3",
+          "case": "sweeper_restore_state"
+        },
+        {
+          "case": "inventory_sweeper_and_saved_binding",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "case": "ground_sweeper_same_pricing",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "case": "other_science_binding_unchanged",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "remaining": 9598.9999957383,
+          "kind": "shadowmagic_case",
+          "case": "daybreak_continuous_time"
+        },
+        {
+          "case": "save_load_deadline_unchanged",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "case": "legacy_date_migrates_once_and_survives_save",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "case": "journal_one_full_day_and_cap",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "case": "natural_expiry_after_renewal_and_reader_restore",
+          "kind": "shadowmagic_case"
+        },
+        {
+          "case": "native_magician_preserved",
+          "kind": "shadowmagic_case"
+        }
+      ],
+      "status": "passed"
+    }
+  ],
+  "limitations": [
+    "Native action collection and GIVE execution use constructed characters, not a connected graphical client.",
+    "Old cycle-only records have no purchase time-of-day; migration preserves computable remaining whole days at the migration instant, capped at 20.",
+    "Deadlines count world gameplay time; active expiry rechecks at most one second after clock jumps.",
+    "No workshop upload, real user-world changes or long natural play acceptance."
+  ]
+}

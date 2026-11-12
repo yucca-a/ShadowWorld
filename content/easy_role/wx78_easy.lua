@@ -1,4 +1,4 @@
-local hardmode = TUNING.hardmode2hm and GetModConfigData("role_nerf")
+local hardmode = TUNING.wx78easyhard2hm
 local inital_maxlevel = TUNING.WX78_MAXCHARGELEVEL_SKILL
 local UpvalueHacker = require("upvaluehacker2hm")
 -- WX-78拆电路板不消耗耐久不掉电力
